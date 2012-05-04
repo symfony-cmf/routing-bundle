@@ -10,7 +10,7 @@ class RouteTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
     }

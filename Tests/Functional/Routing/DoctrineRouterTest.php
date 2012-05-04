@@ -15,13 +15,13 @@ use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 class DoctrineRouterTest extends BaseTestCase
 {
     /**
-     * @var \Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\ChainRouter
+     * @var \Symfony\Cmf\Component\Routing\ChainRouter
      */
     protected static $router;
 
     const ROUTE_ROOT = '/test/routing';
 
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
         self::$router = self::$kernel->getContainer()->get('router');

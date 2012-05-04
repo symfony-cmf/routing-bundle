@@ -19,7 +19,7 @@ class RedirectControllerTest extends BaseTestCase
      */
     protected static $controller;
 
-    public static function setupBeforeClass()
+    public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
         $router = self::$kernel->getContainer()->get('router');
