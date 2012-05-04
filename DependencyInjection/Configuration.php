@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\DependencyInjection;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('symfony_cmf_chain_routing')
+        $treeBuilder->root('symfony_cmf_routing_extra')
             ->children()
                 ->arrayNode('chain')
                     ->children()
@@ -51,8 +51,8 @@ class Configuration implements ConfigurationInterface
                             /* why does this not work?
                             ->prototype('array')
                                 ->children()
-                                    ->scalarNode('Symfony\Cmf\Bundle\ChainRoutingBundle\Document\RedirectRoute')
-                                        ->defaultValue('symfony_cmf_chain_routing.redirect_controller:redirectAction')
+                                    ->scalarNode('Symfony\Cmf\Component\Routing\RedirectRouteInterface')
+                                        ->defaultValue('symfony_cmf_routing_extra.redirect_controller:redirectAction')
                                     ->end()
                                 ->end()
                              */
@@ -61,7 +61,7 @@ class Configuration implements ConfigurationInterface
                             ->useAttributeAsKey('alias')
                             ->prototype('scalar')
                         ->end()->end()
-                        ->scalarNode('route_repository_service')->defaultValue('symfony_cmf_chain_routing.phpcrodm_route_repository')->end()
+                        ->scalarNode('route_repository_service')->defaultValue('symfony_cmf_routing_extra.phpcrodm_route_repository')->end()
                         ->scalarNode('routing_repositoryroot')->defaultValue('/cms/routes')->end()
                     ->end()
                 ->end()

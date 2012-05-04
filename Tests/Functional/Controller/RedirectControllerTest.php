@@ -1,21 +1,21 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\Controller;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Controller;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Document\Route;
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Document\RedirectRoute;
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Controller\RedirectController;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController;
 
 class RedirectControllerTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
     /**
-     * @var \Symfony\Cmf\Bundle\ChainRoutingBundle\Controller\RedirectController
+     * @var \Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController
      */
     protected static $controller;
 
@@ -71,7 +71,7 @@ class RedirectControllerTest extends BaseTestCase
         $redirect = self::$dm->find(null, self::ROUTE_ROOT.'/redirectContent');
         $response = self::$controller->redirectAction($redirect);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $response);
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://localhost/testroute?test=content', $response->getTargetUrl());
     }
@@ -93,7 +93,7 @@ class RedirectControllerTest extends BaseTestCase
         $redirect = self::$dm->find(null, self::ROUTE_ROOT.'/redirectName');
         $response = self::$controller->redirectAction($redirect);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $response);
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://localhost/symfony_route_test?param=7', $response->getTargetUrl());
     }

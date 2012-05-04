@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Listener;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Listener;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 
 

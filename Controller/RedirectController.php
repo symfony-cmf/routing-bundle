@@ -1,12 +1,12 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Controller;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Controller;
 
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Routing\RedirectRouteInterface;
+use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
 /**
  * Default router that handles redirection route objects.

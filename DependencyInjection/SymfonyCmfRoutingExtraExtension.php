@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\DependencyInjection;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
  * @author Philippo de Santis
  * @author David Buchmann
  */
-class SymfonyCmfChainRoutingExtension extends Extension
+class SymfonyCmfRoutingExtraExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -43,11 +43,11 @@ class SymfonyCmfChainRoutingExtension extends Extension
         $loader->load('chain_routing.xml');
         // only replace the default router by overwriting the 'router' alias if config tells us to
         if ($config['chain']['replace_symfony_router']) {
-            $container->setAlias('router', 'symfony_cmf_chain_routing.router');
+            $container->setAlias('router', 'symfony_cmf_routing_extra.router');
         }
 
         // add the routers defined in the configuration mapping
-        $router = $container->getDefinition('symfony_cmf_chain_routing.router');
+        $router = $container->getDefinition('symfony_cmf_routing_extra.router');
         foreach ($config['chain']['routers_by_id'] as $id => $priority) {
             $router->addMethodCall('add', array(new Reference($id), $priority));
         }
@@ -71,7 +71,7 @@ class SymfonyCmfChainRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.routing_repositoryroot', $config['routing_repositoryroot']);
 
         $doctrine = $container->getDefinition($this->getAlias() . '.doctrine_router');
-        $doctrine->replaceArgument(1, new Reference($config['route_repository_service']));
+        $doctrine->replaceArgument(0, new Reference($config['route_repository_service']));
 
         // if any mappings are defined, set the respective resolvers
         if (!empty($config['generic_controller'])) {

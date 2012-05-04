@@ -1,10 +1,11 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\Routing;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Routing;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DoctrineRouter;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
 /**
  * The goal of these tests is to test the interoperation with DI and everything.
@@ -14,7 +15,7 @@ use Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\BaseTestCase;
 class DoctrineRouterTest extends BaseTestCase
 {
     /**
-     * @var \Symfony\Cmf\Bundle\ChainRoutingBundle\Routing\ChainRouter
+     * @var \Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\ChainRouter
      */
     protected static $router;
 
@@ -49,7 +50,7 @@ class DoctrineRouterTest extends BaseTestCase
     {
         $expected = array(
             '_controller'   => 'testController',
-            '_route'        => 'chain_router_doctrine_route_test_routing_testroute_child',
+            '_route'        => DoctrineRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute_child',
             'path'          => '/testroute/child',
         );
 
@@ -62,7 +63,7 @@ class DoctrineRouterTest extends BaseTestCase
     {
         $expected = array(
             '_controller'   => 'testController',
-            '_route'        => 'chain_router_doctrine_route_test_routing_testroute',
+            '_route'        => DoctrineRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute',
             'id'            => '123',
             'path'          => '/testroute/child/123',
             'slug'          => 'child',

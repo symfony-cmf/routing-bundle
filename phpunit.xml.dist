@@ -7,7 +7,7 @@
 >
 
     <testsuites>
-        <testsuite name="ChainRoutingBundle Test Suite">
+        <testsuite name="SymfonyCmfRoutingExtraBundle Test Suite">
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>
@@ -16,10 +16,9 @@
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>.</directory>
             <exclude>
-                <file>SymfonyCmfChainRoutingBundle.php</file>
+                <file>SymfonyCmfRoutingExtraBundle.php</file>
                 <directory>DependencyInjection/</directory>
                 <directory>Resources/</directory>
-                <directory>Test/</directory>
                 <directory>Tests/</directory>
                 <directory>vendor/</directory>
             </exclude>

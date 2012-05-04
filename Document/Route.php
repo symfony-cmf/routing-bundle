@@ -1,20 +1,20 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Document;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Routing\RouteObjectInterface;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
  * Default document for routing table entries that work with the DoctrineRouter.
  *
  * This needs the IdPrefix service to run and setPrefix whenever a route is
- * loaded. Otherwise the getUrl method will be invalid.
+ * loaded. Otherwise the static prefix can not be determined.
  *
  * @author david.buchmann@liip.ch
  *
- * @PHPCRODM\Document(referenceable=true,repositoryClass="Symfony\Cmf\Bundle\ChainRoutingBundle\Document\RouteRepository")
+ * @PHPCRODM\Document(referenceable=true,repositoryClass="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteRepository")
  */
 class Route extends SymfonyRoute implements RouteObjectInterface
 {
@@ -91,9 +91,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function __construct()
     {
-        $this->setDefaults(array());
-        $this->setRequirements(array());
-        $this->setOptions(array());
+        $this->initArrays();
     }
 
     /**
@@ -241,6 +239,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         } else {
             $this->setRequirements(array());
         }
+        // parent class will add compiler_class option back in if it was stripped out
         if ($this->optionsValues && count($this->optionsValues)) {
             $this->setOptions(array_combine(
                 $this->optionsKeys->getValues(),

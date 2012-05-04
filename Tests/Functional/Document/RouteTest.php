@@ -1,10 +1,10 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\Document;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Document;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
 class RouteTest extends BaseTestCase
 {

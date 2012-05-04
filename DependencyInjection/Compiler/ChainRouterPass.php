@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\DependencyInjection\Compiler;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -44,11 +44,11 @@ class ChainRouterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('symfony_cmf_chain_routing.router')) {
+        if (!$container->hasDefinition('symfony_cmf_routing_extra.router')) {
             return;
         }
 
-        $router = $container->getDefinition('symfony_cmf_chain_routing.router');
+        $router = $container->getDefinition('symfony_cmf_routing_extra.router');
 
         foreach ($container->findTaggedServiceIds('router') as $id => $attributes) {
             $priority = isset($attributes[0]['priority']) ? (integer) $attributes[0]['priority'] : 0;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Controller;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Controller;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Controller\RedirectController;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Test\CmfUnitTestCase;
+use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
 class RedirectControllerTest extends CmfUnitTestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -32,7 +32,7 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\MonologBundle\MonologBundle(),
             new \Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
-            new \Symfony\Cmf\Bundle\ChainRoutingBundle\SymfonyCmfChainRoutingBundle(),
+            new \Symfony\Cmf\Bundle\RoutingExtraBundle\SymfonyCmfRoutingExtraBundle(),
         );
     }
 
@@ -43,6 +43,6 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/SymfonyCmfChainRoutingBundle';
+        return sys_get_temp_dir().'/SymfonyCmfRoutingExtraBundle';
     }
 }

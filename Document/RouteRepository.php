@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Document;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
 use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
@@ -8,7 +8,7 @@ use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Routing\RouteRepositoryInterface;
+use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
 
 /**
  * Repository to load routes from phpcr-odm
@@ -28,7 +28,6 @@ class RouteRepository extends DocumentRepository implements RouteRepositoryInter
     {
         parent::__construct($dm, $class);
         // let dm determine class so this repository works for all types of routes
-        // TODO: is there a way to make it automatically filter on anything that implements an interface?
         $this->className = null;
     }
 
@@ -60,7 +59,8 @@ class RouteRepository extends DocumentRepository implements RouteRepositoryInter
 
         try {
             $routes = $this->findMany($candidates);
-            // filter for valid route objects (see comment in constructor)
+            // filter for valid route objects
+            // we can not search for a specific class as phpcr does not know class inheritance
             foreach ($routes as $key => $route) {
                 if (! $route instanceof SymfonyRoute) {
                     unset($routes[$key]);
@@ -72,7 +72,7 @@ class RouteRepository extends DocumentRepository implements RouteRepositoryInter
             // for example, getting /my//test (note the double /) is just an invalid path
             // and means another router might handle this.
             // but if the phpcr backend is down for example, we want to alert the user
-            return null;
+            return array();
         }
     }
 }

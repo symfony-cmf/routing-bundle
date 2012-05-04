@@ -1,12 +1,12 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\Document;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Document;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
 class RouteRepositoryTest extends BaseTestCase
 {
@@ -17,7 +17,7 @@ class RouteRepositoryTest extends BaseTestCase
     public static function setupBeforeClass()
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
-        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_chain_routing.phpcrodm_route_repository');
+        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.phpcrodm_route_repository');
     }
 
     public function testFindManyByUrl()
@@ -46,7 +46,7 @@ class RouteRepositoryTest extends BaseTestCase
         $this->assertCount(3, $routes);
 
         foreach ($routes as $route) {
-            $this->assertInstanceOf('Symfony\Cmf\Bundle\ChainRoutingBundle\Routing\RouteObjectInterface', $route);
+            $this->assertInstanceOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $route);
         }
     }
 
@@ -60,7 +60,7 @@ class RouteRepositoryTest extends BaseTestCase
 
     public function testFindNophpcrUrl()
     {
-        $this->assertNull(self::$repository->findManyByUrl('///'));
+        $this->assertEquals(array(), self::$repository->findManyByUrl('///'));
     }
 
     public function testSetPrefix()

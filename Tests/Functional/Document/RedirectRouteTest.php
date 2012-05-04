@@ -1,11 +1,11 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\Document;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Document;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Document\Route;
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Document\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute;
 
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
 class RedirectRouteTest extends BaseTestCase
 {
@@ -38,7 +38,7 @@ class RedirectRouteTest extends BaseTestCase
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute');
         $redirect = self::$dm->find(null, self::ROUTE_ROOT.'/redirect');
 
-        $this->assertInstanceOf('Symfony\\Cmf\\Bundle\\ChainRoutingBundle\\Routing\\RedirectRouteInterface', $redirect);
+        $this->assertInstanceOf('Symfony\\Cmf\\Component\\Routing\\RedirectRouteInterface', $redirect);
         $this->assertSame($redirect, $redirect->getRouteContent());
         $params = $redirect->getParameters();
         $this->assertArrayHasKey('route', $params);
@@ -52,7 +52,7 @@ class RedirectRouteTest extends BaseTestCase
      */
     public function testSetContent()
     {
-        $content = $this->getMock('Symfony\\Cmf\\Bundle\\ChainRoutingBundle\\Routing\\RouteAwareInterface');
+        $content = $this->getMock('Symfony\\Cmf\\Component\\Routing\\RouteAwareInterface');
         $redirect = new RedirectRoute;
         $redirect->setRouteContent($content);
     }

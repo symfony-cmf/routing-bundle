@@ -1,15 +1,15 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\ChainRoutingBundle\Document;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Routing\RouteObjectInterface;
-use Symfony\Cmf\Bundle\ChainRoutingBundle\Routing\RedirectRouteInterface;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
 /**
  * {@inheritDoc}
  *
- * @PHPCRODM\Document(repositoryClass="Symfony\Cmf\Bundle\ChainRoutingBundle\Document\RouteRepository")
+ * @PHPCRODM\Document(repositoryClass="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteRepository")
  */
 class RedirectRoute extends Route implements RedirectRouteInterface
 {
