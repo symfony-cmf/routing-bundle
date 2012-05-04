@@ -27,7 +27,7 @@
         "doctrine/phpcr-bundle": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Symfony\\Cmf\\Bundle\\ChainRoutingBundle": "" }
+        "psr-0": { "Symfony\\Cmf\\Bundle\\RoutingExtraBundle": "" }
     },
-    "target-dir": "Symfony/Cmf/Bundle/ChainRoutingBundle"
+    "target-dir": "Symfony/Cmf/Bundle/RoutingExtraBundle"
 }
