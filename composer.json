@@ -1,5 +1,5 @@
 {
-    "name": "symfony-cmf/routingextra-bundle",
+    "name": "symfony-cmf/routing-extra-bundle",
     "type": "symfony-bundle",
     "description": "Symfony RoutingExtraBundle",
     "keywords": ["routing", "database"],
