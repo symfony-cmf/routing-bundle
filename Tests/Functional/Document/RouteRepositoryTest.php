@@ -17,7 +17,7 @@ class RouteRepositoryTest extends BaseTestCase
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
-        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.phpcrodm_route_repository');
+        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.route_repository');
     }
 
     public function testFindManyByUrl()

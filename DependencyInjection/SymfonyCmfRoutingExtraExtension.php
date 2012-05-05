@@ -70,8 +70,11 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $loader->load('cmf_routing.xml');
         $container->setParameter($this->getAlias() . '.routing_repositoryroot', $config['routing_repositoryroot']);
 
-        $doctrine = $container->getDefinition($this->getAlias() . '.doctrine_router');
-        $doctrine->replaceArgument(0, new Reference($config['route_repository_service']));
+        $managerRegistry = $container->getDefinition($this->getAlias() . '.manager_registry');
+        $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
+        $managerRegistry->replaceArgument(0, $config['manager_name']);
+
+        $doctrine = $container->getDefinition($this->getAlias().'.doctrine_router');
 
         // if any mappings are defined, set the respective resolvers
         if (!empty($config['generic_controller'])) {

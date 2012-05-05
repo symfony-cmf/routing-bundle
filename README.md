@@ -161,7 +161,8 @@ The possible mappings are (in order of precedence):
             # for phpcr-odm, we mainly use this because it can map from url to repository path
             # an orm repository might need different logic. look at cmf_routing.xml for an example if you
             # need to define your own service
-            route_repository_service: symfony_cmf_routing_extra.phpcrodm_route_repository
+            manager_registry: doctrine_phpcr
+            manager_name: default
 
             # if you use the default doctrine router service, you can use this to customize
             # the root path for the phpcr-odm RouteRepository

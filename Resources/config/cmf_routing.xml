@@ -32,13 +32,20 @@
         </service>
 
         <service id="symfony_cmf_routing_extra.doctrine_router" class="%symfony_cmf_routing_extra.doctrine_router_class%">
-            <argument/> <!-- Repository instance -->
+            <argument type="service" id="symfony_cmf_routing_extra.route_repository" />
             <call method="setContext"><argument type="service" id="router.request_context"/></call>
             <call method="setContainer"><argument type="service" id="service_container"/></call>
         </service>
 
-        <service id="symfony_cmf_routing_extra.phpcrodm_route_repository"
-                 factory-service="doctrine_phpcr.odm.default_document_manager"
+        <service id="symfony_cmf_routing_extra.manager_registry"
+                 factory-service=""
+                 factory-method="getManager"
+                 class="Symfony\Bridge\Doctrine\ManagerRegistry">
+            <argument />
+        </service>
+
+        <service id="symfony_cmf_routing_extra.route_repository"
+                 factory-service="symfony_cmf_routing_extra.manager_registry"
                  factory-method="getRepository"
                  class="%symfony_cmf_routing_extra.route_repository_class%">
             <argument>%symfony_cmf_routing_extra.route_entity_class%</argument>
