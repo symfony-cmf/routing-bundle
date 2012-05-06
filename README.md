@@ -146,6 +146,7 @@ The possible mappings are (in order of precedence):
     class names in the map and if matched that template will be set as
     'template' in the $defaults and return the configured generic controller.
 
+    ```
     symfony_cmf_routing_extra:
         doctrine:
             enabled: true
@@ -167,6 +168,7 @@ The possible mappings are (in order of precedence):
             # if you use the default doctrine router service, you can use this to customize
             # the root path for the phpcr-odm RouteRepository
             routing_repositoryroot: /cms/routes
+    ```
 
 To see some examples, please look at the [cmf-sandbox](https://github.com/symfony-cmf/cmf-sandbox)
 and specifically the routing fixtures loading.
