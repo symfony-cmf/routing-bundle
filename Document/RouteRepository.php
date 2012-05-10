@@ -54,9 +54,11 @@ class RouteRepository extends DocumentRepository implements RouteRepositoryInter
 
         $part = $url;
         $candidates = array();
-        while (false !== ($pos = strrpos($part, '/'))) {
-            $candidates[] = $this->idPrefix . $part;
-            $part = substr($url, 0, $pos);
+        if ('/' !== $url) {
+            while (false !== ($pos = strrpos($part, '/'))) {
+                $candidates[] = $this->idPrefix.$part;
+                $part = substr($url, 0, $pos);
+            }
         }
         $candidates[] = $this->idPrefix;
 
