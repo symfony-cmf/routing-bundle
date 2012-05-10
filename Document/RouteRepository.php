@@ -5,6 +5,8 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 
+use PHPCR\RepositoryException;
+
 use Symfony\Component\Routing\Route as SymfonyRoute;
 
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -49,6 +51,7 @@ class RouteRepository extends DocumentRepository implements RouteRepositoryInter
         if (! is_string($url) || strlen($url) < 1 || '/' != $url[0]) {
             throw new RouteNotFoundException("$url is not a valid route");
         }
+
         $part = $url;
         $candidates = array();
         while (false !== ($pos = strrpos($part, '/'))) {
@@ -60,19 +63,21 @@ class RouteRepository extends DocumentRepository implements RouteRepositoryInter
         try {
             $routes = $this->findMany($candidates);
             // filter for valid route objects
-            // we can not search for a specific class as phpcr does not know class inheritance
+            // we can not search for a specific class as PHPCR does not know class inheritance
+            // TOD: but optionally we could define a node type
             foreach ($routes as $key => $route) {
                 if (! $route instanceof SymfonyRoute) {
                     unset($routes[$key]);
                 }
             }
-            return $routes;
-        } catch (\PHPCR\RepositoryException $e) {
+        } catch (RepositoryException $e) {
             // TODO: how to determine whether this is a relevant exception or not?
             // for example, getting /my//test (note the double /) is just an invalid path
             // and means another router might handle this.
-            // but if the phpcr backend is down for example, we want to alert the user
-            return array();
+            // but if the PHPCR backend is down for example, we want to alert the user
+            $routes = array();
         }
+
+        return $routes;
     }
 }
