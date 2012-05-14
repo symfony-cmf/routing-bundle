@@ -67,6 +67,16 @@ class DoctrineRouter extends BaseDoctrineRouter implements ContainerAwareInterfa
         return $defaults;
     }
 
+    public function generate($name, $parameters = array(), $absolute = false)
+    {
+        if (isset($parameters['cmf_content_id'])) {
+            $parameters['content'] = $this->routeRepository->find($parameters['cmf_content_id']);
+            unset($parameters['cmf_content_id']);
+        }
+
+        return parent::generate($name, $parameters, $absolute);
+    }
+
     protected function getLocale($parameters)
     {
         $locale = parent::getLocale($parameters);
