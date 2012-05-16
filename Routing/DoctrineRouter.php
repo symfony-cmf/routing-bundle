@@ -18,8 +18,10 @@ use Symfony\Cmf\Component\Routing\DoctrineRouter as BaseDoctrineRouter;
  * If the route provides a content, that content is placed in the request
  * object with the CONTENT_KEY for the controller to use.
  *
- * @author Philippo de Santis
+ * @author Filippo de Santis
  * @author David Buchmann
+ * @author Lukas Smith
+ * @author Nacho Martìn
  */
 class DoctrineRouter extends BaseDoctrineRouter implements ContainerAwareInterface
 {
