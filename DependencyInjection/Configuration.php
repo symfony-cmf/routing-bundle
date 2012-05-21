@@ -38,8 +38,6 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('doctrine')
                     ->children()
                         ->scalarNode('enabled')->defaultFalse()->end()
-                        ->scalarNode('registry_id')->defaultValue('doctrine_phpcr')->end()
-                        ->scalarNode('manager_name')->defaultNull()->end()
                         ->scalarNode('generic_controller')->defaultValue('symfony_cmf_content.controller:indexAction')->end()
                         ->arrayNode('controllers_by_alias')
                             ->useAttributeAsKey('alias')

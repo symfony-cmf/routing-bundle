@@ -167,6 +167,8 @@ The possible mappings are (in order of precedence):
 
             # if you use the default doctrine router service, you can use this to customize
             # the root path for the phpcr-odm RouteRepository
+            # this base path will be injected by the Listener\IdPrefix - but only to routes
+            # matching the prefix, to allow for more than one route source.
             routing_repositoryroot: /cms/routes
     ```
 
