@@ -1,11 +1,17 @@
 language: php
+
 php:
     - 5.3
     - 5.4
-env:
-  - SYMFONY_VERSION=origin/master
+
 before_script:
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
   - vendor/jackalope/jackalope-jackrabbit/bin/jackrabbit.sh
   - php Tests/Functional/console doctrine:phpcr:register-system-node-types
+
+script: phpunit --coverage-text
+
+notifications:
+  irc: "irc.freenode.org#symfony-cmf"
+  email: "symfony-cmf-devs@googlegroups.com"
