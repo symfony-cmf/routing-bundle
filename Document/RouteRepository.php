@@ -2,8 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
-use Doctrine\ODM\PHPCR\DocumentRepository;
-use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use PHPCR\RepositoryException;
 
@@ -17,8 +16,19 @@ use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
  *
  * @author david.buchmann@liip.ch
  */
-class RouteRepository extends DocumentRepository implements RouteRepositoryInterface
+class RouteRepository implements RouteRepositoryInterface
 {
+    /**
+     * @var ObjectManager
+     */
+    protected $dm;
+    /**
+     * Class name of the route class, null for phpcr-odm as it can determine
+     * the class on its own.
+     *
+     * @var string
+     */
+    protected $className;
     /**
      * The prefix to add to the url to create the repository path
      *
@@ -26,11 +36,10 @@ class RouteRepository extends DocumentRepository implements RouteRepositoryInter
      */
     protected $idPrefix = '';
 
-    public function __construct($dm, ClassMetadata $class)
+    public function __construct(ObjectManager $dm, $className = null)
     {
-        parent::__construct($dm, $class);
-        // let dm determine class so this repository works for all types of routes
-        $this->className = null;
+        $this->dm = $dm;
+        $this->className = $className;
     }
 
     public function setPrefix($prefix)
@@ -63,7 +72,7 @@ class RouteRepository extends DocumentRepository implements RouteRepositoryInter
         $candidates[] = $this->idPrefix;
 
         try {
-            $routes = $this->findMany($candidates);
+            $routes = $this->dm->findMany($this->className, $candidates);
             // filter for valid route objects
             // we can not search for a specific class as PHPCR does not know class inheritance
             // TOD: but optionally we could define a node type

@@ -14,7 +14,7 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
  *
  * @author david.buchmann@liip.ch
  *
- * @PHPCRODM\Document(referenceable=true,repositoryClass="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteRepository")
+ * @PHPCRODM\Document(referenceable=true)
  */
 class Route extends SymfonyRoute implements RouteObjectInterface
 {

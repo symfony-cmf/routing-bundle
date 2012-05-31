@@ -9,7 +9,7 @@ use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 /**
  * {@inheritDoc}
  *
- * @PHPCRODM\Document(repositoryClass="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteRepository")
+ * @PHPCRODM\Document()
  */
 class RedirectRoute extends Route implements RedirectRouteInterface
 {

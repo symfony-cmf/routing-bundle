@@ -5,7 +5,7 @@
 
     <parameters>
         <parameter key="symfony_cmf_routing_extra.doctrine_router_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DoctrineRouter</parameter>
-        <parameter key="symfony_cmf_routing_extra.route_entity_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route</parameter>
+        <parameter key="symfony_cmf_routing_extra.route_entity_class">null</parameter>
         <parameter key="symfony_cmf_routing_extra.route_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.content_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\ContentRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\IdPrefix</parameter>
@@ -46,10 +46,8 @@
             <argument />
         </service>
 
-        <service id="symfony_cmf_routing_extra.route_repository"
-                 factory-service="symfony_cmf_routing_extra.manager_registry"
-                 factory-method="getRepository"
-                 class="%symfony_cmf_routing_extra.route_repository_class%">
+        <service id="symfony_cmf_routing_extra.route_repository" class="%symfony_cmf_routing_extra.route_repository_class%">
+            <argument type="service" id="symfony_cmf_routing_extra.manager_registry"/>
             <argument>%symfony_cmf_routing_extra.route_entity_class%</argument>
             <call method="setPrefix"><argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument></call>
         </service>
