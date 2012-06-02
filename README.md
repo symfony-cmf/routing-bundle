@@ -132,7 +132,7 @@ The possible mappings are (in order of precedence):
 
 * (Explicit controller): If there is a _controller set in getRouteDefaults(),
     it is used and no resolver is asked.
-* Explicit Template: requires the route document to return a 'template'
+* Explicit template: requires the route document to return a '_template'
     parameter in getRouteDefaults. The configured generic controller is
     returned by the resolver.
 * Controller by alias: requires the route document to return a 'type' value in
@@ -144,7 +144,7 @@ The possible mappings are (in order of precedence):
 * Template by class: requires the route document to return an object for
     getRouteContent(). The content document is checked for being instanceof the
     class names in the map and if matched that template will be set as
-    'template' in the $defaults and return the configured generic controller.
+    '_template' in the $defaults and return the configured generic controller.
 
     ```
     symfony_cmf_routing_extra:
