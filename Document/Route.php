@@ -7,7 +7,7 @@ use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
- * Default document for routing table entries that work with the DoctrineRouter.
+ * Default document for routing table entries that work with the DynamicRouter.
  *
  * This needs the IdPrefix service to run and setPrefix whenever a route is
  * loaded. Otherwise the static prefix can not be determined.
