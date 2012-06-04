@@ -9,25 +9,25 @@
         <parameter key="symfony_cmf_routing_extra.route_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.content_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\ContentRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\IdPrefix</parameter>
-        <parameter key="symfony_cmf_routing_extra.resolver_explicit_template_class">Symfony\Cmf\Component\Routing\Resolver\ExplicitTemplateResolver</parameter>
-        <parameter key="symfony_cmf_routing_extra.resolver_controllers_by_alias_class">Symfony\Cmf\Component\Routing\Resolver\ControllerAliasResolver</parameter>
-        <parameter key="symfony_cmf_routing_extra.resolver_controllers_by_class_class">Symfony\Cmf\Component\Routing\Resolver\ControllerClassResolver</parameter>
-        <parameter key="symfony_cmf_routing_extra.resolver_templates_by_class_class">Symfony\Cmf\Component\Routing\Resolver\TemplateClassResolver</parameter>
+        <parameter key="symfony_cmf_routing_extra.mapper_explicit_template_class">Symfony\Cmf\Component\Routing\Mapper\ExplicitTemplateMapper</parameter>
+        <parameter key="symfony_cmf_routing_extra.mapper_controllers_by_alias_class">Symfony\Cmf\Component\Routing\Mapper\ControllerAliasMapper</parameter>
+        <parameter key="symfony_cmf_routing_extra.mapper_controllers_by_class_class">Symfony\Cmf\Component\Routing\Mapper\ControllerClassMapper</parameter>
+        <parameter key="symfony_cmf_routing_extra.mapper_templates_by_class_class">Symfony\Cmf\Component\Routing\Mapper\TemplateClassMapper</parameter>
         <parameter key="symfony_cmf_routing_extra.redirect_controller_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController</parameter>
     </parameters>
 
     <services>
 
-        <service id="symfony_cmf_routing_extra.resolver_explicit_template" class="%symfony_cmf_routing_extra.resolver_explicit_template_class%">
+        <service id="symfony_cmf_routing_extra.mapper_explicit_template" class="%symfony_cmf_routing_extra.mapper_explicit_template_class%">
             <argument>%symfony_cmf_routing_extra.generic_controller%</argument>
         </service>
-        <service id="symfony_cmf_routing_extra.resolver_controllers_by_alias" class="%symfony_cmf_routing_extra.resolver_controllers_by_alias_class%">
+        <service id="symfony_cmf_routing_extra.mapper_controllers_by_alias" class="%symfony_cmf_routing_extra.mapper_controllers_by_alias_class%">
             <argument>%symfony_cmf_routing_extra.controllers_by_alias%</argument>
         </service>
-        <service id="symfony_cmf_routing_extra.resolver_controllers_by_class" class="%symfony_cmf_routing_extra.resolver_controllers_by_class_class%">
+        <service id="symfony_cmf_routing_extra.mapper_controllers_by_class" class="%symfony_cmf_routing_extra.mapper_controllers_by_class_class%">
             <argument>%symfony_cmf_routing_extra.controllers_by_class%</argument>
         </service>
-        <service id="symfony_cmf_routing_extra.resolver_templates_by_class" class="%symfony_cmf_routing_extra.resolver_templates_by_class_class%">
+        <service id="symfony_cmf_routing_extra.mapper_templates_by_class" class="%symfony_cmf_routing_extra.mapper_templates_by_class_class%">
             <argument>%symfony_cmf_routing_extra.generic_controller%</argument>
             <argument>%symfony_cmf_routing_extra.templates_by_class%</argument>
         </service>

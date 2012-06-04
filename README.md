@@ -89,7 +89,7 @@ is well suited to the tree nature of the data. If you use PHPCR-ODM with a
 route document like the one provided, you can just leave the repository service
 at the default.
 
-You will want to configure the controller resolvers that decide what controller
+You will want to configure the controller mappers that decide what controller
 will be used to handle the request, to avoid hardcoding controller names into
 your route documents.
 
@@ -124,17 +124,17 @@ example.
 
 ### Configuration
 
-To configure the resolvers, you can specify mappings. Presence of each of the
-mappings makes the DI container inject the respective resolver into the
+To configure the ControllerMappers, you can specify mappings. Presence of each
+of the mappings makes the DI container inject the respective mapper into the
 DoctrineRouter.
 
 The possible mappings are (in order of precedence):
 
 * (Explicit controller): If there is a _controller set in getRouteDefaults(),
-    it is used and no resolver is asked.
+    it is used and no mapper is asked.
 * Explicit template: requires the route document to return a '_template'
     parameter in getRouteDefaults. The configured generic controller is
-    returned by the resolver.
+    returned by the mapper.
 * Controller by alias: requires the route document to return a 'type' value in
     getRouteDefaults()
 * Controller by class: requires the route document to return an object for
@@ -197,7 +197,7 @@ need to add an entry to your mapping in config.yml:
 
 ### Customize
 
-You can add more ControllerResolverInterface implementations if you have a case
+You can add more ControllerMapperInterface implementations if you have a case
 not handled by the provided ones.
 
 If you use an ODM / ORM different to PHPCR-ODM, you probably need to specify

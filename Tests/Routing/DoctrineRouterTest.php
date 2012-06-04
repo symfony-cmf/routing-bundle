@@ -28,7 +28,7 @@ class DoctrineRouterTest extends BaseDoctrineRouterTest
 
         $this->router = new DoctrineRouter($this->repository);
         $this->router->setContainer($this->container);
-        $this->router->addControllerResolver($this->resolver);
+        $this->router->addControllerMapper($this->mapper);
     }
 
     /**
