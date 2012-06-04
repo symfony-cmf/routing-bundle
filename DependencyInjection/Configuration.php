@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('replace_symfony_router')->defaultTrue()->end()
                     ->end()
                 ->end()
-                ->arrayNode('doctrine')
+                ->arrayNode('dynamic')
                     ->children()
                         ->scalarNode('enabled')->defaultFalse()->end()
                         ->scalarNode('generic_controller')->defaultValue('symfony_cmf_content.controller:indexAction')->end()

@@ -7,7 +7,7 @@ use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 
 
 /**
- * Doctrine listener to set the idPrefix on new routes
+ * Doctrine PHPCR-ODM listener to set the idPrefix on new routes
  *
  * @author david.buchmann@liip.ch
  */

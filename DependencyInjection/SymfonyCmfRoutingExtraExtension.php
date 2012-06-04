@@ -7,6 +7,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
@@ -35,8 +36,8 @@ class SymfonyCmfRoutingExtraExtension extends Extension
 
         $config = $processor->processConfiguration($configuration, $configs);
 
-        if (!empty($config['doctrine']['enabled'])) {
-            $this->setupDoctrineRouter($config['doctrine'], $container, $loader);
+        if (!empty($config['dynamic']['enabled'])) {
+            $this->setupDynamicRouter($config['dynamic'], $container, $loader);
         }
 
         /* set up the chain router */
@@ -54,13 +55,13 @@ class SymfonyCmfRoutingExtraExtension extends Extension
     }
 
     /**
-     * Set up the DoctrineRouter - only to be called if enabled is set to true
+     * Set up the DynamicRouter - only to be called if enabled is set to true
      *
-     * @param $config the compiled configuration for the doctrine router
-     * @param $container the container builder
-     * @param $loader the configuration loader
+     * @param array $config the compiled configuration for the dynamic router
+     * @param ContainerBuilder $container the container builder
+     * @param LoaderInterface $loader the configuration loader
      */
-    private function setupDoctrineRouter($config, $container, $loader)
+    private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
         $container->setParameter($this->getAlias() . '.generic_controller', $config['generic_controller']);
         $container->setParameter($this->getAlias() . '.controllers_by_alias', $config['controllers_by_alias']);
@@ -74,21 +75,21 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
         $managerRegistry->replaceArgument(0, $config['manager_name']);
 
-        $doctrine = $container->getDefinition($this->getAlias().'.doctrine_router');
+        $dynamic = $container->getDefinition($this->getAlias().'.dynamic_router');
 
         // if any mappings are defined, set the respective controller mapper
         if (!empty($config['generic_controller'])) {
-            $doctrine->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_explicit_template')));
+            $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_explicit_template')));
         }
         if (!empty($config['controllers_by_alias'])) {
-            $doctrine->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_controllers_by_alias')));
+            $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_controllers_by_alias')));
         }
         if (!empty($config['controllers_by_class'])) {
-            $doctrine->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_controllers_by_class')));
+            $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_controllers_by_class')));
         }
 
         if (!empty($config['generic_controller']) && !empty($config['templates_by_class'])) {
-            $doctrine->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_templates_by_class')));
+            $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_templates_by_class')));
         }
     }
 }

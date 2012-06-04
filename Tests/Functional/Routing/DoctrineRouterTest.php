@@ -3,7 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Routing;
 
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DoctrineRouter;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter;
 
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
@@ -12,7 +12,7 @@ use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
  * We do not aim to cover all edge cases and exceptions - that is was the unit
  * test is here for.
  */
-class DoctrineRouterTest extends BaseTestCase
+class DynamicRouterTest extends BaseTestCase
 {
     /**
      * @var \Symfony\Cmf\Component\Routing\ChainRouter
@@ -50,7 +50,7 @@ class DoctrineRouterTest extends BaseTestCase
     {
         $expected = array(
             '_controller'   => 'testController',
-            '_route'        => DoctrineRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute_child',
+            '_route'        => DynamicRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute_child',
             'path'          => '/testroute/child',
         );
 
@@ -63,7 +63,7 @@ class DoctrineRouterTest extends BaseTestCase
     {
         $expected = array(
             '_controller'   => 'testController',
-            '_route'        => DoctrineRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute',
+            '_route'        => DynamicRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute',
             'id'            => '123',
             'path'          => '/testroute/child/123',
             'slug'          => 'child',

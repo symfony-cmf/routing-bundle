@@ -10,9 +10,13 @@ urls with all of them. One of the routers in that chain can of course be the
 default router so you can still use the standard way for some of your routes.
 
 Additionally, this bundle delivers useful router implementations. Currently,
-there is the *DoctrineRouter* that routes based on doctrine database entities
-or documents. The DoctrineRouter service is only made available when explicitly
-enabled in the application configuration.
+there is the *DynamicRouter* that routes based on a implemented repository that
+provide Symfony2 Route objects. The repository can be implemented using a
+database, for example with Doctrine PHPCR-ODM or Doctrine ORM. The bundle
+provides a default implementation for Doctrine PHPCR-ODM.
+
+The DynamicRouter service is only made available when explicitly enabled in the
+application configuration.
 
 
 ## Installation
@@ -23,8 +27,8 @@ composer.json and instantiate the bundle in your AppKernel.php
     new Symfony\Cmf\Bundle\RoutingExtraBundle\SymfonyCmfRoutingExtraBundle()
 
 If you just want to use the chain router, this is enough. For the
-DoctrineRouter you need a doctrine implementation. This bundle provides classes
-for PHPCR-ODM which you can install as described in
+DynamicRouter you need something to build a repository. This bundle provides
+classes for Doctrine PHPCR-ODM which you can install as described in
 [symfony-cmf](https://github.com/symfony-cmf/symfony-cmf)
 
 
@@ -49,8 +53,8 @@ earlier this router service is asked to match a route or to generate a url.
     symfony_cmf_routing_extra:
         chain:
             routers_by_id:
-                # enable the DoctrineRouter with high priority to allow overwriting configured routes with content
-                symfony_cmf_routing_extra.doctrine_router: 200
+                # enable the DynamicRouter with high priority to allow overwriting configured routes with content
+                symfony_cmf_routing_extra.dynamic_router: 200
                 # enable the symfony default router with a lower priority
                 router.default: 100
             # whether the chain router should replace the default router. defaults to true
@@ -72,17 +76,17 @@ The tagged service will look like this:
 See also [Symfony documentation for DependencyInjection tags.](http://symfony.com/doc/2.0/reference/dic_tags.html)
 
 
-## Doctrine Router
+## Dynamic Router
 
-**Note**: To use the doctrine router with the provided document classes, you
-need PHPCR-ODM installed. (See the link in the *Installation* section).
+**Note**: To use the dynamic router with the provided document classes, you
+need Doctrine PHPCR-ODM installed. (See the link in the *Installation* section).
 
 This implementation of a router loads routes from a RouteRepositoryInterface.
-This interface can be easily implemented with doctrine.
+This interface can be easily implemented with Doctrine.
 The router works with the base UrlMatcher and UrlGenerator classes and only
 adds loading routes from the database and the concept of referenced content.
 
-The DoctrineRouter service is set up with a repository. See the configuration
+The DynamicRouter service is set up with a repository. See the configuration
 section for how to change the route_repository_service.
 This bundle comes with a route repository implementation for PHCPR-ODM. PHPCR
 is well suited to the tree nature of the data. If you use PHPCR-ODM with a
@@ -93,12 +97,12 @@ You will want to configure the controller mappers that decide what controller
 will be used to handle the request, to avoid hardcoding controller names into
 your route documents.
 
-The minimum configuration required to load the doctrine router is to have
-``enabled: true`` in your config.yml (without this, the doctrine router service
+The minimum configuration required to load the dynamic router is to have
+``enabled: true`` in your config.yml (without this, the dynamic router service
 will not be loaded at all and you can use the chain router with your own routers):
 
     symfony_cmf_routing_extra:
-        doctrine:
+        dynamic:
             enabled: true
 
 ### PHPCR-ODM repository service
@@ -126,7 +130,7 @@ example.
 
 To configure the ControllerMappers, you can specify mappings. Presence of each
 of the mappings makes the DI container inject the respective mapper into the
-DoctrineRouter.
+DynamicRouter.
 
 The possible mappings are (in order of precedence):
 
@@ -148,7 +152,7 @@ The possible mappings are (in order of precedence):
 
     ```
     symfony_cmf_routing_extra:
-        doctrine:
+        dynamic:
             enabled: true
             generic_controller: symfony_cmf_content.controller:indexAction
             controllers_by_alias:
@@ -165,7 +169,7 @@ The possible mappings are (in order of precedence):
             manager_registry: doctrine_phpcr
             manager_name: default
 
-            # if you use the default doctrine router service, you can use this to customize
+            # if you use the default doctrine route repository servie, you can use this to customize
             # the root path for the phpcr-odm RouteRepository
             # this base path will be injected by the Listener\IdPrefix - but only to routes
             # matching the prefix, to allow for more than one route source.
@@ -203,7 +207,7 @@ not handled by the provided ones.
 If you use an ODM / ORM different to PHPCR-ODM, you probably need to specify
 the class for the route entity (in PHPCR-ODM, the class is automatically
 detected).
-For more specific needs, have a look at DoctrineRouter and see if you want to
+For more specific needs, have a look at DynamicRouter and see if you want to
 extend it. You can also write your own routers to hook into the chain.
 
 ## Authors

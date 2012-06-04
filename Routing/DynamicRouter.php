@@ -5,7 +5,7 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Routing;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-use Symfony\Cmf\Component\Routing\DoctrineRouter as BaseDoctrineRouter;
+use Symfony\Cmf\Component\Routing\DynamicRouter as BaseDynamicRouter;
 
 /**
  * A router that reads route entries from an Object-Document Mapper store.
@@ -23,7 +23,7 @@ use Symfony\Cmf\Component\Routing\DoctrineRouter as BaseDoctrineRouter;
  * @author Lukas Smith
  * @author Nacho Martìn
  */
-class DoctrineRouter extends BaseDoctrineRouter implements ContainerAwareInterface
+class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
 {
     /**
      * key for the request attribute that contains the content document if this

@@ -8,12 +8,12 @@ use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DoctrineRouter;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter;
 
-use Symfony\Cmf\Component\Routing\Tests\Routing\DoctrineRouterTest as BaseDoctrineRouterTest;
+use Symfony\Cmf\Component\Routing\Tests\Routing\DynamicRouterTest as BaseDynamicRouterTest;
 use Symfony\Cmf\Component\Routing\Tests\Routing\RouteMock;
 
-class DoctrineRouterTest extends BaseDoctrineRouterTest
+class DynamicRouterTest extends BaseDynamicRouterTest
 {
     protected $request;
     protected $attributes;
@@ -26,7 +26,7 @@ class DoctrineRouterTest extends BaseDoctrineRouterTest
         $this->container = $this->buildMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
         $this->context = $this->buildMock('Symfony\\Component\\Routing\\RequestContext');
 
-        $this->router = new DoctrineRouter($this->repository);
+        $this->router = new DynamicRouter($this->repository);
         $this->router->setContainer($this->container);
         $this->router->addControllerMapper($this->mapper);
     }
