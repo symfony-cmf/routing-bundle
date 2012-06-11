@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 use Symfony\Cmf\Component\Routing\DynamicRouter as BaseDynamicRouter;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
  * A router that reads route entries from an Object-Document Mapper store.
@@ -57,16 +58,29 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
     {
         $defaults = parent::match($url);
 
-        if (isset($defaults['_content'])) {
-            if (! $request = $this->container->get('request')) {
-                throw new \Exception('Request object not available from container');
-            }
+        if (isset($defaults[RouteObjectInterface::CONTENT_OBJECT])) {
+            $request = $this->getRequest();
 
-            $request->attributes->set(self::CONTENT_KEY, $defaults['_content']);
-            unset($defaults['_content']);
+            $request->attributes->set(self::CONTENT_KEY, $defaults[RouteObjectInterface::CONTENT_OBJECT]);
+            unset($defaults[RouteObjectInterface::CONTENT_OBJECT]);
+        }
+
+        if (isset($defaults[RouteObjectInterface::TEMPLATE_NAME])) {
+            $request = $this->getRequest();
+
+            $request->attributes->set(self::CONTENT_TEMPLATE, $defaults[RouteObjectInterface::TEMPLATE_NAME]);
+            unset($defaults[RouteObjectInterface::TEMPLATE_NAME]);
         }
 
         return $defaults;
+    }
+
+    public function getRequest()
+    {
+        if (!$request = $this->container->get('request')) {
+            throw new \Exception('Request object not available from container');
+        }
+        return $request;
     }
 
     protected function getLocale($parameters)
