@@ -273,4 +273,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $this->optionsKeys = array_keys($options);
         $this->optionsValues = array_values($options);
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
