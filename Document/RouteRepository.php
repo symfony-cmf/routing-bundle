@@ -12,7 +12,10 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
 
 /**
- * Repository to load routes from phpcr-odm
+ * Repository to load routes from PHPCR-ODM
+ *
+ * This is <strong>NOT</strong> not a doctrine repository but just the proxy
+ * for the DynamicRouter implementing RouteRepositoryInterface
  *
  * @author david.buchmann@liip.ch
  */

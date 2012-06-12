@@ -44,7 +44,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')
                         ->end()->end()
                         ->arrayNode('controllers_by_class')
-                            ->useAttributeAsKey('alias')
+                            ->useAttributeAsKey('class')
                             ->prototype('scalar')
                             /* why does this not work?
                             ->prototype('array')
