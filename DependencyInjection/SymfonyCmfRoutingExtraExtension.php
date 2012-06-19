@@ -52,6 +52,10 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         foreach ($config['chain']['routers_by_id'] as $id => $priority) {
             $router->addMethodCall('add', array(new Reference($id), $priority));
         }
+
+        $loader->load('form_type.xml');
+        $resources = $container->getParameter('twig.form.resources');
+        $container->setParameter('twig.form.resources',array_merge(array('SymfonyCmfRoutingExtraBundle:Form:terms_form_type.html.twig'), $resources));
     }
 
     /**
