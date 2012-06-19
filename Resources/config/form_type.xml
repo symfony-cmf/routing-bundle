@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="symfony_cmf_routing_extra.terms_form_type_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Form\Type\TermsFormType</parameter>
+    </parameters>
+
+    <services>
+
+        <service id="symfony_cmf_routing_extra.terms_form_type" class="%symfony_cmf_routing_extra.terms_form_type_class%">
+            <tag name="form.type" alias="symfony_cmf_routing_extra_terms_form_type" />
+            <argument type="service" id="router" />
+        </service>
+
+    </services>
+</container>
