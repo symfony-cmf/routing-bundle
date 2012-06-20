@@ -1,0 +1,19 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/phpcr/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!-- TODO: have the mapping schema
+      xsi:schemaLocation="http://doctrine-project.org/schemas/phpcr/doctrine-mapping
+                    http://doctrine-project.org/schemas/phpcr/doctrine-mapping.xsd">
+    -->
+
+    <mapped-superclass name="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute">
+
+        <field fieldName="uri" type="uri"/>
+        <field fieldName="routeName" type="string"/>
+        <reference-one fieldName="routeTarget"/>
+        <field fieldName="permanent" type="boolean"/>
+        <field fieldName="parameterKeys" type="string" multivalue="true"/>
+        <field fieldName="parameterValues" type="string" multivalue="true"/>
+
+    </mapped-superclass>
+
+</doctrine-mapping>

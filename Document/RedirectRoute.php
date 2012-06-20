@@ -2,50 +2,41 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
 /**
  * {@inheritDoc}
- *
- * @PHPCRODM\Document()
  */
 class RedirectRoute extends Route implements RedirectRouteInterface
 {
     /**
      * Absolute uri to redirect to
-     * @PHPCRODM\Uri
      */
     protected $uri;
 
     /**
      * The name of a target route (for use with standard symfony routes)
-     * @PHPCRODM\String
      */
     protected $routeName;
 
     /**
-     * @PHPCRODM\ReferenceOne
+     * Target route document to redirect to different dynamic route
      */
     protected $routeTarget;
 
     /**
-     * @PHPCRODM\Boolean
+     * Whether this is a permanent redirect
      */
     protected $permanent;
 
     /**
      * Simulate a php hashmap in phpcr. This holds the keys
-     *
-     * @PHPCRODM\String(multivalue=true)
      */
     protected $parameterKeys;
 
     /**
      * Simulate a php hashmap in phpcr. This holds the keys
-     *
-     * @PHPCRODM\String(multivalue=true)
      */
     protected $parameterValues;
 

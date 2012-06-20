@@ -3,7 +3,6 @@
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
@@ -13,31 +12,25 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
  * loaded. Otherwise the static prefix can not be determined.
  *
  * @author david.buchmann@liip.ch
- *
- * @PHPCRODM\Document(referenceable=true)
  */
 class Route extends SymfonyRoute implements RouteObjectInterface
 {
     /**
-     * @PHPCRODM\ParentDocument
+     * parent document
      */
     protected $parent;
     /**
-     * @PHPCRODM\Nodename
+     * PHPCR node name
      */
     protected $name;
 
     /**
      * The full repository path to this route object
-     * TODO: the strategy=parent argument should not be needed, we do have a ParentDocument annotation
-     * @PHPCRODM\Id(strategy="parent")
      */
     protected $path;
 
     /**
      * The referenced document
-     *
-     * @PHPCRODM\ReferenceOne
      */
     protected $routeContent;
 
@@ -49,38 +42,31 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
     /**
      * Variable pattern part. The static part of the pattern is the id without the prefix.
-     * @PHPCRODM\String
      */
     protected $variablePattern;
 
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     * @PHPCRODM\String(multivalue=true)
      */
     protected $defaultsKeys;
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     * @PHPCRODM\String(multivalue=true)
      */
     protected $defaultsValues;
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     * @PHPCRODM\String(multivalue=true)
      */
     protected $requirementsKeys;
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     * @PHPCRODM\String(multivalue=true)
      */
     protected $requirementsValues;
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     * @PHPCRODM\String(multivalue=true)
      */
     protected $optionsKeys;
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     * @PHPCRODM\String(multivalue=true)
      */
     protected $optionsValues;
 
@@ -214,7 +200,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     // workaround for the missing hashmaps in phpcr-odm
 
     /**
-     * @PHPCRODM\PostLoad
+     * prepare hashmaps into mapped properties to store them
      */
     public function initArrays()
     {
@@ -251,8 +237,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * @PHPCRODM\PreUpdate
-     * @PHPCRODM\PrePersist
+     * build the hashmaps before storing document
      */
     public function prepareArrays()
     {

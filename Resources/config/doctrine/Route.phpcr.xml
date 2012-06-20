@@ -1,0 +1,30 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/phpcr/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!-- TODO: have the mapping schema
+      xsi:schemaLocation="http://doctrine-project.org/schemas/phpcr/doctrine-mapping
+                    http://doctrine-project.org/schemas/phpcr/doctrine-mapping.xsd">
+    -->
+
+    <document name="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route" referenceable="true">
+        <parentdocument name="parent"/>
+        <nodename name="name"/>
+        <id name="path">
+            <generator strategy="parent"/>
+        </id>
+        <reference-one fieldName="routeContent"/>
+        <field fieldName="variablePattern" type="string"/>
+        <field fieldName="defaultsKeys" type="string" multivalue="true"/>
+        <field fieldName="defaultsValues" type="string" multivalue="true"/>
+        <field fieldName="requirementsKeys" type="string" multivalue="true"/>
+        <field fieldName="requirementsValues" type="string" multivalue="true"/>
+        <field fieldName="optionsKeys" type="string" multivalue="true"/>
+        <field fieldName="optionsValues" type="string" multivalue="true"/>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback method="initArrays" type="postLoad"/>
+            <lifecycle-callback method="prepareArrays" type="prePersist"/>
+            <lifecycle-callback method="prepareArrays" type="preUpdate"/>
+        </lifecycle-callbacks>
+    </document>
+
+</doctrine-mapping>
