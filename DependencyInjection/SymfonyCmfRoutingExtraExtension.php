@@ -54,8 +54,11 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         }
 
         $loader->load('form_type.xml');
-        $resources = $container->getParameter('twig.form.resources');
-        $container->setParameter('twig.form.resources',array_merge(array('SymfonyCmfRoutingExtraBundle:Form:terms_form_type.html.twig'), $resources));
+        // if there is twig, register our form type with twig
+        if ($container->hasParameter('twig.form.resources')) {
+            $resources = $container->getParameter('twig.form.resources');
+            $container->setParameter('twig.form.resources',array_merge(array('SymfonyCmfRoutingExtraBundle:Form:terms_form_type.html.twig'), $resources));
+        }
     }
 
     /**
