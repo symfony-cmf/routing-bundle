@@ -21,7 +21,7 @@ application configuration.
 
 ## Installation
 
-Add a requirement for ```symfony-cmf/routingextra-bundle``` to your
+Add a requirement for ```symfony-cmf/routing-extra-bundle``` to your
 composer.json and instantiate the bundle in your AppKernel.php
 
     new Symfony\Cmf\Bundle\RoutingExtraBundle\SymfonyCmfRoutingExtraBundle()
