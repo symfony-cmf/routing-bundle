@@ -4,6 +4,7 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Routing;
 
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
@@ -34,13 +35,13 @@ class DynamicRouterTest extends BaseTestCase
         $route->setVariablePattern('/{slug}/{id}');
         $route->setDefault('id', '0');
         $route->setRequirement('id', '[0-9]+');
-        $route->setDefault('_controller', 'testController');
+        $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         // TODO: what are the options used for? we should test them too if it makes sense
         self::$dm->persist($route);
 
         $childroute = new Route;
         $childroute->setPosition($route, 'child');
-        $childroute->setDefault('_controller', 'testController');
+        $childroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         self::$dm->persist($childroute);
 
         self::$dm->flush();
@@ -49,7 +50,7 @@ class DynamicRouterTest extends BaseTestCase
     public function testMatch()
     {
         $expected = array(
-            '_controller'   => 'testController',
+            RouteObjectInterface::CONTROLLER_NAME => 'testController',
             '_route'        => DynamicRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute_child',
             'path'          => '/testroute/child',
         );
@@ -62,7 +63,7 @@ class DynamicRouterTest extends BaseTestCase
     public function testMatchParameters()
     {
         $expected = array(
-            '_controller'   => 'testController',
+            RouteObjectInterface::CONTROLLER_NAME   => 'testController',
             '_route'        => DynamicRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute',
             'id'            => '123',
             'path'          => '/testroute/child/123',
@@ -93,7 +94,7 @@ class DynamicRouterTest extends BaseTestCase
         $route = new Route;
         $route->setPosition($root, 'notallowed');
         $route->setRequirement('_method', 'GET');
-        $route->setDefault('_controller', 'testController');
+        $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         self::$dm->persist($route);
 
         self::$router->getContext()->setMethod('POST');
