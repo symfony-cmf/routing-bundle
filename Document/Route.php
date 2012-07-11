@@ -81,8 +81,41 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * Set the parent document and name of this route entry. Only allowed when
-     * creating a new item!
+     * Move the route by setting a parent.
+     *
+     * Note that this will change the URL this route matches.
+     *
+     * @param object $parent the new parent document
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Rename a route by setting its new name.
+     *
+     * Note that this will change the URL this route matches.
+     *
+     * @param string $name the new name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Convenience method to set parent and name at the same time.
      *
      * The url will be the url of the parent plus the supplied name.
      */
