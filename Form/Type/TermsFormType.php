@@ -5,7 +5,7 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Form\Type;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormViewInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -34,7 +34,7 @@ class TermsFormType extends AbstractType
         parent::buildForm($builder, $options);
     }
 
-    public function buildView(FormViewInterface $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $contentIds = $form->getAttribute('content_ids');
         $paths = array();
