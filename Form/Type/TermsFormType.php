@@ -41,11 +41,11 @@ class TermsFormType extends AbstractType
         foreach ($contentIds as $key => $id) {
             $paths[$key] = $this->router->generate('cmf_routing_doctrine_route', array('content_id' => $id));
         }
-        $view->setVar('content_paths', $paths);
+        $view->vars['content_paths'] = $paths;
         parent::buildView($view, $form, $options);
     }
 
-    public function getDefaultOptions()
+    public function getDefaultOptions(array $options)
     {
         return array('content_ids' => array());
     }
