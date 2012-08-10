@@ -132,6 +132,16 @@ class Route extends SymfonyRoute implements RouteObjectInterface
       return $this->path;
     }
 
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    public function getPrefix()
+    {
+        return $this->idPrefix;
+    }
+
     public function setPrefix($idPrefix)
     {
         $this->idPrefix = $idPrefix;
