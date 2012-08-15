@@ -124,12 +124,13 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $this->parent = $parent;
         $this->name = $name;
     }
+
     /**
      * Get the repository path of this url entry
      */
     public function getPath()
     {
-      return $this->path;
+        return $this->path;
     }
 
     public function setPath($path)
