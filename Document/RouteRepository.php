@@ -85,7 +85,7 @@ class RouteRepository implements RouteRepositoryInterface
             $routes = $this->dm->findMany($this->className, $candidates);
             // filter for valid route objects
             // we can not search for a specific class as PHPCR does not know class inheritance
-            // TOD: but optionally we could define a node type
+            // TODO: but optionally we could define a node type
             foreach ($routes as $key => $route) {
                 if (! $route instanceof SymfonyRoute) {
                     unset($routes[$key]);
