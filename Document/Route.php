@@ -128,6 +128,14 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * Get the repository path of this url entry
      */
+    public function getStoragePath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Get the virtual repository path of this url entry
+     */
     public function getPath()
     {
         return $this->path;

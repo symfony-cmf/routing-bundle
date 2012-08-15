@@ -41,7 +41,7 @@ class IdPrefix
         // only update route objects and only if the prefix can match, to allow
         // for more than one listener and more than one route root
         if ($doc instanceof Route
-            && ! strncmp($this->idPrefix, $doc->getPath(), strlen($this->idPrefix))
+            && ! strncmp($this->idPrefix, $doc->getStoragePath(), strlen($this->idPrefix))
         ) {
             $doc->setPrefix($this->idPrefix);
         }
