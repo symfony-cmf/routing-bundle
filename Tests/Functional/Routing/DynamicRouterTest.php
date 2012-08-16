@@ -96,6 +96,7 @@ class DynamicRouterTest extends BaseTestCase
         $route->setRequirement('_method', 'GET');
         $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         self::$dm->persist($route);
+        self::$dm->flush();
 
         self::$router->getContext()->setMethod('POST');
         self::$router->match('/notallowed');
