@@ -19,6 +19,7 @@ class DynamicRouterTest extends BaseTestCase
      * @var \Symfony\Cmf\Component\Routing\ChainRouter
      */
     protected static $router;
+    protected static $routeNamePrefix;
 
     const ROUTE_ROOT = '/test/routing';
 
@@ -26,6 +27,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
         self::$router = self::$kernel->getContainer()->get('router');
+        self::$routeNamePrefix = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.route_repository')->getRouteNamePrefix();
 
         $root = self::$dm->find(null, self::ROUTE_ROOT);
 
@@ -51,7 +53,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME => 'testController',
-            '_route'        => DynamicRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute_child',
+            '_route'        => self::$routeNamePrefix.'_test_routing_testroute_child',
             'path'          => '/testroute/child',
         );
 
@@ -64,7 +66,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME   => 'testController',
-            '_route'        => DynamicRouter::ROUTE_NAME_PREFIX.'_test_routing_testroute',
+            '_route'        => self::$routeNamePrefix.'_test_routing_testroute',
             'id'            => '123',
             'path'          => '/testroute/child/123',
             'slug'          => 'child',

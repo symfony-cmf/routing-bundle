@@ -57,7 +57,7 @@ class DynamicRouterTest extends BaseDynamicRouterTest
             ->will($this->returnValue(array(new RouteMock())));
 
         try {
-            $this->router->generate('something', array('content' => $this->contentDocument));
+            $this->router->generate('', array('content' => $this->contentDocument));
             $this->fail('Expected failure when context is null');
         } catch (\Exception $e) {
             // expected
