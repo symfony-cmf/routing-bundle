@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use PHPCR\RepositoryException;
 
-use Symfony\Component\Routing\Route as SymfonyRoute;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -100,7 +100,7 @@ class RouteRepository implements RouteRepositoryInterface
             // we can not search for a specific class as PHPCR does not know class inheritance
             // TODO: but optionally we could define a node type
             foreach ($routes as $key => $route) {
-                if ($route instanceof SymfonyRoute) {
+                if ($route instanceof Route) {
                     $collection->add($this->routeNamePrefix . preg_replace('/[^a-z0-9A-Z_.]/', '_', $key), $route);
                 }
             }
@@ -112,5 +112,23 @@ class RouteRepository implements RouteRepositoryInterface
         }
 
         return $collection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRouteByName($name, $parameters = array())
+    {
+        if (0 !== strpos($name, $this->routeNamePrefix)) {
+            throw new RouteNotFoundException("Route name '$name' does not begin with the route name prefix '{$this->routeNamePrefix}'");
+        }
+
+        $path = str_replace('_', '/', substr($name, strlen($this->routeNamePrefix)));
+        $route = $this->dm->find($this->className, $path);
+        if (!$route) {
+            throw new RouteNotFoundException("No route found for name '$name'");
+        }
+
+        return $route;
     }
 }
