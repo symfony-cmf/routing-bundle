@@ -128,14 +128,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * Get the repository path of this url entry
      */
-    public function getStoragePath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * Get the virtual repository path of this url entry
-     */
     public function getPath()
     {
         return $this->path;
@@ -161,16 +153,24 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function getStaticPrefix()
     {
-        if (0 == strlen($this->idPrefix)) {
+        return $this->generateStaticPrefix($this->getPath(), $this->idPrefix);
+    }
+
+    public function generateStaticPrefix($path, $idPrefix)
+    {
+        if (0 == strlen($idPrefix)) {
             throw new \LogicException('Can not determine the prefix. Either this is a new, unpersisted document or the listener that calls setPrefix is not set up correctly.');
         }
-        if (strncmp($this->getPath(), $this->idPrefix, strlen($this->idPrefix))) {
-            throw new \LogicException("The id prefix '".$this->idPrefix."' does not match the route document path '".$this->getPath()."'");
+
+        if (strncmp($path, $idPrefix, strlen($idPrefix))) {
+            throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$path'");
         }
-        $url = substr($this->getPath(), strlen($this->idPrefix));
+
+        $url = substr($path, strlen($idPrefix));
         if (empty($url)) {
             $url = '/';
         }
+
         return $url;
     }
 
