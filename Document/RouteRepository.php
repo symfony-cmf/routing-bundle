@@ -50,6 +50,21 @@ class RouteRepository implements RouteRepositoryInterface
         $this->idPrefix = $prefix;
     }
 
+    protected function getCandidates($url)
+    {
+        $part = $url;
+        $candidates = array();
+        if ('/' !== $url) {
+            while (false !== ($pos = strrpos($part, '/'))) {
+                $candidates[] = $this->idPrefix.$part;
+                $part = substr($url, 0, $pos);
+            }
+        }
+        $candidates[] = $this->idPrefix;
+
+        return $candidates;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -64,21 +79,13 @@ class RouteRepository implements RouteRepositoryInterface
             throw new RouteNotFoundException("$url is not a valid route");
         }
 
-        $part = $url;
-        $candidates = array();
-        if ('/' !== $url) {
-            while (false !== ($pos = strrpos($part, '/'))) {
-                $candidates[] = $this->idPrefix.$part;
-                $part = substr($url, 0, $pos);
-            }
-        }
-        $candidates[] = $this->idPrefix;
+        $candidates = $this->getCandidates($url);
 
         try {
             $routes = $this->dm->findMany($this->className, $candidates);
             // filter for valid route objects
             // we can not search for a specific class as PHPCR does not know class inheritance
-            // TOD: but optionally we could define a node type
+            // TODO: but optionally we could define a node type
             foreach ($routes as $key => $route) {
                 if (! $route instanceof SymfonyRoute) {
                     unset($routes[$key]);
