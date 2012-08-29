@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PHPCR\RepositoryException;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
+use Symfony\Component\Routing\RouteCollection;
 
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
@@ -21,6 +22,16 @@ use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
  */
 class RouteRepository implements RouteRepositoryInterface
 {
+    /**
+     * Symfony routes always need a name in the collection. We generate routes
+     * based on the route object, but need to use a name for example in error
+     * reporting.
+     * When generating, we just use this prefix, when matching, we append
+     * whatever the repository returned as ID, replacing anything but
+     * [^a-z0-9A-Z_.] with "_" to get unique valid route names.
+     */
+    protected $routeNamePrefix = 'cmf_routing_dynamic_route';
+
     /**
      * @var ObjectManager
      */
@@ -81,14 +92,16 @@ class RouteRepository implements RouteRepositoryInterface
 
         $candidates = $this->getCandidates($url);
 
+        $collection = new RouteCollection();
+
         try {
             $routes = $this->dm->findMany($this->className, $candidates);
             // filter for valid route objects
             // we can not search for a specific class as PHPCR does not know class inheritance
             // TODO: but optionally we could define a node type
             foreach ($routes as $key => $route) {
-                if (! $route instanceof SymfonyRoute) {
-                    unset($routes[$key]);
+                if ($route instanceof SymfonyRoute) {
+                    $collection->add($this->routeNamePrefix . preg_replace('/[^a-z0-9A-Z_.]/', '_', $key), $route);
                 }
             }
         } catch (RepositoryException $e) {
@@ -96,9 +109,8 @@ class RouteRepository implements RouteRepositoryInterface
             // for example, getting /my//test (note the double /) is just an invalid path
             // and means another router might handle this.
             // but if the PHPCR backend is down for example, we want to alert the user
-            $routes = array();
         }
 
-        return $routes;
+        return $collection;
     }
 }

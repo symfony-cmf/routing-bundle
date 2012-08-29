@@ -60,7 +60,9 @@ class RouteRepositoryTest extends BaseTestCase
 
     public function testFindNophpcrUrl()
     {
-        $this->assertEquals(array(), self::$repository->findManyByUrl('///'));
+        $collection = self::$repository->findManyByUrl('///');
+        $this->assertInstanceOf('Symfony\\Component\\Routing\\RouteCollection', $collection);
+        $this->assertCount(0, $collection);
     }
 
     public function testSetPrefix()
