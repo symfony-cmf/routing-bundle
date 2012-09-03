@@ -54,7 +54,6 @@ class DynamicRouterTest extends BaseTestCase
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME => 'testController',
             '_route'        => self::$routeNamePrefix.'_test_routing_testroute_child',
-            'path'          => '/testroute/child',
         );
 
         $matches = self::$router->match('/testroute/child');
@@ -68,7 +67,6 @@ class DynamicRouterTest extends BaseTestCase
             RouteObjectInterface::CONTROLLER_NAME   => 'testController',
             '_route'        => self::$routeNamePrefix.'_test_routing_testroute',
             'id'            => '123',
-            'path'          => '/testroute/child/123',
             'slug'          => 'child',
         );
 
