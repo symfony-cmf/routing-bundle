@@ -64,14 +64,9 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('routing_repositoryroot')->defaultValue('/cms/routes')->end()
                     ->end()
                 ->end()
-                ->scalarNode('use_sonata_admin')
+                ->enumNode('use_sonata_admin')
+                    ->values(array(true, false, 'auto'))
                     ->defaultValue('auto')
-                    ->validate()
-                        ->ifTrue(function($v){
-                            return !is_bool($v) && $v !== 'auto';
-                        })
-                        ->thenInvalid("This configuration allows only the values true, false or 'auto'")
-                    ->end()
                 ->end()
                 ->scalarNode('content_basepath')->defaultNull()->end()
                 // TODO: fix widget to show root node when root is selectable
