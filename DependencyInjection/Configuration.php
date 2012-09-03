@@ -64,6 +64,10 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('routing_repositoryroot')->defaultValue('/cms/routes')->end()
                     ->end()
                 ->end()
+                ->scalarNode('use_sonata_admin')->defaultValue('auto')->end()
+                ->scalarNode('content_basepath')->defaultNull()->end()
+                // TODO: fix widget to show root node when root is selectable
+                ->scalarNode('route_basepath')->defaultValue('/cms')->end()
         ->end();
 
         return $treeBuilder;

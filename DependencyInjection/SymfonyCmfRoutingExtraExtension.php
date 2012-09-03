@@ -59,6 +59,10 @@ class SymfonyCmfRoutingExtraExtension extends Extension
             $resources = $container->getParameter('twig.form.resources');
             $container->setParameter('twig.form.resources',array_merge(array('SymfonyCmfRoutingExtraBundle:Form:terms_form_type.html.twig'), $resources));
         }
+
+        if ($config['use_sonata_admin']) {
+            $this->loadSonataAdmin($config, $loader, $container);
+        }
     }
 
     /**
@@ -98,5 +102,24 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         if (!empty($config['generic_controller']) && !empty($config['templates_by_class'])) {
             $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_templates_by_class')));
         }
+    }
+
+    public function loadSonataAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        if ('auto' === $config['use_sonata_admin'] && !class_exists('Sonata\\AdminBundle\\Admin\\Admin')) {
+            return;
+        }
+
+        $loader->load('routing-extra-admin.xml');
+        $contentBasepath = $config['content_basepath'];
+        if (null === $contentBasepath) {
+            if ($container->hasParameter('symfony_cmf_core.content_basepath')) {
+                $contentBasepath = $container->getParameter('symfony_cmf_core.content_basepath');
+            } else {
+                $contentBasepath = '/cms/content';
+            }
+        }
+        $container->setParameter($this->getAlias() . '.content_basepath', $contentBasepath);
+        $container->setParameter($this->getAlias() . '.route_basepath', $config['route_basepath']);
     }
 }
