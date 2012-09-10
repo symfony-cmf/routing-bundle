@@ -25,6 +25,11 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $name;
 
     /**
+     * children - needed for the admin to work ...
+     */
+    protected $children;
+
+    /**
      * The full repository path to this route object
      */
     protected $path;
