@@ -12,6 +12,7 @@
             <generator strategy="parent"/>
         </id>
         <reference-one fieldName="routeContent"/>
+        <children fieldName="children"/>
         <field fieldName="variablePattern" type="string"/>
         <field fieldName="defaultsKeys" type="string" multivalue="true"/>
         <field fieldName="defaultsValues" type="string" multivalue="true"/>
