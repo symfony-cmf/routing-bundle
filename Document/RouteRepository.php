@@ -36,6 +36,7 @@ class RouteRepository implements RouteRepositoryInterface
      * @var ObjectManager
      */
     protected $dm;
+
     /**
      * Class name of the route class, null for phpcr-odm as it can determine
      * the class on its own.
@@ -43,6 +44,7 @@ class RouteRepository implements RouteRepositoryInterface
      * @var string
      */
     protected $className;
+
     /**
      * The prefix to add to the url to create the repository path
      *
