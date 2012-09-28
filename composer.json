@@ -26,8 +26,7 @@
         "symfony/finder": "2.1.*",
         "jackalope/jackalope-doctrine-dbal": "1.0.*",
         "doctrine/phpcr-odm": "1.0.*",
-        "doctrine/phpcr-bundle": "1.0.*",
-        "sonata-project/doctrine-phpcr-admin-bundle": "1.0.*"
+        "doctrine/phpcr-bundle": "1.0.*"
     },
     "suggests": {
         "doctrine/phpcr-odm": "1.0.*",

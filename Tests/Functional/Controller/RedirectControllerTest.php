@@ -33,7 +33,7 @@ class RedirectControllerTest extends BaseTestCase
         $redirect = new RedirectRoute;
         $redirect->setPosition($root, 'redirectUri');
         $redirect->setUri('http://example.com/test-url');
-        $redirect->setParameters(array('test'=>7)); // parameters should be ignored in this case
+        $redirect->setParameters(array('test' => 7)); // parameters should be ignored in this case
         $redirect->setPermanent(true);
         self::$dm->persist($redirect);
 
