@@ -192,10 +192,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
             $url = '/';
         }
 
-        if ($this->addFormatPattern && !preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
-            $url.= '.{_format}';
-        }
-
         return $url;
     }
 
@@ -220,7 +216,11 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function getPattern()
     {
-        return $this->getStaticPrefix() . $this->getVariablePattern();
+        $pattern = $this->getStaticPrefix() . $this->getVariablePattern();
+        if ($this->addFormatPattern && !preg_match('/(.+)\.[a-z]+$/i', $pattern, $matches)) {
+            $pattern .= '.{_format}';
+        };
+        return $pattern;
     }
 
     /**
