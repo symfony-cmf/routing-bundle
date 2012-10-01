@@ -20,6 +20,7 @@
         <field fieldName="requirementsValues" type="string" multivalue="true"/>
         <field fieldName="optionsKeys" type="string" multivalue="true"/>
         <field fieldName="optionsValues" type="string" multivalue="true"/>
+        <field fieldName="addFormatPattern" type="boolean"/>
 
         <lifecycle-callbacks>
             <lifecycle-callback method="initArrays" type="postLoad"/>
