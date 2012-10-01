@@ -65,14 +65,20 @@ class RouteRepository implements RouteRepositoryInterface
 
     protected function getCandidates($url)
     {
-        $part = $url;
         $candidates = array();
         if ('/' !== $url) {
+            if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
+                $candidates[] = $this->idPrefix.$url;
+                $url = $matches[1];
+            }
+
+            $part = $url;
             while (false !== ($pos = strrpos($part, '/'))) {
                 $candidates[] = $this->idPrefix.$part;
                 $part = substr($url, 0, $pos);
             }
         }
+
         $candidates[] = $this->idPrefix;
 
         return $candidates;
@@ -103,6 +109,14 @@ class RouteRepository implements RouteRepositoryInterface
             // TODO: but optionally we could define a node type
             foreach ($routes as $key => $route) {
                 if ($route instanceof SymfonyRoute) {
+                    if (preg_match('/.+\.([a-z]+)$/i', $url, $matches)) {
+                        if ($route->getDefault('_format') === $matches[1]) {
+                            continue;
+                        }
+
+                        $route->setDefault('_format', $matches[1]);
+                    }
+
                     $collection->add($this->routeNamePrefix . preg_replace('/[^a-z0-9A-Z_.]/', '_', $key), $route);
                 }
             }

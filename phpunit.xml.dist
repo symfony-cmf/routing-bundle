@@ -17,8 +17,8 @@
             <directory>.</directory>
             <exclude>
                 <file>SymfonyCmfRoutingExtraBundle.php</file>
-                <directory>DependencyInjection/</directory>
                 <directory>Resources/</directory>
+                <directory>Admin/</directory>
                 <directory>Tests/</directory>
                 <directory>vendor/</directory>
             </exclude>
