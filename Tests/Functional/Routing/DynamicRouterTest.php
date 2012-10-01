@@ -46,6 +46,13 @@ class DynamicRouterTest extends BaseTestCase
         $childroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         self::$dm->persist($childroute);
 
+        $formatroute = new Route(true);
+        $formatroute->setPosition($root, 'format');
+        $formatroute->setVariablePattern('/{id}');
+        $formatroute->setRequirement('_format', 'html|json');
+        $formatroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
+        self::$dm->persist($formatroute);
+
         self::$dm->flush();
     }
 
@@ -102,6 +109,40 @@ class DynamicRouterTest extends BaseTestCase
         self::$router->match('/notallowed');
     }
 
+    public function testMatchDefaultFormat()
+    {
+        $expected = array(
+            '_controller'   => 'testController',
+            '_format'       => 'html',
+            '_route'        => self::$routeNamePrefix.'_test_routing_format',
+            'id'            => '48',
+        );
+        $matches = self::$router->match('/format/48');
+        ksort($matches);
+        $this->assertEquals($expected, $matches);
+    }
+
+    public function testMatchFormat()
+    {
+        $expected = array(
+            '_controller'   => 'testController',
+            '_format'       => 'json',
+            '_route'        => self::$routeNamePrefix.'_test_routing_format',
+            'id'            => '48',
+        );
+        $matches = self::$router->match('/format/48.json');
+        ksort($matches);
+        $this->assertEquals($expected, $matches);
+    }
+
+    /**
+     * @expectedException Symfony\Component\Routing\Exception\ResourceNotFoundException
+     */
+    public function testNoMatchingFormat()
+    {
+        $matches = self::$router->match('/format/48.xml');
+    }
+
     public function testGenerate()
     {
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute/child');
@@ -133,5 +174,31 @@ class DynamicRouterTest extends BaseTestCase
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute');
 
         self::$router->generate('', array('route' => $route, 'slug' => 'gen-slug', 'id' => 'nonumber'));
+    }
+
+    public function testGenerateDefaultFormat()
+    {
+        $route = self::$dm->find(null, self::ROUTE_ROOT.'/format');
+
+        $url = self::$router->generate('', array('route' => $route, 'id' => 37));
+        $this->assertEquals('/format/37', $url);
+    }
+
+    public function testGenerateFormat()
+    {
+        $route = self::$dm->find(null, self::ROUTE_ROOT.'/format');
+
+        $url = self::$router->generate('', array('route' => $route, 'id' => 37, '_format' => 'json'));
+        $this->assertEquals('/format/37.json', $url);
+    }
+
+    /**
+     * @expectedException Symfony\Component\Routing\Exception\InvalidParameterException
+     */
+    public function testGenerateNoMatchingFormat()
+    {
+        $route = self::$dm->find(null, self::ROUTE_ROOT.'/format');
+
+        self::$router->generate('', array('route' => $route, 'id' => 37, '_format' => 'xyz'));
     }
 }

@@ -120,4 +120,21 @@ class RouteTest extends BaseTestCase
         $route = new Route;
         $route->getPattern();
     }
+
+    public function testDefaultFormat()
+    {
+        $route = new Route(true);
+
+        $root = self::$dm->find(null, self::ROUTE_ROOT);
+
+        $route->setPosition($root, 'format');
+        self::$dm->persist($route);
+        self::$dm->flush();
+
+        self::$dm->clear();
+
+        $route = self::$dm->find(null, self::ROUTE_ROOT.'/format');
+
+        $this->assertEquals('/format.{_format}', $route->getPattern());
+    }
 }
