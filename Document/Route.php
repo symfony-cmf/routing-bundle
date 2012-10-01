@@ -54,22 +54,27 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
      */
     protected $defaultsKeys;
+
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
      */
     protected $defaultsValues;
+
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
      */
     protected $requirementsKeys;
+
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
      */
     protected $requirementsValues;
+
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
      */
     protected $optionsKeys;
+
     /**
      * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
      */
@@ -77,12 +82,23 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
     protected $needRecompile = false;
 
+    protected $addFormatPattern;
+
     /**
      * Overwrite to be able to create route without pattern
+     *
+     * @param Boolean $addFormatPattern if to add ".{_format}" to the route pattern
+     *                                  also implicitly sets a default/require on "_format" to "html"
      */
-    public function __construct()
+    public function __construct($addFormatPattern = false)
     {
         $this->initArrays();
+
+        $this->addFormatPattern = $addFormatPattern;
+        if ($this->addFormatPattern) {
+            $this->setDefault('_format', 'html');
+            $this->setRequirement('_format', 'html');
+        }
     }
 
     /**
@@ -174,6 +190,10 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $url = substr($path, strlen($idPrefix));
         if (empty($url)) {
             $url = '/';
+        }
+
+        if ($this->addFormatPattern && !preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
+            $url.= '.{_format}';
         }
 
         return $url;
