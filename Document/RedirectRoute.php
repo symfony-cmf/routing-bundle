@@ -117,12 +117,14 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      */
     public function getParameters()
     {
+        $parameters = $this->parameters;
+
         $route = $this->getRouteTarget();
-        if (! empty($route)) {
-            $this->parameters['route'] = $route;
+        if (!empty($route)) {
+            $parameters['route'] = $route;
         }
 
-        return $this->parameters;
+        return $parameters;
     }
 
     public function setUri($uri)

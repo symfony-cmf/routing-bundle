@@ -7,7 +7,7 @@
         <field fieldName="routeName" type="string"/>
         <reference-one fieldName="routeTarget"/>
         <field fieldName="permanent" type="boolean"/>
-        <field fieldName="parameter" type="string" multivalue="true" assoc=""/>
+        <field fieldName="parameters" type="string" assoc=""/>
 
     </mapped-superclass>
 
