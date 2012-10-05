@@ -261,7 +261,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * prepare hashmaps into mapped properties to store them
+     * copy defaults/requirements/options to the parent class
      */
     public function postLoad()
     {
@@ -279,7 +279,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * build the hashmaps before storing document
+     * copy defaults/requirements/options from the parent class
      */
     public function preStorage()
     {
@@ -291,9 +291,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         }
 
         $requirements = parent::getRequirements();
-        $oldDRequirements = $this->requirements instanceof Collection
+        $oldRequirements = $this->requirements instanceof Collection
             ? $this->requirements->toArray() : $this->requirements;
-        if ($requirements !== $oldDRequirements) {
+        if ($requirements !== $oldRequirements) {
             $this->requirements = $requirements;
         }
 
