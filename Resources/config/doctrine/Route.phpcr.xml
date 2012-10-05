@@ -10,9 +10,9 @@
         <reference-one fieldName="routeContent"/>
         <children fieldName="children"/>
         <field fieldName="variablePattern" type="string"/>
-        <field fieldName="defaults" type="string" multivalue="true" assoc="defaultsKeys"/>
-        <field fieldName="requirements" type="string" multivalue="true" assoc="requirementsKeys"/>
-        <field fieldName="options" type="string" multivalue="true" assoc="optionsKeys"/>
+        <field fieldName="defaults" type="string" multivalue="true" assoc=""/>
+        <field fieldName="requirements" type="string" multivalue="true" assoc=""/>
+        <field fieldName="options" type="string" multivalue="true" assoc=""/>
         <field fieldName="addFormatPattern" type="boolean"/>
 
         <lifecycle-callbacks>
