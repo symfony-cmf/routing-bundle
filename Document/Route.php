@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
@@ -51,34 +52,19 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $variablePattern;
 
     /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
+     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection|array
      */
-    protected $defaultsKeys;
+    protected $defaults = array();
 
     /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
+     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection|array
      */
-    protected $defaultsValues;
+    protected $requirements = array();
 
     /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
+     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection|array
      */
-    protected $requirementsKeys;
-
-    /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     */
-    protected $requirementsValues;
-
-    /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     */
-    protected $optionsKeys;
-
-    /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
-     */
-    protected $optionsValues;
+    protected $options = array();
 
     protected $needRecompile = false;
 
@@ -92,7 +78,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function __construct($addFormatPattern = false)
     {
-        $this->initArrays();
+        $this->postLoad();
 
         $this->addFormatPattern = $addFormatPattern;
         if ($this->addFormatPattern) {
@@ -274,66 +260,54 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return parent::compile();
     }
 
-    // workaround for the missing hashmaps in phpcr-odm
-
     /**
      * prepare hashmaps into mapped properties to store them
      */
-    public function initArrays()
+    public function postLoad()
     {
-        // phpcr-odm makes this a property collection. for some reason
-        // array_combine does not work with ArrayAccess objects
-        // if there are no values in a multivalue property, we don't get an
-        // empty collection assigned but null
+        $defaults = $this->defaults instanceof Collection
+            ? $this->defaults->toArray() : $this->defaults;
+        $this->setDefaults($defaults);
 
-        if ($this->defaultsValues && count($this->defaultsValues)) {
-            $this->setDefaults(array_combine(
-                $this->defaultsKeys->getValues(),
-                $this->defaultsValues->getValues())
-            );
-        } else {
-            $this->setDefaults(array());
-        }
-        if ($this->requirementsValues && count($this->requirementsValues)) {
-            $this->setRequirements(array_combine(
-                $this->requirementsKeys->getValues(),
-                $this->requirementsValues->getValues())
-            );
-        } else {
-            $this->setRequirements(array());
-        }
-        // parent class will add compiler_class option back in if it was stripped out
-        if ($this->optionsValues && count($this->optionsValues)) {
-            $this->setOptions(array_combine(
-                $this->optionsKeys->getValues(),
-                $this->optionsValues->getValues())
-            );
-        } else {
-            $this->setOptions(array());
-        }
+        $requirements = $this->requirements instanceof Collection
+            ? $this->requirements->toArray() : $this->requirements;
+        $this->setRequirements($requirements);
+
+        $options = $this->options instanceof Collection
+            ? $this->options->toArray() : $this->options;
+        $this->setOptions($options);
     }
 
     /**
      * build the hashmaps before storing document
      */
-    public function prepareArrays()
+    public function preStorage()
     {
-        $defaults = $this->getDefaults();
-        $this->defaultsKeys = array_keys($defaults);
-        $this->defaultsValues = array_values($defaults);
+        $defaults = parent::getDefaults();
+        $oldDefaults = $this->defaults instanceof Collection
+            ? $this->defaults->toArray() : $this->defaults;
+        if ($defaults !== $oldDefaults) {
+            $this->defaults = $defaults;
+        }
 
-        $requirements = $this->getRequirements();
-        $this->requirementsKeys = array_keys($requirements);
-        $this->requirementsValues = array_values($requirements);
+        $requirements = parent::getRequirements();
+        $oldDRequirements = $this->requirements instanceof Collection
+            ? $this->requirements->toArray() : $this->requirements;
+        if ($requirements !== $oldDRequirements) {
+            $this->requirements = $requirements;
+        }
 
-        $options = $this->getOptions();
+        $options = parent::getOptions();
         // avoid storing the default value for the compiler, in case this ever changes in code
         // would be nice if those where class constants of the symfony route instead of hardcoded strings
         if ('Symfony\\Component\\Routing\\RouteCompiler' == $options['compiler_class']) {
             unset($options['compiler_class']);
         }
-        $this->optionsKeys = array_keys($options);
-        $this->optionsValues = array_values($options);
+        $oldOptions = $this->options instanceof Collection
+            ? $this->options->toArray() : $this->options;
+        if ($options !== $oldOptions) {
+            $this->options = $options;
+        }
     }
 
     public function __toString()
