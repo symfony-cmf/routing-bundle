@@ -5,6 +5,8 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * {@inheritDoc}
  */
@@ -31,14 +33,9 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     protected $permanent;
 
     /**
-     * Simulate a php hashmap in phpcr. This holds the keys
+     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
      */
-    protected $parameterKeys;
-
-    /**
-     * Simulate a php hashmap in phpcr. This holds the keys
-     */
-    protected $parameterValues;
+    protected $parameters;
 
     public function setRouteContent($document)
     {
@@ -112,10 +109,9 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      * @param array $parameter a hashmap of key to value mapping for route
      *      parameters
      */
-    public function setParameters(array $parameter)
+    public function setParameters(array $parameters)
     {
-        $this->parameterValues = array_values($parameter);
-        $this->parameterKeys = array_keys($parameter);
+        $this->parameters = $parameters;
     }
 
     /**
@@ -123,17 +119,13 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      */
     public function getParameters()
     {
-        $parameters = array();
-
-        if ($this->parameterKeys !== null) {
-            $parameters = array_combine(
-                $this->parameterKeys->getValues(),
-                $this->parameterValues->getValues()
-            );
+        $parameters = $this->parameters;
+        if ($parameters instanceof Collection) {
+            $parameters = $parameters->toArray();
         }
 
         $route = $this->getRouteTarget();
-        if (! empty($route)) {
+        if (!empty($route)) {
             $parameters['route'] = $route;
         }
 
