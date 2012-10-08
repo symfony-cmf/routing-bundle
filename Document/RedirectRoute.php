@@ -5,6 +5,8 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * {@inheritDoc}
  */
@@ -118,6 +120,9 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     public function getParameters()
     {
         $parameters = $this->parameters;
+        if ($parameters instanceof Collection) {
+            $parameters = $parameters->toArray();
+        }
 
         $route = $this->getRouteTarget();
         if (!empty($route)) {
