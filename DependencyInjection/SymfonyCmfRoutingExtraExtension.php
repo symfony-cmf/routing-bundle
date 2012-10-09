@@ -36,7 +36,8 @@ class SymfonyCmfRoutingExtraExtension extends Extension
 
         $config = $processor->processConfiguration($configuration, $configs);
 
-        if (!empty($config['dynamic']['enabled'])) {
+        if (!empty($config['dynamic'])) {
+            // load this even if no explicit enabled value but some configuration
             $this->setupDynamicRouter($config['dynamic'], $container, $loader);
         }
 
@@ -74,6 +75,10 @@ class SymfonyCmfRoutingExtraExtension extends Extension
      */
     private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
+        if (isset($config['enabled']) && false == $config['enabled']) {
+            // prevent wtf if somebody is playing around with configs
+            return;
+        }
         $container->setParameter($this->getAlias() . '.generic_controller', $config['generic_controller']);
         $container->setParameter($this->getAlias() . '.controllers_by_alias', $config['controllers_by_alias']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
