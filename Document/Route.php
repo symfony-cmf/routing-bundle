@@ -266,15 +266,15 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function postLoad()
     {
         $defaults = $this->defaults instanceof Collection
-            ? $this->defaults->toArray() : $this->defaults;
+            ? $this->defaults->toArray() : (array)$this->defaults;
         $this->setDefaults($defaults);
 
         $requirements = $this->requirements instanceof Collection
-            ? $this->requirements->toArray() : $this->requirements;
+            ? $this->requirements->toArray() : (array)$this->requirements;
         $this->setRequirements($requirements);
 
         $options = $this->options instanceof Collection
-            ? $this->options->toArray() : $this->options;
+            ? $this->options->toArray() : (array)$this->options;
         $this->setOptions($options);
     }
 
