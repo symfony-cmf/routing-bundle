@@ -2,14 +2,15 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooserInterface;
 
 use PHPCR\RepositoryException;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
-
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+
 use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
 
 /**
@@ -33,7 +34,7 @@ class RouteRepository implements RouteRepositoryInterface
     protected $routeNamePrefix = 'cmf_routing_dynamic_route';
 
     /**
-     * @var ObjectManager
+     * @var DocumentManager
      */
     protected $dm;
 
@@ -52,10 +53,16 @@ class RouteRepository implements RouteRepositoryInterface
      */
     protected $idPrefix = '';
 
-    public function __construct(ObjectManager $dm, $className = null)
+    /**
+     * @var LocaleChooserInterface
+     */
+    protected $localeChooserStrategy;
+
+    public function __construct(DocumentManager $dm, $className = null)
     {
         $this->dm = $dm;
         $this->className = $className;
+        $this->localeChooserStrategy = $dm->getLocaleChooserStrategy();
     }
 
     public function setPrefix($prefix)
@@ -158,4 +165,21 @@ class RouteRepository implements RouteRepositoryInterface
         return $this->routeNamePrefix;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function validateRouteLocale(SymfonyRoute $route, $locale)
+    {
+        if ($this->dm->contains($route) && $this->dm->isDocumentTranslatable($route)) {
+            $locales = $this->dm->getLocalesFor($route);
+            if (!in_array($locale, $locales)) {
+                $fallbackLocales = $this->localeChooserStrategy->getPreferredLocalesOrder($locale);
+                if (!array_intersect($locales, $fallbackLocales)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
