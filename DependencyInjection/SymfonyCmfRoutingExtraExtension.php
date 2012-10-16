@@ -126,6 +126,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
             }
         }
         $container->setParameter($this->getAlias() . '.content_basepath', $contentBasepath);
+        $container->setParameter($this->getAlias() . '.content_class', $config['content_class']);
         $container->setParameter($this->getAlias() . '.route_basepath', $config['route_basepath']);
     }
 }

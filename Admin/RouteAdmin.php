@@ -21,6 +21,12 @@ class RouteAdmin extends Admin
      */
     protected $contentRoot;
 
+    /**
+     * Full class name for content that can be referenced by a route
+     * @var string
+     */
+    protected $contentClass;
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -37,7 +43,7 @@ class RouteAdmin extends Admin
                 ->add('parent', 'doctrine_phpcr_type_tree_model', array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
                 ->add('name', 'text', array('label'=>'Last URL part'))
                 ->add('variablePattern', 'text', array('required' => false))
-                ->add('routeContent', 'doctrine_phpcr_type_tree_model', array('class' => 'Sandbox\MainBundle\Document\EditableStaticContent', 'required' => false, 'root_node' => $this->contentRoot))
+                ->add('routeContent', 'doctrine_phpcr_type_tree_model', array('class' => $this->contentClass, 'required' => false, 'root_node' => $this->contentRoot))
                 // TODO edit key-value fields for defaults and options
             ->end();
     }
@@ -57,6 +63,11 @@ class RouteAdmin extends Admin
     public function setContentRoot($contentRoot)
     {
         $this->contentRoot = $contentRoot;
+    }
+
+    public function setContentClass($contentClass)
+    {
+        $this->contentClass = $contentClass;
     }
 
     public function getExportFormats()

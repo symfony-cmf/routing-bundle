@@ -23,6 +23,10 @@
                 <argument>%symfony_cmf_routing_extra.content_basepath%</argument>
             </call>
 
+            <call method="setContentClass">
+                <argument>%symfony_cmf_routing_extra.content_class%</argument>
+            </call>
+
             <call method="setRouteRoot">
                 <argument>%symfony_cmf_routing_extra.route_basepath%</argument>
             </call>
