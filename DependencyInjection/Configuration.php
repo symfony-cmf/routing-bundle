@@ -69,7 +69,6 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('auto')
                 ->end()
                 ->scalarNode('content_basepath')->defaultNull()->end()
-                ->scalarNode('content_class')->defaultValue('Symfony\\Cmf\\Bundle\\ContentBundle\\Document\\StaticContent')->end()
                 // TODO: fix widget to show root node when root is selectable, then use /cms/routing here
                 // resp. use routing_repositoryroot for both
                 ->scalarNode('route_basepath')->defaultValue('/cms')->end()
