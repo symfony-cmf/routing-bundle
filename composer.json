@@ -31,6 +31,7 @@
     "suggests": {
         "doctrine/phpcr-odm": "1.0.*",
         "doctrine/phpcr-bundle": "1.0.*",
+        "symfony-cmf/core-bundle": "1.0.*",
         "sonata-project/doctrine-phpcr-admin-bundle": "1.0.*"
     },
     "autoload": {
