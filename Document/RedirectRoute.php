@@ -3,7 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
 use LogicException;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
 use Doctrine\Common\Collections\Collection;
@@ -38,6 +38,15 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      */
     protected $parameters;
 
+    /**
+     * Never call this, it makes no sense. The redirect route will return $this
+     * as route content for the redirection controller to have the redirect route
+     * object as content.
+     *
+     * @param $document
+     *
+     * @throws LogicException
+     */
     public function setRouteContent($document)
     {
         throw new LogicException('Do not set a content for the redirect route. It is its own content.');
@@ -55,9 +64,9 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      * Set the route this redirection route points to. This must be a PHPCR-ODM
      * mapped object.
      *
-     * @param Route $document the redirection target route
+     * @param SymfonyRoute $document the redirection target route
      */
-    public function setRouteTarget(Route $document)
+    public function setRouteTarget(SymfonyRoute $document)
     {
         $this->routeTarget = $document;
     }
@@ -124,17 +133,13 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      */
     public function getParameters()
     {
-        $parameters = $this->parameters;
-        if ($parameters instanceof Collection) {
-            $parameters = $parameters->toArray();
+        if (is_array($this->parameters)) {
+            return $this->parameters;
         }
-
-        $route = $this->getRouteTarget();
-        if (!empty($route)) {
-            $parameters['route'] = $route;
+        if (empty($this->parameters)) {
+            return array();
         }
-
-        return $parameters;
+        return $this->parameters->toArray();
     }
 
     /**
