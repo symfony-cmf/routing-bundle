@@ -2,7 +2,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use LogicException;
+use Symfony\Component\Routing\Route;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
 use Doctrine\Common\Collections\Collection;
@@ -39,7 +40,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
 
     public function setRouteContent($document)
     {
-        throw new \LogicException('Do not set a content for the redirect route. It is its own content.');
+        throw new LogicException('Do not set a content for the redirect route. It is its own content.');
     }
 
     /**
@@ -51,9 +52,12 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * Set the route this redirection route points to
+     * Set the route this redirection route points to. This must be a PHPCR-ODM
+     * mapped object.
+     *
+     * @param Route $document the redirection target route
      */
-    public function setRouteTarget(RouteObjectInterface $document)
+    public function setRouteTarget(Route $document)
     {
         $this->routeTarget = $document;
     }
@@ -66,6 +70,11 @@ class RedirectRoute extends Route implements RedirectRouteInterface
         return $this->routeTarget;
     }
 
+    /**
+     * Set a symfony route name for this redirection.
+     *
+     * @param string $routeName
+     */
     public function setRouteName($routeName)
     {
         $this->routeName = $routeName;
@@ -80,9 +89,10 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * Set whether this redirection should be permanent or not.
+     * Set whether this redirection should be permanent or not. Default is
+     * false.
      *
-     * @param boolean $permanent
+     * @param boolean $permanent if true this is a permanent redirection
      */
     public function setPermanent($permanent)
     {
@@ -98,6 +108,9 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
+     * Set the parameters for building this route. Used with both route name
+     * and target route document.
+     *
      * @param array $parameter a hashmap of key to value mapping for route
      *      parameters
      */
@@ -116,9 +129,19 @@ class RedirectRoute extends Route implements RedirectRouteInterface
             $parameters = $parameters->toArray();
         }
 
+        $route = $this->getRouteTarget();
+        if (!empty($route)) {
+            $parameters['route'] = $route;
+        }
+
         return $parameters;
     }
 
+    /**
+     * Set the absolute redirection target URI.
+     *
+     * @param string $uri the absolute URI
+     */
     public function setUri($uri)
     {
         $this->uri = $uri;
