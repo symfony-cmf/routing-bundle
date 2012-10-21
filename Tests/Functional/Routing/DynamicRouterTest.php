@@ -147,14 +147,14 @@ class DynamicRouterTest extends BaseTestCase
     {
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute/child');
 
-        $url = self::$router->generate('', array('route' => $route, 'test' => 'value'));
+        $url = self::$router->generate($route, array('test' => 'value'));
         $this->assertEquals('/testroute/child?test=value', $url);
     }
 
     public function testGenerateAbsolute()
     {
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute/child');
-        $url = self::$router->generate('', array('route' => $route, 'test' => 'value'), true);
+        $url = self::$router->generate($route, array('test' => 'value'), true);
         $this->assertEquals('http://localhost/testroute/child?test=value', $url);
     }
 
@@ -162,7 +162,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute');
 
-        $url = self::$router->generate('', array('route' => $route, 'slug' => 'gen-slug', 'test' => 'value'));
+        $url = self::$router->generate($route, array('slug' => 'gen-slug', 'test' => 'value'));
         $this->assertEquals('/testroute/gen-slug?test=value', $url);
     }
 
@@ -173,14 +173,14 @@ class DynamicRouterTest extends BaseTestCase
     {
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute');
 
-        self::$router->generate('', array('route' => $route, 'slug' => 'gen-slug', 'id' => 'nonumber'));
+        self::$router->generate($route, array('slug' => 'gen-slug', 'id' => 'nonumber'));
     }
 
     public function testGenerateDefaultFormat()
     {
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/format');
 
-        $url = self::$router->generate('', array('route' => $route, 'id' => 37));
+        $url = self::$router->generate($route, array('id' => 37));
         $this->assertEquals('/format/37', $url);
     }
 
@@ -188,7 +188,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/format');
 
-        $url = self::$router->generate('', array('route' => $route, 'id' => 37, '_format' => 'json'));
+        $url = self::$router->generate($route, array('id' => 37, '_format' => 'json'));
         $this->assertEquals('/format/37.json', $url);
     }
 
@@ -199,6 +199,6 @@ class DynamicRouterTest extends BaseTestCase
     {
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/format');
 
-        self::$router->generate('', array('route' => $route, 'id' => 37, '_format' => 'xyz'));
+        self::$router->generate($route, array('id' => 37, '_format' => 'xyz'));
     }
 }

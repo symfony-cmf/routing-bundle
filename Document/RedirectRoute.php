@@ -59,15 +59,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * Get the target route document this route redirects to.
-     *
-     * If non-null, it is added as route into the parameters, which will lead
-     * to have the generate call issued by the RedirectController to have
-     * the target route in the parameters.
-     *
-     * @return RouteObjectInterface the route this redirection points to
-     *
-     * @see getParameters
+     * {@inheritDoc}
      */
     public function getRouteTarget()
     {
@@ -122,11 +114,6 @@ class RedirectRoute extends Route implements RedirectRouteInterface
         $parameters = $this->parameters;
         if ($parameters instanceof Collection) {
             $parameters = $parameters->toArray();
-        }
-
-        $route = $this->getRouteTarget();
-        if (!empty($route)) {
-            $parameters['route'] = $route;
         }
 
         return $parameters;
