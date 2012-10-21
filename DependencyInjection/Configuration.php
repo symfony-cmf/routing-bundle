@@ -41,24 +41,16 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('generic_controller')->defaultValue('symfony_cmf_content.controller:indexAction')->end()
                         ->arrayNode('controllers_by_alias')
                             ->useAttributeAsKey('alias')
-                            ->prototype('scalar')
-                        ->end()->end()
+                            ->prototype('scalar')->end()
+                        ->end()
                         ->arrayNode('controllers_by_class')
                             ->useAttributeAsKey('class')
-                            ->prototype('scalar')
-                            /* why does this not work?
-                            ->prototype('array')
-                                ->children()
-                                    ->scalarNode('Symfony\Cmf\Component\Routing\RedirectRouteInterface')
-                                        ->defaultValue('symfony_cmf_routing_extra.redirect_controller:redirectAction')
-                                    ->end()
-                                ->end()
-                             */
-                        ->end()->end()
+                            ->prototype('scalar')->end()
+                        ->end()
                         ->arrayNode('templates_by_class')
                             ->useAttributeAsKey('alias')
-                            ->prototype('scalar')
-                        ->end()->end()
+                            ->prototype('scalar')->end()
+                        ->end()
                         ->scalarNode('manager_registry')->defaultValue('doctrine_phpcr')->end()
                         ->scalarNode('manager_name')->defaultValue('default')->end()
                         ->scalarNode('routing_repositoryroot')->defaultValue('/cms/routes')->end()
@@ -72,7 +64,8 @@ class Configuration implements ConfigurationInterface
                 // TODO: fix widget to show root node when root is selectable, then use /cms/routing here
                 // resp. use routing_repositoryroot for both
                 ->scalarNode('route_basepath')->defaultValue('/cms')->end()
-        ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }
