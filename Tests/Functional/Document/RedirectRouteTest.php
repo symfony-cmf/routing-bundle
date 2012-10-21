@@ -41,8 +41,7 @@ class RedirectRouteTest extends BaseTestCase
         $this->assertInstanceOf('Symfony\\Cmf\\Component\\Routing\\RedirectRouteInterface', $redirect);
         $this->assertSame($redirect, $redirect->getRouteContent());
         $params = $redirect->getParameters();
-        $this->assertArrayHasKey('route', $params);
-        $this->assertSame($route, $params['route']);
+        $this->assertSame($route, $redirect->getRouteTarget());
         $defaults = $redirect->getDefaults();
         $this->assertEquals(array('test' => 'toast'), $defaults);
     }

@@ -43,7 +43,13 @@ class RedirectController
         $url = $contentDocument->getUri();
 
         if (empty($url)) {
-            $url = $this->router->generate($contentDocument->getRouteName(), $contentDocument->getParameters(), true);
+            $routeTarget = $contentDocument->getRouteTarget();
+            if ($routeTarget) {
+                $url = $this->router->generate($routeTarget, $contentDocument->getParameters(), true);
+            } else {
+                $routeName = $contentDocument->getRouteName();
+                $url = $this->router->generate($routeName, $contentDocument->getParameters(), true);
+            }
         }
 
         return new RedirectResponse($url, $contentDocument->isPermanent() ? 301 : 302);
