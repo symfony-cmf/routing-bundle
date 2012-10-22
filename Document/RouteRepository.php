@@ -145,33 +145,9 @@ class RouteRepository implements RouteRepositoryInterface
             throw new RouteNotFoundException("No route found for name '$name'");
         }
 
-        if (!$this->checkLocaleRequirement($route, $parameters)) {
-            $content = $route->getRouteContent();
-            if ($content) {
-                $routes = $content->getRoutes();
-                foreach ($routes as $contentRoute) {
-                    if ($this->checkLocaleRequirement($contentRoute, $parameters)) {
-                        return $contentRoute;
-                    }
-                }
-            }
-        }
-
         return $route;
     }
 
-    /**
-     * @param Route $route
-     * @param array $parameters
-     * @return bool TRUE if there is either no _locale, no _locale requirement or if the two match
-     */
-    private function checkLocaleRequirement(Route $route, array $parameters)
-    {
-        return empty($parameters['_locale'])
-            || !$route->getRequirement('_locale')
-            || preg_match('/'.$route->getRequirement('_locale').'/', $parameters['_locale'])
-        ;
-    }
 
     public function setRouteNamePrefix($routeNamePrefix)
     {
