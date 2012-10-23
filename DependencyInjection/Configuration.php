@@ -61,8 +61,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('auto')
                 ->end()
                 ->scalarNode('content_basepath')->defaultNull()->end()
-                // TODO: fix widget to show root node when root is selectable, then use /cms/routing here
-                // resp. use routing_repositoryroot for both
+                // TODO: fix widget to show root node when root is selectable, then use routing_repositoryroot for both
                 ->scalarNode('route_basepath')->defaultValue('/cms')->end()
             ->end()
         ;
