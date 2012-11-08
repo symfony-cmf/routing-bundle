@@ -27,7 +27,6 @@ class DynamicRouterTest extends BaseTestCase
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
         self::$router = self::$kernel->getContainer()->get('router');
-        self::$routeNamePrefix = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.route_repository')->getRouteNamePrefix();
 
         $root = self::$dm->find(null, self::ROUTE_ROOT);
 
@@ -60,7 +59,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME => 'testController',
-            '_route'        => self::$routeNamePrefix.'_test_routing_testroute_child',
+            '_route'        => '/test/routing/testroute/child',
         );
 
         $matches = self::$router->match('/testroute/child');
@@ -72,7 +71,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME   => 'testController',
-            '_route'        => self::$routeNamePrefix.'_test_routing_testroute',
+            '_route'        => '/test/routing/testroute',
             'id'            => '123',
             'slug'          => 'child',
         );
@@ -114,7 +113,7 @@ class DynamicRouterTest extends BaseTestCase
         $expected = array(
             '_controller'   => 'testController',
             '_format'       => 'html',
-            '_route'        => self::$routeNamePrefix.'_test_routing_format',
+            '_route'        => '/test/routing/format',
             'id'            => '48',
         );
         $matches = self::$router->match('/format/48');
@@ -127,7 +126,7 @@ class DynamicRouterTest extends BaseTestCase
         $expected = array(
             '_controller'   => 'testController',
             '_format'       => 'json',
-            '_route'        => self::$routeNamePrefix.'_test_routing_format',
+            '_route'        => '/test/routing/format',
             'id'            => '48',
         );
         $matches = self::$router->match('/format/48.json');
