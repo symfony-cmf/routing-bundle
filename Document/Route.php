@@ -88,6 +88,14 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getRouteKey()
+    {
+        return $this->getPath();
+    }
+
+    /**
      * Move the route by setting a parent.
      *
      * Note that this will change the URL this route matches.

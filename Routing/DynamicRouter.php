@@ -59,11 +59,6 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
     {
         $defaults = parent::match($url);
 
-        $route = $this->routeRepository->findManyByUrl($url)->get($defaults['_route']);
-        if ($route instanceof Route) {
-            $defaults['_route'] = $route->getPath();
-        }
-
         if (isset($defaults[RouteObjectInterface::CONTENT_OBJECT])) {
             $request = $this->getRequest();
 
