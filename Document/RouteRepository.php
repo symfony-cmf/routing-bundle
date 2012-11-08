@@ -135,19 +135,14 @@ class RouteRepository implements RouteRepositoryInterface
      */
     public function getRouteByName($name, $parameters = array())
     {
-        if (0 !== strpos($name, $this->routeNamePrefix)) {
-            throw new RouteNotFoundException("Route name '$name' does not begin with the route name prefix '{$this->routeNamePrefix}'");
-        }
-
-        $path = str_replace('_', '/', substr($name, strlen($this->routeNamePrefix)));
-        $route = $this->dm->find($this->className, $path);
+        // $name is the route document path
+        $route = $this->dm->find($this->className, $name);
         if (!$route) {
-            throw new RouteNotFoundException("No route found for name '$name'");
+            throw new RouteNotFoundException("No route found for path '$name'");
         }
 
         return $route;
     }
-
 
     public function setRouteNamePrefix($routeNamePrefix)
     {
@@ -158,5 +153,4 @@ class RouteRepository implements RouteRepositoryInterface
     {
         return $this->routeNamePrefix;
     }
-
 }
