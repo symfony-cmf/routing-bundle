@@ -53,6 +53,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('manager_registry')->defaultValue('doctrine_phpcr')->end()
                         ->scalarNode('manager_name')->defaultValue('default')->end()
+                        ->scalarNode('route_repository_class')->defaultNull()->end()
+                        ->scalarNode('content_repository_class')->defaultNull()->end()
                         ->scalarNode('routing_repositoryroot')->defaultValue('/cms/routes')->end()
                     ->end()
                 ->end()
