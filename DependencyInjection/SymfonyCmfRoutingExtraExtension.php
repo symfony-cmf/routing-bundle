@@ -45,6 +45,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $loader->load('chain_routing.xml');
         // only replace the default router by overwriting the 'router' alias if config tells us to
         if ($config['chain']['replace_symfony_router']) {
+            $container->setAlias('router', $this->getAlias() . '.router');
         }
 
         // add the routers defined in the configuration mapping
