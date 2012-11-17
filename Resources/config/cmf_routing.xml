@@ -46,13 +46,13 @@
             <argument />
         </service>
 
-        <service id="symfony_cmf_routing_extra.route_repository" class="%symfony_cmf_routing_extra.route_repository_class%">
+        <service id="symfony_cmf_routing_extra.default_route_repository" class="%symfony_cmf_routing_extra.route_repository_class%">
             <argument type="service" id="symfony_cmf_routing_extra.manager_registry"/>
             <argument>%symfony_cmf_routing_extra.route_entity_class%</argument>
             <call method="setPrefix"><argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument></call>
         </service>
 
-        <service id="symfony_cmf_routing_extra.content_repository" class="%symfony_cmf_routing_extra.content_repository_class%">
+        <service id="symfony_cmf_routing_extra.default_content_repository" class="%symfony_cmf_routing_extra.content_repository_class%">
             <argument type="service" id="symfony_cmf_routing_extra.manager_registry" />
         </service>
 
