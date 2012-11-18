@@ -23,16 +23,6 @@ use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
 class RouteRepository implements RouteRepositoryInterface
 {
     /**
-     * Symfony routes always need a name in the collection. We generate routes
-     * based on the route object, but need to use a name for example in error
-     * reporting.
-     * When generating, we just use this prefix, when matching, we append
-     * whatever the repository returned as ID, replacing anything but
-     * [^a-z0-9A-Z_.] with "_" to get unique valid route names.
-     */
-    protected $routeNamePrefix = 'cmf_routing_dynamic_route';
-
-    /**
      * @var ObjectManager
      */
     protected $dm;
@@ -116,8 +106,8 @@ class RouteRepository implements RouteRepositoryInterface
 
                         $route->setDefault('_format', $matches[1]);
                     }
-
-                    $collection->add($this->routeNamePrefix . preg_replace('/[^a-z0-9A-Z_.]/', '_', $key), $route);
+                    $key = trim(preg_replace('/[^a-z0-9A-Z_.]/', '_', $key), '_');
+                    $collection->add($key, $route);
                 }
             }
         } catch (RepositoryException $e) {
@@ -135,28 +125,12 @@ class RouteRepository implements RouteRepositoryInterface
      */
     public function getRouteByName($name, $parameters = array())
     {
-        if (0 !== strpos($name, $this->routeNamePrefix)) {
-            throw new RouteNotFoundException("Route name '$name' does not begin with the route name prefix '{$this->routeNamePrefix}'");
-        }
-
-        $path = str_replace('_', '/', substr($name, strlen($this->routeNamePrefix)));
-        $route = $this->dm->find($this->className, $path);
+        // $name is the route document path
+        $route = $this->dm->find($this->className, $name);
         if (!$route) {
-            throw new RouteNotFoundException("No route found for name '$name'");
+            throw new RouteNotFoundException("No route found for path '$name'");
         }
 
         return $route;
     }
-
-
-    public function setRouteNamePrefix($routeNamePrefix)
-    {
-        $this->routeNamePrefix = $routeNamePrefix;
-    }
-
-    public function getRouteNamePrefix()
-    {
-        return $this->routeNamePrefix;
-    }
-
 }
