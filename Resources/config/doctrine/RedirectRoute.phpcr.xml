@@ -1,7 +1,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/phpcr/doctrine-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <mapped-superclass name="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute">
+    <document name="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute">
 
         <field fieldName="uri" type="uri"/>
         <field fieldName="routeName" type="string"/>
@@ -9,6 +9,6 @@
         <field fieldName="permanent" type="boolean"/>
         <field fieldName="parameters" type="string" assoc=""/>
 
-    </mapped-superclass>
+    </document>
 
 </doctrine-mapping>
