@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 use Symfony\Cmf\Component\Routing\DynamicRouter as BaseDynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 
 /**
  * A router that reads route entries from an Object-Document Mapper store.
