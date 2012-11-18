@@ -87,14 +87,8 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $loader->load('cmf_routing.xml');
         $container->setParameter($this->getAlias() . '.routing_repositoryroot', $config['routing_repositoryroot']);
 
-        if (null !== $config['route_repository_class']) {
-            $container->setParameter('symfony_cmf_routing_extra.route_repository_class', $config['route_repository_class']);
-        }
-
-        if (null !== $config['content_repository_class']) {
-            $container->setParameter('symfony_cmf_routing_extra.content_repository_class', $config['content_repository_class']);
-        }
-
+        $container->setAlias('symfony_cmf_routing_extra.route_repository', $config['route_repository_service_id']);
+        $container->setAlias('symfony_cmf_routing_extra.content_repository', $config['content_repository_service_id']);
 
         $managerRegistry = $container->getDefinition($this->getAlias() . '.manager_registry');
         $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
