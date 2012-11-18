@@ -32,10 +32,15 @@ class DynamicRouterTest extends BaseDynamicRouterTest
     }
 
     /**
-     * @expectedException Symfony\Component\Routing\Exception\RouteNotFoundException
+     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
      */
     public function testGenerateInvalidRoute()
     {
+        $this->container->expects($this->once())
+            ->method('isScopeActive')
+            ->with('request')
+            ->will($this->returnValue(true)
+        );
         $this->container->expects($this->once())
             ->method('get')
             ->with('request')
@@ -46,6 +51,11 @@ class DynamicRouterTest extends BaseDynamicRouterTest
 
     public function testGenerateNoRequest()
     {
+        $this->container->expects($this->once())
+            ->method('isScopeActive')
+            ->with('request')
+            ->will($this->returnValue(true)
+        );
         $this->container->expects($this->once())
             ->method('get')
             ->with('request')
