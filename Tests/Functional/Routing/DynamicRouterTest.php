@@ -82,7 +82,7 @@ class DynamicRouterTest extends BaseTestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function testNoMatch()
     {
@@ -90,7 +90,7 @@ class DynamicRouterTest extends BaseTestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Routing\Exception\MethodNotAllowedException
+     * @expectedException \Symfony\Component\Routing\Exception\MethodNotAllowedException
      */
     public function testNotAllowed()
     {
@@ -135,7 +135,7 @@ class DynamicRouterTest extends BaseTestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function testNoMatchingFormat()
     {
@@ -166,7 +166,7 @@ class DynamicRouterTest extends BaseTestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Routing\Exception\InvalidParameterException
+     * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
      */
     public function testGenerateParametersInvalid()
     {
@@ -192,7 +192,7 @@ class DynamicRouterTest extends BaseTestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Routing\Exception\InvalidParameterException
+     * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
      */
     public function testGenerateNoMatchingFormat()
     {

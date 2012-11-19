@@ -47,6 +47,14 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $idPrefix;
 
     /**
+     * @since Symfony 2.2 introduces the host name pattern. This default
+     * implementation just stores it as a field.
+     *
+     * @var string
+     */
+    protected $hostnamePattern = '';
+
+    /**
      * Variable pattern part. The static part of the pattern is the id without the prefix.
      */
     protected $variablePattern;
@@ -105,6 +113,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setParent($parent)
     {
         $this->parent = $parent;
+        return $this;
     }
 
     public function getParent()
@@ -122,6 +131,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     public function getName()
@@ -138,6 +148,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     {
         $this->parent = $parent;
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -151,6 +162,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setPath($path)
     {
         $this->path = $path;
+        return $this;
     }
 
     public function getPrefix()
@@ -161,6 +173,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setPrefix($idPrefix)
     {
         $this->idPrefix = $idPrefix;
+        return $this;
     }
 
     /**
@@ -195,6 +208,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setRouteContent($document)
     {
         $this->routeContent = $document;
+        return $this;
     }
 
     /**
@@ -203,6 +217,23 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function getRouteContent()
     {
         return $this->routeContent;
+    }
+
+    /**
+     * Hide the core hostname pattern
+     */
+    public function setHostnamePattern($pattern)
+    {
+        $this->hostnamePattern = $pattern;
+        return $this;
+    }
+
+    /**
+     * Hide the core hostname pattern
+     */
+    public function getHostnamePattern()
+    {
+        return $this->hostnamePattern;
     }
 
     /**
@@ -252,6 +283,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     {
         $this->variablePattern = $variablePattern;
         $this->needRecompile = true;
+        return $this;
     }
 
     /**

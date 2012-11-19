@@ -45,6 +45,11 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
      */
     protected $container;
 
+    /**
+     * @var string
+     */
+    protected $defaultLocale = null;
+
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
@@ -84,6 +89,17 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
         return $request;
     }
 
+    /**
+     * Overwrite the locale to be used by default if there is neither one in
+     * the parameters when building the route nor a request available (i.e. CLI).
+     *
+     * @param string $locale
+     */
+    public function setDefaultLocale($locale)
+    {
+        $this->defaultLocale = $locale;
+    }
+
     protected function getLocale($parameters)
     {
         $locale = parent::getLocale($parameters);
@@ -91,8 +107,11 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
             return $locale;
         }
 
-        if (is_null($this->container) || ! $request = $this->container->get('request')) {
-            throw new \RuntimeException('Request object not available from container');
+        if (is_null($this->container)
+            || ! $this->container->isScopeActive('request')
+            || ! $request = $this->container->get('request')
+        ) {
+            return $this->defaultLocale;
         }
 
         return $request->getLocale();
