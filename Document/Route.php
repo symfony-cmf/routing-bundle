@@ -2,8 +2,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
 
-use Symfony\Component\Routing\Route as SymfonyRoute;
 use Doctrine\Common\Collections\Collection;
+
+use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
@@ -18,30 +19,42 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 {
     /**
      * parent document
+     *
+     * @var object
      */
     protected $parent;
+
     /**
      * PHPCR node name
+     *
+     * @var string
      */
     protected $name;
 
     /**
      * children - needed for the admin to work ...
+     *
+     * @var Collection
      */
     protected $children;
 
     /**
      * The full repository path to this route object
+     *
+     * @var string
      */
     protected $path;
 
     /**
      * The referenced document
+     *
+     * @var object
      */
     protected $routeContent;
 
     /**
      * The part of the phpcr path that is not part of the url
+     *
      * @var string
      */
     protected $idPrefix;
@@ -56,6 +69,8 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
     /**
      * Variable pattern part. The static part of the pattern is the id without the prefix.
+     *
+     * @var string
      */
     protected $variablePattern;
 
@@ -74,8 +89,16 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     protected $options = array();
 
+    /**
+     * @var Boolean
+     */
     protected $needRecompile = false;
 
+    /**
+     * if to add ".{_format}" to the pattern
+     *
+     * @var Boolean
+     */
     protected $addFormatPattern;
 
     /**
