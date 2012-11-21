@@ -1,0 +1,10 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/phpcr/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <mapped-superclass name="Symfony\Component\Routing\Route">
+        <field fieldName="defaults" type="string" assoc=""/>
+        <field fieldName="requirements" type="string" assoc=""/>
+        <field fieldName="options" type="string" assoc=""/>
+    </mapped-superclass>
+
+</doctrine-mapping>
