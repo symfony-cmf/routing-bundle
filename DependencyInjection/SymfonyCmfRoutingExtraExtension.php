@@ -21,14 +21,6 @@ class SymfonyCmfRoutingExtraExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // TODO move this to the Configuration class as soon as it supports setting such a default
-        array_unshift($configs,
-            array('chain' => array(
-                'routers_by_id' => array(
-                    'router.default' => 100,
-                ),
-            ),
-        ));
 
         $processor = new Processor();
         $configuration = new Configuration();
