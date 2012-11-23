@@ -42,9 +42,7 @@ class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
         $alias = $builder->getAlias('symfony_cmf_routing_extra.content_repository');
         $this->assertEquals('symfony_cmf_routing_extra.default_content_repository', $alias->__toString());
 
-        $this->assertTrue($builder->hasAlias('router'));
-        $alias = $builder->getAlias('router');
-        $this->assertEquals('symfony_cmf_routing_extra.router', $alias->__toString());
+        $this->assertTrue($builder->getParameter('symfony_cmf_routing_extra.replace_symfony_router'));
 
         $this->assertTrue($builder->hasDefinition('symfony_cmf_routing_extra.router'));
         $methodCalls = $builder->getDefinition('symfony_cmf_routing_extra.router')->getMethodCalls();
