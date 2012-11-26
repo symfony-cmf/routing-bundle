@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\ChainRouterPass;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\MapperPass;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\SetRouterPass;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\RoutePass;
 
 /**
  * Bundle class
@@ -22,5 +23,6 @@ class SymfonyCmfRoutingExtraBundle extends Bundle
         $container->addCompilerPass(new ChainRouterPass());
         $container->addCompilerPass(new MapperPass());
         $container->addCompilerPass(new SetRouterPass());
+        $container->addCompilerPass(new RoutePass());
     }
 }
