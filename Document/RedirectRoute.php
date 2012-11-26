@@ -34,9 +34,9 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     protected $permanent;
 
     /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection
+     * @var array
      */
-    protected $parameters;
+    protected $parameters = array();
 
     /**
      * Never call this, it makes no sense. The redirect route will return $this
@@ -133,13 +133,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      */
     public function getParameters()
     {
-        if (is_array($this->parameters)) {
-            return $this->parameters;
-        }
-        if (empty($this->parameters)) {
-            return array();
-        }
-        return $this->parameters->toArray();
+        return $this->parameters;
     }
 
     /**
