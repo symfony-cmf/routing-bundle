@@ -75,21 +75,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $variablePattern;
 
     /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection|array
-     */
-    protected $defaults = array();
-
-    /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection|array
-     */
-    protected $requirements = array();
-
-    /**
-     * @var \Doctrine\ODM\PHPCR\MultivaluePropertyCollection|array
-     */
-    protected $options = array();
-
-    /**
      * @var Boolean
      */
     protected $needRecompile = false;
@@ -109,13 +94,12 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function __construct($addFormatPattern = false)
     {
-        $this->postLoad();
-
         $this->addFormatPattern = $addFormatPattern;
         if ($this->addFormatPattern) {
             $this->setDefault('_format', 'html');
             $this->setRequirement('_format', 'html');
         }
+        $this->setOptions(array());
     }
 
     /**
@@ -321,56 +305,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
             parent::setPattern($this->getStaticPrefix() . $this->getVariablePattern());
         }
         return parent::compile();
-    }
-
-    /**
-     * copy defaults/requirements/options to the parent class
-     */
-    public function postLoad()
-    {
-        $defaults = $this->defaults instanceof Collection
-            ? $this->defaults->toArray() : (array)$this->defaults;
-        $this->setDefaults($defaults);
-
-        $requirements = $this->requirements instanceof Collection
-            ? $this->requirements->toArray() : (array)$this->requirements;
-        $this->setRequirements($requirements);
-
-        $options = $this->options instanceof Collection
-            ? $this->options->toArray() : (array)$this->options;
-        $this->setOptions($options);
-    }
-
-    /**
-     * copy defaults/requirements/options from the parent class
-     */
-    public function preStorage()
-    {
-        $defaults = parent::getDefaults();
-        $oldDefaults = $this->defaults instanceof Collection
-            ? $this->defaults->toArray() : $this->defaults;
-        if ($defaults !== $oldDefaults) {
-            $this->defaults = $defaults;
-        }
-
-        $requirements = parent::getRequirements();
-        $oldRequirements = $this->requirements instanceof Collection
-            ? $this->requirements->toArray() : $this->requirements;
-        if ($requirements !== $oldRequirements) {
-            $this->requirements = $requirements;
-        }
-
-        $options = parent::getOptions();
-        // avoid storing the default value for the compiler, in case this ever changes in code
-        // would be nice if those where class constants of the symfony route instead of hardcoded strings
-        if ('Symfony\\Component\\Routing\\RouteCompiler' == $options['compiler_class']) {
-            unset($options['compiler_class']);
-        }
-        $oldOptions = $this->options instanceof Collection
-            ? $this->options->toArray() : $this->options;
-        if ($options !== $oldOptions) {
-            $this->options = $options;
-        }
     }
 
     public function __toString()

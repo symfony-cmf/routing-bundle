@@ -11,16 +11,7 @@
         <children fieldName="children"/>
         <field fieldName="hostnamePattern" type="string"/>
         <field fieldName="variablePattern" type="string"/>
-        <field fieldName="defaults" type="string" assoc=""/>
-        <field fieldName="requirements" type="string" assoc=""/>
-        <field fieldName="options" type="string" assoc=""/>
         <field fieldName="addFormatPattern" type="boolean"/>
-
-        <lifecycle-callbacks>
-            <lifecycle-callback method="postLoad" type="postLoad"/>
-            <lifecycle-callback method="preStorage" type="prePersist"/>
-            <lifecycle-callback method="preStorage" type="preUpdate"/>
-        </lifecycle-callbacks>
     </document>
 
 </doctrine-mapping>
