@@ -63,6 +63,8 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * @since Symfony 2.2 introduces the host name pattern. This default
      * implementation just stores it as a field.
      *
+     * TODO: this could be removed if we would require 2.2 and map the hostname via the parent
+     *
      * @var string
      */
     protected $hostnamePattern = '';
@@ -99,7 +101,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
             $this->setDefault('_format', 'html');
             $this->setRequirement('_format', 'html');
         }
-        $this->setOptions(array());
     }
 
     /**
@@ -228,6 +229,8 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
     /**
      * Hide the core hostname pattern
+     *
+     * TODO: this could be removed if we would require 2.2 and map the hostname via the parent
      */
     public function setHostnamePattern($pattern)
     {
@@ -237,10 +240,54 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
     /**
      * Hide the core hostname pattern
+     *
+     * TODO: this could be removed if we would require 2.2 and map the hostname via the parent
      */
     public function getHostnamePattern()
     {
         return $this->hostnamePattern;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Prevent setting the default 'compiler_class' so that we do not persist it
+     */
+    public function setOptions(array $options)
+    {
+        return $this->addOptions($options);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Handling the missing default 'compiler_class'
+     * @see setOptions
+     */
+    public function getOption($name)
+    {
+        $option = parent::getOption($name);
+        if (null === $option && 'compiler_class' === $name) {
+            return 'Symfony\\Component\\Routing\\RouteCompiler';
+        }
+
+        return $option;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Handling the missing default 'compiler_class'
+     * @see setOptions
+     */
+    public function getOptions()
+    {
+        $options = parent::getOptions();
+        if (!array_key_exists('compiler_class', $options)) {
+            $options['compiler_class'] = 'Symfony\\Component\\Routing\\RouteCompiler';
+        }
+
+        return $options;
     }
 
     /**
