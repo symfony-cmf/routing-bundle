@@ -9,6 +9,7 @@ use PHPCR\RepositoryException;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
 
