@@ -71,6 +71,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $container->setParameter($this->getAlias() . '.controllers_by_alias', $config['controllers_by_alias']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
         $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
+        $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
 
         $loader->load('cmf_routing.xml');
         $container->setParameter($this->getAlias() . '.routing_repositoryroot', $config['routing_repositoryroot']);
