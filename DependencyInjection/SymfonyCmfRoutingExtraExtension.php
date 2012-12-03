@@ -21,7 +21,6 @@ class SymfonyCmfRoutingExtraExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-
         $processor = new Processor();
         $configuration = new Configuration();
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
