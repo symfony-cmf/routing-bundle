@@ -91,6 +91,9 @@ class RouteRepository implements RouteRepositoryInterface
         $candidates = $this->getCandidates($url);
 
         $collection = new RouteCollection();
+        if (empty($candidates)) {
+            return $collection;
+        }
 
         try {
             $routes = $this->dm->findMany($this->className, $candidates);
