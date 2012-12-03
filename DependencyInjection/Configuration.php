@@ -55,6 +55,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('manager_registry')->defaultValue('doctrine_phpcr')->end()
                         ->scalarNode('manager_name')->defaultValue('default')->end()
+                        ->scalarNode('uri_filter_regexp')->defaultValue('')->end()
                         ->scalarNode('route_repository_service_id')->defaultValue('symfony_cmf_routing_extra.default_route_repository')->end()
                         ->scalarNode('content_repository_service_id')->defaultValue('symfony_cmf_routing_extra.default_content_repository')->end()
                         ->scalarNode('routing_repositoryroot')->defaultValue('/cms/routes')->end()

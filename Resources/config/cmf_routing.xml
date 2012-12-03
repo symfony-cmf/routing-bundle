@@ -6,6 +6,7 @@
     <parameters>
         <parameter key="symfony_cmf_routing_extra.dynamic_router_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter</parameter>
         <parameter key="symfony_cmf_routing_extra.route_entity_class">null</parameter>
+        <parameter key="symfony_cmf_routing_extra.uri_filter_regexp">null</parameter>
         <parameter key="symfony_cmf_routing_extra.route_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.content_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\ContentRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\IdPrefix</parameter>
@@ -34,6 +35,7 @@
 
         <service id="symfony_cmf_routing_extra.dynamic_router" class="%symfony_cmf_routing_extra.dynamic_router_class%">
             <argument type="service" id="symfony_cmf_routing_extra.route_repository" />
+            <argument>%symfony_cmf_routing_extra.uri_filter_regexp%</argument>
             <call method="setContext"><argument type="service" id="router.request_context"/></call>
             <call method="setContainer"><argument type="service" id="service_container"/></call>
             <call method="setContentRepository"><argument type="service" id="symfony_cmf_routing_extra.content_repository"/></call>
