@@ -32,7 +32,7 @@ class DynamicRouterTest extends BaseDynamicRouterTest
     }
 
     /**
-     * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
      */
     public function testGenerateInvalidRoute()
     {
