@@ -51,7 +51,7 @@ class RouteRepositoryTest extends BaseTestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Routing\Exception\RouteNotFoundException
+     * @expectedException Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function testFindInvalidUrl()
     {

@@ -8,8 +8,8 @@ use PHPCR\RepositoryException;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
 
 /**
@@ -84,8 +84,8 @@ class RouteRepository implements RouteRepositoryInterface
      */
     public function findManyByUrl($url)
     {
-        if (! is_string($url) || strlen($url) < 1 || '/' != $url[0]) {
-            throw new RouteNotFoundException("$url is not a valid route");
+        if (! is_string($url) || strlen($url) < 1 || '/' !== $url[0]) {
+            throw new ResourceNotFoundException("$url is not a valid route");
         }
 
         $candidates = $this->getCandidates($url);
