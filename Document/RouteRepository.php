@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
-use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
+use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 
 /**
  * Repository to load routes from PHPCR-ODM
@@ -21,7 +21,7 @@ use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
  *
  * @author david.buchmann@liip.ch
  */
-class RouteRepository implements RouteRepositoryInterface
+class RouteRepository implements RouteProviderInterface
 {
     /**
      * @var ObjectManager
