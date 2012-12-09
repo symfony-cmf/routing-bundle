@@ -2,6 +2,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Routing;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
@@ -58,26 +60,32 @@ class DynamicRouterTest extends BaseTestCase
     public function testMatch()
     {
         $expected = array(
-            RouteObjectInterface::CONTROLLER_NAME => 'testController',
-            '_route'        => '/test/routing/testroute/child',
+            RouteObjectInterface::CONTROLLER_NAME,
+            '_route',
+            '_route_name',
         );
 
-        $matches = self::$router->match('/testroute/child');
+        $matches = self::$router->matchRequest(Request::create('/testroute/child'));
         ksort($matches);
-        $this->assertEquals($expected, $matches);
+
+        $this->assertEquals($expected, array_keys($matches));
+        $this->assertEquals('/test/routing/testroute/child', $matches['_route_name']);
     }
 
     public function testMatchParameters()
     {
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME   => 'testController',
-            '_route'        => '/test/routing/testroute',
+            '_route_name'        => '/test/routing/testroute',
             'id'            => '123',
             'slug'          => 'child',
         );
 
-        $matches = self::$router->match('/testroute/child/123');
+        $matches = self::$router->matchRequest(Request::create('/testroute/child/123'));
         ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
         $this->assertEquals($expected, $matches);
     }
 
@@ -86,7 +94,7 @@ class DynamicRouterTest extends BaseTestCase
      */
     public function testNoMatch()
     {
-        self::$router->match('/testroute/child/123a');
+        self::$router->matchRequest(Request::create('/testroute/child/123a'));
     }
 
     /**
@@ -105,7 +113,7 @@ class DynamicRouterTest extends BaseTestCase
         self::$dm->flush();
 
         self::$router->getContext()->setMethod('POST');
-        self::$router->match('/notallowed');
+        self::$router->matchRequest(Request::create('/notallowed'));
     }
 
     public function testMatchDefaultFormat()
@@ -113,11 +121,14 @@ class DynamicRouterTest extends BaseTestCase
         $expected = array(
             '_controller'   => 'testController',
             '_format'       => 'html',
-            '_route'        => '/test/routing/format',
+            '_route_name'        => '/test/routing/format',
             'id'            => '48',
         );
-        $matches = self::$router->match('/format/48');
+        $matches = self::$router->matchRequest(Request::create('/format/48'));
         ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
         $this->assertEquals($expected, $matches);
     }
 
@@ -126,11 +137,14 @@ class DynamicRouterTest extends BaseTestCase
         $expected = array(
             '_controller'   => 'testController',
             '_format'       => 'json',
-            '_route'        => '/test/routing/format',
+            '_route_name'        => '/test/routing/format',
             'id'            => '48',
         );
-        $matches = self::$router->match('/format/48.json');
+        $matches = self::$router->matchRequest(Request::create('/format/48.json'));
         ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
         $this->assertEquals($expected, $matches);
     }
 
@@ -139,7 +153,7 @@ class DynamicRouterTest extends BaseTestCase
      */
     public function testNoMatchingFormat()
     {
-        $matches = self::$router->match('/format/48.xml');
+        self::$router->matchRequest(Request::create('/format/48.xml'));
     }
 
     public function testGenerate()

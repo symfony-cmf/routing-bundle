@@ -34,9 +34,9 @@ class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.route_repository'));
-        $alias = $builder->getAlias('symfony_cmf_routing_extra.route_repository');
-        $this->assertEquals('symfony_cmf_routing_extra.default_route_repository', $alias->__toString());
+        $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.route_provider'));
+        $alias = $builder->getAlias('symfony_cmf_routing_extra.route_provider');
+        $this->assertEquals('symfony_cmf_routing_extra.default_route_provider', $alias->__toString());
 
         $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.content_repository'));
         $alias = $builder->getAlias('symfony_cmf_routing_extra.content_repository');
@@ -74,7 +74,7 @@ class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
         $config = array(
             array(
                 'dynamic' => array(
-                    'route_repository_service_id' => 'test_route_repository_service',
+                    'route_provider_service_id' => 'test_route_provider_service',
                     'content_repository_service_id' => 'test_content_repository_service',
                 ),
                 'use_sonata_admin' => false,
@@ -89,9 +89,9 @@ class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
 
         $builder = $this->getBuilder($config);
 
-        $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.route_repository'));
-        $alias = $builder->getAlias('symfony_cmf_routing_extra.route_repository');
-        $this->assertEquals('test_route_repository_service', $alias->__toString());
+        $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.route_provider'));
+        $alias = $builder->getAlias('symfony_cmf_routing_extra.route_provider');
+        $this->assertEquals('test_route_provider_service', $alias->__toString());
 
         $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.content_repository'));
         $alias = $builder->getAlias('symfony_cmf_routing_extra.content_repository');

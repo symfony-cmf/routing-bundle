@@ -8,20 +8,22 @@ use PHPCR\RepositoryException;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
-use Symfony\Cmf\Component\Routing\RouteRepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 
 /**
- * Repository to load routes from PHPCR-ODM
+ * Provider loading routes from PHPCR-ODM
  *
- * This is <strong>NOT</strong> not a doctrine repository but just the proxy
- * for the DynamicRouter implementing RouteRepositoryInterface
+ * This is <strong>NOT</strong> not a doctrine repository but just the route
+ * provider for the NestedMatcher. (you could of course implement this
+ * interface in a repository class, if you need that)
  *
  * @author david.buchmann@liip.ch
  */
-class RouteRepository implements RouteRepositoryInterface
+class RouteProvider implements RouteProviderInterface
 {
     /**
      * @var ObjectManager
@@ -83,11 +85,9 @@ class RouteRepository implements RouteRepositoryInterface
      * object, it is filtered out. In the extreme case this can also lead to an
      * empty list being returned.
      */
-    public function findManyByUrl($url)
+    public function getRouteCollectionForRequest(Request $request)
     {
-        if (! is_string($url) || strlen($url) < 1 || '/' !== $url[0]) {
-            throw new ResourceNotFoundException("$url is not a valid route");
-        }
+        $url = $request->getPathInfo();
 
         $candidates = $this->getCandidates($url);
 
@@ -100,7 +100,7 @@ class RouteRepository implements RouteRepositoryInterface
             $routes = $this->dm->findMany($this->className, $candidates);
             // filter for valid route objects
             // we can not search for a specific class as PHPCR does not know class inheritance
-            // TODO: but optionally we could define a node type
+            // but optionally we could define a node type
             foreach ($routes as $key => $route) {
                 if ($route instanceof SymfonyRoute) {
                     if (preg_match('/.+\.([a-z]+)$/i', $url, $matches)) {
@@ -136,5 +136,10 @@ class RouteRepository implements RouteRepositoryInterface
         }
 
         return $route;
+    }
+
+    public function getRoutesByNames($names, $parameters = array())
+    {
+        return $this->dm->findMany($this->className, $names);
     }
 }
