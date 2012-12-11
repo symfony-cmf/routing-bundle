@@ -12,6 +12,7 @@
         <field fieldName="hostnamePattern" type="string"/>
         <field fieldName="variablePattern" type="string"/>
         <field fieldName="addFormatPattern" type="boolean"/>
+        <field fieldName="addTrailingSlash" type="boolean"/>
     </document>
 
 </doctrine-mapping>
