@@ -13,6 +13,7 @@
         <parameter key="symfony_cmf_routing_extra.route_provider_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteProvider</parameter>
         <parameter key="symfony_cmf_routing_extra.content_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\ContentRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\IdPrefix</parameter>
+        <parameter key="symfony_cmf_routing_extra.enhancer_route_content_class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_explicit_template_class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_controllers_by_alias_class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_field_by_class_class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
@@ -21,6 +22,10 @@
 
     <services>
 
+        <service id="symfony_cmf_routing_extra.enhancer_route_content" class="%symfony_cmf_routing_extra.enhancer_route_content_class%">
+            <argument>_route</argument>
+            <argument>_content</argument>
+        </service>
         <service id="symfony_cmf_routing_extra.enhancer_explicit_template" class="%symfony_cmf_routing_extra.enhancer_explicit_template_class%">
             <argument>_template</argument>
             <argument>_controller</argument>
@@ -53,6 +58,7 @@
             <argument type="service" id="symfony_cmf_routing_extra.generator" />
             <argument>%symfony_cmf_routing_extra.uri_filter_regexp%</argument>
             <call method="setContainer"><argument type="service" id="service_container"/></call>
+            <call method="addRouteEnhancer"><argument type="service" id="symfony_cmf_routing_extra.enhancer_route_content"/></call>
         </service>
 
         <service id="symfony_cmf_routing_extra.nested_matcher" class="%symfony_cmf_routing_extra.nested_matcher_class%">
