@@ -112,8 +112,7 @@ class DynamicRouterTest extends BaseTestCase
         self::$dm->persist($route);
         self::$dm->flush();
 
-        self::$router->getContext()->setMethod('POST');
-        self::$router->matchRequest(Request::create('/notallowed'));
+        self::$router->matchRequest(Request::create('/notallowed', 'POST'));
     }
 
     public function testMatchDefaultFormat()
