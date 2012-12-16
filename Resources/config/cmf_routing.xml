@@ -8,7 +8,8 @@
         <parameter key="symfony_cmf_routing_extra.route_entity_class">null</parameter>
         <parameter key="symfony_cmf_routing_extra.uri_filter_regexp">null</parameter>
         <parameter key="symfony_cmf_routing_extra.nested_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\NestedMatcher</parameter>
-        <parameter key="symfony_cmf_routing_extra.final_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\UrlMatcher</parameter>
+        <parameter key="symfony_cmf_routing_extra.final_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\ConfigurableUrlMatcher</parameter>
+        <parameter key="symfony_cmf_routing_extra.url_matcher_class">Symfony\Bundle\FrameworkBundle\Routing\RedirectableUrlMatcher</parameter>
         <parameter key="symfony_cmf_routing_extra.generator_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\ContentAwareGenerator</parameter>
         <parameter key="symfony_cmf_routing_extra.route_provider_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteProvider</parameter>
         <parameter key="symfony_cmf_routing_extra.content_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\ContentRepository</parameter>
@@ -67,12 +68,8 @@
         </service>
 
         <service id="symfony_cmf_routing_extra.final_matcher" class="%symfony_cmf_routing_extra.final_matcher_class%">
-            <argument type="service" id="symfony_cmf_routing_extra.empty_route_collection"/>
-            <argument type="service" id="router.request_context"/>
+            <argument>%symfony_cmf_routing_extra.url_matcher_class%</argument>
         </service>
-
-        <!-- TODO: is there a better way to achieve this? -->
-        <service id="symfony_cmf_routing_extra.empty_route_collection" class="Symfony\Component\Routing\RouteCollection" />
 
         <service id="symfony_cmf_routing_extra.generator" class="%symfony_cmf_routing_extra.generator_class%">
             <argument type="service" id="symfony_cmf_routing_extra.route_provider" />
