@@ -3,8 +3,10 @@
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Document;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
+use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteProvider;
 
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
@@ -12,15 +14,16 @@ class RouteRepositoryTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
+    /** @var RouteProvider */
     private static $repository;
 
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
-        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.route_repository');
+        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.route_provider');
     }
 
-    public function testFindManyByUrl()
+    public function testGetRouteCollectionForRequest()
     {
         $route = new Route;
         $root = self::$dm->find(null, self::ROUTE_ROOT);
@@ -42,7 +45,7 @@ class RouteRepositoryTest extends BaseTestCase
 
         self::$dm->clear();
 
-        $routes = self::$repository->findManyByUrl('/testroute/noroute/child');
+        $routes = self::$repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child'));
         $this->assertCount(3, $routes);
 
         foreach ($routes as $route) {
@@ -50,17 +53,9 @@ class RouteRepositoryTest extends BaseTestCase
         }
     }
 
-    /**
-     * @expectedException Symfony\Component\Routing\Exception\ResourceNotFoundException
-     */
-    public function testFindInvalidUrl()
-    {
-        self::$repository->findManyByUrl('x');
-    }
-
     public function testFindNophpcrUrl()
     {
-        $collection = self::$repository->findManyByUrl('///');
+        $collection = self::$repository->getRouteCollectionForRequest(Request::create('///'));
         $this->assertInstanceOf('Symfony\\Component\\Routing\\RouteCollection', $collection);
         $this->assertCount(0, $collection);
     }

@@ -71,12 +71,18 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $container->setParameter($this->getAlias() . '.controllers_by_alias', $config['controllers_by_alias']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
         $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
+        // if the content class defines the template, we also need to make sure we use the generic controller for those routes
+        $controllerForTemplates = array();
+        foreach ($config['templates_by_class'] as $key => $value) {
+            $controllerForTemplates[$key] = $config['generic_controller'];
+        }
+        $container->setParameter($this->getAlias() . '.defined_templates_class', $controllerForTemplates);
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
 
         $loader->load('cmf_routing.xml');
         $container->setParameter($this->getAlias() . '.routing_repositoryroot', $config['routing_repositoryroot']);
 
-        $container->setAlias('symfony_cmf_routing_extra.route_repository', $config['route_repository_service_id']);
+        $container->setAlias('symfony_cmf_routing_extra.route_provider', $config['route_provider_service_id']);
         $container->setAlias('symfony_cmf_routing_extra.content_repository', $config['content_repository_service_id']);
 
         $managerRegistry = $container->getDefinition($this->getAlias() . '.manager_registry');
@@ -85,19 +91,19 @@ class SymfonyCmfRoutingExtraExtension extends Extension
 
         $dynamic = $container->getDefinition($this->getAlias().'.dynamic_router');
 
-        // if any mappings are defined, set the respective controller mapper
+        // if any mappings are defined, set the respective route enhancer
         if (!empty($config['generic_controller'])) {
-            $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_explicit_template')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_explicit_template')));
         }
         if (!empty($config['controllers_by_alias'])) {
-            $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_controllers_by_alias')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_alias')));
         }
         if (!empty($config['controllers_by_class'])) {
-            $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_controllers_by_class')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_class')));
         }
-
         if (!empty($config['generic_controller']) && !empty($config['templates_by_class'])) {
-            $dynamic->addMethodCall('addControllerMapper', array(new Reference($this->getAlias() . '.mapper_templates_by_class')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controller_for_templates_by_class')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_templates_by_class')));
         }
     }
 

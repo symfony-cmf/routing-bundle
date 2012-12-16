@@ -2,10 +2,14 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Routing;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Testdoc\Content;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
 
 /**
@@ -58,26 +62,32 @@ class DynamicRouterTest extends BaseTestCase
     public function testMatch()
     {
         $expected = array(
-            RouteObjectInterface::CONTROLLER_NAME => 'testController',
-            '_route'        => '/test/routing/testroute/child',
+            RouteObjectInterface::CONTROLLER_NAME,
+            '_route',
+            '_route_name',
         );
 
-        $matches = self::$router->match('/testroute/child');
+        $matches = self::$router->matchRequest(Request::create('/testroute/child'));
         ksort($matches);
-        $this->assertEquals($expected, $matches);
+
+        $this->assertEquals($expected, array_keys($matches));
+        $this->assertEquals('/test/routing/testroute/child', $matches['_route_name']);
     }
 
     public function testMatchParameters()
     {
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME   => 'testController',
-            '_route'        => '/test/routing/testroute',
-            'id'            => '123',
-            'slug'          => 'child',
+            '_route_name' => '/test/routing/testroute',
+            'id'          => '123',
+            'slug'        => 'child',
         );
 
-        $matches = self::$router->match('/testroute/child/123');
+        $matches = self::$router->matchRequest(Request::create('/testroute/child/123'));
         ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
         $this->assertEquals($expected, $matches);
     }
 
@@ -86,7 +96,7 @@ class DynamicRouterTest extends BaseTestCase
      */
     public function testNoMatch()
     {
-        self::$router->match('/testroute/child/123a');
+        self::$router->matchRequest(Request::create('/testroute/child/123a'));
     }
 
     /**
@@ -104,33 +114,38 @@ class DynamicRouterTest extends BaseTestCase
         self::$dm->persist($route);
         self::$dm->flush();
 
-        self::$router->getContext()->setMethod('POST');
-        self::$router->match('/notallowed');
+        self::$router->matchRequest(Request::create('/notallowed', 'POST'));
     }
 
     public function testMatchDefaultFormat()
     {
         $expected = array(
-            '_controller'   => 'testController',
-            '_format'       => 'html',
-            '_route'        => '/test/routing/format',
-            'id'            => '48',
+            '_controller' => 'testController',
+            '_format'     => 'html',
+            '_route_name' => '/test/routing/format',
+            'id'          => '48',
         );
-        $matches = self::$router->match('/format/48');
+        $matches = self::$router->matchRequest(Request::create('/format/48'));
         ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
         $this->assertEquals($expected, $matches);
     }
 
     public function testMatchFormat()
     {
         $expected = array(
-            '_controller'   => 'testController',
-            '_format'       => 'json',
-            '_route'        => '/test/routing/format',
-            'id'            => '48',
+            '_controller' => 'testController',
+            '_format'     => 'json',
+            '_route_name' => '/test/routing/format',
+            'id'          => '48',
         );
-        $matches = self::$router->match('/format/48.json');
+        $matches = self::$router->matchRequest(Request::create('/format/48.json'));
         ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
         $this->assertEquals($expected, $matches);
     }
 
@@ -139,7 +154,87 @@ class DynamicRouterTest extends BaseTestCase
      */
     public function testNoMatchingFormat()
     {
-        $matches = self::$router->match('/format/48.xml');
+        self::$router->matchRequest(Request::create('/format/48.xml'));
+    }
+
+    public function testEnhanceControllerByAlias()
+    {
+        // put a redirect route
+        $root = self::$dm->find(null, self::ROUTE_ROOT);
+
+        $route = new RedirectRoute;
+        $route->setDefault('type', 'demo_alias');
+        $route->setPosition($root, 'controlleralias');
+        self::$dm->persist($route);
+        self::$dm->flush();
+
+        $expected = array(
+            '_controller' => 'test.controller:aliasAction',
+            '_route_name' => '/test/routing/controlleralias',
+            'type'        => 'demo_alias',
+        );
+        $matches = self::$router->matchRequest(Request::create('/controlleralias'));
+        ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
+        $this->assertEquals($expected, $matches);
+    }
+
+    public function testEnhanceControllerByClass()
+    {
+        // put a redirect route
+        $root = self::$dm->find(null, self::ROUTE_ROOT);
+
+        $route = new RedirectRoute;
+        $route->setRouteTarget($root);
+        $route->setPosition($root, 'redirect');
+        self::$dm->persist($route);
+        self::$dm->flush();
+
+        $expected = array(
+            '_controller' => 'symfony_cmf_routing_extra.redirect_controller:redirectAction',
+            '_route_name' => '/test/routing/redirect',
+        );
+        $matches = self::$router->matchRequest(Request::create('/redirect'));
+        ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
+        $this->assertEquals($expected, $matches);
+    }
+
+    public function testEnhanceTemplateByClass()
+    {
+        if ($content = self::$dm->find(null, '/templatebyclass')) {
+            self::$dm->remove($content);
+            self::$dm->flush();
+        }
+        $document = new Content();
+        $document->path = '/templatebyclass';
+
+        // put a route for this content
+        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $route = new Route;
+        $route->setRouteContent($document);
+        $route->setPosition($root, 'templatebyclass');
+        self::$dm->persist($route);
+        self::$dm->flush();
+
+        $expected = array(
+            '_controller' => 'symfony_cmf_content.controller:indexAction',
+            '_route_name' => '/test/routing/templatebyclass',
+        );
+        $request = Request::create('/templatebyclass');
+        $matches = self::$router->matchRequest($request);
+        ksort($matches);
+
+        $this->assertArrayHasKey('_route', $matches);
+        unset($matches['_route']);
+        $this->assertEquals($expected, $matches);
+
+        $this->assertTrue($request->attributes->has(DynamicRouter::CONTENT_TEMPLATE));
+        $this->assertEquals('TestBundle:Content:index.html.twig', $request->attributes->get(DynamicRouter::CONTENT_TEMPLATE));
     }
 
     public function testGenerate()
