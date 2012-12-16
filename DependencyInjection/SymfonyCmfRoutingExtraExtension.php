@@ -71,6 +71,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $container->setParameter($this->getAlias() . '.controllers_by_alias', $config['controllers_by_alias']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
         $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
+        // if the content class defines the template, we also need to make sure we use the generic controller for those routes
         $controllerForTemplates = array();
         foreach ($config['templates_by_class'] as $key => $value) {
             $controllerForTemplates[$key] = $config['generic_controller'];
