@@ -72,7 +72,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
         $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
         $controllerForTemplates = array();
-        foreach($config['templates_by_class'] as $key => $value) {
+        foreach ($config['templates_by_class'] as $key => $value) {
             $controllerForTemplates[$key] = $config['generic_controller'];
         }
         $container->setParameter($this->getAlias() . '.defined_templates_class', $controllerForTemplates);
