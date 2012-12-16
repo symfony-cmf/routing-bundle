@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Returns the config tree builder.
      *
-     * @return \Symfony\Component\DependencyInjection\Configuration\NodeInterface
+     * @return TreeBuilder
      */
     public function getConfigTreeBuilder()
     {
@@ -56,7 +56,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('manager_registry')->defaultValue('doctrine_phpcr')->end()
                         ->scalarNode('manager_name')->defaultValue('default')->end()
                         ->scalarNode('uri_filter_regexp')->defaultValue('')->end()
-                        ->scalarNode('route_repository_service_id')->defaultValue('symfony_cmf_routing_extra.default_route_repository')->end()
+                        ->scalarNode('route_provider_service_id')->defaultValue('symfony_cmf_routing_extra.default_route_provider')->end()
                         ->scalarNode('content_repository_service_id')->defaultValue('symfony_cmf_routing_extra.default_content_repository')->end()
                         ->scalarNode('routing_repositoryroot')->defaultValue('/cms/routes')->end()
                     ->end()

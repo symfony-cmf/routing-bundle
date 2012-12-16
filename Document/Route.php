@@ -89,18 +89,26 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $addFormatPattern;
 
     /**
+     * if to add "/" to the pattern
+     *
+     * @var Boolean
+     */
+    protected $addTrailingSlash;
+
+    /**
      * Overwrite to be able to create route without pattern
      *
      * @param Boolean $addFormatPattern if to add ".{_format}" to the route pattern
      *                                  also implicitly sets a default/require on "_format" to "html"
      */
-    public function __construct($addFormatPattern = false)
+    public function __construct($addFormatPattern = false, $addTrailingSlash = false)
     {
         $this->addFormatPattern = $addFormatPattern;
         if ($this->addFormatPattern) {
             $this->setDefault('_format', 'html');
             $this->setRequirement('_format', 'html');
         }
+        $this->addTrailingSlash = $addTrailingSlash;
     }
 
     /**
@@ -298,6 +306,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $pattern = $this->getStaticPrefix() . $this->getVariablePattern();
         if ($this->addFormatPattern && !preg_match('/(.+)\.[a-z]+$/i', $pattern, $matches)) {
             $pattern .= '.{_format}';
+        };
+        if ($this->addTrailingSlash && '/' !== $pattern[strlen($pattern)-1]) {
+            $pattern .= '/';
         };
         return $pattern;
     }

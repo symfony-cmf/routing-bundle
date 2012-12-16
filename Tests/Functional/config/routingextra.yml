@@ -6,10 +6,9 @@ symfony_cmf_routing_extra:
     dynamic:
         enabled: true
         controllers_by_alias:
-            demo_alias: sandbox_main.controller:aliasAction
+            demo_alias: test.controller:aliasAction
         controllers_by_class:
-            Sandbox\MainBundle\Document\DemoClassContent: sandbox_main.controller:classAction
             Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute:  symfony_cmf_routing_extra.redirect_controller:redirectAction
         templates_by_class:
-            Sandbox\MainBundle\Document\EditableStaticContent: SandboxMainBundle:EditableStaticContent:index.html.twig
+            Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Testdoc\Content: TestBundle:Content:index.html.twig
         routing_repositoryroot: /test/routing

@@ -2,23 +2,18 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Routing;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+
 use Symfony\Cmf\Component\Routing\DynamicRouter as BaseDynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 
 /**
- * A router that reads route entries from an Object-Document Mapper store.
- *
- * This is basically using the symfony routing matcher and generator. Different
- * to the default router, the route collection is loaded from the injected
- * route repository custom per request to not load a potentially large number
- * of routes that are known to not match anyways.
- *
- * If the route provides a content, that content is placed in the request
- * object with the CONTENT_KEY for the controller to use.
+ * Symfony framework integration of the CMF routing component DynamicRouter class
  *
  * @author Filippo de Santis
  * @author David Buchmann
@@ -45,35 +40,55 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
      */
     protected $container;
 
-    /**
-     * @var string
-     */
-    protected $defaultLocale = null;
-
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
     /**
+     * Put content and template name into the request attributes instead of the
+     * route defaults.
+     *
      * {@inheritDoc}
      *
-     * Put content into the request attributes instead of the defaults
+     * The match should identify  a controller for symfony. This can either be
+     * the fully qualified class name or the service name of a controller that
+     * is registered as a service. In both cases, the action to call on that
+     * controller is appended, separated with two colons.
      */
     public function match($url)
     {
         $defaults = parent::match($url);
 
-        if (isset($defaults[RouteObjectInterface::CONTENT_OBJECT])) {
-            $request = $this->getRequest();
+        return $this->cleanDefaults($defaults);
+    }
 
+    public function matchRequest(Request $request)
+    {
+        $defaults = parent::matchRequest($request);
+
+        return $this->cleanDefaults($defaults, $request);
+    }
+
+    /**
+     * Clean up the match data and move some values into the request attributes.
+     *
+     * @param array $defaults The defaults from the match
+     * @param Request $request The request object if available
+     *
+     * @return array the updated defaults to return for this match
+     */
+    protected function cleanDefaults($defaults, Request $request = null)
+    {
+        if (null === $request) {
+            $request = $this->getRequest();
+        }
+        if (isset($defaults[RouteObjectInterface::CONTENT_OBJECT])) {
             $request->attributes->set(self::CONTENT_KEY, $defaults[RouteObjectInterface::CONTENT_OBJECT]);
             unset($defaults[RouteObjectInterface::CONTENT_OBJECT]);
         }
 
         if (isset($defaults[RouteObjectInterface::TEMPLATE_NAME])) {
-            $request = $this->getRequest();
-
             $request->attributes->set(self::CONTENT_TEMPLATE, $defaults[RouteObjectInterface::TEMPLATE_NAME]);
             unset($defaults[RouteObjectInterface::TEMPLATE_NAME]);
         }
@@ -84,36 +99,8 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
     public function getRequest()
     {
         if (!$request = $this->container->get('request')) {
-            throw new \Exception('Request object not available from container');
+            throw new ResourceNotFoundException('Request object not available from container');
         }
         return $request;
-    }
-
-    /**
-     * Overwrite the locale to be used by default if there is neither one in
-     * the parameters when building the route nor a request available (i.e. CLI).
-     *
-     * @param string $locale
-     */
-    public function setDefaultLocale($locale)
-    {
-        $this->defaultLocale = $locale;
-    }
-
-    protected function getLocale($parameters)
-    {
-        $locale = parent::getLocale($parameters);
-        if ($locale) {
-            return $locale;
-        }
-
-        if (is_null($this->container)
-            || ! $this->container->isScopeActive('request')
-            || ! $request = $this->container->get('request')
-        ) {
-            return $this->defaultLocale;
-        }
-
-        return $request->getLocale();
     }
 }
