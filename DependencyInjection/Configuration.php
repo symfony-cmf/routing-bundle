@@ -3,7 +3,6 @@
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
@@ -65,7 +64,7 @@ class Configuration implements ConfigurationInterface
                     ->values(array(true, false, 'auto'))
                     ->defaultValue('auto')
                 ->end()
-                ->scalarNode('content_basepath')->defaultNull()->end()
+                ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()
                 // TODO: fix widget to show root node when root is selectable, then use routing_repositoryroot for both
                 ->scalarNode('route_basepath')->defaultValue('/cms')->end()
             ->end()

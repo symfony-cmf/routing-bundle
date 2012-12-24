@@ -115,15 +115,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         }
 
         $loader->load('routing-extra-admin.xml');
-        $contentBasepath = $config['content_basepath'];
-        if (null === $contentBasepath) {
-            if ($container->hasParameter('symfony_cmf_content.content_basepath')) {
-                $contentBasepath = $container->getParameter('symfony_cmf_content.content_basepath');
-            } else {
-                $contentBasepath = '/cms/content';
-            }
-        }
-        $container->setParameter($this->getAlias() . '.content_basepath', $contentBasepath);
+        $container->setParameter($this->getAlias() . '.content_basepath', $config['content_basepath']);
         $container->setParameter($this->getAlias() . '.route_basepath', $config['route_basepath']);
     }
 }
