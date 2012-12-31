@@ -49,13 +49,7 @@ class RouteAdmin extends Admin
                 ->add('name', 'text', array('label'=>'Last URL part'))
                 ->add('variablePattern', 'text', array('required' => false))
                 ->add('routeContent', 'doctrine_phpcr_type_tree_model', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
-                ->add('defaults', 'sonata_type_immutable_array', array(
-                    'keys' => array(
-                        array('_locale', 'text', array('required' => true)),
-                        array('_controller', 'text', array('required' => false)),
-                        array('_template', 'text', array('required' => false)),
-                    )
-                ))
+                ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
                 // TODO edit key-value fields for options
             ->end();
     }
@@ -96,6 +90,15 @@ class RouteAdmin extends Admin
         return $new;
     }
 
+    protected function configureFieldsForDefaults()
+    {
+        return array(
+            array('_locale', 'text', array('required' => true)),
+            array('_controller', 'text', array('required' => false)),
+            array('_template', 'text', array('required' => false)),
+        );
+    }
+
     public function prePersist($object)
     {
         $defaults = array_filter($object->getDefaults());
@@ -110,43 +113,61 @@ class RouteAdmin extends Admin
 
     public function validate(ErrorElement $errorElement, $object)
     {
-        $container = $this->getConfigurationPool()->getContainer();
         $defaults = $object->getDefaults();
 
+        $this->validateDefaultsLocale($errorElement, $object);
+
+        if (isset($defaults['_controller'])) {
+            $this->validateDefaultsController($errorElement, $object);
+        }
+
+        if (isset($defaults['_template'])) {
+            $this->validateDefaultsTemplate($errorElement, $object);
+        }
+    }
+
+    protected function validateDefaultsLocale(ErrorElement $errorElement, $object)
+    {
         $errorElement
             ->with('defaults[_locale]')
                 ->assertNotBlank()
             ->end()
         ;
+    }
 
-        if (isset($defaults['_template'])) {
-            $templating = $container->get('templating');
-            $template = $defaults['_template'];
+    protected function validateDefaultsController(ErrorElement $errorElement, $object)
+    {
+        $defaults = $object->getDefaults();
 
-            if (false === $templating->exists($template)) {
-                $errorElement
-                    ->with('defaults')
-                        ->addViolation(sprintf('Template "%s" does not exist.', $template))
-                    ->end()
-                ;
-            }
+        $controllerResolver = $this->getConfigurationPool()->getContainer()->get('controller_resolver');
+        $controller = $defaults['_controller'];
+
+        $request = new Request(array(), array(), array('_controller' => $controller));
+
+        try {
+            $controllerResolver->getController($request);
+        } catch (\LogicException $e) {
+            $errorElement
+                ->with('defaults')
+                    ->addViolation($e->getMessage())
+                ->end()
+            ;
         }
+    }
 
-        if (isset($defaults['_controller'])) {
-            $controllerResolver = $container->get('controller_resolver');
-            $controller = $defaults['_controller'];
+    protected function validateDefaultsTemplate(ErrorElement $errorElement, $object)
+    {
+        $defaults = $object->getDefaults();
 
-            $request = new Request(array(), array(), array('_controller' => $controller));
+        $templating = $this->getConfigurationPool()->getContainer()->get('templating');
+        $template = $defaults['_template'];
 
-            try {
-                $controllerResolver->getController($request);
-            } catch (\LogicException $e) {
-                $errorElement
-                    ->with('defaults')
-                        ->addViolation($e->getMessage())
-                    ->end()
-                ;
-            }
+        if (false === $templating->exists($template)) {
+            $errorElement
+                ->with('defaults')
+                    ->addViolation(sprintf('Template "%s" does not exist.', $template))
+                ->end()
+            ;
         }
     }
 }
