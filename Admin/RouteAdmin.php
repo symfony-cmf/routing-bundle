@@ -8,6 +8,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+
 use Symfony\Component\HttpFoundation\Request;
 
 class RouteAdmin extends Admin
@@ -78,6 +80,20 @@ class RouteAdmin extends Admin
     public function getExportFormats()
     {
         return array();
+    }
+
+    public function getNewInstance()
+    {
+        /** @var $new Route */
+        $new = parent::getNewInstance();
+
+        if ($this->hasRequest()) {
+            $currentLocale = $this->getRequest()->attributes->get('_locale');
+
+            $new->setDefault('_locale', $currentLocale);
+        }
+
+        return $new;
     }
 
     public function prePersist($object)
