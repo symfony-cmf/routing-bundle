@@ -6,6 +6,11 @@ use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
+
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+
+use Symfony\Component\HttpFoundation\Request;
 
 class RouteAdmin extends Admin
 {
@@ -44,7 +49,8 @@ class RouteAdmin extends Admin
                 ->add('name', 'text', array('label'=>'Last URL part'))
                 ->add('variablePattern', 'text', array('required' => false))
                 ->add('routeContent', 'doctrine_phpcr_type_tree_model', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
-                // TODO edit key-value fields for defaults and options
+                ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
+                // TODO edit key-value fields for options
             ->end();
     }
 
@@ -68,5 +74,100 @@ class RouteAdmin extends Admin
     public function getExportFormats()
     {
         return array();
+    }
+
+    public function getNewInstance()
+    {
+        /** @var $new Route */
+        $new = parent::getNewInstance();
+
+        if ($this->hasRequest()) {
+            $currentLocale = $this->getRequest()->attributes->get('_locale');
+
+            $new->setDefault('_locale', $currentLocale);
+        }
+
+        return $new;
+    }
+
+    protected function configureFieldsForDefaults()
+    {
+        return array(
+            array('_locale', 'text', array('required' => true)),
+            array('_controller', 'text', array('required' => false)),
+            array('_template', 'text', array('required' => false)),
+        );
+    }
+
+    public function prePersist($object)
+    {
+        $defaults = array_filter($object->getDefaults());
+        $object->setDefaults($defaults);
+    }
+
+    public function preUpdate($object)
+    {
+        $defaults = array_filter($object->getDefaults());
+        $object->setDefaults($defaults);
+    }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $defaults = $object->getDefaults();
+
+        $this->validateDefaultsLocale($errorElement, $object);
+
+        if (isset($defaults['_controller'])) {
+            $this->validateDefaultsController($errorElement, $object);
+        }
+
+        if (isset($defaults['_template'])) {
+            $this->validateDefaultsTemplate($errorElement, $object);
+        }
+    }
+
+    protected function validateDefaultsLocale(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->with('defaults[_locale]')
+                ->assertNotBlank()
+            ->end()
+        ;
+    }
+
+    protected function validateDefaultsController(ErrorElement $errorElement, $object)
+    {
+        $defaults = $object->getDefaults();
+
+        $controllerResolver = $this->getConfigurationPool()->getContainer()->get('controller_resolver');
+        $controller = $defaults['_controller'];
+
+        $request = new Request(array(), array(), array('_controller' => $controller));
+
+        try {
+            $controllerResolver->getController($request);
+        } catch (\LogicException $e) {
+            $errorElement
+                ->with('defaults')
+                    ->addViolation($e->getMessage())
+                ->end()
+            ;
+        }
+    }
+
+    protected function validateDefaultsTemplate(ErrorElement $errorElement, $object)
+    {
+        $defaults = $object->getDefaults();
+
+        $templating = $this->getConfigurationPool()->getContainer()->get('templating');
+        $template = $defaults['_template'];
+
+        if (false === $templating->exists($template)) {
+            $errorElement
+                ->with('defaults')
+                    ->addViolation(sprintf('Template "%s" does not exist.', $template))
+                ->end()
+            ;
+        }
     }
 }
