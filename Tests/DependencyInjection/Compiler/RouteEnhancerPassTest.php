@@ -2,18 +2,18 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\DependencyInjection\Compiler;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\MapperPass;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\RouteEnhancerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class MapperPassTest extends \PHPUnit_Framework_TestCase
+class RouteEnhancerPassTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMapperPass()
+    public function testRouteEnhancerPass()
     {
         $serviceIds = array(
-            'test_mapper' => array(
+            'test_enhancer' => array(
                 0 => array(
-                    'id' => 'foo_mapper'
+                    'id' => 'foo_enhancer'
                 )
             ),
         );
@@ -31,11 +31,10 @@ class MapperPassTest extends \PHPUnit_Framework_TestCase
             ->with('symfony_cmf_routing_extra.dynamic_router')
             ->will($this->returnValue($definition));
 
-        $pass = new MapperPass();
+        $pass = new RouteEnhancerPass();
         $pass->process($builder);
         $calls = $definition->getMethodCalls();
         $this->assertEquals(1, count($calls));
-        $this->assertEquals('addControllerMapper', $calls[0][0]);
+        $this->assertEquals('addRouteEnhancer', $calls[0][0]);
     }
 }
-
