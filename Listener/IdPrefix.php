@@ -25,6 +25,14 @@ class IdPrefix
         $this->idPrefix = $prefix;
     }
 
+    /**
+     * @param $prefix
+     */
+    public function setPrefix($prefix)
+    {
+        $this->idPrefix = $prefix;
+    }
+
     public function postLoad(LifecycleEventArgs $args)
     {
         $this->updateId($args);
