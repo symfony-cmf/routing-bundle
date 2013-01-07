@@ -1,0 +1,22 @@
+dashboard:
+    group_routing: Routing
+    label_routing: Route
+
+breadcrumb:
+    link_route_list: Routes
+    link_route_create: Create
+    link_route_edit: Edit
+
+filter:
+    label_name: Name
+
+list:
+    label_path: Path
+
+form:
+    group_general: General
+    label_parent: Parent
+    label_name: Last URL part
+    label_variable_pattern: Variable pattern
+    label_route_content: Content
+    label_defaults: Defaults
