@@ -212,6 +212,7 @@ class DynamicRouterTest extends BaseTestCase
         }
         $document = new Content();
         $document->path = '/templatebyclass';
+        self::$dm->persist($document);
 
         // put a route for this content
         $root = self::$dm->find(null, self::ROUTE_ROOT);
