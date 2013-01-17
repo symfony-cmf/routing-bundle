@@ -63,31 +63,33 @@ class DynamicRouterTest extends BaseTestCase
     {
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME,
-            '_route',
-            '_route_name',
+            RouteObjectInterface::ROUTE_NAME,
         );
 
-        $matches = self::$router->matchRequest(Request::create('/testroute/child'));
+        $request = Request::create('/testroute/child');
+        $matches = self::$router->matchRequest($request);
         ksort($matches);
 
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         $this->assertEquals($expected, array_keys($matches));
-        $this->assertEquals('/test/routing/testroute/child', $matches['_route_name']);
+        $this->assertEquals('/test/routing/testroute/child', $matches[RouteObjectInterface::ROUTE_NAME]);
     }
 
     public function testMatchParameters()
     {
         $expected = array(
             RouteObjectInterface::CONTROLLER_NAME   => 'testController',
-            '_route_name' => '/test/routing/testroute',
+            RouteObjectInterface::ROUTE_NAME => '/test/routing/testroute',
             'id'          => '123',
             'slug'        => 'child',
         );
 
-        $matches = self::$router->matchRequest(Request::create('/testroute/child/123'));
+        $request = Request::create('/testroute/child/123');
+
+        $matches = self::$router->matchRequest($request);
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         ksort($matches);
 
-        $this->assertArrayHasKey('_route', $matches);
-        unset($matches['_route']);
         $this->assertEquals($expected, $matches);
     }
 
@@ -122,14 +124,14 @@ class DynamicRouterTest extends BaseTestCase
         $expected = array(
             '_controller' => 'testController',
             '_format'     => 'html',
-            '_route_name' => '/test/routing/format',
+            RouteObjectInterface::ROUTE_NAME => '/test/routing/format',
             'id'          => '48',
         );
-        $matches = self::$router->matchRequest(Request::create('/format/48'));
+        $request = Request::create('/format/48');
+        $matches = self::$router->matchRequest($request);
         ksort($matches);
 
-        $this->assertArrayHasKey('_route', $matches);
-        unset($matches['_route']);
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         $this->assertEquals($expected, $matches);
     }
 
@@ -138,14 +140,14 @@ class DynamicRouterTest extends BaseTestCase
         $expected = array(
             '_controller' => 'testController',
             '_format'     => 'json',
-            '_route_name' => '/test/routing/format',
+            RouteObjectInterface::ROUTE_NAME => '/test/routing/format',
             'id'          => '48',
         );
-        $matches = self::$router->matchRequest(Request::create('/format/48.json'));
+        $request = Request::create('/format/48.json');
+        $matches = self::$router->matchRequest($request);
         ksort($matches);
 
-        $this->assertArrayHasKey('_route', $matches);
-        unset($matches['_route']);
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         $this->assertEquals($expected, $matches);
     }
 
@@ -170,14 +172,14 @@ class DynamicRouterTest extends BaseTestCase
 
         $expected = array(
             '_controller' => 'test.controller:aliasAction',
-            '_route_name' => '/test/routing/controlleralias',
+            RouteObjectInterface::ROUTE_NAME => '/test/routing/controlleralias',
             'type'        => 'demo_alias',
         );
-        $matches = self::$router->matchRequest(Request::create('/controlleralias'));
+        $request = Request::create('/controlleralias');
+        $matches = self::$router->matchRequest($request);
         ksort($matches);
 
-        $this->assertArrayHasKey('_route', $matches);
-        unset($matches['_route']);
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         $this->assertEquals($expected, $matches);
     }
 
@@ -194,13 +196,13 @@ class DynamicRouterTest extends BaseTestCase
 
         $expected = array(
             '_controller' => 'symfony_cmf_routing_extra.redirect_controller:redirectAction',
-            '_route_name' => '/test/routing/redirect',
+            RouteObjectInterface::ROUTE_NAME => '/test/routing/redirect',
         );
-        $matches = self::$router->matchRequest(Request::create('/redirect'));
+        $request = Request::create('/redirect');
+        $matches = self::$router->matchRequest($request);
         ksort($matches);
 
-        $this->assertArrayHasKey('_route', $matches);
-        unset($matches['_route']);
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         $this->assertEquals($expected, $matches);
     }
 
@@ -224,16 +226,14 @@ class DynamicRouterTest extends BaseTestCase
 
         $expected = array(
             '_controller' => 'symfony_cmf_content.controller:indexAction',
-            '_route_name' => '/test/routing/templatebyclass',
+            RouteObjectInterface::ROUTE_NAME => '/test/routing/templatebyclass',
         );
         $request = Request::create('/templatebyclass');
         $matches = self::$router->matchRequest($request);
         ksort($matches);
 
-        $this->assertArrayHasKey('_route', $matches);
-        unset($matches['_route']);
         $this->assertEquals($expected, $matches);
-
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         $this->assertTrue($request->attributes->has(DynamicRouter::CONTENT_TEMPLATE));
         $this->assertEquals('TestBundle:Content:index.html.twig', $request->attributes->get(DynamicRouter::CONTENT_TEMPLATE));
     }

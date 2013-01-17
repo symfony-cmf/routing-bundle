@@ -23,6 +23,11 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
 {
     /**
+     * key for the request attribute that contains the route document
+     */
+    const ROUTE_KEY = 'routeDocument';
+
+    /**
      * key for the request attribute that contains the content document if this
      * route has one associated
      */
@@ -35,7 +40,8 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
     const CONTENT_TEMPLATE = 'contentTemplate';
 
     /**
-     * To get the request from, as its not available immediatly
+     * To get the request from, as its not available immediately
+     *
      * @var ContainerInterface
      */
     protected $container;
@@ -83,6 +89,12 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
         if (null === $request) {
             $request = $this->getRequest();
         }
+
+        if (isset($defaults[RouteObjectInterface::ROUTE_OBJECT])) {
+            $request->attributes->set(self::ROUTE_KEY, $defaults[RouteObjectInterface::ROUTE_OBJECT]);
+            unset($defaults[RouteObjectInterface::ROUTE_OBJECT]);
+        }
+
         if (isset($defaults[RouteObjectInterface::CONTENT_OBJECT])) {
             $request->attributes->set(self::CONTENT_KEY, $defaults[RouteObjectInterface::CONTENT_OBJECT]);
             unset($defaults[RouteObjectInterface::CONTENT_OBJECT]);
