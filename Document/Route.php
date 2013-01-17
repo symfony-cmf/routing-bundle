@@ -103,6 +103,10 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function __construct($addFormatPattern = false, $addTrailingSlash = false)
     {
+        $this->setDefaults(array());
+        $this->setRequirements(array());
+        $this->setOptions(array());
+
         $this->addFormatPattern = $addFormatPattern;
         if ($this->addFormatPattern) {
             $this->setDefault('_format', 'html');
