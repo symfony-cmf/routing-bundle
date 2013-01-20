@@ -4,7 +4,12 @@ php:
     - 5.3
     - 5.4
 
+env:
+  - SYMFONY_VERSION=2.1.*
+  - SYMFONY_VERSION=dev-master
+
 before_script:
+  - composer require symfony/routing:${SYMFONY_VERSION}
   - composer install --dev
   - cp ./Tests/Functional/config/parameters.yml.dist ./Tests/Functional/config/parameters.yml
   - php Tests/Functional/console doctrine:phpcr:init:dbal

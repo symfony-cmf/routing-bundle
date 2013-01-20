@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "symfony/class-loader": ">=2.1,<2.3-dev",
-        "doctrine/doctrine-bundle": "1.0.*",
+        "doctrine/doctrine-bundle": "1.*",
         "symfony/yaml": ">=2.1,<2.3-dev",
         "symfony/form": ">=2.1,<2.3-dev",
         "symfony/finder": ">=2.1,<2.3-dev",
