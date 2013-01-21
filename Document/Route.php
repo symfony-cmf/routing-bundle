@@ -43,7 +43,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @var string
      */
-    protected $path;
+    protected $id;
 
     /**
      * The referenced document
@@ -98,8 +98,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * Overwrite to be able to create route without pattern
      *
-     * @param Boolean $addFormatPattern if to add ".{_format}" to the route pattern
+     * @param bool $addFormatPattern if to add ".{_format}" to the route pattern
      *                                  also implicitly sets a default/require on "_format" to "html"
+     * @param bool $addTrailingSlash whether to add a trailing slash to the route, defaults to not add one
      */
     public function __construct($addFormatPattern = false, $addTrailingSlash = false)
     {
@@ -120,7 +121,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function getRouteKey()
     {
-        return $this->getPath();
+        return $this->getId();
     }
 
     /**
@@ -133,6 +134,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setParent($parent)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
@@ -151,6 +153,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -168,20 +171,22 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     {
         $this->parent = $parent;
         $this->name = $name;
+
         return $this;
     }
 
     /**
      * Get the repository path of this url entry
      */
-    public function getPath()
+    public function getId()
     {
-        return $this->path;
+        return $this->id;
     }
 
-    public function setPath($path)
+    public function setId($id)
     {
-        $this->path = $path;
+        $this->id = $id;
+
         return $this;
     }
 
@@ -193,6 +198,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setPrefix($idPrefix)
     {
         $this->idPrefix = $idPrefix;
+
         return $this;
     }
 
@@ -201,20 +207,28 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function getStaticPrefix()
     {
-        return $this->generateStaticPrefix($this->getPath(), $this->idPrefix);
+        return $this->generateStaticPrefix($this->getId(), $this->idPrefix);
     }
 
-    public function generateStaticPrefix($path, $idPrefix)
+    /**
+     * @param string $id PHPCR id of this document
+     * @param string $idPrefix part of the id that can be removed
+     *
+     * @return string the static part of the pattern of this route
+     *
+     * @throws \LogicException if there is no prefix or the prefix does not match
+     */
+    public function generateStaticPrefix($id, $idPrefix)
     {
         if (0 == strlen($idPrefix)) {
             throw new \LogicException('Can not determine the prefix. Either this is a new, unpersisted document or the listener that calls setPrefix is not set up correctly.');
         }
 
-        if (strncmp($path, $idPrefix, strlen($idPrefix))) {
-            throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$path'");
+        if (strncmp($id, $idPrefix, strlen($idPrefix))) {
+            throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$id'");
         }
 
-        $url = substr($path, strlen($idPrefix));
+        $url = substr($id, strlen($idPrefix));
         if (empty($url)) {
             $url = '/';
         }
@@ -228,6 +242,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setRouteContent($document)
     {
         $this->routeContent = $document;
+
         return $this;
     }
 
@@ -247,6 +262,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setHostnamePattern($pattern)
     {
         $this->hostnamePattern = $pattern;
+
         return $this;
     }
 
@@ -280,6 +296,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     {
         $option = parent::getOption($name);
         if (null === $option && 'compiler_class' === $name) {
+
             return 'Symfony\\Component\\Routing\\RouteCompiler';
         }
 
@@ -302,10 +319,31 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return $options;
     }
 
+
+    /**
+     * TODO: remove when we drop support for symfony 2.1
+     *
+     * @deprecated compatibility with symfony 2.1
+     */
+    public function getPattern()
+    {
+        return $this->getPath();
+    }
+
+    /**
+     * TODO: remove when we drop support for symfony 2.1
+     *
+     * @deprecated compatibility with symfony 2.1
+     */
+    public function setPattern($pattern)
+    {
+        return $this->setPath($pattern);
+    }
+
     /**
      * {@inheritDoc}
      */
-    public function getPattern()
+    public function getPath()
     {
         $pattern = $this->getStaticPrefix() . $this->getVariablePattern();
         if ($this->addFormatPattern && !preg_match('/(.+)\.[a-z]+$/i', $pattern, $matches)) {
@@ -314,6 +352,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         if ($this->addTrailingSlash && '/' !== $pattern[strlen($pattern)-1]) {
             $pattern .= '/';
         };
+
         return $pattern;
     }
 
@@ -321,18 +360,19 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * {@inheritDoc}
      *
      * It is recommended to use setVariablePattern to just set the part after
-     * the fixed part that follows from the repository path. If you use this
+     * the fixed part that follows from the repository id. If you use this
      * method, it will ensure the start of the pattern matches the repository
      * path (id) of this route document. Make sure to persist the route before
      * setting the pattern to have the id field initialized.
      */
-    public function setPattern($pattern)
+    public function setPath($pattern)
     {
         $len = strlen($this->getStaticPrefix());
 
         if (strncmp($this->getStaticPrefix(), $pattern, $len)) {
             throw new \InvalidArgumentException('You can not set a pattern for the route document that does not match its repository path. First move it to the correct path.');
         }
+
         return $this->setVariablePattern(substr($pattern, $len));
     }
 
@@ -346,12 +386,14 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
     /**
      * @param string $variablePattern the variable part of the url pattern
+     *
      * @return Route
      */
     public function setVariablePattern($variablePattern)
     {
         $this->variablePattern = $variablePattern;
         $this->needRecompile = true;
+
         return $this;
     }
 
@@ -363,9 +405,16 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function compile()
     {
         if ($this->needRecompile) {
-            // calling parent::setPattern just to let it set compiled=null. the parent $pattern field is never used
-            parent::setPattern($this->getStaticPrefix() . $this->getVariablePattern());
+            // calling parent::setPath just to let it set compiled=null. the parent $path field is never used
+            // TODO: drop setPattern when we drop symfony 2.1 support
+            // TODO: for now we need to check the method as setPattern on 2.2. triggers our setPath instead of parent setPath
+            if (method_exists('Symfony\Component\Routing\Route', 'setPath')) {
+                parent::setPath($this->getPath());
+            } else {
+                parent::setPattern($this->getPath());
+            }
         }
+        
         return parent::compile();
     }
 
