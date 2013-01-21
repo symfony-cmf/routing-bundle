@@ -63,11 +63,11 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * @since Symfony 2.2 introduces the host name pattern. This default
      * implementation just stores it as a field.
      *
-     * TODO: this could be removed if we would require 2.2 and map the hostname via the parent
+     * TODO: this could be removed if we would require 2.2 and map the host via the parent
      *
      * @var string
      */
-    protected $hostnamePattern = '';
+    protected $host = '';
 
     /**
      * Variable pattern part. The static part of the pattern is the id without the prefix.
@@ -255,25 +255,25 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * Hide the core hostname pattern
+     * Hide the core host name pattern
      *
-     * TODO: this could be removed if we would require 2.2 and map the hostname via the parent
+     * TODO: this could be removed if we would require 2.2 and map the host via the parent
      */
-    public function setHostnamePattern($pattern)
+    public function setHost($pattern)
     {
-        $this->hostnamePattern = $pattern;
+        $this->host = $pattern;
 
         return $this;
     }
 
     /**
-     * Hide the core hostname pattern
+     * Hide the core host name pattern
      *
-     * TODO: this could be removed if we would require 2.2 and map the hostname via the parent
+     * TODO: this could be removed if we would require 2.2 and map the host via the parent
      */
-    public function getHostnamePattern()
+    public function getHost()
     {
-        return $this->hostnamePattern;
+        return $this->host;
     }
 
     /**
@@ -414,7 +414,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
                 parent::setPattern($this->getPath());
             }
         }
-        
+
         return parent::compile();
     }
 
