@@ -14,13 +14,13 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "symfony-cmf/routing": ">=1.0.0-alpha3",
+        "symfony-cmf/routing": ">=1.0.0-alpha4",
         "symfony/framework-bundle": ">=2.1.7,<2.3-dev",
         "symfony/monolog-bundle": ">=2.1,<2.3-dev"
     },
     "require-dev": {
         "symfony/class-loader": ">=2.1,<2.3-dev",
-        "doctrine/doctrine-bundle": "1.0.*",
+        "doctrine/doctrine-bundle": "1.*",
         "symfony/yaml": ">=2.1,<2.3-dev",
         "symfony/form": ">=2.1,<2.3-dev",
         "symfony/finder": ">=2.1,<2.3-dev",

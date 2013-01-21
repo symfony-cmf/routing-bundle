@@ -4,7 +4,7 @@
     <document name="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route" referenceable="true">
         <parentdocument name="parent"/>
         <nodename name="name"/>
-        <id name="path">
+        <id name="id">
             <generator strategy="parent"/>
         </id>
         <reference-one fieldName="routeContent"/>

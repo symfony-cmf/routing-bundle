@@ -24,7 +24,7 @@
     <services>
 
         <service id="symfony_cmf_routing_extra.enhancer_route_content" class="%symfony_cmf_routing_extra.enhancer_route_content_class%">
-            <argument>_route</argument>
+            <argument>_route_object</argument>
             <argument>_content</argument>
         </service>
         <service id="symfony_cmf_routing_extra.enhancer_explicit_template" class="%symfony_cmf_routing_extra.enhancer_explicit_template_class%">
