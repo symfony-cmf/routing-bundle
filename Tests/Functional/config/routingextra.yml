@@ -5,7 +5,7 @@ symfony_cmf_routing_extra:
             router.default: 100
     dynamic:
         enabled: true
-        controllers_by_alias:
+        controllers_by_type:
             demo_alias: test.controller:aliasAction
         controllers_by_class:
             Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute:  symfony_cmf_routing_extra.redirect_controller:redirectAction

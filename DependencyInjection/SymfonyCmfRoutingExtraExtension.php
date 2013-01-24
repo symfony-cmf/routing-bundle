@@ -68,7 +68,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
             return;
         }
         $container->setParameter($this->getAlias() . '.generic_controller', $config['generic_controller']);
-        $container->setParameter($this->getAlias() . '.controllers_by_alias', $config['controllers_by_alias']);
+        $container->setParameter($this->getAlias() . '.controllers_by_type', $config['controllers_by_type']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
         $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
         // if the content class defines the template, we also need to make sure we use the generic controller for those routes
@@ -95,8 +95,8 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         if (!empty($config['generic_controller'])) {
             $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_explicit_template')));
         }
-        if (!empty($config['controllers_by_alias'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_alias')));
+        if (!empty($config['controllers_by_type'])) {
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_type')));
         }
         if (!empty($config['controllers_by_class'])) {
             $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_class')));
