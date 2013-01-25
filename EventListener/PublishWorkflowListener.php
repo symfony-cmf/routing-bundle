@@ -36,7 +36,7 @@ class PublishWorkflowListener implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        $route = $request->attributes->get('_route_object');
+        $route = $request->attributes->get('routeDocument');
 
         if (!$this->publishWorkflowChecker->checkIsPublished($route, false, $request)) {
             throw new NotFoundHttpException('Route not found: ' . $request->getPathInfo());

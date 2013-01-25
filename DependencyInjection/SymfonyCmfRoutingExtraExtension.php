@@ -111,6 +111,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
             foreach ($config['route_filters_by_id'] as $id => $priority) {
                 $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
             }
+        }
 
         $bundles = $container->getParameter('kernel.bundles');
         if ('auto' === $config['publish_workflow_listener'] && !isset($bundles['SymfonyCmfCoreBundle'])
