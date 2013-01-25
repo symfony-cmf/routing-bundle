@@ -19,6 +19,7 @@
         <parameter key="symfony_cmf_routing_extra.enhancer_controllers_by_type_class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_field_by_class_class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.redirect_controller_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController</parameter>
+        <parameter key="symfony_cmf_routing_extra.publish_workflow_listener_class">Symfony\Cmf\Bundle\RoutingExtraBundle\EventListener\PublishWorkflowListener</parameter>
     </parameters>
 
     <services>
@@ -84,17 +85,16 @@
             <call method="setPrefix"><argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument></call>
         </service>
 
+        <service id="symfony_cmf_routing_extra.publish_workflow_listener" class="%symfony_cmf_routing_extra.publish_workflow_listener_class%">
+            <tag name="kernel.event_subscriber"/>
+            <argument type="service" id="symfony_cmf_core.publish_workflow_checker"/>
+        </service>
+
         <service id="symfony_cmf_routing_extra.manager_registry"
                  factory-service=""
                  factory-method="getManager"
                  class="Symfony\Bridge\Doctrine\ManagerRegistry">
             <argument />
-        </service>
-
-        <service id="symfony_cmf_routing_extra.default_route_provider" class="%symfony_cmf_routing_extra.route_provider_class%">
-            <argument type="service" id="symfony_cmf_routing_extra.manager_registry"/>
-            <argument>%symfony_cmf_routing_extra.route_entity_class%</argument>
-            <call method="setPrefix"><argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument></call>
         </service>
 
         <service id="symfony_cmf_routing_extra.default_content_repository" class="%symfony_cmf_routing_extra.content_repository_class%">

@@ -32,7 +32,8 @@
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents",
         "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents",
         "symfony-cmf/content-bundle": "To optionally use the configured value for 'content_basepath' from the CoreBundle",
-        "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents"
+        "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents",
+        "symfony-cmf/core-bundle": "To enable the publish workflow"
     },
     "autoload": {
         "psr-0": { "Symfony\\Cmf\\Bundle\\RoutingExtraBundle": "" }
