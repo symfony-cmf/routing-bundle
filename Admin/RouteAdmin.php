@@ -38,11 +38,15 @@ class RouteAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('path', 'text')
+            ->add('publishStartDate', 'date')
+            ->add('publishEndDate', 'date')
         ;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $dateFormat = "dd-MM-yyyy";
+
         $formMapper
             ->with('form.group_general')
                 // TODO: show resulting url; strip /cms/routes and prepend eventual route prefix
@@ -52,6 +56,8 @@ class RouteAdmin extends Admin
                 ->add('variablePattern', 'text', array('required' => false))
                 ->add('routeContent', 'doctrine_phpcr_type_tree_model', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
+                ->add('publishStartDate', null, array('required' => false, 'date_format' => $dateFormat))
+                ->add('publishEndDate', null, array('required' => false, 'date_format' => $dateFormat))
                 // TODO edit key-value fields for options
             ->end();
     }
