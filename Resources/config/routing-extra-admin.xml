@@ -11,7 +11,7 @@
     <services>
         <service id="symfony_cmf_routing_extra.route_admin" class="%symfony_cmf_routing_extra.route_admin_class%">
             <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="SymfonyCmfRoutingExtraBundle" label="dashboard.label_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
-            <argument></argument>
+            <argument/>
             <argument>Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route</argument>
             <argument>SonataAdminBundle:CRUD</argument>
 
