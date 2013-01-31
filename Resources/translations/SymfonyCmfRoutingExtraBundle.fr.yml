@@ -1,11 +1,15 @@
 dashboard:
     group_routing: Routage
     label_routing: Route
+    label_redirect_routing: Redirection
 
 breadcrumb:
     link_route_list: Routes
     link_route_create: Créer
     link_route_edit: Éditer
+    link_redirect_route_list: Redirection
+    link_redirect_route_create: Créer
+    link_redirect_route_edit: Éditer
 
 filter:
     label_name: Nom
@@ -20,3 +24,6 @@ form:
     label_variable_pattern: Motif variable
     label_route_content: Contenu
     label_defaults: Defauts
+    label_route_name: Nom
+    label_uri: URI
+    label_route_target: Route objectif
