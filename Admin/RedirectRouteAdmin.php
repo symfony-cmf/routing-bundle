@@ -13,11 +13,6 @@ class RedirectRouteAdmin extends Admin
 {
     protected $translationDomain = 'SymfonyCmfRoutingExtraBundle';
 
-    /**
-     * Target route document to redirect to different dynamic route
-     */
-    protected $routeTarget;
-
      /**
      * Root path for the route parent selection
      * @var string
@@ -51,11 +46,6 @@ class RedirectRouteAdmin extends Admin
         $datagridMapper
             ->add('name',  'doctrine_phpcr_string')
             ;
-    }
-
-    public function setRouteTarget($routeTarget)
-    {
-        $this->routeTarget = $routeTarget;
     }
 
     public function setRouteRoot($routeRoot)
