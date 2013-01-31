@@ -14,42 +14,16 @@ class RedirectRouteAdmin extends Admin
     protected $translationDomain = 'SymfonyCmfRoutingExtraBundle';
 
     /**
-     * Absolute uri to redirect to
-     */
-    protected $uri;
-
-    /**
-     * The name of a target route (for use with standard symfony routes)
-     */
-    protected $routeName;
-
-    /**
      * Target route document to redirect to different dynamic route
      */
     protected $routeTarget;
 
-    /**
-     * Whether this is a permanent redirect
-     */
-    protected $permanent;
-
-    /**
+     /**
      * Root path for the route parent selection
      * @var string
      */
     protected $routeRoot;
 
-    /**
-     * Root path for the route content selection
-     * @var string
-     */
-    protected $contentRoot;
-
-    /**
-     * Full class name for content that can be referenced by a route
-     * @var string
-     */
-    protected $contentClass;
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -69,7 +43,6 @@ class RedirectRouteAdmin extends Admin
                 ->add('routeName', 'text', array('required' => false))
                 ->add('uri', 'text', array('required' => false))
                 ->add('routeTarget', 'doctrine_phpcr_type_tree_model', array('choice_list' => array(), 'required' => false, 'root_node' => $this->routeRoot))
-                // TODO edit key-value fields for options
             ->end();
     }
 
