@@ -32,7 +32,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $name;
 
     /**
-     * children - needed for the admin to work ...
+     * Node children
      *
      * @var Collection
      */
@@ -418,6 +418,14 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return parent::compile();
     }
 
+    /**
+     * Return this routes children
+     */
+    public function getChildren() 
+    {
+        return $this->children;
+    }
+    
     public function __toString()
     {
         return (string)$this->name;
