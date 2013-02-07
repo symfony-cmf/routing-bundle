@@ -32,7 +32,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $name;
 
     /**
-     * Node children
+     * Child route documents
      *
      * @var Collection
      */
@@ -420,10 +420,23 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
     /**
      * Return this routes children
+     *
+     * Filters out children that do not implement
+     * the RouteObjectInterface.
+     *
+     * @return array - array of RouteObjectInterface's
+     *
      */
-    public function getChildren() 
+    public function getRouteChildren() 
     {
-        return $this->children;
+        $children = array();
+        foreach ($this->children as $child) {
+            if ($child instanceof RouteObjectInterface) {
+                $children[] = $child;
+            }
+        }
+
+        return $children;
     }
     
     public function __toString()
