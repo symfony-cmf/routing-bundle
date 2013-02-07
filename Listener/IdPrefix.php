@@ -5,7 +5,6 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Listener;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
 use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 
-
 /**
  * Doctrine PHPCR-ODM listener to set the idPrefix on new routes
  *
