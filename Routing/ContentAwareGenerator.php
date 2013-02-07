@@ -15,7 +15,7 @@ use Symfony\Cmf\Component\Routing\ContentAwareGenerator as BaseGenerator;
 class ContentAwareGenerator extends BaseGenerator implements ContainerAwareInterface
 {
     /**
-     * To get the request from, as its not available immediatly
+     * To get the request from, as its not available immediately
      * @var ContainerInterface
      */
     protected $container;
