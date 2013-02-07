@@ -107,7 +107,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         }
         if (!empty($config['route_filters_by_id'])) {
             $matcher = $container->getDefinition('symfony_cmf_routing_extra.nested_matcher');
-            foreach($config['route_filters_by_id'] as $id => $priority) {
+            foreach ($config['route_filters_by_id'] as $id => $priority) {
                 $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
             }
         }
