@@ -107,6 +107,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $this->setDefaults(array());
         $this->setRequirements(array());
         $this->setOptions(array());
+        $this->children = array();
 
         $this->addFormatPattern = $addFormatPattern;
         if ($this->addFormatPattern) {
@@ -430,10 +431,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function getRouteChildren() 
     {
         $children = array();
-
-        if (empty($this->children)) {
-            return $children;
-        }
 
         foreach ($this->children as $child) {
             if ($child instanceof RouteObjectInterface) {
