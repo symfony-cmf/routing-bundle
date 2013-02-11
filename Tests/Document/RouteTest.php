@@ -28,4 +28,10 @@ class RouteTest extends \PHPUnit_Framework_Testcase
         $this->assertCount(1, $res);
         $this->assertEquals('child route1', $res[0]->getName());
     }
+
+    public function testGetRouteChildrenNull()
+    {
+        $res = $this->route->getRouteChildren();
+        $this->assertEquals(array(), $res);
+    }
 }
