@@ -47,10 +47,10 @@ class RouteAdmin extends Admin
             ->with('form.group_general')
                 // TODO: show resulting url; strip /cms/routes and prepend eventual route prefix
                 // ->add('path', 'text', array('label' => 'URL', 'attr' => array('readonly' => 'readonly')))
-                ->add('parent', 'doctrine_phpcr_type_tree_model', array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
+                ->add('parent', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
                 ->add('name', 'text')
                 ->add('variablePattern', 'text', array('required' => false))
-                ->add('routeContent', 'doctrine_phpcr_type_tree_model', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
+                ->add('routeContent', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
                 // TODO edit key-value fields for options
             ->end();
