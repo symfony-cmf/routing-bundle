@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\BlogBundle\Mapping;
+namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Mapping;
 
 use Metadata\ClassMetadata;
 use Metadata\MergeableInterface;
@@ -13,13 +13,21 @@ use Metadata\MergeableInterface;
  */
 class RouteClassMetadata extends ClassMetadata implements \Serializable, MergeableInterface
 {
+    /**
+     * Base path to use for routes (optional)
+     */
     public $basePath;
 
-    public $routeName;
+    /**
+     * Method to use for getting the route name
+     */
+    public $routeNameMethod;
 
-    public $updateBasePath;
-
-    public $updateRouteName = true;
+    /**
+     * Whether, in case of a path conflict, we should keep autogenerating paths until
+     * we do not have a conflict, or if we should just throw an Exception.
+     */
+    public $resolvePathConflicts = false;
 
     public function serialize()
     {

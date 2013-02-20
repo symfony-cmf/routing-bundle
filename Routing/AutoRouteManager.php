@@ -2,12 +2,11 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Routing;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\Validator;
-
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\AutoRoute;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute;
-use Symfony\Cmf\Component\Routing\RouteAwareInterface;
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ODM\PHPCR\DocumentManager;
+use Metadata\MetadataFactory;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Util\SlugifierInterface;
 
 
 /**
@@ -22,10 +21,10 @@ use Symfony\Cmf\Component\Routing\RouteAwareInterface;
  */
 class AutoRouteManager
 {
+    protected $dm;
     protected $metadataFactory;
     protected $defaultPath;
     protected $slugifier;
-    protected $phpcrSession;
 
     /**
      * @TODO: Should defaultPath be contained in a service to
@@ -46,21 +45,104 @@ class AutoRouteManager
     {
         $this->dm = $dm;
         $this->metadataFactory = $metadataFactory;
+        $this->slugifier = $slugifier;
         $this->defaultPath = $defaultPath;
-        $this->phpcrSession = $dm->getPhpcrSession();
     }
 
     /**
-     * Automatically create routes for the given mapped document.
+     * Create or update the automatically generated route for
+     * the given document.
      *
-     * @NOTE: If parent routes are mapped, we here create a new sub route
-     *        for each (e.g. one for each locale). Not 100% sure about that.
+     * When this is finished it will support multiple locales.
      *
-     * @param object $document Should be an object with the AutoRoute class annotation
+     * @param object Mapped document for which to generate the AutoRoute
      *
-     * @return array
+     * @return AutoRoute
      */
-    public function createAutoRoutesForDocument($document)
+    public function updateAutoRouteForDocument($document)
+    {
+        $metadata = $this->getMetadata($document);
+        $autoRoute = $this->getAutoRouteForDocument($document);
+
+        $autoRouteName = $this->getRouteName($document);
+        $autoRoute->setName($autoRouteName);
+
+        $autoRouteParent = $this->getParentRoute($document);
+        $autoRoute->setParent($autoRouteParent);
+
+        $this->dm->persist($autoRoute);
+
+        return $autoRoute;
+    }
+
+    /**
+     * Generate a route name based on the designated route name method in
+     * the given mapped document.
+     *
+     * Here we use the slugifier service given to this class to normalize
+     * the title.
+     *
+     * @param object Mapped document
+     *
+     * @return string
+     */
+    protected function getRouteName($document)
+    {
+        $metadata = $this->getMetadata($document);
+
+        // @NOTE: I have replaced @sjopets [title]-[category] method by assigning
+        //        an annotation to the method which provides the route name, but
+        //        I wonder if this is the best way.
+        //
+        // @TODO: This should not be invalid because we must validate by the factory (hint)
+        //
+        $routeNameMethod = $metadata->routeNameMethod;
+        $routeName = $document->$routeNameMethod();
+
+        // @TODO: Make slugifier customizable somehow, e.g. @RouteName(transorms=[slugify])
+        $routeName = $this->slugifier->slugify($routeName);
+
+        if ($metadata->resolvePathConflicts) {
+            // @TODO: Resolve path conflicts by generating new variations until a non
+            //        conclicting path is found.
+            throw new \Exception('@TODO: Resolve path conflicts');
+        }
+
+        return $routeName;
+    }
+
+    /**
+     * Return the parent route for the generated AutoRoute.
+     *
+     * Currently we check to see if a base route path has been specified
+     * in the given mapped document, if not we fall back to the global default.
+     *
+     * @TODO: Enable dynamic parents (e.g. name-of-my-blog/my-post)
+     *
+     * @param object Get parent route of this mapped document.
+     *
+     * @return Route
+     */
+    protected function getParentRoute($document)
+    {
+        $metadata = $this->getMetadata($document);
+        $defaultPath = $metadata->basePath ? : $this->defaultPath;
+        $parent = $this->dm->find(null, $defaultPath);
+
+        if (!$parent) {
+            throw new \Exception(sprintf(
+                'Could not find default route parent at path "%s"',
+                $defaultPath
+            ));
+        }
+
+        return $parent;
+    }
+
+    /**
+     * Convenience method for retrieving Metadata.
+     */
+    protected function getMetadata($document)
     {
         $metadata = $this->metadataFactory->getMetadataForClass(get_class($document));
 
@@ -71,110 +153,57 @@ class AutoRouteManager
             );
         }
 
-        $routeName = $this->getRouteName($document);
-        $routePath = $metadata->basePath ? : $this->defaultPath;
-        $parentsProperty = $metadata->routeParentsMethod;
-
-        // If the user has not defined a Parents annotation, we use the default
-        if (null === $parentsProperty) {
-            $defaultParent = $this->dm->find(null, $defaultPath);
-            $parents = array($defaultParent);
-        } else {
-            // @TODO: Route parents: Property or Method? (or even CLASS attribute)
-            $parents = $document->$parentsProperty;
-        }
-
-        $ret = array();
-        foreach ($parents as $parent) {
-            $route = new AutoRoute();
-            $route->setParent($parent);
-            $route->setName($routeName);
-            $route->setRouteContent($document);
-        }
-
-        return $ret;
-    }
-
-    public function updateAutoRoutesForDocument(RouteAwareInterface $document)
-    {
-        $ret = array();
-
-        $metadata = $this->metadataFactory->getMetadataForClass(get_class($document));
-
-        // TODO: Create a class for this exception
-        if (null === $metadata) {
-            throw new \Exception(
-                'Route does not have associated RoutingExtraBundle mapping, will cannot '.
-                'update a route without this metadata!'
-            );
-        }
-
-        foreach ($document->getRoutes() as $route) {
-
-            // NOTE: I wonder if it isn't better to do it as netvlies have done it
-            //       by associating the Permalink, AutoRoute and DefaultRoute with a
-            //       property.
-            if ($route instanceOf AutoRoute) {
-
-                if($metadata->updateRouteName){
-                    $routeName = $this->getRouteName($metadata, $document);
-                    $route->setName($routeName);
-                    $ret[]= $route;
-                }
-
-
-            }
-        }
-
-        $autoRoute = $document->getAutoRoute();
-        $basePath = dirname($autoRoute->getPath());
-        $name = basename($autoRoute->getPath());
-
-        if($document->getDefaultRoute() === $document->getAutoRoute()){
-            $routeRoot = $this->getRoutingRoot();
-        }
-        else{
-            $routeRoot = $this->getRedirectRoot();
-        }
-
-        if($metadata->updateBasePath){
-            $basePath = $this->parsePath($routeRoot.'/'.$metadata->basePath, $document);
-        }
-
-        return $basePath.'/'.$name;
+        return $metadata;
     }
 
     /**
-     * Creates a path  to guarantee an unique entry point (permalink)
-     * used to avoid conflicts when inserting a new PHPCR node.
-     * @todo move this into oms bundle
+     * Return the existing or a new AutoRoute for the given document.
      *
-     * @param string path
-     * @return string
+     * @throws \Exception If we have more than one
+     *
+     * @param object $document Mapped document that needs an AutoRoute
+     *
+     * @return AutoRoute
      */
-    public function getUniquePath($path)
+    protected function getAutoRouteForDocument($document)
     {
-        $number = 1;
-        $newPath = $path;
+        $isNew = $this->dm->getUnitOfWork()->contains($document);
+        $autoRoutes = array();
 
-        while ($this->phpcrSession->nodeExists($newPath)) {
-            $newPath = $path . '-' . $number++;
+        if (false === $isNew) {
+            $autoRoutes = $this->dm->getReferrers($document, null, 'routeContent');
         }
 
-        return $newPath;
-    }
+        // @TODO: get locale from ODM
+        $locale = null; 
 
-    protected function getRouteName(ClassMetadata $metadata, $document)
-    {
-        // @NOTE: I have replaced @sjopets [title]-[category] method by assigning
-        //        an annotation to the method which provides the route name, but
-        //        I wonder if this is the best way.
-        // @TODO: This should not be invalid because we must validate by the factory (hint)
-        $routeNameMethod = $metadata->routeNameMethod;
-        $routeName = $document->$routeNameMethod();
-        // @TODO: Make this customizable somehow, e.g. @RouteName(transorms=[slugify])
-        $routeName = $this->slugifier->slugify($routeName);
+        if ($locale) {
+            // filter non-matching locales, note that we could do this with the QueryBuilder
+            // but currently searching array values is not supported by jackalope-doctrine-dbal.
+            array_filter($res, function ($route) use ($locale) {
+                if (!$route instanceof AutoRoute) {
+                    return false;
+                }
+                if ($route->getDefault('_locale') != $locale) {
+                    return false;
+                }
 
-        return $routeName;
+                return true;
+            });
+        }
+
+        if (count($autoRoutes) > 1) {
+            throw new \Exception(sprintf(
+                'Found more than one AutoRoute for document "%s"',
+                ClassUtils::toString($document)
+            ));
+        } elseif (count($autoRoutes) == 1) {
+            $autoRoute = current($autoRoutes);
+        } else {
+            $autoRoute = new AutoRoute;
+            $autoRoute->setRouteContent($document);
+        }
+
+        return $autoRoute;
     }
 }

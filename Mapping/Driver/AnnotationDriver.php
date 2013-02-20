@@ -32,33 +32,14 @@ class AnnotationDriver implements DriverInterface
         foreach ($classAnnotations as $classAnnot) {
             if ($classAnnot instanceof CMFRouting\AutoRoute) {
                 $classMetadata->basePath = $classAnnot->basePath;
-                $classMetadata->routeName = $classAnnot->routeName;
-                $classMetadata->updateBasePath = $classAnnot->updateBasePath;
-                $classMetadata->updateRouteName = $classAnnot->updateRouteName;
             }
         }
 
-        foreach ($this->getPropertyAnnotations() as $propAnnot) {
-            if ($propAnnot instanceof CMFRouting\DefaultRoute) {
-                // allow only once
-                throw new \Exception('Implement me!');
-            }
-
-            if ($propAnnot instanceof CMFRouting\ParentRoutes) {
-                // allow only once
-                throw new \Exception('Implement me!');
-            }
-
-            if ($propAnnot instanceof CMFRouting\Permalink) {
-                // allow only once
-                throw new \Exception('Implement me!');
-            }
-        }
-
-        foreach ($this->getMethodAnnotations() as $methodAnnot) {
-            if ($methodAnnot instanceof CMFRouting\RouteName) {
-                // allow only once
-                throw new \Exception('Implement me!');
+        foreach ($class->getMethods() as $method) {
+            foreach ($this->reader->getMethodAnnotations($method) as $methodAnnot) {
+                if ($methodAnnot instanceof CMFRouting\RouteName) {
+                    $classMetadata->routeNameMethod = $method->name;
+                }
             }
         }
 

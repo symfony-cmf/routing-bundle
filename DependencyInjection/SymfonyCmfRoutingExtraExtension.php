@@ -52,6 +52,9 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         if ($config['use_sonata_admin']) {
             $this->loadSonataAdmin($config, $loader, $container);
         }
+
+        $loader->load('mapping.xml');
+        $loader->load('routing.xml');
     }
 
     /**

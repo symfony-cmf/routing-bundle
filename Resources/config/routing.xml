@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- @TODO: Allow this to be changed, e.g. config and alias !-->
+        <service 
+            id="symfony_cmf_routing_extra.slugifier" 
+            class="Symfony\Cmf\Bundle\RoutingExtraBundle\Util\CallbackSlugifier"
+            >
+            <argument>URLify::filter</argument>
+        </service>
+
+        <service
+            id="symfony_cmf_routing_extra.auto_route_manager"
+            class="Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\AutoRouteManager"
+            >
+            <argument type="service" id="doctrine_phpcr.odm.default_document_manager"/>
+            <argument type="service" id="symfony_cmf_routing_extra.metadata_factory"/>
+            <argument type="service" id="symfony_cmf_routing_extra.slugifier"/>
+            <!-- @TODO: Make this configurable !-->
+            <argument>/cms/routes</argument>
+        </service>
+
+    </services>
+</container>
+
+
