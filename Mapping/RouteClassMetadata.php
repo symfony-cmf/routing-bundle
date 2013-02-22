@@ -38,9 +38,8 @@ class RouteClassMetadata extends ClassMetadata implements \Serializable, Mergeab
             $this->fileResources,
             $this->createdAt,
             $this->basePath,
-            $this->routeName,
-            $this->updateBasePath,
-            $this->updateRouteName
+            $this->routeNameMethod,
+            $this->resolvePathConflicts,
         ));
     }
 
@@ -53,9 +52,8 @@ class RouteClassMetadata extends ClassMetadata implements \Serializable, Mergeab
             $this->fileResources,
             $this->createdAt,
             $this->basePath,
-            $this->routeName,
-            $this->updateBasePath,
-            $this->updateRouteName
+            $this->routeNameMethod,
+            $this->resolvePathConflicts,
             ) = unserialize($str);
 
         $this->reflection = new \ReflectionClass($this->name);
@@ -69,16 +67,12 @@ class RouteClassMetadata extends ClassMetadata implements \Serializable, Mergeab
             $this->basePath = $object->basePath;
         }
 
-        if(!is_null($object->routeName)){
-            $this->routeName = $object->routeName;
+        if(!is_null($object->routeNameMethod)){
+            $this->routeNameMethod = $object->routeNameMethod;
         }
 
-        if(!is_null($object->updateBasePath)){
-            $this->updateBasePath = $object->updateBasePath;
-        }
-
-        if(!is_null($object->updateRouteName)){
-            $this->updateRouteName = $object->updateRouteName;
+        if(!is_null($object->resolvePathConflicts)){
+            $this->resolvePathConflicts = $object->resolvePathConflicts;
         }
     }
 }

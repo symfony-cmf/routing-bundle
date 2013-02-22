@@ -18,15 +18,25 @@ use Symfony\Cmf\Bundle\RoutingExtraBundle\Mapping\Annotations as CMFRouting;
 class Post
 {
     /**
-     * @PHPCR\Id
+     * @PHPCR\Id()
      */
     public $path;
+
+    /**
+     * @PHPCR\Referrers(filter="routeContent")
+     */
+    public $routes;
+
+    /**
+     * @PHPCR\String()
+     */
+    public $title;
 
     /**
      * @CMFRouting\RouteName()
      */
     public function getTitle()
     {
-        return "Unit testing a blog post";
+        return $this->title;
     }
 }

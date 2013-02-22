@@ -76,6 +76,23 @@ class AutoRouteManager
     }
 
     /**
+     * Remove all auto routes associated with the given document.
+     *
+     * @param object Mapped document
+     *
+     * @return array Array of removed routes
+     */
+    public function removeAutoRoutesForDocument($document)
+    {
+        $autoRoutes = $this->fetchAutoRoutesForDocument($document);
+        foreach ($autoRoutes as $autoRoute) {
+            $this->dm->remove($autoRoute);
+        }
+
+        return $autoRoutes;
+    }
+
+    /**
      * Generate a route name based on the designated route name method in
      * the given mapped document.
      *
@@ -167,11 +184,13 @@ class AutoRouteManager
      */
     protected function getAutoRouteForDocument($document)
     {
-        $isNew = $this->dm->getUnitOfWork()->contains($document);
+        $metadata = $this->dm->getClassMetadata(get_class($document));
+        $id = $metadata->getIdentifierValue($document);
+        $isExisting = $this->dm->getPhpcrSession()->nodeExists($id);
         $autoRoutes = array();
 
-        if (false === $isNew) {
-            $autoRoutes = $this->dm->getReferrers($document, null, 'routeContent');
+        if ($isExisting) {
+            $autoRoutes = $this->fetchAutoRoutesForDocument($document);
         }
 
         // @TODO: get locale from ODM
@@ -181,9 +200,6 @@ class AutoRouteManager
             // filter non-matching locales, note that we could do this with the QueryBuilder
             // but currently searching array values is not supported by jackalope-doctrine-dbal.
             array_filter($res, function ($route) use ($locale) {
-                if (!$route instanceof AutoRoute) {
-                    return false;
-                }
                 if ($route->getDefault('_locale') != $locale) {
                     return false;
                 }
@@ -198,12 +214,26 @@ class AutoRouteManager
                 ClassUtils::toString($document)
             ));
         } elseif (count($autoRoutes) == 1) {
-            $autoRoute = current($autoRoutes);
+            $autoRoute = $autoRoutes->first();
         } else {
             $autoRoute = new AutoRoute;
             $autoRoute->setRouteContent($document);
         }
 
         return $autoRoute;
+    }
+
+    protected function fetchAutoRoutesForDocument($document)
+    {
+        $routes = $this->dm->getReferrers($document, null, 'routeContent');
+        $routes->filter(function ($route) {
+            if ($route instanceof AutoRoute) {
+                return true;
+            }
+
+            return false;
+        });
+
+        return $routes;
     }
 }
