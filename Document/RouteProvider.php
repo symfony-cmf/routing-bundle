@@ -110,6 +110,7 @@ class RouteProvider implements RouteProviderInterface
 
                         $route->setDefault('_format', $matches[1]);
                     }
+                    // SYMFONY 2.1 COMPATIBILITY: tweak route name
                     $key = trim(preg_replace('/[^a-z0-9A-Z_.]/', '_', $key), '_');
                     $collection->add($key, $route);
                 }
