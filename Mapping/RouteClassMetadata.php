@@ -14,6 +14,11 @@ use Metadata\MergeableInterface;
 class RouteClassMetadata extends ClassMetadata implements \Serializable, MergeableInterface
 {
     /**
+     * If the object has the AutoRoute mapping
+     */
+    public $autoRouteable = false;
+
+    /**
      * Base path to use for routes (optional)
      */
     public $basePath;
@@ -59,10 +64,8 @@ class RouteClassMetadata extends ClassMetadata implements \Serializable, Mergeab
         $this->reflection = new \ReflectionClass($this->name);
     }
 
-
     public function merge(MergeableInterface $object)
     {
-
         if(!is_null($object->basePath)){
             $this->basePath = $object->basePath;
         }
@@ -74,5 +77,16 @@ class RouteClassMetadata extends ClassMetadata implements \Serializable, Mergeab
         if(!is_null($object->resolvePathConflicts)){
             $this->resolvePathConflicts = $object->resolvePathConflicts;
         }
+    }
+
+    public function getRouteNameMethod()
+    {
+        if (!$this->routeNameMethod) {
+            throw new \Exception(sprintf(
+                'RouteName method has not been mapped on "%s"',
+                $this->name
+            ));
+        }
+        return $this->routeNameMethod;
     }
 }

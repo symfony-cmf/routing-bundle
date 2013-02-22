@@ -31,6 +31,7 @@ class AnnotationDriver implements DriverInterface
         $classAnnotations = $this->reader->getClassAnnotations($class);
         foreach ($classAnnotations as $classAnnot) {
             if ($classAnnot instanceof CMFRouting\AutoRoute) {
+                $classMetadata->autoRouteable = true;
                 $classMetadata->basePath = $classAnnot->basePath;
             }
         }

@@ -54,7 +54,6 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         }
 
         $loader->load('mapping.xml');
-        $loader->load('routing.xml');
     }
 
     /**

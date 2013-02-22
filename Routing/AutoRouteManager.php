@@ -78,7 +78,7 @@ class AutoRouteManager
     /**
      * Remove all auto routes associated with the given document.
      *
-     * @param object Mapped document
+     * @param object $document Mapped document
      *
      * @return array Array of removed routes
      */
@@ -90,6 +90,20 @@ class AutoRouteManager
         }
 
         return $autoRoutes;
+    }
+
+    /**
+     * Return true if the given document is mapped with AutoRoute
+     *
+     * @param object $document Document
+     *
+     * @return boolean
+     */
+    public function isAutoRouteable($document)
+    {
+        $metadata = $this->metadataFactory->getMetadataForClass(get_class($document));
+
+        return $metadata->autoRouteable == 1 ? true : false;
     }
 
     /**
@@ -113,7 +127,7 @@ class AutoRouteManager
         //
         // @TODO: This should not be invalid because we must validate by the factory (hint)
         //
-        $routeNameMethod = $metadata->routeNameMethod;
+        $routeNameMethod = $metadata->getRouteNameMethod();
         $routeName = $document->$routeNameMethod();
 
         // @TODO: Make slugifier customizable somehow, e.g. @RouteName(transorms=[slugify])
@@ -184,12 +198,9 @@ class AutoRouteManager
      */
     protected function getAutoRouteForDocument($document)
     {
-        $metadata = $this->dm->getClassMetadata(get_class($document));
-        $id = $metadata->getIdentifierValue($document);
-        $isExisting = $this->dm->getPhpcrSession()->nodeExists($id);
         $autoRoutes = array();
 
-        if ($isExisting) {
+        if ($this->isDocumentPersisted($document)) {
             $autoRoutes = $this->fetchAutoRoutesForDocument($document);
         }
 
@@ -223,7 +234,14 @@ class AutoRouteManager
         return $autoRoute;
     }
 
-    protected function fetchAutoRoutesForDocument($document)
+    /**
+     * Fetch all the automatic routes for the given document
+     *
+     * @param object $document Mapped document
+     *
+     * @return array
+     */
+    public function fetchAutoRoutesForDocument($document)
     {
         $routes = $this->dm->getReferrers($document, null, 'routeContent');
         $routes->filter(function ($route) {
@@ -235,5 +253,13 @@ class AutoRouteManager
         });
 
         return $routes;
+    }
+
+    protected function isDocumentPersisted($document)
+    {
+        $metadata = $this->dm->getClassMetadata(get_class($document));
+        $id = $metadata->getIdentifierValue($document);
+        $isExisting = $this->dm->getPhpcrSession()->nodeExists($id);
+        return $isExisting;
     }
 }

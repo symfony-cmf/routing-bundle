@@ -14,11 +14,13 @@
         <parameter key="symfony_cmf_routing_extra.route_provider_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteProvider</parameter>
         <parameter key="symfony_cmf_routing_extra.content_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\ContentRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\IdPrefix</parameter>
+        <parameter key="symfony_cmf_routing_extra.phpcrodm_auto_route_subscriber_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Subscriber\AutoRoute</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_route_content_class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_explicit_template_class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_controllers_by_type_class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_field_by_class_class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.redirect_controller_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController</parameter>
+        <parameter key="symfony_cmf_routing_extra.autoroute_basepath">/cms/routes</parameter>
     </parameters>
 
     <services>
@@ -107,8 +109,32 @@
             <tag name="doctrine_phpcr.event_listener" event="postPersist" />
         </service>
 
+        <service id="symfony_cmf_routing_extra.phpcrodm_auto_route_subscriber" class="%symfony_cmf_routing_extra.phpcrodm_auto_route_subscriber_class%">
+            <argument type="service" id="symfony_cmf_routing_extra.auto_route_manager"/>
+            <tag name="doctrine_phpcr.event_subscriber"/>
+        </service>
+
         <service id="symfony_cmf_routing_extra.redirect_controller" class="%symfony_cmf_routing_extra.redirect_controller_class%">
             <argument type="service" id="router" />
+        </service>
+
+        <!-- @TODO: Allow this to be changed, e.g. config and alias !-->
+        <service 
+            id="symfony_cmf_routing_extra.slugifier" 
+            class="Symfony\Cmf\Bundle\RoutingExtraBundle\Util\CallbackSlugifier"
+            >
+            <argument>URLify::filter</argument>
+        </service>
+
+        <service
+            id="symfony_cmf_routing_extra.auto_route_manager"
+            class="Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\AutoRouteManager"
+            >
+            <argument type="service" id="doctrine_phpcr.odm.default_document_manager"/>
+            <argument type="service" id="symfony_cmf_routing_extra.metadata_factory"/>
+            <argument type="service" id="symfony_cmf_routing_extra.slugifier"/>
+            <!-- @TODO: Make this configurable !-->
+            <argument>%symfony_cmf_routing_extra.autoroute_basepath%</argument>
         </service>
     </services>
 </container>
