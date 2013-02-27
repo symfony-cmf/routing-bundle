@@ -11,4 +11,4 @@ symfony_cmf_routing_extra:
             Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute:  symfony_cmf_routing_extra.redirect_controller:redirectAction
         templates_by_class:
             Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Testdoc\Content: TestBundle:Content:index.html.twig
-        routing_repositoryroot: /test/routing
+        routing_repositoryroot: /functional/routing

@@ -11,7 +11,7 @@ use Symfony\Cmf\Bundle\RoutingExtraBundle\Mapping\Annotations as CMFRouting;
  * )
  *
  * @CMFRouting\AutoRoute(
- *     basePath="/test/routing",
+ *     basePath="/functional/routing",
  *     resolvePathConflicts=false
  * )
  */
