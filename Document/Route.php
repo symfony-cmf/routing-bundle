@@ -32,7 +32,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $name;
 
     /**
-     * children - needed for the admin to work ...
+     * Child route documents
      *
      * @var Collection
      */
@@ -107,6 +107,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $this->setDefaults(array());
         $this->setRequirements(array());
         $this->setOptions(array());
+        $this->children = array();
 
         $this->addFormatPattern = $addFormatPattern;
         if ($this->addFormatPattern) {
@@ -418,6 +419,28 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return parent::compile();
     }
 
+    /**
+     * Return this routes children
+     *
+     * Filters out children that do not implement
+     * the RouteObjectInterface.
+     *
+     * @return array - array of RouteObjectInterface's
+     *
+     */
+    public function getRouteChildren() 
+    {
+        $children = array();
+
+        foreach ($this->children as $child) {
+            if ($child instanceof RouteObjectInterface) {
+                $children[] = $child;
+            }
+        }
+
+        return $children;
+    }
+    
     public function __toString()
     {
         return (string)$this->name;

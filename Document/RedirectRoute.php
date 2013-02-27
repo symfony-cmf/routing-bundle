@@ -120,7 +120,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      * Set the parameters for building this route. Used with both route name
      * and target route document.
      *
-     * @param array $parameter a hashmap of key to value mapping for route
+     * @param array $parameters a hashmap of key to value mapping for route
      *      parameters
      */
     public function setParameters(array $parameters)
