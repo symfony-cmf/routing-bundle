@@ -31,8 +31,11 @@ class AutoRouteTest extends BaseTestCase
         $post->title = 'Unit testing blog post';
         self::$dm->persist($post);
         self::$dm->flush();
+<<<<<<< Updated upstream
         self::$dm->flush();
         self::$dm->clear();
+=======
+>>>>>>> Stashed changes
 
         // make sure auto-route has been persisted
         $post = self::$dm->find(null, '/test-post');
@@ -46,12 +49,16 @@ class AutoRouteTest extends BaseTestCase
         $post->title = 'Foobar';
         self::$dm->persist($post);
         self::$dm->flush();
+<<<<<<< Updated upstream
         self::$dm->clear();
+=======
+>>>>>>> Stashed changes
 
         // make sure auto-route has been persisted
         $post = self::$dm->find(null, '/test-post');
         $routes = $post->routes;
 
+<<<<<<< Updated upstream
         $this->assertCount(1, $routes);
         $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingExtraBundle\Document\AutoRoute', $routes[0]);
         $this->assertEquals('foobar', $routes[0]);
@@ -66,5 +73,21 @@ class AutoRouteTest extends BaseTestCase
         $baseRoute = $this->dm->find(null, '/test/'.self::ROUTE_ROOT);
         $routes = $this->dm->getChildren($baseRoute);
         $this->assertCount(0, $routes);
+=======
+        //$this->assertCount(1, $routes);
+        //$this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingExtraBundle\Document\AutoRoute', $routes[0]);
+        //$this->assertEquals('foobar', $routes[0]);
+        //$this->assertEquals('/test/routing/foobar', $route->getId());
+
+        //// test removing
+        //self::$dm->remove($post);
+
+        //self::$dm->flush();
+        //self::$dm->clear();
+
+        //$baseRoute = $this->dm->find(null, '/test/'.self::ROUTE_ROOT);
+        //$routes = $this->dm->getChildren($baseRoute);
+        //$this->assertCount(0, $routes);
+>>>>>>> Stashed changes
     }
 }

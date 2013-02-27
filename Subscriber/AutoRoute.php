@@ -7,6 +7,10 @@ use Doctrine\ODM\PHPCR\Event;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\AutoRouteManager;
 use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 use Doctrine\ODM\PHPCR\Event\PostFlushEventArgs;
+<<<<<<< Updated upstream
+=======
+use Doctrine\ODM\PHPCR\Event\OnFlushEventArgs;
+>>>>>>> Stashed changes
 
 /**
  * Doctrine PHPCR ODM Subscriber for maintaining automatic routes.
@@ -20,6 +24,10 @@ class AutoRoute implements EventSubscriber
 
     protected $persistQueue = array();
     protected $removeQueue = array();
+<<<<<<< Updated upstream
+=======
+    protected $inUpdate = false;
+>>>>>>> Stashed changes
 
     public function __construct(AutoRouteManager $autoRouteManager)
     {
@@ -29,6 +37,7 @@ class AutoRoute implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
+<<<<<<< Updated upstream
             Event::postUpdate,
             Event::postPersist,
             Event::preRemove,
@@ -37,11 +46,24 @@ class AutoRoute implements EventSubscriber
     }
 
     public function postUpdate(LifecycleEventArgs $args)
+=======
+            Event::preUpdate,
+            Event::prePersist,
+            Event::onFlush,
+        );
+    }
+
+    public function preUpdate(LifecycleEventArgs $args)
+>>>>>>> Stashed changes
     {
         $this->doUpdate($args);
     }
 
+<<<<<<< Updated upstream
     public function postPersist(LifecycleEventArgs $args)
+=======
+    public function prePersist(LifecycleEventArgs $args)
+>>>>>>> Stashed changes
     {
         $this->doUpdate($args);
     }
@@ -57,6 +79,7 @@ class AutoRoute implements EventSubscriber
         }
     }
 
+<<<<<<< Updated upstream
     public function postFlush(PostFlushEventArgs $args)
     {
         $dm = $args->getDocumentManager();
@@ -79,6 +102,15 @@ class AutoRoute implements EventSubscriber
         }
 
         if ($doFlush) {
+=======
+    public function onFlush(OnFlushEventArgs $args)
+    {
+        $dm = $args->getDocumentManager();
+        $uow = $dm->getUnitOfWork();
+        foreach ($this->persistQueue as $document) {
+            $route = $this->autoRouteManager->updateAutoRouteForDocument($document);
+            $uow->computeSingleDocumentChangeSet($route);
+>>>>>>> Stashed changes
         }
     }
 
