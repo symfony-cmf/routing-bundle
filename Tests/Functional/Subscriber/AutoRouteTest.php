@@ -15,59 +15,76 @@ class AutoRouteTest extends BaseTestCase
 
     const ROUTE_ROOT = '/routing';
 
-    public static function setupBeforeClass(array $options = array(), $routebase = null)
+    public function setUp()
     {
-        parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
+        $this->setupBeforeClass(array(), basename(self::ROUTE_ROOT));
         self::$manager = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.auto_route_manager');
 
     }
 
-    public function testSubscriber()
+    protected function createPost()
     {
         $post = new Post;
-        $post->path = '/functional/test-post';
+        $post->path = '/test/test-post';
         $post->title = 'Unit testing blog post';
+
         self::$dm->persist($post);
         self::$dm->flush();
+        self::$dm->clear();
+    }
 
-        self::$dm->refresh($post);
+    public function testPersist()
+    {
+        $this->createPost();
 
-        $route = self::$dm->find(null, '/functional/routing/unit-testing-blog-post');
+        $route = self::$dm->find(null, '/test/routing/unit-testing-blog-post');
 
         $this->assertNotNull($route);
 
         // make sure auto-route has been persisted
-        $post = self::$dm->find(null, '/functional/test-post');
+        $post = self::$dm->find(null, '/test/test-post');
         $routes = self::$dm->getReferrers($post);
 
         $this->assertCount(1, $routes);
         $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingExtraBundle\Document\AutoRoute', $routes[0]);
-        $this->assertEquals('unit-testing-blog-post', $routes[0]);
+        $this->assertEquals('unit-testing-blog-post', $routes[0]->getName());
+    }
 
+    public function testUpdate()
+    {
+        $this->createPost();
+
+        $post = self::$dm->find(null, '/test/test-post');
         // test update
         $post->title = 'Foobar';
         self::$dm->persist($post);
         self::$dm->flush();
 
         // make sure auto-route has been persisted
-        $post = self::$dm->find(null, '/functional/test-post');
+        $post = self::$dm->find(null, '/test/test-post');
         $routes = $post->routes;
 
         $this->assertCount(1, $routes);
         $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingExtraBundle\Document\AutoRoute', $routes[0]);
 
-        // uncomment this for an infinite loop
-        // self::$dm->refresh($routes[0]);
+        self::$dm->refresh($routes[0]);
 
-        $this->assertEquals('foobar', $routes[0]);
-        // $this->assertEquals('/functional/routing/foobar', $routes[0]->getId());
+        $this->assertEquals('foobar', $routes[0]->getName());
+        $this->assertEquals('/test/routing/foobar', $routes[0]->getId());
+
+    }
+
+    public function testRemove()
+    {
+        $this->createPost();
+        $post = self::$dm->find(null, '/test/test-post');
 
         // test removing
         self::$dm->remove($post);
 
         self::$dm->flush();
 
-        $baseRoute = self::$dm->find(null, '/functional'.self::ROUTE_ROOT);
+        $baseRoute = self::$dm->find(null, '/test'.self::ROUTE_ROOT);
         $routes = self::$dm->getChildren($baseRoute);
         $this->assertCount(0, $routes);
     }

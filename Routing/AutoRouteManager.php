@@ -80,6 +80,8 @@ class AutoRouteManager
      *
      * @param object $document Mapped document
      *
+     * @todo: Test me
+     *
      * @return array Array of removed routes
      */
     public function removeAutoRoutesForDocument($document)
@@ -261,5 +263,6 @@ class AutoRouteManager
         $id = $metadata->getIdentifierValue($document);
         $isExisting = $this->dm->getPhpcrSession()->nodeExists($id);
         return $isExisting;
+        return $res;
     }
 }

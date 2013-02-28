@@ -41,14 +41,14 @@ class BaseTestCase extends WebTestCase
 
         $session = self::$dm->getPhpcrSession();
         $root = $session->getNode('/');
-        if ($root->hasNode('functional')) {
-            $root->getNode('functional')->remove();
+        if ($root->hasNode('test')) {
+            $root->getNode('test')->remove();
             $session->save();
         }
-        $root->addNode('functional');
+        $root->addNode('test');
         $session->save();
 
-        $root = self::$dm->find(null, '/functional');
+        $root = self::$dm->find(null, '/test');
 
         $route = new Route;
         $route->setPosition($root, $routebase);

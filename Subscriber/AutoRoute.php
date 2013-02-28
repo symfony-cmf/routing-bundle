@@ -30,21 +30,8 @@ class AutoRoute implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            Event::preUpdate,
-            Event::prePersist,
             Event::onFlush,
-            Event::preRemove,
         );
-    }
-
-    public function preUpdate(LifecycleEventArgs $args)
-    {
-        $this->doUpdate($args);
-    }
-
-    public function prePersist(LifecycleEventArgs $args)
-    {
-        $this->doUpdate($args);
     }
 
     public function preRemove(LifecycleEventArgs $args)
@@ -64,22 +51,26 @@ class AutoRoute implements EventSubscriber
         $dm = $args->getDocumentManager();
         $uow = $dm->getUnitOfWork();
 
-        foreach ($this->persistQueue as $document) {
-            $route = $this->autoRouteManager->updateAutoRouteForDocument($document);
-            $uow->computeSingleDocumentChangeSet($route);
+        $scheduledInserts = $uow->getScheduledInserts();
+        $scheduledUpdates = $uow->getScheduledUpdates();
+        $updates = array_merge($scheduledInserts, $scheduledUpdates);
+
+        foreach ($updates as $document) {
+            if ($this->autoRouteManager->isAutoRouteable($document)) {
+                $route = $this->autoRouteManager->updateAutoRouteForDocument($document);
+                $uow->computeSingleDocumentChangeSet($route);
+            }
         }
 
-        foreach ($this->removeQueue as $document) {
-            $uow->scheduleRemove($document);
-        }
-    }
+        $removes = $uow->getScheduledRemovals();
 
-    protected function doUpdate(LifecycleEventArgs $args)
-    {
-        $document = $args->getDocument();
-
-        if ($this->autoRouteManager->isAutoRouteable($document)) {
-            $this->persistQueue[spl_object_hash($document)] = $document;
+        foreach ($removes as $document) {
+            if ($this->autoRouteManager->isAutoRouteable($document)) {
+                $routes = $this->autoRouteManager->fetchAutoRoutesForDocument($document);
+                foreach ($routes as $route) {
+                    $uow->scheduleRemove($route);
+                }
+            }
         }
     }
 }
