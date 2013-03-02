@@ -2,12 +2,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Routing;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\AutoRoute;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Metadata\MetadataFactoryInterface;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\AutoRoute;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Util\SlugifierInterface;
-
 
 /**
  * NOTE: I have tried to decouple this from the Subscriber, so you have the
@@ -230,10 +228,7 @@ class AutoRouteManager
         }
 
         if (count($autoRoutes) > 1) {
-            throw new \Exception(sprintf(
-                'Found more than one AutoRoute for document "%s"',
-                ClassUtils::toString($document)
-            ));
+            throw new Exception\MoreThanOneAutoRoute($document);
         } elseif (count($autoRoutes) == 1) {
             $autoRoute = $autoRoutes->first();
         } else {
@@ -254,7 +249,7 @@ class AutoRouteManager
     public function fetchAutoRoutesForDocument($document)
     {
         $routes = $this->dm->getReferrers($document, null, 'routeContent');
-        $routes->filter(function ($route) {
+        $routes = $routes->filter(function ($route) {
             if ($route instanceof AutoRoute) {
                 return true;
             }
