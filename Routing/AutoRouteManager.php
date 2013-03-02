@@ -5,7 +5,7 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Routing;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\AutoRoute;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\DocumentManager;
-use Metadata\MetadataFactory;
+use Metadata\MetadataFactoryInterface;
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Util\SlugifierInterface;
 
 
@@ -26,6 +26,8 @@ class AutoRouteManager
     protected $defaultPath;
     protected $slugifier;
 
+    protected $metadata;
+
     /**
      * @TODO: Should defaultPath be contained in a service to
      *        enable this property to be modified at runtime?
@@ -38,7 +40,7 @@ class AutoRouteManager
      */
     public function __construct(
         DocumentManager $dm,
-        MetadataFactory $metadataFactory, 
+        MetadataFactoryInterface $metadataFactory, 
         SlugifierInterface $slugifier,
         $defaultPath
     )
@@ -177,6 +179,10 @@ class AutoRouteManager
      */
     protected function getMetadata($document)
     {
+        if ($this->metadata) {
+            return $this->metadata;
+        }
+
         $metadata = $this->metadataFactory->getMetadataForClass(get_class($document));
 
         if (null === $metadata) {
@@ -185,6 +191,8 @@ class AutoRouteManager
                 'create a route without this metadata!'
             );
         }
+
+        $this->metadata = $metadata;
 
         return $metadata;
     }
@@ -261,8 +269,7 @@ class AutoRouteManager
     {
         $metadata = $this->dm->getClassMetadata(get_class($document));
         $id = $metadata->getIdentifierValue($document);
-        $isExisting = $this->dm->getPhpcrSession()->nodeExists($id);
-        return $isExisting;
-        return $res;
+
+        return $this->dm->getPhpcrSession()->nodeExists($id);
     }
 }
