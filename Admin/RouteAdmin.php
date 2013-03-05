@@ -11,7 +11,7 @@ class RouteAdmin extends MinimalRouteAdmin
      * Those two properties are required for having two admin classes for the same document
      */
     protected $baseRouteName = 'symfony_cmf_routing_extra_route_admin';
-    protected $baseRoutePattern = 'symfony_cmf/routing_extra/route';
+    protected $baseRoutePattern = 'bundle/route';
 
     protected function configureFormFields(FormMapper $formMapper)
     {
