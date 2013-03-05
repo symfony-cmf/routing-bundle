@@ -20,3 +20,4 @@ AnnotationRegistry::registerLoader(function($class) use ($loader) {
     return class_exists($class, false);
 });
 AnnotationRegistry::registerFile(__DIR__.'/../vendor/doctrine/phpcr-odm/lib/Doctrine/ODM/PHPCR/Mapping/Annotations/DoctrineAnnotations.php');
+AnnotationRegistry::registerFile(__DIR__.'/../Mapping/Annotations/AutoRouteAnnotations.php');

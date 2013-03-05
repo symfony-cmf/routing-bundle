@@ -26,8 +26,8 @@ class ContentRepository implements ContentRepositoryInterface
     /**
      * Return a content object by it's id or null if there is none.
      *
-     * @param $id mixed id of the content object
-     * @return mixed
+     * @param $id    - mixed id of the content object
+     * @return mixed - return value
      */
     public function findById($id)
     {

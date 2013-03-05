@@ -39,16 +39,17 @@ class BaseTestCase extends WebTestCase
             return;
         }
 
-        $session = self::$kernel->getContainer()->get('doctrine_phpcr.session');
-        if ($session->nodeExists("/test/$routebase")) {
-            $session->getNode("/test/$routebase")->remove();
+        $session = self::$dm->getPhpcrSession();
+        $root = $session->getNode('/');
+        if ($root->hasNode('test')) {
+            $root->getNode('test')->remove();
+            $session->save();
         }
-        if (! $session->nodeExists('/test')) {
-            $session->getRootNode()->addNode('test', 'nt:unstructured');
-        }
+        $root->addNode('test');
         $session->save();
 
         $root = self::$dm->find(null, '/test');
+
         $route = new Route;
         $route->setPosition($root, $routebase);
         self::$dm->persist($route);

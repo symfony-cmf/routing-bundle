@@ -16,7 +16,10 @@
         "php": ">=5.3.3",
         "symfony-cmf/routing": ">=1.0.0-alpha4",
         "symfony/framework-bundle": ">=2.1.7,<2.3-dev",
-        "symfony/monolog-bundle": ">=2.1,<2.3-dev"
+        "symfony/monolog-bundle": ">=2.1,<2.3-dev",
+        "jms/metadata": "1.1.*",
+        "jbroadway/urlify": "dev-master",
+        "jackalope/jackalope-jackrabbit": "1.*"
     },
     "require-dev": {
         "symfony/class-loader": ">=2.1,<2.3-dev",
