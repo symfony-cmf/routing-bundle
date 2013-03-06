@@ -2,7 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Listener;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\IdPrefix;
+use Symfony\Cmf\Bundle\RoutingExtraBundle\EventListener\IdPrefix;
 
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 

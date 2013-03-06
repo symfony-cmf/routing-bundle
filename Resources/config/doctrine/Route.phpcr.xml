@@ -13,6 +13,8 @@
         <field fieldName="variablePattern" type="string"/>
         <field fieldName="addFormatPattern" type="boolean"/>
         <field fieldName="addTrailingSlash" type="boolean"/>
+        <field fieldName="publishStartDate" type="date"/>
+        <field fieldName="publishEndDate" type="date"/>
     </document>
 
 </doctrine-mapping>

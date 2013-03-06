@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowInterface;
 
 /**
  * Default document for routing table entries that work with the DynamicRouter.
@@ -15,7 +16,7 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
  *
  * @author david.buchmann@liip.ch
  */
-class Route extends SymfonyRoute implements RouteObjectInterface
+class Route extends SymfonyRoute implements RouteObjectInterface, PublishWorkflowInterface
 {
     /**
      * parent document
@@ -94,6 +95,16 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * @var Boolean
      */
     protected $addTrailingSlash;
+
+    /**
+     * @var \DateTime
+     */
+    protected $publishStartDate;
+
+    /**
+     * @var \DateTime
+     */
+    protected $publishEndDate;
 
     /**
      * Overwrite to be able to create route without pattern
@@ -320,7 +331,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return $options;
     }
 
-
     /**
      * TODO: remove when we drop support for symfony 2.1
      *
@@ -339,6 +349,32 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setPattern($pattern)
     {
         return $this->setPath($pattern);
+    }
+
+    /**
+     * Get the publish start date
+     */
+    public function getPublishStartDate()
+    {
+        return $this->publishStartDate;
+    }
+
+    public function setPublishStartDate(\DateTime $publishStartDate = null)
+    {
+        $this->publishStartDate = $publishStartDate;
+    }
+
+    /**
+     * Get the publish end date
+     */
+    public function getPublishEndDate()
+    {
+        return $this->publishEndDate;
+    }
+
+    public function setPublishEndDate(\DateTime $publishEndDate = null)
+    {
+        $this->publishEndDate = $publishEndDate;
     }
 
     /**
