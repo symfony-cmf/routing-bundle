@@ -7,7 +7,7 @@
         <id name="id">
             <generator strategy="parent"/>
         </id>
-        <reference-one fieldName="routeContent"/>
+        <reference-one fieldName="routeContent" name="routes" />
         <children fieldName="children"/>
         <field fieldName="host" type="string"/>
         <field fieldName="variablePattern" type="string"/>
