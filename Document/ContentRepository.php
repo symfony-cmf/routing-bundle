@@ -34,4 +34,18 @@ class ContentRepository implements ContentRepositoryInterface
         return $this->documentManager->find(null, $id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getContentId($content)
+    {
+        if (! is_object($content)) {
+            return null;
+        }
+        try {
+            return $this->documentManager->getUnitOfWork()->getDocumentId($content);
+        } catch(\Exception $e) {
+            return null;
+        }
+    }
 }
