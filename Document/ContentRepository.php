@@ -44,7 +44,7 @@ class ContentRepository implements ContentRepositoryInterface
         }
         try {
             return $this->documentManager->getUnitOfWork()->getDocumentId($content);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
     }

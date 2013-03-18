@@ -2,12 +2,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Admin;
 
-use Doctrine\Common\Util\Debug;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
-use Symfony\Component\HttpFoundation\Request;
 
 class RedirectRouteAdmin extends Admin
 {
@@ -18,7 +16,6 @@ class RedirectRouteAdmin extends Admin
      * @var string
      */
     protected $routeRoot;
-
 
     protected function configureListFields(ListMapper $listMapper)
     {

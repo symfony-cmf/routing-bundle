@@ -4,8 +4,6 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-
 use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\ContentAwareGenerator;
 
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;

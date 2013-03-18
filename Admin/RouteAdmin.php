@@ -3,7 +3,6 @@
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\HttpFoundation\Request;
 
 class RouteAdmin extends MinimalRouteAdmin
 {

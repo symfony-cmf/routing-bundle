@@ -3,13 +3,12 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\DependencyInjection;
 
 use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\SymfonyCmfRoutingExtraExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\Definition\Processor;
 
 class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @param array $config
+     * @param  array                                                   $config
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     protected function getBuilder(array $config = array())

@@ -39,4 +39,3 @@ class RoutePass implements CompilerPassInterface
         $chainDriverDef->addMethodCall('addDriver', array(new Reference($mappingService), 'Symfony\Component\Routing'));
     }
 }
-

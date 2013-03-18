@@ -79,8 +79,8 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
     /**
      * Clean up the match data and move some values into the request attributes.
      *
-     * @param array $defaults The defaults from the match
-     * @param Request $request The request object if available
+     * @param array   $defaults The defaults from the match
+     * @param Request $request  The request object if available
      *
      * @return array the updated defaults to return for this match
      */
@@ -113,6 +113,7 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
         if (!$request = $this->container->get('request')) {
             throw new ResourceNotFoundException('Request object not available from container');
         }
+
         return $request;
     }
 }

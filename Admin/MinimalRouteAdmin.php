@@ -44,7 +44,6 @@ class MinimalRouteAdmin extends Admin
     protected $baseRouteName = 'symfony_cmf_routing_extra_minimal_route_admin';
     protected $baseRoutePattern = 'symfony_cmf/routing_extra/minimalRoute';
 
-
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper

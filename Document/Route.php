@@ -212,7 +212,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * @param string $id PHPCR id of this document
+     * @param string $id       PHPCR id of this document
      * @param string $idPrefix part of the id that can be removed
      *
      * @return string the static part of the pattern of this route
@@ -297,7 +297,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     {
         $option = parent::getOption($name);
         if (null === $option && 'compiler_class' === $name) {
-
             return 'Symfony\\Component\\Routing\\RouteCompiler';
         }
 
@@ -319,7 +318,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
         return $options;
     }
-
 
     /**
      * TODO: remove when we drop support for symfony 2.1
@@ -428,7 +426,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * @return array - array of RouteObjectInterface's
      *
      */
-    public function getRouteChildren() 
+    public function getRouteChildren()
     {
         $children = array();
 
@@ -440,9 +438,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
         return $children;
     }
-    
+
     public function __toString()
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 }

@@ -57,9 +57,9 @@ class SymfonyCmfRoutingExtraExtension extends Extension
     /**
      * Set up the DynamicRouter - only to be called if enabled is set to true
      *
-     * @param array $config the compiled configuration for the dynamic router
+     * @param array            $config    the compiled configuration for the dynamic router
      * @param ContainerBuilder $container the container builder
-     * @param LoaderInterface $loader the configuration loader
+     * @param LoaderInterface  $loader    the configuration loader
      */
     private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {

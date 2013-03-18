@@ -6,8 +6,6 @@ use LogicException;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
-use Doctrine\Common\Collections\Collection;
-
 /**
  * {@inheritDoc}
  */

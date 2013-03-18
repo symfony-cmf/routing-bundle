@@ -13,7 +13,7 @@ class BaseTestCase extends WebTestCase
      */
     protected static $dm;
 
-    static protected function createKernel(array $options = array())
+    protected static function createKernel(array $options = array())
     {
         return new AppKernel(
             isset($options['config']) ? $options['config'] : 'default.yml'
@@ -24,7 +24,7 @@ class BaseTestCase extends WebTestCase
      * careful: the kernel is shut down after the first test, if you need the
      * kernel, recreate it.
      *
-     * @param array $options passed to self:.createKernel
+     * @param array  $options   passed to self:.createKernel
      * @param string $routebase base name for routes under /test to use
      */
     public static function setupBeforeClass(array $options = array(), $routebase = null)

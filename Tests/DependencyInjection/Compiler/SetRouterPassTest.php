@@ -4,7 +4,6 @@ namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\DependencyInjection\Compil
 
 use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\SetRouterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 
 class SetRouterPassTest extends \PHPUnit_Framework_TestCase
 {
