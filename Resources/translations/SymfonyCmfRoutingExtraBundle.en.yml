@@ -7,9 +7,11 @@ breadcrumb:
     link_route_list: Routes
     link_route_create: Create
     link_route_edit: Edit
+    link_route_delete: Delete
     link_redirect_route_list: Redirect Routes
     link_redirect_route_create: Create
     link_redirect_route_edit: Edit
+    link_redirect_route_delete: Delete
 
 filter:
     label_name: Name
