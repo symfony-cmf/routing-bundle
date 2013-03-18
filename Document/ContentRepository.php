@@ -43,8 +43,7 @@ class ContentRepository implements ContentRepositoryInterface
             return null;
         }
         try {
-            $classmeta = $this->documentManager->getClassMetadata(get_class($content));
-            return $classmeta->getIdentifierValue($content);
+            return $this->documentManager->getUnitOfWork()->getDocumentId($content);
         } catch(\Exception $e) {
             return null;
         }
