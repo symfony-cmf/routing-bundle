@@ -81,6 +81,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
 
         $loader->load('cmf_routing.xml');
         $container->setParameter($this->getAlias() . '.routing_repositoryroot', $config['routing_repositoryroot']);
+        $container->setParameter($this->getAlias() . '.locales', (isset($config['locales']) && $config['locales']) ? $config['locales'] : null);
 
         $container->setAlias('symfony_cmf_routing_extra.route_provider', $config['route_provider_service_id']);
         $container->setAlias('symfony_cmf_routing_extra.content_repository', $config['content_repository_service_id']);

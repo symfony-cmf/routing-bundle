@@ -103,6 +103,7 @@
 
         <service id="symfony_cmf_routing_extra.phpcrodm_route_idprefix_listener" class="%symfony_cmf_routing_extra.phpcrodm_route_idprefix_listener_class%">
             <argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument>
+            <argument>%symfony_cmf_routing_extra.locales%</argument>
             <tag name="doctrine_phpcr.event_listener" event="postLoad" />
             <tag name="doctrine_phpcr.event_listener" event="postPersist" />
         </service>
