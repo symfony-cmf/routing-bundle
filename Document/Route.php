@@ -84,7 +84,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $addTrailingSlash;
 
     /**
-     * The part of the PHPCR path that is not part of the url
+     * The part of the PHPCR path that does not belong to the url
      *
      * This field is not persisted in storage.
      *
@@ -93,16 +93,8 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $idPrefix;
 
     /**
-     * This regular expression is used to replace the path locale with
-     * {_locale} so that symfony may pick the locale up.
+     * Whether this route was changed since being last compiled.
      *
-     * This field is not persisted in storage but injected at runtime.
-     *
-     * @var array
-     */
-    protected $locales = array();
-
-    /**
      * State information not persisted in storage.
      *
      * @var Boolean
@@ -217,25 +209,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return $this;
     }
 
-    public function getLocales()
-    {
-        return $this->locales;
-    }
-
-    /**
-     * Regular expression for the allowed locales for this route.
-     *
-     * @param string|boolean $locales
-     *
-     * @return Route
-     */
-    public function setLocales($locales)
-    {
-        $this->locales = $locales;
-
-        return $this;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -265,9 +238,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $url = substr($id, strlen($idPrefix));
         if (empty($url)) {
             $url = '/';
-        }
-        if ($this->locales) {
-            return preg_replace($this->locales, '/{_locale}${2}', $url);
         }
 
         return $url;

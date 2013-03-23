@@ -19,22 +19,9 @@ class IdPrefix
      */
     protected $idPrefix = '';
 
-    /**
-     * A regular expression to match potential locales routes with this prefix
-     * are allowed to have.
-     *
-     * Something along '#^/(de|fr|en)(/|$)#'
-     *
-     * @var string
-     */
-    protected $locales = false;
-
-    public function __construct($prefix, array $locales = null)
+    public function __construct($prefix)
     {
         $this->idPrefix = $prefix;
-        if ($locales) {
-            $this->locales = '#^/(' . implode('|', $locales) . ')(/|$)#';
-        }
     }
 
     /**
@@ -44,12 +31,6 @@ class IdPrefix
     {
         $this->idPrefix = $prefix;
     }
-
-    public function setLocales(array $locales)
-    {
-        $this->locales = $locales;
-    }
-
 
     public function postLoad(LifecycleEventArgs $args)
     {
@@ -71,7 +52,6 @@ class IdPrefix
             && ! strncmp($this->idPrefix, $doc->getId(), strlen($this->idPrefix))
         ) {
             $doc->setPrefix($this->idPrefix);
-            $doc->setLocales($this->locales);
         }
     }
 }
