@@ -7,29 +7,9 @@
     <parameters>
         <parameter key="symfony_cmf_routing_extra.route_admin_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Admin\RouteAdmin</parameter>
         <parameter key="symfony_cmf_routing_extra.redirect_route_admin_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Admin\RedirectRouteAdmin</parameter>
-        <parameter key="symfony_cmf_routing_extra.minimal_route_admin_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Admin\MinimalRouteAdmin</parameter>
     </parameters>
 
     <services>
-
-        <service id="symfony_cmf_routing_extra.minimal_route_admin" class="%symfony_cmf_routing_extra.minimal_route_admin_class%">
-            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="SymfonyCmfRoutingExtraBundle" label="dashboard.label_minimal_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
-            <argument/>
-            <argument>Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route</argument>
-            <argument>SonataAdminBundle:CRUD</argument>
-
-            <call method="setRouteBuilder">
-                <argument type="service" id="sonata.admin.route.path_info_slashes" />
-            </call>
-
-            <call method="setContentRoot">
-                <argument>%symfony_cmf_routing_extra.content_basepath%</argument>
-            </call>
-
-            <call method="setRouteRoot">
-                <argument>%symfony_cmf_routing_extra.route_basepath%</argument>
-            </call>
-        </service>
 
         <service id="symfony_cmf_routing_extra.route_admin" class="%symfony_cmf_routing_extra.route_admin_class%">
             <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="SymfonyCmfRoutingExtraBundle" label="dashboard.label_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
