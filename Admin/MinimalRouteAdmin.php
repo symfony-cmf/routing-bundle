@@ -47,7 +47,7 @@ class MinimalRouteAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('path', 'text')
+            ->addIdentifier('id', 'text')
         ;
     }
 
@@ -85,24 +85,9 @@ class MinimalRouteAdmin extends Admin
         return array();
     }
 
-    public function getNewInstance()
-    {
-        /** @var $new Route */
-        $new = parent::getNewInstance();
-
-        if ($this->hasRequest()) {
-            $currentLocale = $this->getRequest()->attributes->get('_locale');
-
-            $new->setDefault('_locale', $currentLocale);
-        }
-
-        return $new;
-    }
-
     protected function configureFieldsForDefaults()
     {
         return array(
-            array('_locale', 'text', array('required' => true)),
             array('_controller', 'text', array('required' => false)),
             array('_template', 'text', array('required' => false)),
         );
@@ -124,8 +109,6 @@ class MinimalRouteAdmin extends Admin
     {
         $defaults = $object->getDefaults();
 
-        $this->validateDefaultsLocale($errorElement, $object);
-
         if (isset($defaults['_controller'])) {
             $this->validateDefaultsController($errorElement, $object);
         }
@@ -135,13 +118,6 @@ class MinimalRouteAdmin extends Admin
         }
     }
 
-    protected function validateDefaultsLocale(ErrorElement $errorElement, $object)
-    {
-        $errorElement
-            ->with('defaults[_locale]')
-            ->assertNotBlank()
-            ->end();
-    }
 
     protected function validateDefaultsController(ErrorElement $errorElement, $object)
     {
