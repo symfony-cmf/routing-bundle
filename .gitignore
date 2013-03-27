@@ -1,5 +1,5 @@
 phpunit.xml
 composer.lock
-/vendor/
+/vendor
 Tests/Functional/config/parameters.yml
 Tests/Functional/app.sqlite

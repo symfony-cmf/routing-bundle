@@ -14,6 +14,7 @@
         <parameter key="symfony_cmf_routing_extra.route_provider_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteProvider</parameter>
         <parameter key="symfony_cmf_routing_extra.content_repository_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Document\ContentRepository</parameter>
         <parameter key="symfony_cmf_routing_extra.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\IdPrefix</parameter>
+        <parameter key="symfony_cmf_routing_extra.phpcrodm_route_localeupdater_listener_class">Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\LocaleUpdater</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_route_content_class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_explicit_template_class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="symfony_cmf_routing_extra.enhancer_controllers_by_type_class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
@@ -105,6 +106,14 @@
             <argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument>
             <tag name="doctrine_phpcr.event_listener" event="postLoad" />
             <tag name="doctrine_phpcr.event_listener" event="postPersist" />
+        </service>
+
+        <service id="symfony_cmf_routing_extra.phpcrodm_route_localeupdater_listener" class="%symfony_cmf_routing_extra.phpcrodm_route_localeupdater_listener_class%">
+            <argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument>
+            <argument>%symfony_cmf_routing_extra.locales%</argument>
+            <tag name="doctrine_phpcr.event_listener" event="postLoad" />
+            <tag name="doctrine_phpcr.event_listener" event="postPersist" />
+            <tag name="doctrine_phpcr.event_listener" event="postMove" />
         </service>
 
         <service id="symfony_cmf_routing_extra.redirect_controller" class="%symfony_cmf_routing_extra.redirect_controller_class%">

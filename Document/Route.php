@@ -53,13 +53,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $routeContent;
 
     /**
-     * The part of the phpcr path that is not part of the url
-     *
-     * @var string
-     */
-    protected $idPrefix;
-
-    /**
      * @since Symfony 2.2 introduces the host name pattern. This default
      * implementation just stores it as a field.
      *
@@ -77,11 +70,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $variablePattern;
 
     /**
-     * @var Boolean
-     */
-    protected $needRecompile = false;
-
-    /**
      * if to add ".{_format}" to the pattern
      *
      * @var Boolean
@@ -94,6 +82,24 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * @var Boolean
      */
     protected $addTrailingSlash;
+
+    /**
+     * The part of the PHPCR path that does not belong to the url
+     *
+     * This field is not persisted in storage.
+     *
+     * @var string
+     */
+    protected $idPrefix;
+
+    /**
+     * Whether this route was changed since being last compiled.
+     *
+     * State information not persisted in storage.
+     *
+     * @var Boolean
+     */
+    protected $needRecompile = false;
 
     /**
      * Overwrite to be able to create route without pattern
