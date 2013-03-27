@@ -10,7 +10,7 @@
 
     <services>
         <service id="symfony_cmf_routing_extra.router" class="%symfony_cmf_routing_extra.chain_router_class%">
-            <argument type="service" id="logger" />
+            <argument type="service" id="logger" on-invalid="ignore" />
             <call method="setContext">
                 <argument type="service" id="router.request_context" />
             </call>

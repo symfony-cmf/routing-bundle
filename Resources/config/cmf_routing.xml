@@ -73,7 +73,7 @@
 
         <service id="symfony_cmf_routing_extra.generator" class="%symfony_cmf_routing_extra.generator_class%">
             <argument type="service" id="symfony_cmf_routing_extra.route_provider" />
-            <argument type="service" id="logger" />
+            <argument type="service" id="logger" on-invalid="ignore" />
             <call method="setContainer"><argument type="service" id="service_container"/></call>
             <call method="setContentRepository"><argument type="service" id="symfony_cmf_routing_extra.content_repository"/></call>
         </service>
