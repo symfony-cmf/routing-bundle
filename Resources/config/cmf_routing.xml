@@ -113,5 +113,12 @@
         <service id="symfony_cmf_routing_extra.redirect_controller" class="%symfony_cmf_routing_extra.redirect_controller_class%">
             <argument type="service" id="router" />
         </service>
+
+        <service id="symfony_cmf_routing_extra.initializer" class="Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer">
+            <argument type="collection">
+                <argument>%symfony_cmf_routing_extra.routing_repositoryroot%</argument>
+            </argument>
+            <tag name="doctrine_phpcr.initializer"/>
+        </service>
     </services>
 </container>
