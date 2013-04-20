@@ -42,7 +42,8 @@ class SymfonyCmfRoutingExtraExtension extends Extension
             $router->addMethodCall('add', array(new Reference($id), $priority));
         }
 
-        $loader->load('form_type.xml');
+        $this->setupFormTypes($config, $container, $loader);
+
         // if there is twig, register our form type with twig
         if ($container->hasParameter('twig.form.resources')) {
             $resources = $container->getParameter('twig.form.resources');
@@ -51,6 +52,19 @@ class SymfonyCmfRoutingExtraExtension extends Extension
 
         if ($config['use_sonata_admin']) {
             $this->loadSonataAdmin($config, $loader, $container);
+        }
+    }
+
+    public function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader)
+    {
+        $loader->load('form_type.xml');
+
+        if (isset($config['dynamic'])) {
+            $routeTypeTypeDefinition = $container->getDefinition('symfony_cmf_routing_extra.route_type_form_type');
+
+            foreach (array_keys($config['dynamic']['controllers_by_type']) as $routeType) {
+                $routeTypeTypeDefinition->addMethodCall('addRouteType', array($routeType));
+            }
         }
     }
 
