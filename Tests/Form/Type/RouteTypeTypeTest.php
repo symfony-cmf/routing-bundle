@@ -17,13 +17,15 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
     {
         $this->type->addRouteType('foobar');
         $this->type->addRouteType('barfoo');
+
         $this->ori->expects($this->once())
             ->method('setDefaults')
             ->with(array(
                 'choices' => array(
-                    'foobar' => 'foobar',
-                    'barfoo' => 'barfoo',
+                    'foobar' => 'route_type.foobar',
+                    'barfoo' => 'route_type.barfoo',
                 ),
+                'translation_domain' => 'SymfonyCmfRoutingExtraBundle',
             ));
 
         $this->type->setDefaultOptions($this->ori);

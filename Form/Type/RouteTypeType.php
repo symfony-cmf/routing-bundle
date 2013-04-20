@@ -1,28 +1,26 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Locale\Locale;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class RouteTypeType extends AbstractType
 {
     protected $routeTypes;
+    protected $translator;
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $choices = array();
+        foreach ($this->routeTypes as $routeType) {
+            $choices[$routeType] = 'route_type.'.$routeType;
+        }
+
         $resolver->setDefaults(array(
-            'choices' => $this->routeTypes,
+            'choices' => $choices,
+            'translation_domain' => 'SymfonyCmfRoutingExtraBundle',
         ));
     }
 
