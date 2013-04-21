@@ -143,4 +143,9 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $container->setParameter($this->getAlias() . '.content_basepath', $config['content_basepath']);
         $container->setParameter($this->getAlias() . '.route_basepath', $config['route_basepath']);
     }
+
+    public function getNamespace()
+    {
+        return 'http://cmf.symfony.com/schema/dic/routingextra';
+    }
 }
