@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xsd:schema xmlns="http://cmf.symfony.com/schema/dic/routingextra"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://cmf.symfony.com/schema/dic/routingextra"
+    elementFormDefault="qualified">
+
+    <xsd:element name="config" type="config" />
+
+    <xsd:complexType name="config">
+        <xsd:sequence>
+            <xsd:element name="chain" type="chain" minOccurs="0" />
+            <xsd:element name="dynamic" type="dynamic" minOccurs="0" />
+        </xsd:sequence>
+
+        <xsd:attribute name="use-sonata-admin" type="use_sonata_admin" />
+        <xsd:attribute name="content-basepath" type="xsd:string" />
+        <xsd:attribute name="route-basepath" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="chain">
+        <xsd:sequence>
+            <xsd:element name="router-by-id" type="by_id" maxOccurs="unbounded" />
+        </xsd:sequence>
+
+        <xsd:attribute name="replace-symfony-router" type="boolean" />
+    </xsd:complexType>
+
+    <xsd:complexType name="dynamic">
+        <xsd:sequence>
+            <xsd:element name="controller-by-type" type="controller_by_type" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="controller-by-class" type="controller_by_class" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="template-by-class" type="template_by_class" minOccurs="0" maxOccurs="unbounded" />
+
+            <xsd:element name="route-filter-by-id" type="by_id" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="locale" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+
+        <xsd:attribute name="enabled" type="boolean" />
+        <xsd:attribute name="generic-controller" type="xsd:string" />
+        <xsd:attribute name="manager-registery" type="xsd:string" />
+        <xsd:attribute name="manager-name" type="xsd:string" />
+        <xsd:attribute name="uri-filter-regexp" type="xsd:string" />
+        <xsd:attribute name="route-provider-service-id" type="xsd:string" />
+        <xsd:attribute name="content-repository-service-id" type="xsd:string" />
+        <xsd:attribute name="routing-repositoryroot" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="controller_by_type">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="type" type="xsd:string" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="controller_by_class">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="class" type="xsd:string" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="template_by_class">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="alias" type="xsd:string" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="by_id">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="id" type="xsd:string" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="boolean">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="true" />
+            <xsd:enumeration value="false" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="use_sonata_admin">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="true" />
+            <xsd:enumeration value="false" />
+            <xsd:enumeration value="auto" />
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
