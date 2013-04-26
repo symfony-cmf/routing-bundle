@@ -1,18 +1,18 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle;
+namespace Symfony\Cmf\Bundle\RoutingBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\ChainRouterPass;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\RouteEnhancerPass;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\SetRouterPass;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\RoutePass;
+use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\ChainRouterPass;
+use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\RouteEnhancerPass;
+use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
+use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\RoutePass;
 
 /**
  * Bundle class
  */
-class SymfonyCmfRoutingExtraBundle extends Bundle
+class SymfonyCmfRoutingBundle extends Bundle
 {
     /**
      * @param ContainerBuilder $container

@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Document;
 
 use Doctrine\Common\Collections\Collection;
 

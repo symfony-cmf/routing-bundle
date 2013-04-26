@@ -1,10 +1,10 @@
 <?php
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\DependencyInjection;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\SymfonyCmfRoutingExtraExtension;
+use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\SymfonyCmfRoutingExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
+class SymfonyCmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -15,7 +15,7 @@ class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new ContainerBuilder();
 
-        $loader = new SymfonyCmfRoutingExtraExtension();
+        $loader = new SymfonyCmfRoutingExtension();
         $loader->load($config, $builder);
 
         return $builder;
@@ -33,18 +33,18 @@ class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.route_provider'));
-        $alias = $builder->getAlias('symfony_cmf_routing_extra.route_provider');
-        $this->assertEquals('symfony_cmf_routing_extra.default_route_provider', $alias->__toString());
+        $this->assertTrue($builder->hasAlias('symfony_cmf_routing.route_provider'));
+        $alias = $builder->getAlias('symfony_cmf_routing.route_provider');
+        $this->assertEquals('symfony_cmf_routing.default_route_provider', $alias->__toString());
 
-        $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.content_repository'));
-        $alias = $builder->getAlias('symfony_cmf_routing_extra.content_repository');
-        $this->assertEquals('symfony_cmf_routing_extra.default_content_repository', $alias->__toString());
+        $this->assertTrue($builder->hasAlias('symfony_cmf_routing.content_repository'));
+        $alias = $builder->getAlias('symfony_cmf_routing.content_repository');
+        $this->assertEquals('symfony_cmf_routing.default_content_repository', $alias->__toString());
 
-        $this->assertTrue($builder->getParameter('symfony_cmf_routing_extra.replace_symfony_router'));
+        $this->assertTrue($builder->getParameter('symfony_cmf_routing.replace_symfony_router'));
 
-        $this->assertTrue($builder->hasDefinition('symfony_cmf_routing_extra.router'));
-        $methodCalls = $builder->getDefinition('symfony_cmf_routing_extra.router')->getMethodCalls();
+        $this->assertTrue($builder->hasDefinition('symfony_cmf_routing.router'));
+        $methodCalls = $builder->getDefinition('symfony_cmf_routing.router')->getMethodCalls();
         $addMethodCalls = array_filter(
             $methodCalls,
             function ($call) {
@@ -88,16 +88,16 @@ class SymfonyCmfRoutingExtraExtensionTest extends \PHPUnit_Framework_TestCase
 
         $builder = $this->getBuilder($config);
 
-        $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.route_provider'));
-        $alias = $builder->getAlias('symfony_cmf_routing_extra.route_provider');
+        $this->assertTrue($builder->hasAlias('symfony_cmf_routing.route_provider'));
+        $alias = $builder->getAlias('symfony_cmf_routing.route_provider');
         $this->assertEquals('test_route_provider_service', $alias->__toString());
 
-        $this->assertTrue($builder->hasAlias('symfony_cmf_routing_extra.content_repository'));
-        $alias = $builder->getAlias('symfony_cmf_routing_extra.content_repository');
+        $this->assertTrue($builder->hasAlias('symfony_cmf_routing.content_repository'));
+        $alias = $builder->getAlias('symfony_cmf_routing.content_repository');
         $this->assertEquals('test_content_repository_service', $alias->__toString());
 
-        $this->assertTrue($builder->hasDefinition('symfony_cmf_routing_extra.router'));
-        $methodCalls = $builder->getDefinition('symfony_cmf_routing_extra.router')->getMethodCalls();
+        $this->assertTrue($builder->hasDefinition('symfony_cmf_routing.router'));
+        $methodCalls = $builder->getDefinition('symfony_cmf_routing.router')->getMethodCalls();
         $addMethodCalls = array_filter(
             $methodCalls,
             function ($call) {

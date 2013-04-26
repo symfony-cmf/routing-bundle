@@ -11,7 +11,7 @@ doctrine_phpcr:
         mappings:
             test:
                 type: annotation
-                prefix: Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Testdoc
+                prefix: Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Testdoc
                 dir: %kernel.root_dir%/Testdoc
                 is_bundle: false
         auto_generate_proxy_classes: %kernel.debug%

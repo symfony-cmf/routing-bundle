@@ -1,16 +1,16 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Routing;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Testdoc\Content;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Testdoc\Content;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 /**
  * The goal of these tests is to test the interoperation with DI and everything.
@@ -195,7 +195,7 @@ class DynamicRouterTest extends BaseTestCase
         self::$dm->flush();
 
         $expected = array(
-            '_controller' => 'symfony_cmf_routing_extra.redirect_controller:redirectAction',
+            '_controller' => 'symfony_cmf_routing.redirect_controller:redirectAction',
             RouteObjectInterface::ROUTE_NAME => '/test/routing/redirect',
         );
         $request = Request::create('/redirect');

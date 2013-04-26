@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection;
+namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
  * @author Philippo de Santis
  * @author David Buchmann
  */
-class SymfonyCmfRoutingExtraExtension extends Extension
+class SymfonyCmfRoutingExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -47,7 +47,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         // if there is twig, register our form type with twig
         if ($container->hasParameter('twig.form.resources')) {
             $resources = $container->getParameter('twig.form.resources');
-            $container->setParameter('twig.form.resources', array_merge($resources, array('SymfonyCmfRoutingExtraBundle:Form:terms_form_type.html.twig')));
+            $container->setParameter('twig.form.resources', array_merge($resources, array('SymfonyCmfRoutingBundle:Form:terms_form_type.html.twig')));
         }
 
         if ($config['use_sonata_admin']) {
@@ -60,7 +60,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         $loader->load('form_type.xml');
 
         if (isset($config['dynamic'])) {
-            $routeTypeTypeDefinition = $container->getDefinition('symfony_cmf_routing_extra.route_type_form_type');
+            $routeTypeTypeDefinition = $container->getDefinition('symfony_cmf_routing.route_type_form_type');
 
             foreach (array_keys($config['dynamic']['controllers_by_type']) as $routeType) {
                 $routeTypeTypeDefinition->addMethodCall('addRouteType', array($routeType));
@@ -98,11 +98,11 @@ class SymfonyCmfRoutingExtraExtension extends Extension
         if (isset($config['locales']) && $config['locales']) {
             $container->setParameter($this->getAlias() . '.locales', $config['locales']);
         } else {
-            $container->removeDefinition('symfony_cmf_routing_extra.phpcrodm_route_localeupdater_listener');
+            $container->removeDefinition('symfony_cmf_routing.phpcrodm_route_localeupdater_listener');
         }
 
-        $container->setAlias('symfony_cmf_routing_extra.route_provider', $config['route_provider_service_id']);
-        $container->setAlias('symfony_cmf_routing_extra.content_repository', $config['content_repository_service_id']);
+        $container->setAlias('symfony_cmf_routing.route_provider', $config['route_provider_service_id']);
+        $container->setAlias('symfony_cmf_routing.content_repository', $config['content_repository_service_id']);
 
         $managerRegistry = $container->getDefinition($this->getAlias() . '.manager_registry');
         $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
@@ -125,7 +125,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
             $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_templates_by_class')));
         }
         if (!empty($config['route_filters_by_id'])) {
-            $matcher = $container->getDefinition('symfony_cmf_routing_extra.nested_matcher');
+            $matcher = $container->getDefinition('symfony_cmf_routing.nested_matcher');
             foreach ($config['route_filters_by_id'] as $id => $priority) {
                 $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
             }
@@ -139,7 +139,7 @@ class SymfonyCmfRoutingExtraExtension extends Extension
             return;
         }
 
-        $loader->load('routing-extra-admin.xml');
+        $loader->load('routing-admin.xml');
         $container->setParameter($this->getAlias() . '.content_basepath', $config['content_basepath']);
         $container->setParameter($this->getAlias() . '.route_basepath', $config['route_basepath']);
     }
@@ -156,6 +156,6 @@ class SymfonyCmfRoutingExtraExtension extends Extension
 
     public function getNamespace()
     {
-        return 'http://cmf.symfony.com/schema/dic/routingextra';
+        return 'http://cmf.symfony.com/schema/dic/routing';
     }
 }

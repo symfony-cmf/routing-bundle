@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Document;
 
 use LogicException;
 use Symfony\Component\Routing\Route as SymfonyRoute;

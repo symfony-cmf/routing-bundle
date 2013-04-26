@@ -1,7 +1,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/phpcr/doctrine-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <document name="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route" referenceable="true">
+    <document name="Symfony\Cmf\Bundle\RoutingBundle\Document\Route" referenceable="true">
         <parentdocument name="parent"/>
         <nodename name="name"/>
         <id name="id">

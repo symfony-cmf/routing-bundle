@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Form\Type;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -20,7 +20,7 @@ class RouteTypeType extends AbstractType
 
         $resolver->setDefaults(array(
             'choices' => $choices,
-            'translation_domain' => 'SymfonyCmfRoutingExtraBundle',
+            'translation_domain' => 'SymfonyCmfRoutingBundle',
         ));
     }
 
@@ -47,7 +47,7 @@ class RouteTypeType extends AbstractType
      */
     public function getName()
     {
-        return 'symfony_cmf_routing_extra_route_type';
+        return 'symfony_cmf_routing_route_type';
     }
 }
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Routing;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Routing;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\DynamicRouter;
+use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 

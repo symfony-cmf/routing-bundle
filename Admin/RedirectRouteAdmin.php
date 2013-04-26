@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Admin;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Admin;
 
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -9,7 +9,7 @@ use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 
 class RedirectRouteAdmin extends Admin
 {
-    protected $translationDomain = 'SymfonyCmfRoutingExtraBundle';
+    protected $translationDomain = 'SymfonyCmfRoutingBundle';
 
      /**
      * Root path for the route parent selection

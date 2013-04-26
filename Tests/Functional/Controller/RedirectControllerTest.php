@@ -1,21 +1,21 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Controller;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Controller;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 
 class RedirectControllerTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
     /**
-     * @var \Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController
+     * @var \Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController
      */
     protected static $controller;
 

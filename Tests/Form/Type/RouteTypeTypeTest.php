@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Form\Type;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Form\Type;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Form\Type\RouteTypeType;
+use Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType;
 
 class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
 {
@@ -25,7 +25,7 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
                     'foobar' => 'route_type.foobar',
                     'barfoo' => 'route_type.barfoo',
                 ),
-                'translation_domain' => 'SymfonyCmfRoutingExtraBundle',
+                'translation_domain' => 'SymfonyCmfRoutingBundle',
             ));
 
         $this->type->setDefaultOptions($this->ori);

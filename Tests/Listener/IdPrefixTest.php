@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Listener;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Listener;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Listener\IdPrefix;
+use Symfony\Cmf\Bundle\RoutingBundle\Listener\IdPrefix;
 
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 

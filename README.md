@@ -1,4 +1,4 @@
-# Symfony CMF Routing Extra Bundle [![Build Status](https://secure.travis-ci.org/symfony-cmf/RoutingExtraBundle.png)](http://travis-ci.org/symfony-cmf/RoutingExtraBundle)
+# Symfony CMF Routing Bundle [![Build Status](https://secure.travis-ci.org/symfony-cmf/RoutingBundle.png)](http://travis-ci.org/symfony-cmf/RoutingBundle)
 
 This bundle enables the [CMF Routing component](https://github.com/symfony-cmf/Routing)
 as Symfony2 bundle. It provides route documents for Doctrine PHPCR-ODM and a
@@ -18,14 +18,14 @@ provides a default implementation for Doctrine PHPCR-ODM.
 The DynamicRouter service is only made available when explicitly enabled in the
 application configuration.
 
-See the [official documentation](http://symfony.com/doc/master/cmf/bundles/routing-extra.html)
+See the [official documentation](http://symfony.com/doc/master/cmf/bundles/routing.html)
 
 ## Installation
 
-Add a requirement for ```symfony-cmf/routing-extra-bundle``` to your
+Add a requirement for ```symfony-cmf/routing-bundle``` to your
 composer.json and instantiate the bundle in your AppKernel.php
 
-    new Symfony\Cmf\Bundle\RoutingExtraBundle\SymfonyCmfRoutingExtraBundle()
+    new Symfony\Cmf\Bundle\RoutingBundle\SymfonyCmfRoutingBundle()
 
 If you just want to use the chain router, this is enough.
 For the DynamicRouter you need something to build a repository.
@@ -39,4 +39,4 @@ This bundle provides classes for Doctrine PHPCR ODM.
 * Lukas Kahwe Smith (lsmith77)
 * David Buchmann (dbu)
 * Uwe Jäger (uwej711)
-* [And others](https://github.com/symfony-cmf/RoutingExtraBundle/contributors)
+* [And others](https://github.com/symfony-cmf/RoutingBundle/contributors)

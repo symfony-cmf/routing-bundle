@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Document;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
 
 class RouteTest extends \PHPUnit_Framework_Testcase
 {

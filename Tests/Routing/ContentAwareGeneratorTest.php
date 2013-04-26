@@ -1,10 +1,10 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Routing;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Routing\ContentAwareGenerator;
+use Symfony\Cmf\Bundle\RoutingBundle\Routing\ContentAwareGenerator;
 
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 

@@ -1,14 +1,14 @@
 {
-    "name": "symfony-cmf/routing-extra-bundle",
+    "name": "symfony-cmf/routing-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony RoutingExtraBundle",
+    "description": "Symfony RoutingBundle",
     "keywords": ["routing", "database"],
     "homepage": "http://cmf.symfony.com",
     "license": "MIT",
     "authors": [
         {
             "name": "Symfony CMF Community",
-            "homepage": "https://github.com/symfony-cmf/RoutingExtraBundle/contributors"
+            "homepage": "https://github.com/symfony-cmf/RoutingBundle/contributors"
         }
     ],
     "minimum-stability": "dev",
@@ -35,12 +35,12 @@
         "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents"
     },
     "autoload": {
-        "psr-0": { "Symfony\\Cmf\\Bundle\\RoutingExtraBundle": "" }
+        "psr-0": { "Symfony\\Cmf\\Bundle\\RoutingBundle": "" }
     },
-    "target-dir": "Symfony/Cmf/Bundle/RoutingExtraBundle",
+    "target-dir": "Symfony/Cmf/Bundle/RoutingBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.1-dev"
         }
     }
 }

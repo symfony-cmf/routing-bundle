@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Testdoc;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Testdoc;
 
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
 

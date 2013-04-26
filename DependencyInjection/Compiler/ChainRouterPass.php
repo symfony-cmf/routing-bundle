@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler;
+namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -23,11 +23,11 @@ class ChainRouterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('symfony_cmf_routing_extra.router')) {
+        if (!$container->hasDefinition('symfony_cmf_routing.router')) {
             return;
         }
 
-        $router = $container->getDefinition('symfony_cmf_routing_extra.router');
+        $router = $container->getDefinition('symfony_cmf_routing.router');
 
         foreach ($container->findTaggedServiceIds('router') as $id => $attributes) {
             $priority = isset($attributes[0]['priority']) ? (integer) $attributes[0]['priority'] : 0;

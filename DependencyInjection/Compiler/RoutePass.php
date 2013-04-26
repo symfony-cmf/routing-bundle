@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler;
+namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -19,18 +19,18 @@ class RoutePass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('symfony_cmf_routing_extra.manager_registry')) {
+        if (!$container->hasDefinition('symfony_cmf_routing.manager_registry')) {
             return;
         }
 
-        $managerRegistry = $container->getDefinition('symfony_cmf_routing_extra.manager_registry');
+        $managerRegistry = $container->getDefinition('symfony_cmf_routing.manager_registry');
         $managerName = $managerRegistry->getArgument(0);
         $chainDriverDefService = sprintf('doctrine_phpcr.odm.%s_metadata_driver', $managerName);
         if (!$container->hasDefinition($chainDriverDefService)) {
             return;
         }
 
-        $mappingService = 'symfony_cmf_routing_extra.phpcr_mapping.core_route';
+        $mappingService = 'symfony_cmf_routing.phpcr_mapping.core_route';
         $arguments = array('Symfony\Component\Routing' => realpath(__DIR__.'/../../Resources/config/doctrine'));
         $mappingDriverDef = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver', $arguments);
         $container->setDefinition($mappingService, $mappingDriverDef);

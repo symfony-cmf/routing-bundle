@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler;
+namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -15,8 +15,8 @@ class SetRouterPass implements CompilerPassInterface
     {
 
         // only replace the default router by overwriting the 'router' alias if config tells us to
-        if (true === $container->getParameter('symfony_cmf_routing_extra.replace_symfony_router')) {
-            $container->setAlias('router', 'symfony_cmf_routing_extra.router');
+        if (true === $container->getParameter('symfony_cmf_routing.replace_symfony_router')) {
+            $container->setAlias('router', 'symfony_cmf_routing.router');
         }
 
     }

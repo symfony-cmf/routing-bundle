@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

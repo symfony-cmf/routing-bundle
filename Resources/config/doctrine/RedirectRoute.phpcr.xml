@@ -1,7 +1,7 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/phpcr/doctrine-mapping"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <document name="Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute">
+    <document name="Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute">
 
         <field fieldName="uri" type="uri"/>
         <field fieldName="routeName" type="string"/>

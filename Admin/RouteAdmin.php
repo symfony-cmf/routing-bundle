@@ -1,18 +1,18 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Admin;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Admin;
 
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class RouteAdmin extends Admin
 {
-    protected $translationDomain = 'SymfonyCmfRoutingExtraBundle';
+    protected $translationDomain = 'SymfonyCmfRoutingBundle';
 
     /**
      * Root path for the route parent selection
@@ -87,7 +87,7 @@ class RouteAdmin extends Admin
         return array(
             array('_controller', 'text', array('required' => false)),
             array('_template', 'text', array('required' => false)),
-            array('type', 'symfony_cmf_routing_extra_route_type', array(
+            array('type', 'symfony_cmf_routing_route_type', array(
                 'empty_value' => '',
                 'required' => false,
             )),

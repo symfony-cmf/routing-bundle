@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Document;
 
 use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;

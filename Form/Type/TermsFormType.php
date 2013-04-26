@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Form\Type;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Form\Type;
 
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\AbstractType;
@@ -57,7 +57,7 @@ class TermsFormType extends AbstractType
      */
     public function getName()
     {
-        return 'symfony_cmf_routing_extra_terms_form_type';
+        return 'symfony_cmf_routing_terms_form_type';
     }
 
     public function getParent()

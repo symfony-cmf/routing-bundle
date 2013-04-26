@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\DependencyInjection\Compiler;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection\Compiler;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection\Compiler\RouteEnhancerPass;
+use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\RouteEnhancerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -28,7 +28,7 @@ class RouteEnhancerPassTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($serviceIds));
         $builder->expects($this->once())
             ->method('getDefinition')
-            ->with('symfony_cmf_routing_extra.dynamic_router')
+            ->with('symfony_cmf_routing.dynamic_router')
             ->will($this->returnValue($definition));
 
         $pass = new RouteEnhancerPass();

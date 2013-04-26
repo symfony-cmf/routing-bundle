@@ -1,11 +1,11 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Document;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RedirectRouteTest extends BaseTestCase
 {

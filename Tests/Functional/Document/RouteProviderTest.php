@@ -1,14 +1,14 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Document;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route;
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Document\RouteProvider;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Document\RouteProvider;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RouteRepositoryTest extends BaseTestCase
 {
@@ -20,7 +20,7 @@ class RouteRepositoryTest extends BaseTestCase
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
-        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_routing_extra.route_provider');
+        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_routing.route_provider');
     }
 
     public function testGetRouteCollectionForRequest()

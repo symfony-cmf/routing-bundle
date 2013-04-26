@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Tests\Controller;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Controller;
 
-use Symfony\Cmf\Bundle\RoutingExtraBundle\Controller\RedirectController;
+use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 

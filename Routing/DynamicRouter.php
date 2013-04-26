@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\Routing;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingExtraBundle\DependencyInjection;
+namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('symfony_cmf_routing_extra')
+        $treeBuilder->root('symfony_cmf_routing')
             ->children()
                 ->arrayNode('chain')
                     ->addDefaultsIfNotSet()
@@ -61,13 +61,13 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('manager_registry')->defaultValue('doctrine_phpcr')->end()
                         ->scalarNode('manager_name')->defaultValue('default')->end()
                         ->scalarNode('uri_filter_regexp')->defaultValue('')->end()
-                        ->scalarNode('route_provider_service_id')->defaultValue('symfony_cmf_routing_extra.default_route_provider')->end()
+                        ->scalarNode('route_provider_service_id')->defaultValue('symfony_cmf_routing.default_route_provider')->end()
                         ->arrayNode('route_filters_by_id')
                             ->canBeUnset()
                             ->useAttributeAsKey('id')
                             ->prototype('scalar')->end()
                         ->end()
-                        ->scalarNode('content_repository_service_id')->defaultValue('symfony_cmf_routing_extra.default_content_repository')->end()
+                        ->scalarNode('content_repository_service_id')->defaultValue('symfony_cmf_routing.default_content_repository')->end()
                         ->scalarNode('routing_repositoryroot')->defaultValue('/cms/routes')->end()
                         ->arrayNode('locales')
                             ->prototype('scalar')->end()
