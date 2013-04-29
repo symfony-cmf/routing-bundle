@@ -9,7 +9,6 @@
         </id>
         <reference-one fieldName="routeContent"/>
         <children fieldName="children"/>
-        <field fieldName="host" type="string"/>
         <field fieldName="variablePattern" type="string"/>
         <field fieldName="addFormatPattern" type="boolean"/>
         <field fieldName="addTrailingSlash" type="boolean"/>
