@@ -53,16 +53,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $routeContent;
 
     /**
-     * @since Symfony 2.2 introduces the host name pattern. This default
-     * implementation just stores it as a field.
-     *
-     * TODO: this could be removed if we would require 2.2 and map the host via the parent
-     *
-     * @var string
-     */
-    protected $host = '';
-
-    /**
      * Variable pattern part. The static part of the pattern is the id without the prefix.
      *
      * @var string
@@ -262,28 +252,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * Hide the core host name pattern
-     *
-     * TODO: this could be removed if we would require 2.2 and map the host via the parent
-     */
-    public function setHost($pattern)
-    {
-        $this->host = $pattern;
-
-        return $this;
-    }
-
-    /**
-     * Hide the core host name pattern
-     *
-     * TODO: this could be removed if we would require 2.2 and map the host via the parent
-     */
-    public function getHost()
-    {
-        return $this->host;
-    }
-
-    /**
      * {@inheritDoc}
      *
      * Prevent setting the default 'compiler_class' so that we do not persist it
@@ -323,26 +291,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         }
 
         return $options;
-    }
-
-    /**
-     * TODO: remove when we drop support for symfony 2.1
-     *
-     * @deprecated compatibility with symfony 2.1
-     */
-    public function getPattern()
-    {
-        return $this->getPath();
-    }
-
-    /**
-     * TODO: remove when we drop support for symfony 2.1
-     *
-     * @deprecated compatibility with symfony 2.1
-     */
-    public function setPattern($pattern)
-    {
-        return $this->setPath($pattern);
     }
 
     /**
@@ -411,13 +359,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     {
         if ($this->needRecompile) {
             // calling parent::setPath just to let it set compiled=null. the parent $path field is never used
-            // TODO: drop setPattern when we drop symfony 2.1 support
-            // TODO: for now we need to check the method as setPattern on 2.2. triggers our setPath instead of parent setPath
-            if (method_exists('Symfony\Component\Routing\Route', 'setPath')) {
-                parent::setPath($this->getPath());
-            } else {
-                parent::setPattern($this->getPath());
-            }
+            parent::setPath($this->getPath());
         }
 
         return parent::compile();

@@ -14,12 +14,12 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "symfony-cmf/routing": ">=1.0.0-beta1,<1.1-dev",
-        "symfony/framework-bundle": ">=2.1.7,<2.3-dev",
+        "symfony-cmf/routing": "~1.1",
+        "symfony/framework-bundle": ">=2.2.0,<2.3-dev",
         "symfony/monolog-bundle": ">=2.1,<2.3-dev"
     },
     "require-dev": {
-        "symfony/class-loader": ">=2.1,<2.3-dev",
+        "symfony/class-loader": ">=2.2,<2.3-dev",
         "doctrine/doctrine-bundle": "1.*",
         "symfony/yaml": ">=2.1,<2.3-dev",
         "symfony/form": ">=2.1,<2.3-dev",
