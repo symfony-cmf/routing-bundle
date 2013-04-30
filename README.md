@@ -18,7 +18,7 @@ provides a default implementation for Doctrine PHPCR-ODM.
 The DynamicRouter service is only made available when explicitly enabled in the
 application configuration.
 
-See the [official documentation](http://symfony.com/doc/master/cmf/bundles/routing.html)
+See the [official documentation](http://symfony.com/doc/master/cmf/getting-started/routing.html)
 
 ## Installation
 
