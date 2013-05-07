@@ -4,7 +4,6 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Migrator;
 
 use Doctrine\Bundle\PHPCRBundle\Migrator\MigratorInterface;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
-use Doctrine\ODM\PHPCR\DocumentManager;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use PHPCR\Util\NodeHelper;
@@ -22,18 +21,10 @@ class Route implements MigratorInterface
      */
     protected $output;
 
-    /**
-     * @var \Doctrine\ODM\PHPCR\DocumentManager
-     */
-    protected $dm;
-
     protected $basepath;
-
-    //protected $dataDir;
 
     public function __construct(ManagerRegistry $registry, $basepath)
     {
-        $this->dm = $registry->getManager();
         $this->session = $registry->getConnection();
         $this->basepath = $basepath;
     }
@@ -44,35 +35,23 @@ class Route implements MigratorInterface
         $this->output = $output;
     }
 
-    protected function migrateTree($root)
-    {
-        foreach ($root as $child) {
-            if( $child->getPropertyValue('phpcr:class') == 'Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route')
-            {
-               $child->setProperty('phpcr:class', 'Symfony\Cmf\Bundle\RoutingBundle\Document\Route');
-            }
-            if( $child->hasNodes() )
-            {
-                $this->migrateTree($child);
-            }
-	}
-        return true;
-    }
-
     public function migrate($path = '/', $depth = -1)
     {
+        $workspace = $this->session->getWorkspace();
+        $queryManager = $workspace->getQueryManager();
 
-        NodeHelper::createPath($this->session, preg_replace('#/[^/]*$#', '', $this->basepath));
+        $sql = "SELECT * FROM [nt:unstructured]
+            WHERE [nt:unstructured].[phpcr:class] = 'Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route'
+            AND ISDESCENDANTNODE('$this->basepath')";
 
+        $query = $queryManager->createQuery($sql, 'JCR-SQL2');
+        $queryResult = $query->execute();
 
-        $root = $this->session->getNode($this->basepath);
-        $migrated = $this->migrateTree($root);
-        if($migrated)
-        {
-            $this->session->save();
+        foreach ($queryResult->getNodes() as $path => $node) {
+            $node->setProperty('phpcr:class', 'Symfony\Cmf\Bundle\RoutingBundle\Document\Route');
         }
 
+        $this->session->save();
         return 0;
     }
-
 }
