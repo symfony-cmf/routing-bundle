@@ -21,13 +21,6 @@ class Route implements MigratorInterface
      */
     protected $output;
 
-    protected $basepath;
-
-    public function __construct(ManagerRegistry $registry, $basepath)
-    {
-        $this->basepath = $basepath;
-    }
-
     public function init(SessionInterface $session, OutputInterface $output)
     {
         $this->session = $session;
@@ -41,7 +34,7 @@ class Route implements MigratorInterface
 
         $sql = "SELECT * FROM [nt:unstructured]
             WHERE [nt:unstructured].[phpcr:class] LIKE '%RoutingExtraBundle%'
-            AND ISDESCENDANTNODE('$this->basepath')";
+            AND ISDESCENDANTNODE('$path')";
 
         $query = $queryManager->createQuery($sql, 'JCR-SQL2');
         $queryResult = $query->execute();
