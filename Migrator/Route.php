@@ -25,7 +25,6 @@ class Route implements MigratorInterface
 
     public function __construct(ManagerRegistry $registry, $basepath)
     {
-        $this->session = $registry->getConnection();
         $this->basepath = $basepath;
     }
 
@@ -41,14 +40,16 @@ class Route implements MigratorInterface
         $queryManager = $workspace->getQueryManager();
 
         $sql = "SELECT * FROM [nt:unstructured]
-            WHERE [nt:unstructured].[phpcr:class] = 'Symfony\Cmf\Bundle\RoutingExtraBundle\Document\Route'
+            WHERE [nt:unstructured].[phpcr:class] LIKE '%RoutingExtraBundle%'
             AND ISDESCENDANTNODE('$this->basepath')";
 
         $query = $queryManager->createQuery($sql, 'JCR-SQL2');
         $queryResult = $query->execute();
 
         foreach ($queryResult->getNodes() as $path => $node) {
-            $node->setProperty('phpcr:class', 'Symfony\Cmf\Bundle\RoutingBundle\Document\Route');
+            $current = $node->getPropertyValue('phpcr:class');
+            $val = str_replace('RoutingExtraBundle', 'RoutingBundle', $current);
+            $node->setProperty('phpcr:class', $val);
         }
 
         $this->session->save();
