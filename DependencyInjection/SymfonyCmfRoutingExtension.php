@@ -25,8 +25,6 @@ class SymfonyCmfRoutingExtension extends Extension
         $configuration = new Configuration();
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $loader->load('migrator.xml');
-
         $config = $processor->processConfiguration($configuration, $configs);
 
         if (!empty($config['dynamic'])) {
