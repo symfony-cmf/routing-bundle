@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Form\Type;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
 {
@@ -11,6 +12,18 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
         $this->type = new RouteTypeType;
         $this->ori = $this->getMock(
             'Symfony\Component\OptionsResolver\OptionsResolverInterface');
+    }
+
+    public function testSetDefaultOptions()
+    {
+        $type = new RouteTypeType;
+        $optionsResolver = new OptionsResolver();
+
+        $type->setDefaultOptions($optionsResolver);
+
+        $options = $optionsResolver->resolve();
+
+        $this->assertInternalType('array', $options['choices']);
     }
 
     public function testDefaultsSet()
