@@ -10,7 +10,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Document\RouteProvider;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
-class RouteRepositoryTest extends BaseTestCase
+class RouteProviderTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
