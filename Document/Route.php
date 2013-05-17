@@ -387,6 +387,11 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return $children;
     }
 
+    public function getPattern()
+    {
+        return $this->getPath();
+    }
+
     public function __toString()
     {
         return (string) $this->name;
