@@ -8,7 +8,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class RouteTypeType extends AbstractType
 {
-    protected $routeTypes;
+    protected $routeTypes = array();
     protected $translator;
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
