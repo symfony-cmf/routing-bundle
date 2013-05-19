@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="symfony_cmf_routing.route_entity_class">Symfony\Cmf\Bundle\RoutingBundle\Entity\Route</parameter>
+        <parameter key="symfony_cmf_routing.route_repository_class">Symfony\Cmf\Bundle\RoutingBundle\Entity\RouteProvider</parameter>
+        <parameter key="symfony_cmf_routing.orm.content_repository_class">Symfony\Cmf\Bundle\RoutingBundle\Entity\ContentRepository</parameter>
+    </parameters>
+
+    <services>
+        <service id="symfony_cmf_routing.orm.dynamic_router" class="%symfony_cmf_routing.dynamic_router_class%">
+            <argument type="service" id="router.request_context"/>
+            <argument type="service" id="symfony_cmf_routing.orm.nested_matcher" />
+            <argument type="service" id="symfony_cmf_routing.orm.generator" />
+            <argument>%symfony_cmf_routing.uri_filter_regexp%</argument>
+            <call method="setContainer"><argument type="service" id="service_container"/></call>
+            <call method="addRouteEnhancer"><argument type="service" id="symfony_cmf_routing.enhancer_route_content"/></call>
+        </service>
+
+        <service id="symfony_cmf_routing.orm.nested_matcher" class="%symfony_cmf_routing.nested_matcher_class%">
+            <argument type="service" id="symfony_cmf_routing.route_entity_provider" />
+            <call method="setFinalMatcher"><argument type="service" id="symfony_cmf_routing.final_matcher"/></call>
+        </service>
+
+        <service id="symfony_cmf_routing.orm.generator" class="%symfony_cmf_routing.generator_class%">
+            <argument type="service" id="symfony_cmf_routing.route_entity_provider" />
+            <argument type="service" id="logger" on-invalid="ignore" />
+            <call method="setContainer"><argument type="service" id="service_container"/></call>
+            <call method="setContentRepository"><argument type="service" id="symfony_cmf_routing.orm.content_repository"/></call>
+        </service>
+
+        <service id="symfony_cmf_routing.orm.content_repository" class="%symfony_cmf_routing.orm.content_repository_class%">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service id="symfony_cmf_routing.route_entity_provider" factory-service="doctrine.orm.entity_manager" factory-method="getRepository" class="%symfony_cmf_routing.route_repository_class%">
+            <argument>%symfony_cmf_routing.route_entity_class%</argument>
+            <call method="setPrefix"><argument type="string"></argument></call>
+        </service>
+    </services>
+</container>
