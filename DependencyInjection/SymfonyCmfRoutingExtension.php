@@ -94,6 +94,7 @@ class SymfonyCmfRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
 
         $loader->load('cmf_routing.xml');
+        $loader->load('cmf_orm_routing.xml');
         $container->setParameter($this->getAlias() . '.routing_repositoryroot', $config['routing_repositoryroot']);
         if (isset($config['locales']) && $config['locales']) {
             $container->setParameter($this->getAlias() . '.locales', $config['locales']);
@@ -108,26 +109,29 @@ class SymfonyCmfRoutingExtension extends Extension
         $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
         $managerRegistry->replaceArgument(0, $config['manager_name']);
 
-        $dynamic = $container->getDefinition($this->getAlias().'.dynamic_router');
 
-        // if any mappings are defined, set the respective route enhancer
-        if (!empty($config['generic_controller'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_explicit_template')));
-        }
-        if (!empty($config['controllers_by_type'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_type')));
-        }
-        if (!empty($config['controllers_by_class'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_class')));
-        }
-        if (!empty($config['generic_controller']) && !empty($config['templates_by_class'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controller_for_templates_by_class')));
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_templates_by_class')));
-        }
-        if (!empty($config['route_filters_by_id'])) {
-            $matcher = $container->getDefinition('symfony_cmf_routing.nested_matcher');
-            foreach ($config['route_filters_by_id'] as $id => $priority) {
-                $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
+        foreach ($config['instances'] as $dynRouterServiceId) {
+
+            $dynamic = $container->getDefinition($dynRouterServiceId);
+            // if any mappings are defined, set the respective route enhancer
+            if (!empty($config['generic_controller'])) {
+                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_explicit_template')));
+            }
+            if (!empty($config['controllers_by_type'])) {
+                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_type')));
+            }
+            if (!empty($config['controllers_by_class'])) {
+                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_class')));
+            }
+            if (!empty($config['generic_controller']) && !empty($config['templates_by_class'])) {
+                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controller_for_templates_by_class')));
+                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_templates_by_class')));
+            }
+            if (!empty($config['route_filters_by_id'])) {
+                $matcher = $container->getDefinition('symfony_cmf_routing.nested_matcher');
+                foreach ($config['route_filters_by_id'] as $id => $priority) {
+                    $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
+                }
             }
         }
     }

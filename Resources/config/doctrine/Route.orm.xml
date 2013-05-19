@@ -1,0 +1,32 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="Symfony\Cmf\Bundle\RoutingBundle\Entity\Route" table="orm_routes" repository-class="Symfony\Cmf\Bundle\RoutingBundle\Entity\RouteProvider">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="name" type="string" unique="true"/>
+        <field name="path" type="string"/>
+
+        <field name="position" type="integer"/>
+
+        <field name="variablePattern" type="string"/>
+        <field name="addFormatPattern" type="boolean"/>
+        <field name="addTrailingSlash" type="boolean"/>
+
+        <field name="host" type="string"/>
+        <field name="defaults" type="array" assoc=""/>
+        <field name="requirements" type="string" assoc=""/>
+        <field name="options" type="string" assoc=""/>
+
+        <indexes>
+            <index name="name_idx" columns="name"/>
+            <index name="path_idx" columns="path"/>
+        </indexes>
+
+    </entity>
+
+</doctrine-mapping>
