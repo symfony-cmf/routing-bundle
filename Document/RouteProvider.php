@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 
 /**
@@ -142,5 +143,28 @@ class RouteProvider implements RouteProviderInterface
     public function getRoutesByNames($names, $parameters = array())
     {
         return $this->dm->findMany($this->className, $names);
+    }
+
+    /**
+     * get routes recursively
+     *
+     * @param  Route           $route
+     * @return RouteCollection
+     */
+    public function getRouteCollectionForHierarchy(RouteObjectInterface $route)
+    {
+        $routeCollection = new RouteCollection();
+
+        // SYMFONY 2.1 COMPATIBILITY: tweak route name
+        $routeName = trim(preg_replace('/[^a-z0-9A-Z_.]/', '_', $route->getRouteKey()), '_');
+        $routeCollection->add($routeName, $route);
+
+        foreach ($route->getRouteChildren() as $child) {
+            if ($child instanceof RouteObjectInterface) {
+                $routeCollection->addCollection($this->getRouteCollectionForHierarchy($child));
+            }
+        }
+
+        return $routeCollection;
     }
 }
