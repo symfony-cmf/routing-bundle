@@ -294,6 +294,14 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
+     * @deprecated Use getPath instead.
+     */
+    public function getPattern()
+    {
+        return $this->getPath();
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getPath()
@@ -385,11 +393,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         }
 
         return $children;
-    }
-
-    public function getPattern()
-    {
-        return $this->getPath();
     }
 
     public function __toString()
