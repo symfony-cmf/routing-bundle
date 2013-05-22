@@ -30,7 +30,6 @@ class ExternalRoute implements RedirectRouteInterface
      */
     protected $permanent;
 
-
     /**
      * Get id
      *
@@ -44,7 +43,7 @@ class ExternalRoute implements RedirectRouteInterface
     /**
      * Set uri
      *
-     * @param string $uri
+     * @param  string        $uri
      * @return ExternalRoute
      */
     public function setUri($uri)
@@ -68,14 +67,15 @@ class ExternalRoute implements RedirectRouteInterface
      * May come handy
      * @return type
      */
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->getUri();
     }
 
     /**
      * Set permanent
      *
-     * @param boolean $permanent
+     * @param  boolean       $permanent
      * @return ExternalRoute
      */
     public function setPermanent($permanent = true)
@@ -95,28 +95,32 @@ class ExternalRoute implements RedirectRouteInterface
         return $this->permanent;
     }
 
-    public function isPermanent() {
+    public function isPermanent()
+    {
         return $this->getPermanent();
     }
 
     /**
      * @TODO
      */
-    public function getParameters() {
+    public function getParameters()
+    {
         return null;
     }
 
     /**
      * @TODO
      */
-    public function getRouteTarget() {
+    public function getRouteTarget()
+    {
         throw new LogicException('There is no route target for an external route, ask for uri instead');
     }
 
     /**
      * @TODO
      */
-    public function getRouteName() {
+    public function getRouteName()
+    {
         throw new LogicException('There is no name for an external route, ask for id or uri');
     }
 
@@ -125,11 +129,13 @@ class ExternalRoute implements RedirectRouteInterface
      *
      * @return \Raindrop\RoutingBundle\Entity\ExternalRoute
      */
-    public function getRouteContent() {
+    public function getRouteContent()
+    {
         return $this;
     }
 
-    public function getRouteKey() {
+    public function getRouteKey()
+    {
         return null;
     }
 }

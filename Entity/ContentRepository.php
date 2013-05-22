@@ -9,25 +9,24 @@ use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
  *
  * @author teito
  */
-class ContentRepository implements ContentRepositoryInterface {
-
-
-    public function __construct($orm) {
+class ContentRepository implements ContentRepositoryInterface
+{
+    public function __construct($orm)
+    {
         $this->orm = $orm;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findById($id) {
-
+    public function findById($id)
+    {
         $identifier = $id;
 
         list($model, $id) = $this->getModelAndId($identifier);
 
         return $this->orm->getRepository($model)->find($id);
     }
-
 
     /**
      * {@inheritDoc}
@@ -47,11 +46,11 @@ class ContentRepository implements ContentRepositoryInterface {
         }
     }
 
-    public function getModelAndId($identifier) {
+    public function getModelAndId($identifier)
+    {
         $model = substr($identifier, 0, strpos($identifier, ':'));
         $id = substr($identifier, strpos($identifier, ':'));
+
         return array($model, $id);
     }
 }
-
-?>

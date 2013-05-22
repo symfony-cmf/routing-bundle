@@ -109,7 +109,6 @@ class SymfonyCmfRoutingExtension extends Extension
         $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
         $managerRegistry->replaceArgument(0, $config['manager_name']);
 
-
         foreach ($config['instances'] as $dynRouterServiceId) {
 
             $dynamic = $container->getDefinition($dynRouterServiceId);

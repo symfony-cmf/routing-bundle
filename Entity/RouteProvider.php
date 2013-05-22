@@ -114,12 +114,13 @@ class RouteProvider extends EntityRepository implements RouteProviderInterface
         return $route;
     }
 
-    public function getRoutesByNames($names, $parameters = array()) {
+    public function getRoutesByNames($names, $parameters = array())
+    {
         // @TODO: must implement this
     }
 
-    public function getRouteCollectionForRequest(\Symfony\Component\HttpFoundation\Request $request) {
-
+    public function getRouteCollectionForRequest(\Symfony\Component\HttpFoundation\Request $request)
+    {
         $url = $request->getPathInfo();
 
         $candidates = $this->getCandidates($url);
