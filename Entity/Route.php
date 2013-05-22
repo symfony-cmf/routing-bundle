@@ -2,20 +2,13 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Entity;
 
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-use Symfony\Component\Routing\Exception\InvalidParameterException;
-
-use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as BaseRoute;
-
-
-use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Cmf\Bundle\RoutingBundle\Document\Route as BaseRoute;
 
 /**
  * ORM route version.
  * @author matteo caberlotto mcaber@gmail.com
  */
-class Route extends baseRoute
+class Route extends BaseRoute
 {
     /**
      * {@inheritDoc}
