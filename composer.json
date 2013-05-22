@@ -15,16 +15,16 @@
     "require": {
         "php": ">=5.3.3",
         "symfony-cmf/routing": "~1.1.0-dev",
-        "symfony/framework-bundle": ">=2.2,<2.3-dev",
-        "symfony/monolog-bundle": ">=2.1,<2.3-dev"
+        "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {
-        "symfony/class-loader": ">=2.2,<2.3-dev",
-        "doctrine/doctrine-bundle": "1.*",
-        "symfony/yaml": ">=2.1,<2.3-dev",
-        "symfony/form": ">=2.1,<2.3-dev",
-        "symfony/finder": ">=2.1,<2.3-dev",
+        "symfony/class-loader": "~2.2",
+        "symfony/yaml": "~2.1",
+        "symfony/form": "~2.1",
+        "symfony/finder": "~2.1",
+        "symfony/monolog-bundle": "~2.1",
         "jackalope/jackalope-doctrine-dbal": "1.0.*",
+        "doctrine/doctrine-bundle": "1.*",
         "doctrine/phpcr-odm": "1.0.*",
         "doctrine/phpcr-bundle": "1.0.*"
     },
