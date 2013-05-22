@@ -18,9 +18,9 @@
         <field name="addTrailingSlash" type="boolean"/>
 
         <field name="host" type="string"/>
-        <field name="defaults" type="array" assoc=""/>
-        <field name="requirements" type="string" assoc=""/>
-        <field name="options" type="string" assoc=""/>
+        <field name="defaults" type="array"/>
+        <field name="requirements" type="array"/>
+        <field name="options" type="array"/>
 
         <indexes>
             <index name="name_idx" columns="name"/>
