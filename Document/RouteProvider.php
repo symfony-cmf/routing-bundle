@@ -4,6 +4,8 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Document;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use LogicException;
+
 use PHPCR\RepositoryException;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
@@ -45,10 +47,20 @@ class RouteProvider implements RouteProviderInterface
      */
     protected $idPrefix = '';
 
-    public function __construct(ObjectManager $dm, $className = null)
+    public function __construct($className = null)
+    {
+        $this->className = $className;
+    }
+
+    /**
+     * Set the document manager to use for this loader. Must be called before
+     * using any of the get methods.
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager $dm
+     */
+    public function setDocumentManager(ObjectManager $dm)
     {
         $this->dm = $dm;
-        $this->className = $className;
     }
 
     public function setPrefix($prefix)
@@ -87,6 +99,8 @@ class RouteProvider implements RouteProviderInterface
      */
     public function getRouteCollectionForRequest(Request $request)
     {
+        $this->checkDocumentManager();
+
         $url = $request->getPathInfo();
 
         $candidates = $this->getCandidates($url);
@@ -130,6 +144,8 @@ class RouteProvider implements RouteProviderInterface
      */
     public function getRouteByName($name, $parameters = array())
     {
+        $this->checkDocumentManager();
+
         // $name is the route document path
         $route = $this->dm->find($this->className, $name);
         if (!$route) {
@@ -141,6 +157,17 @@ class RouteProvider implements RouteProviderInterface
 
     public function getRoutesByNames($names, $parameters = array())
     {
+        $this->checkDocumentManager();
         return $this->dm->findMany($this->className, $names);
+    }
+
+    /**
+     * @throws \LogicException
+     */
+    private function checkDocumentManager()
+    {
+        if (!$this->dm instanceof ObjectManager) {
+            throw new LogicException('A document manager must be set before using this provider');
+        }
     }
 }
