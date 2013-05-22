@@ -3,15 +3,11 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
-
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Cmf\Component\Routing\RouteProviderInterface;
-
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-
-
-use Doctrine\ORM\EntityRepository;
+use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 
 /**
  * Repository to load routes from Doctrine ORM
