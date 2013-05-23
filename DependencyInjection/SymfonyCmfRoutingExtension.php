@@ -104,6 +104,10 @@ class SymfonyCmfRoutingExtension extends Extension
         $container->setAlias('symfony_cmf_routing.route_provider', $config['route_provider_service_id']);
         $container->setAlias('symfony_cmf_routing.content_repository', $config['content_repository_service_id']);
 
+        $routeProvider = $container->getDefinition($this->getAlias() . '.default_route_provider');
+        $routeProvider->replaceArgument(0, new Reference($config['manager_registry']));
+        $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
+
         $managerRegistry = $container->getDefinition($this->getAlias() . '.manager_registry');
         $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
         $managerRegistry->replaceArgument(0, $config['manager_name']);
