@@ -2,7 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Document;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use PHPCR\RepositoryException;
 
@@ -26,9 +26,14 @@ use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 class RouteProvider implements RouteProviderInterface
 {
     /**
-     * @var ObjectManager
+     * @var string Name of object manager to use
      */
-    protected $dm;
+    protected $managerName;
+
+    /**
+     * @var ManagerRegistry
+     */
+    protected $managerRegistry;
 
     /**
      * Class name of the route class, null for phpcr-odm as it can determine
@@ -45,10 +50,25 @@ class RouteProvider implements RouteProviderInterface
      */
     protected $idPrefix = '';
 
-    public function __construct(ObjectManager $dm, $className = null)
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @param string|null $className
+     */
+    public function __construct(ManagerRegistry $managerRegistry, $className = null)
     {
-        $this->dm = $dm;
+        $this->managerRegistry = $managerRegistry;
         $this->className = $className;
+    }
+
+    /**
+     * Set the object manager name to use for this loader;
+     * if not called, the default manager will be used.
+     *
+     * @param string $managerName
+     */
+    public function setManagerName($managerName)
+    {
+        $this->managerName = $managerName;
     }
 
     public function setPrefix($prefix)
@@ -97,7 +117,7 @@ class RouteProvider implements RouteProviderInterface
         }
 
         try {
-            $routes = $this->dm->findMany($this->className, $candidates);
+            $routes = $this->getObjectManager()->findMany($this->className, $candidates);
             // filter for valid route objects
             // we can not search for a specific class as PHPCR does not know class inheritance
             // but optionally we could define a node type
@@ -131,7 +151,7 @@ class RouteProvider implements RouteProviderInterface
     public function getRouteByName($name, $parameters = array())
     {
         // $name is the route document path
-        $route = $this->dm->find($this->className, $name);
+        $route = $this->getObjectManager()->find($this->className, $name);
         if (!$route) {
             throw new RouteNotFoundException("No route found for path '$name'");
         }
@@ -141,6 +161,16 @@ class RouteProvider implements RouteProviderInterface
 
     public function getRoutesByNames($names, $parameters = array())
     {
-        return $this->dm->findMany($this->className, $names);
+        return $this->getObjectManager()->findMany($this->className, $names);
+    }
+
+    /**
+     * Get the object manager from the registry, based on the current managerName
+     *
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->managerRegistry->getManager($this->managerName);
     }
 }
