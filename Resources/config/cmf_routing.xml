@@ -83,14 +83,6 @@
             <call method="setContentRepository"><argument type="service" id="symfony_cmf_routing.content_repository"/></call>
         </service>
 
-        <!-- @todo - remove this when Compiler/RoutePass no longer depends on the manager_registry factory.-->
-        <service id="symfony_cmf_routing.manager_registry"
-                 factory-service=""
-                 factory-method="getManager"
-                 class="Symfony\Bridge\Doctrine\ManagerRegistry">
-            <argument />
-        </service>
-
         <service id="symfony_cmf_routing.default_route_provider" class="%symfony_cmf_routing.route_provider_class%">
             <argument/>
             <argument>%symfony_cmf_routing.route_entity_class%</argument>

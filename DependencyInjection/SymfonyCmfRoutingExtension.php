@@ -110,11 +110,6 @@ class SymfonyCmfRoutingExtension extends Extension
         $contentRepository->replaceArgument(0, new Reference($config['manager_registry']));
         $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
 
-        // @todo - remove these lines when Compiler/RoutePass no longer depends on the manager_registry factory.
-        $managerRegistry = $container->getDefinition($this->getAlias() . '.manager_registry');
-        $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
-        $managerRegistry->replaceArgument(0, $config['manager_name']);
-
         $dynamic = $container->getDefinition($this->getAlias().'.dynamic_router');
 
         // if any mappings are defined, set the respective route enhancer
