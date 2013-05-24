@@ -3,7 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Document;
 
 use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
-use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Implement ContentRepositoryInterface for phpcr-odm
@@ -12,15 +12,29 @@ use Doctrine\ODM\PHPCR\DocumentManager;
  */
 class ContentRepository implements ContentRepositoryInterface
 {
-    /** @var DocumentManager */
-    protected $documentManager;
+    /** @var string Name of object manager to use */
+    protected $managerName;
+
+    /** @var ManagerRegistry */
+    protected $managerRegistry;
 
     /**
-     * @param DocumentManager $documentManager
+     * @param ManagerRegistry $managerRegistry
      */
-    public function __construct(DocumentManager $documentManager)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->documentManager = $documentManager;
+        $this->managerRegistry = $managerRegistry;
+    }
+
+    /**
+     * Set the object manager name to use for this loader;
+     * if not called, the default manager will be used.
+     *
+     * @param string $managerName
+     */
+    public function setManagerName($managerName)
+    {
+        $this->managerName = $managerName;
     }
 
     /**
@@ -31,7 +45,7 @@ class ContentRepository implements ContentRepositoryInterface
      */
     public function findById($id)
     {
-        return $this->documentManager->find(null, $id);
+        return $this->getObjectManager()->find(null, $id);
     }
 
     /**
@@ -43,9 +57,19 @@ class ContentRepository implements ContentRepositoryInterface
             return null;
         }
         try {
-            return $this->documentManager->getUnitOfWork()->getDocumentId($content);
+            return $this->getObjectManager()->getUnitOfWork()->getDocumentId($content);
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    /**
+     * Get the object manager from the registry, based on the current managerName
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->managerRegistry->getManager($this->managerName);
     }
 }

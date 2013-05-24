@@ -106,8 +106,11 @@ class SymfonyCmfRoutingExtension extends Extension
 
         $routeProvider = $container->getDefinition($this->getAlias() . '.default_route_provider');
         $routeProvider->replaceArgument(0, new Reference($config['manager_registry']));
+        $contentRepository = $container->getDefinition($this->getAlias() . '.default_content_repository');
+        $contentRepository->replaceArgument(0, new Reference($config['manager_registry']));
         $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
 
+        // @todo - remove these lines when Compiler/RoutePass no longer depends on the manager_registry factory.
         $managerRegistry = $container->getDefinition($this->getAlias() . '.manager_registry');
         $managerRegistry->setFactoryService(new Reference($config['manager_registry']));
         $managerRegistry->replaceArgument(0, $config['manager_name']);
