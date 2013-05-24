@@ -2,10 +2,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Document;
 
-use Symfony\Component\Routing\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\BaseTestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Document\RouteProvider;
 
-class RouteProviderTest extends \PHPUnit_Framework_Testcase
+class RouteProviderTest extends BaseTestCase
 {
     public function testGetRouteCollectionForRequest()
     {
@@ -16,7 +16,9 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
     {
         $managerRegistry = $this->getManagerRegistry(
             array(
-                'default' => $this->getObjectManager($this->getRoute('/cms/routes/test-route'))
+                'default' => $this->getObjectManager(
+                    array('test-route' => $this->getRoute('/cms/routes/test-route'))
+                )
             )
         );
         $routeProvider = new RouteProvider($managerRegistry);
@@ -41,8 +43,12 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
     {
         $managerRegistry = $this->getManagerRegistry(
             array(
-                'default' => $this->getObjectManager($this->getRoute('/cms/routes/test-route')),
-                'new_manager' => $this->getObjectManager($this->getRoute('/cms/routes/new-route'))
+                'default' => $this->getObjectManager(
+                    array('test-route' => $this->getRoute('/cms/routes/test-route'))
+                ),
+                'new_manager' => $this->getObjectManager(
+                    array('test-route' => $this->getRoute('/cms/routes/new-route'))
+                )
             )
         );
         $routeProvider = new RouteProvider($managerRegistry);
@@ -56,43 +62,6 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
         $newFoundRoute = $routeProvider->getRouteByName('test-route');
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $newFoundRoute);
         $this->assertEquals('/cms/routes/new-route', $newFoundRoute->getPath());
-    }
-
-    /**
-     * @param \Symfony\Component\Routing\Route $route
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getObjectManager(Route $route)
-    {
-        $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $objectManager
-            ->expects($this->any())
-            ->method('find')
-            ->with(null, 'test-route')
-            ->will($this->returnValue($route));
-
-        return $objectManager;
-    }
-
-    /**
-     * @param array $objectManagers
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getManagerRegistry(array $objectManagers)
-    {
-        $managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will(
-                $this->returnCallback(
-                    function ($name) use ($objectManagers) {
-                        return $objectManagers[$name];
-                    }
-                )
-            );
-
-        return $managerRegistry;
     }
 
     /**
