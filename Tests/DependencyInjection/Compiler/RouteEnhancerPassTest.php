@@ -28,7 +28,7 @@ class RouteEnhancerPassTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($serviceIds));
         $builder->expects($this->once())
             ->method('getDefinition')
-            ->with('symfony_cmf_routing.dynamic_router')
+            ->with('cmf_routing.dynamic_router')
             ->will($this->returnValue($definition));
 
         $pass = new RouteEnhancerPass();

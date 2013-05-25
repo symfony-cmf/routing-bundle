@@ -12,7 +12,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\RoutePass;
 /**
  * Bundle class
  */
-class SymfonyCmfRoutingBundle extends Bundle
+class CmfRoutingBundle extends Bundle
 {
     /**
      * @param ContainerBuilder $container

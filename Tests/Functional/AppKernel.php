@@ -33,7 +33,7 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\MonologBundle\MonologBundle(),
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
-            new \Symfony\Cmf\Bundle\RoutingBundle\SymfonyCmfRoutingBundle(),
+            new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
         );
     }
 
@@ -44,6 +44,6 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/SymfonyCmfRoutingBundle';
+        return sys_get_temp_dir().'/CmfRoutingBundle';
     }
 }

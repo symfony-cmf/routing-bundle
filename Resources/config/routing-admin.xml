@@ -5,14 +5,14 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="symfony_cmf_routing.route_admin_class">Symfony\Cmf\Bundle\RoutingBundle\Admin\RouteAdmin</parameter>
-        <parameter key="symfony_cmf_routing.redirect_route_admin_class">Symfony\Cmf\Bundle\RoutingBundle\Admin\RedirectRouteAdmin</parameter>
+        <parameter key="cmf_routing.route_admin_class">Symfony\Cmf\Bundle\RoutingBundle\Admin\RouteAdmin</parameter>
+        <parameter key="cmf_routing.redirect_route_admin_class">Symfony\Cmf\Bundle\RoutingBundle\Admin\RedirectRouteAdmin</parameter>
     </parameters>
 
     <services>
 
-        <service id="symfony_cmf_routing.route_admin" class="%symfony_cmf_routing.route_admin_class%">
-            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="SymfonyCmfRoutingBundle" label="dashboard.label_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
+        <service id="cmf_routing.route_admin" class="%cmf_routing.route_admin_class%">
+            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="CmfRoutingBundle" label="dashboard.label_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
             <argument/>
             <argument>Symfony\Cmf\Bundle\RoutingBundle\Document\Route</argument>
             <argument>SonataAdminBundle:CRUD</argument>
@@ -22,16 +22,16 @@
             </call>
 
             <call method="setContentRoot">
-                <argument>%symfony_cmf_routing.content_basepath%</argument>
+                <argument>%cmf_routing.content_basepath%</argument>
             </call>
 
             <call method="setRouteRoot">
-                <argument>%symfony_cmf_routing.route_basepath%</argument>
+                <argument>%cmf_routing.route_basepath%</argument>
             </call>
         </service>
 
-        <service id="symfony_cmf_routing.redirect_route_admin" class="%symfony_cmf_routing.redirect_route_admin_class%">
-            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="SymfonyCmfRoutingBundle" label="dashboard.label_redirect_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
+        <service id="cmf_routing.redirect_route_admin" class="%cmf_routing.redirect_route_admin_class%">
+            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="CmfRoutingBundle" label="dashboard.label_redirect_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
             <argument/>
             <argument>Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute</argument>
             <argument>SonataAdminBundle:CRUD</argument>
@@ -41,7 +41,7 @@
             </call>
 
             <call method="setRouteRoot">
-                <argument>%symfony_cmf_routing.route_basepath%</argument>
+                <argument>%cmf_routing.route_basepath%</argument>
             </call>
         </service>
 
