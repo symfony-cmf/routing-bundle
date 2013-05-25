@@ -195,7 +195,7 @@ class DynamicRouterTest extends BaseTestCase
         self::$dm->flush();
 
         $expected = array(
-            '_controller' => 'symfony_cmf_routing.redirect_controller:redirectAction',
+            '_controller' => 'cmf_routing.redirect_controller:redirectAction',
             RouteObjectInterface::ROUTE_NAME => '/test/routing/redirect',
         );
         $request = Request::create('/redirect');
@@ -225,7 +225,7 @@ class DynamicRouterTest extends BaseTestCase
         self::$dm->flush();
 
         $expected = array(
-            '_controller' => 'symfony_cmf_content.controller:indexAction',
+            '_controller' => 'cmf_content.controller:indexAction',
             RouteObjectInterface::ROUTE_NAME => '/test/routing/templatebyclass',
         );
         $request = Request::create('/templatebyclass');
