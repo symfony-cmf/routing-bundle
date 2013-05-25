@@ -1,14 +1,14 @@
-symfony_cmf_routing:
+cmf_routing:
     chain:
         routers_by_id:
-            symfony_cmf_routing.dynamic_router: 20
+            cmf_routing.dynamic_router: 20
             router.default: 100
     dynamic:
         enabled: true
         controllers_by_type:
             demo_alias: test.controller:aliasAction
         controllers_by_class:
-            Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute:  symfony_cmf_routing.redirect_controller:redirectAction
+            Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute:  cmf_routing.redirect_controller:redirectAction
         templates_by_class:
             Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Testdoc\Content: TestBundle:Content:index.html.twig
         routing_repositoryroot: /test/routing

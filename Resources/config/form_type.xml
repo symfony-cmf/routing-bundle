@@ -4,19 +4,19 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="symfony_cmf_routing.route_type_type_class">Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType</parameter>
-        <parameter key="symfony_cmf_routing.terms_form_type_class">Symfony\Cmf\Bundle\RoutingBundle\Form\Type\TermsFormType</parameter>
+        <parameter key="cmf_routing.route_type_type_class">Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType</parameter>
+        <parameter key="cmf_routing.terms_form_type_class">Symfony\Cmf\Bundle\RoutingBundle\Form\Type\TermsFormType</parameter>
     </parameters>
 
     <services>
 
-        <service id="symfony_cmf_routing.terms_form_type" class="%symfony_cmf_routing.terms_form_type_class%">
-            <tag name="form.type" alias="symfony_cmf_routing_terms_form_type" />
+        <service id="cmf_routing.terms_form_type" class="%cmf_routing.terms_form_type_class%">
+            <tag name="form.type" alias="cmf_routing_terms_form_type" />
             <argument type="service" id="router" />
         </service>
 
-        <service id="symfony_cmf_routing.route_type_form_type" class="%symfony_cmf_routing.route_type_type_class%">
-            <tag name="form.type" alias="symfony_cmf_routing_route_type" />
+        <service id="cmf_routing.route_type_form_type" class="%cmf_routing.route_type_type_class%">
+            <tag name="form.type" alias="cmf_routing_route_type" />
         </service>
     </services>
 </container>

@@ -14,11 +14,11 @@ class SetRouterPassTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
         $builder->expects($this->once())
             ->method('getParameter')
-            ->with('symfony_cmf_routing.replace_symfony_router')
+            ->with('cmf_routing.replace_symfony_router')
             ->will($this->returnValue(true));
         $builder->expects($this->once())
             ->method('setAlias')
-            ->with('router', 'symfony_cmf_routing.router');
+            ->with('router', 'cmf_routing.router');
 
         $pass->process($builder);
     }
@@ -30,7 +30,7 @@ class SetRouterPassTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
         $builder->expects($this->once())
             ->method('getParameter')
-            ->with('symfony_cmf_routing.replace_symfony_router')
+            ->with('cmf_routing.replace_symfony_router')
             ->will($this->returnValue(false));
         $builder->expects($this->never())
             ->method('setAlias');

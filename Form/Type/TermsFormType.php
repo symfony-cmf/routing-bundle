@@ -57,7 +57,7 @@ class TermsFormType extends AbstractType
      */
     public function getName()
     {
-        return 'symfony_cmf_routing_terms_form_type';
+        return 'cmf_routing_terms_form_type';
     }
 
     public function getParent()
