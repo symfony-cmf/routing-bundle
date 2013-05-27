@@ -3,11 +3,11 @@
 
     <document name="Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute">
 
-        <field fieldName="uri" type="uri"/>
-        <field fieldName="routeName" type="string"/>
-        <reference-one fieldName="routeTarget"/>
-        <field fieldName="permanent" type="boolean"/>
-        <field fieldName="parameters" type="string" assoc=""/>
+        <field name="uri" type="uri"/>
+        <field name="routeName" type="string"/>
+        <reference-one name="routeTarget"/>
+        <field name="permanent" type="boolean"/>
+        <field name="parameters" type="string" assoc=""/>
 
     </document>
 
