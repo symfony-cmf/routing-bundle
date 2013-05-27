@@ -7,8 +7,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
 class RouteAdmin extends Admin
 {
@@ -31,6 +31,11 @@ class RouteAdmin extends Admin
      * @var string
      */
     protected $contentClass;
+
+    /**
+     * @var ControllerResolverInterface
+     */
+    protected $controllerResolver;
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -76,6 +81,12 @@ class RouteAdmin extends Admin
     {
         $this->contentRoot = $contentRoot;
     }
+
+    public function setControllerResolver($controllerResolver)
+    {
+        $this->controllerResolver = $controllerResolver;
+    }
+
 
     public function getExportFormats()
     {
@@ -123,13 +134,12 @@ class RouteAdmin extends Admin
     {
         $defaults = $object->getDefaults();
 
-        $controllerResolver = $this->getConfigurationPool()->getContainer()->get('controller_resolver');
         $controller = $defaults['_controller'];
 
         $request = new Request(array(), array(), array('_controller' => $controller));
 
         try {
-            $controllerResolver->getController($request);
+            $this->controllerResolver->getController($request);
         } catch (\LogicException $e) {
             $errorElement
                 ->with('defaults')
