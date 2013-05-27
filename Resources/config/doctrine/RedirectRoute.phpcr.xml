@@ -1,13 +1,17 @@
-<doctrine-mapping xmlns="http://doctrine-project.org/schemas/phpcr/doctrine-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<doctrine-mapping
+    xmlns="http://doctrine-project.org/schemas/phpcr-odm/phpcr-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/phpcr-odm/phpcr-mapping
+    https://github.com/doctrine/phpcr-odm/raw/master/doctrine-phpcr-odm-mapping.xsd"
+>
 
     <document name="Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute">
 
-        <field fieldName="uri" type="uri"/>
-        <field fieldName="routeName" type="string"/>
-        <reference-one fieldName="routeTarget"/>
-        <field fieldName="permanent" type="boolean"/>
-        <field fieldName="parameters" type="string" assoc=""/>
+        <field name="uri" type="uri"/>
+        <field name="routeName" type="string"/>
+        <field name="permanent" type="boolean"/>
+        <field name="parameters" type="string" assoc=""/>
+        <reference-one name="routeTarget"/>
 
     </document>
 
