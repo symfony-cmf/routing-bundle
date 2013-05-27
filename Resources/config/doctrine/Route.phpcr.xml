@@ -7,11 +7,11 @@
         <id name="id">
             <generator strategy="parent"/>
         </id>
-        <reference-one fieldName="routeContent"/>
-        <children fieldName="children"/>
-        <field fieldName="variablePattern" type="string"/>
-        <field fieldName="addFormatPattern" type="boolean"/>
-        <field fieldName="addTrailingSlash" type="boolean"/>
+        <reference-one name="routeContent"/>
+        <children name="children"/>
+        <field name="variablePattern" type="string"/>
+        <field name="addFormatPattern" type="boolean"/>
+        <field name="addTrailingSlash" type="boolean"/>
     </document>
 
 </doctrine-mapping>

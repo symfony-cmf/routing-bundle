@@ -2,10 +2,10 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <mapped-superclass name="Symfony\Component\Routing\Route">
-        <field fieldName="host" type="string"/>
-        <field fieldName="defaults" type="string" assoc=""/>
-        <field fieldName="requirements" type="string" assoc=""/>
-        <field fieldName="options" type="string" assoc=""/>
+        <field name="host" type="string"/>
+        <field name="defaults" type="string" assoc=""/>
+        <field name="requirements" type="string" assoc=""/>
+        <field name="options" type="string" assoc=""/>
     </mapped-superclass>
 
 </doctrine-mapping>
