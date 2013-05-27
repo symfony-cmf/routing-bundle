@@ -1,17 +1,22 @@
-<doctrine-mapping xmlns="http://doctrine-project.org/schemas/phpcr/doctrine-mapping"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping
+    xmlns="http://doctrine-project.org/schemas/phpcr-odm/phpcr-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/phpcr-odm/phpcr-mapping
+        https://github.com/doctrine/phpcr-odm/raw/master/doctrine-phpcr-odm-mapping.xsd"
+>
 
     <document name="Symfony\Cmf\Bundle\RoutingBundle\Document\Route" referenceable="true">
-        <parentdocument name="parent"/>
-        <nodename name="name"/>
         <id name="id">
-            <generator strategy="parent"/>
+            <generator strategy="PARENT"/>
         </id>
-        <reference-one fieldName="routeContent"/>
-        <children fieldName="children"/>
-        <field fieldName="variablePattern" type="string"/>
-        <field fieldName="addFormatPattern" type="boolean"/>
-        <field fieldName="addTrailingSlash" type="boolean"/>
+        <field name="variablePattern" type="string"/>
+        <field name="addFormatPattern" type="boolean"/>
+        <field name="addTrailingSlash" type="boolean"/>
+        <nodename name="name"/>
+        <parent-document name="parent"/>
+        <children name="children"/>
+        <reference-one name="routeContent"/>
     </document>
 
 </doctrine-mapping>
