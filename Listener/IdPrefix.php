@@ -3,7 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Listener;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
-use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Doctrine PHPCR-ODM listener to set the idPrefix on new routes
@@ -44,7 +44,7 @@ class IdPrefix
 
     protected function updateId(LifecycleEventArgs $args)
     {
-        $doc = $args->getDocument();
+        $doc = $args->getObject();
 
         // only update route objects and only if the prefix can match, to allow
         // for more than one listener and more than one route root
