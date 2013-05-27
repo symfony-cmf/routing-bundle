@@ -20,7 +20,7 @@ class RouteTypeType extends AbstractType
 
         $resolver->setDefaults(array(
             'choices' => $choices,
-            'translation_domain' => 'SymfonyCmfRoutingBundle',
+            'translation_domain' => 'CmfRoutingBundle',
         ));
     }
 
@@ -47,7 +47,7 @@ class RouteTypeType extends AbstractType
      */
     public function getName()
     {
-        return 'symfony_cmf_routing_route_type';
+        return 'cmf_routing_route_type';
     }
 }
 

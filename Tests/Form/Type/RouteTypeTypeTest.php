@@ -38,7 +38,7 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
                     'foobar' => 'route_type.foobar',
                     'barfoo' => 'route_type.barfoo',
                 ),
-                'translation_domain' => 'SymfonyCmfRoutingBundle',
+                'translation_domain' => 'CmfRoutingBundle',
             ));
 
         $this->type->setDefaultOptions($this->ori);

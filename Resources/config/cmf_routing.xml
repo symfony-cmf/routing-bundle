@@ -4,118 +4,118 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="symfony_cmf_routing.dynamic_router_class">Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter</parameter>
-        <parameter key="symfony_cmf_routing.route_entity_class">null</parameter>
-        <parameter key="symfony_cmf_routing.uri_filter_regexp">null</parameter>
-        <parameter key="symfony_cmf_routing.nested_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\NestedMatcher</parameter>
-        <parameter key="symfony_cmf_routing.final_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\UrlMatcher</parameter>
-        <parameter key="symfony_cmf_routing.url_matcher_class">Symfony\Bundle\FrameworkBundle\Routing\RedirectableUrlMatcher</parameter>
-        <parameter key="symfony_cmf_routing.generator_class">Symfony\Cmf\Bundle\RoutingBundle\Routing\ContentAwareGenerator</parameter>
-        <parameter key="symfony_cmf_routing.route_provider_class">Symfony\Cmf\Bundle\RoutingBundle\Document\RouteProvider</parameter>
-        <parameter key="symfony_cmf_routing.content_repository_class">Symfony\Cmf\Bundle\RoutingBundle\Document\ContentRepository</parameter>
-        <parameter key="symfony_cmf_routing.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Listener\IdPrefix</parameter>
-        <parameter key="symfony_cmf_routing.phpcrodm_route_localeupdater_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Listener\LocaleUpdater</parameter>
-        <parameter key="symfony_cmf_routing.enhancer_route_content_class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
-        <parameter key="symfony_cmf_routing.enhancer_explicit_template_class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
-        <parameter key="symfony_cmf_routing.enhancer_controllers_by_type_class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
-        <parameter key="symfony_cmf_routing.enhancer_field_by_class_class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
-        <parameter key="symfony_cmf_routing.redirect_controller_class">Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController</parameter>
+        <parameter key="cmf_routing.dynamic_router_class">Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter</parameter>
+        <parameter key="cmf_routing.route_entity_class">null</parameter>
+        <parameter key="cmf_routing.uri_filter_regexp">null</parameter>
+        <parameter key="cmf_routing.nested_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\NestedMatcher</parameter>
+        <parameter key="cmf_routing.final_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\UrlMatcher</parameter>
+        <parameter key="cmf_routing.url_matcher_class">Symfony\Bundle\FrameworkBundle\Routing\RedirectableUrlMatcher</parameter>
+        <parameter key="cmf_routing.generator_class">Symfony\Cmf\Bundle\RoutingBundle\Routing\ContentAwareGenerator</parameter>
+        <parameter key="cmf_routing.route_provider_class">Symfony\Cmf\Bundle\RoutingBundle\Document\RouteProvider</parameter>
+        <parameter key="cmf_routing.content_repository_class">Symfony\Cmf\Bundle\RoutingBundle\Document\ContentRepository</parameter>
+        <parameter key="cmf_routing.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Listener\IdPrefix</parameter>
+        <parameter key="cmf_routing.phpcrodm_route_localeupdater_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Listener\LocaleUpdater</parameter>
+        <parameter key="cmf_routing.enhancer_route_content_class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer_explicit_template_class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer_controllers_by_type_class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer_field_by_class_class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
+        <parameter key="cmf_routing.redirect_controller_class">Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController</parameter>
     </parameters>
 
     <services>
 
-        <service id="symfony_cmf_routing.enhancer_route_content" class="%symfony_cmf_routing.enhancer_route_content_class%">
+        <service id="cmf_routing.enhancer_route_content" class="%cmf_routing.enhancer_route_content_class%">
             <argument>_route_object</argument>
             <argument>_content</argument>
         </service>
-        <service id="symfony_cmf_routing.enhancer_explicit_template" class="%symfony_cmf_routing.enhancer_explicit_template_class%">
+        <service id="cmf_routing.enhancer_explicit_template" class="%cmf_routing.enhancer_explicit_template_class%">
             <argument>_template</argument>
             <argument>_controller</argument>
-            <argument>%symfony_cmf_routing.generic_controller%</argument>
+            <argument>%cmf_routing.generic_controller%</argument>
         </service>
-        <service id="symfony_cmf_routing.enhancer_controllers_by_type" class="%symfony_cmf_routing.enhancer_controllers_by_type_class%">
+        <service id="cmf_routing.enhancer_controllers_by_type" class="%cmf_routing.enhancer_controllers_by_type_class%">
             <argument>type</argument>
             <argument>_controller</argument>
-            <argument>%symfony_cmf_routing.controllers_by_type%</argument>
+            <argument>%cmf_routing.controllers_by_type%</argument>
         </service>
-        <service id="symfony_cmf_routing.enhancer_controllers_by_class" class="%symfony_cmf_routing.enhancer_field_by_class_class%">
+        <service id="cmf_routing.enhancer_controllers_by_class" class="%cmf_routing.enhancer_field_by_class_class%">
             <argument>_content</argument>
             <argument>_controller</argument>
-            <argument>%symfony_cmf_routing.controllers_by_class%</argument>
+            <argument>%cmf_routing.controllers_by_class%</argument>
         </service>
-        <service id="symfony_cmf_routing.enhancer_controller_for_templates_by_class" class="%symfony_cmf_routing.enhancer_field_by_class_class%">
+        <service id="cmf_routing.enhancer_controller_for_templates_by_class" class="%cmf_routing.enhancer_field_by_class_class%">
             <argument>_content</argument>
             <argument>_controller</argument>
-            <argument>%symfony_cmf_routing.defined_templates_class%</argument>
+            <argument>%cmf_routing.defined_templates_class%</argument>
         </service>
-        <service id="symfony_cmf_routing.enhancer_templates_by_class" class="%symfony_cmf_routing.enhancer_field_by_class_class%">
+        <service id="cmf_routing.enhancer_templates_by_class" class="%cmf_routing.enhancer_field_by_class_class%">
             <argument>_content</argument>
             <argument>_template</argument>
-            <argument>%symfony_cmf_routing.templates_by_class%</argument>
+            <argument>%cmf_routing.templates_by_class%</argument>
         </service>
 
-        <service id="symfony_cmf_routing.dynamic_router" class="%symfony_cmf_routing.dynamic_router_class%">
+        <service id="cmf_routing.dynamic_router" class="%cmf_routing.dynamic_router_class%">
             <argument type="service" id="router.request_context"/>
-            <argument type="service" id="symfony_cmf_routing.nested_matcher" />
-            <argument type="service" id="symfony_cmf_routing.generator" />
-            <argument>%symfony_cmf_routing.uri_filter_regexp%</argument>
+            <argument type="service" id="cmf_routing.nested_matcher" />
+            <argument type="service" id="cmf_routing.generator" />
+            <argument>%cmf_routing.uri_filter_regexp%</argument>
             <call method="setContainer"><argument type="service" id="service_container"/></call>
-            <call method="addRouteEnhancer"><argument type="service" id="symfony_cmf_routing.enhancer_route_content"/></call>
+            <call method="addRouteEnhancer"><argument type="service" id="cmf_routing.enhancer_route_content"/></call>
         </service>
 
-        <service id="symfony_cmf_routing.nested_matcher" class="%symfony_cmf_routing.nested_matcher_class%">
-            <argument type="service" id="symfony_cmf_routing.route_provider" />
-            <call method="setFinalMatcher"><argument type="service" id="symfony_cmf_routing.final_matcher"/></call>
+        <service id="cmf_routing.nested_matcher" class="%cmf_routing.nested_matcher_class%">
+            <argument type="service" id="cmf_routing.route_provider" />
+            <call method="setFinalMatcher"><argument type="service" id="cmf_routing.final_matcher"/></call>
         </service>
 
-        <service id="symfony_cmf_routing.final_matcher" class="%symfony_cmf_routing.final_matcher_class%">
-            <argument type="service" id="symfony_cmf_routing.matcher.dummy_collection"/>
-            <argument type="service" id="symfony_cmf_routing.matcher.dummy_context"/>
+        <service id="cmf_routing.final_matcher" class="%cmf_routing.final_matcher_class%">
+            <argument type="service" id="cmf_routing.matcher.dummy_collection"/>
+            <argument type="service" id="cmf_routing.matcher.dummy_context"/>
         </service>
 
-        <service id="symfony_cmf_routing.matcher.dummy_collection" class="Symfony\Component\Routing\RouteCollection" public="false"/>
-        <service id="symfony_cmf_routing.matcher.dummy_context" class="Symfony\Component\Routing\RequestContext" public="false"/>
+        <service id="cmf_routing.matcher.dummy_collection" class="Symfony\Component\Routing\RouteCollection" public="false"/>
+        <service id="cmf_routing.matcher.dummy_context" class="Symfony\Component\Routing\RequestContext" public="false"/>
 
-        <service id="symfony_cmf_routing.generator" class="%symfony_cmf_routing.generator_class%">
-            <argument type="service" id="symfony_cmf_routing.route_provider" />
+        <service id="cmf_routing.generator" class="%cmf_routing.generator_class%">
+            <argument type="service" id="cmf_routing.route_provider" />
             <argument type="service" id="logger" on-invalid="ignore" />
             <call method="setContainer"><argument type="service" id="service_container"/></call>
-            <call method="setContentRepository"><argument type="service" id="symfony_cmf_routing.content_repository"/></call>
+            <call method="setContentRepository"><argument type="service" id="cmf_routing.content_repository"/></call>
         </service>
 
-        <service id="symfony_cmf_routing.default_route_provider" class="%symfony_cmf_routing.route_provider_class%">
+        <service id="cmf_routing.default_route_provider" class="%cmf_routing.route_provider_class%">
             <argument/>
-            <argument>%symfony_cmf_routing.route_entity_class%</argument>
-            <call method="setManagerName"><argument>%symfony_cmf_routing.manager_name%</argument></call>
-            <call method="setPrefix"><argument>%symfony_cmf_routing.routing_repositoryroot%</argument></call>
+            <argument>%cmf_routing.route_entity_class%</argument>
+            <call method="setManagerName"><argument>%cmf_routing.manager_name%</argument></call>
+            <call method="setPrefix"><argument>%cmf_routing.routing_repositoryroot%</argument></call>
         </service>
 
-        <service id="symfony_cmf_routing.default_content_repository" class="%symfony_cmf_routing.content_repository_class%">
+        <service id="cmf_routing.default_content_repository" class="%cmf_routing.content_repository_class%">
             <argument/>
-            <call method="setManagerName"><argument>%symfony_cmf_routing.manager_name%</argument></call>
+            <call method="setManagerName"><argument>%cmf_routing.manager_name%</argument></call>
         </service>
 
-        <service id="symfony_cmf_routing.phpcrodm_route_idprefix_listener" class="%symfony_cmf_routing.phpcrodm_route_idprefix_listener_class%">
-            <argument>%symfony_cmf_routing.routing_repositoryroot%</argument>
+        <service id="cmf_routing.phpcrodm_route_idprefix_listener" class="%cmf_routing.phpcrodm_route_idprefix_listener_class%">
+            <argument>%cmf_routing.routing_repositoryroot%</argument>
             <tag name="doctrine_phpcr.event_listener" event="postLoad" />
             <tag name="doctrine_phpcr.event_listener" event="postPersist" />
         </service>
 
-        <service id="symfony_cmf_routing.phpcrodm_route_localeupdater_listener" class="%symfony_cmf_routing.phpcrodm_route_localeupdater_listener_class%">
-            <argument>%symfony_cmf_routing.routing_repositoryroot%</argument>
-            <argument>%symfony_cmf_routing.locales%</argument>
+        <service id="cmf_routing.phpcrodm_route_localeupdater_listener" class="%cmf_routing.phpcrodm_route_localeupdater_listener_class%">
+            <argument>%cmf_routing.routing_repositoryroot%</argument>
+            <argument>%cmf_routing.locales%</argument>
             <tag name="doctrine_phpcr.event_listener" event="postLoad" />
             <tag name="doctrine_phpcr.event_listener" event="postPersist" />
             <tag name="doctrine_phpcr.event_listener" event="postMove" />
         </service>
 
-        <service id="symfony_cmf_routing.redirect_controller" class="%symfony_cmf_routing.redirect_controller_class%">
+        <service id="cmf_routing.redirect_controller" class="%cmf_routing.redirect_controller_class%">
             <argument type="service" id="router" />
         </service>
 
-        <service id="symfony_cmf_routing.initializer" class="Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer">
+        <service id="cmf_routing.initializer" class="Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer">
             <argument type="collection">
-                <argument>%symfony_cmf_routing.routing_repositoryroot%</argument>
+                <argument>%cmf_routing.routing_repositoryroot%</argument>
             </argument>
             <tag name="doctrine_phpcr.initializer"/>
         </service>

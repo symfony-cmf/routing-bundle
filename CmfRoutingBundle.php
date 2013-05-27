@@ -13,7 +13,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
 /**
  * Bundle class
  */
-class SymfonyCmfRoutingBundle extends Bundle
+class CmfRoutingBundle extends Bundle
 {
     /**
      * @param ContainerBuilder $container
@@ -43,7 +43,7 @@ class SymfonyCmfRoutingBundle extends Bundle
         return new DoctrinePhpcrMappingsPass(
             $driver,
             array('Symfony\Component\Routing'),
-            array('symfony_cmf_routing.manager_name'),
+            array('cmf_routing.manager_name'),
             false // TODO: once we have config for orm or phpcr-odm, configure the enabled parameter
         );
     }

@@ -23,11 +23,11 @@ class ChainRouterPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('symfony_cmf_routing.router')) {
+        if (!$container->hasDefinition('cmf_routing.router')) {
             return;
         }
 
-        $router = $container->getDefinition('symfony_cmf_routing.router');
+        $router = $container->getDefinition('cmf_routing.router');
 
         foreach ($container->findTaggedServiceIds('router') as $id => $attributes) {
             $priority = isset($attributes[0]['priority']) ? (integer) $attributes[0]['priority'] : 0;

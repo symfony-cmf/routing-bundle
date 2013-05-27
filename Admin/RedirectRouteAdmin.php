@@ -9,7 +9,7 @@ use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 
 class RedirectRouteAdmin extends Admin
 {
-    protected $translationDomain = 'SymfonyCmfRoutingBundle';
+    protected $translationDomain = 'CmfRoutingBundle';
 
      /**
      * Root path for the route parent selection

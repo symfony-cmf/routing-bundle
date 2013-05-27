@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
  * @author Philippo de Santis
  * @author David Buchmann
  */
-class SymfonyCmfRoutingExtension extends Extension
+class CmfRoutingExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -47,7 +47,7 @@ class SymfonyCmfRoutingExtension extends Extension
         // if there is twig, register our form type with twig
         if ($container->hasParameter('twig.form.resources')) {
             $resources = $container->getParameter('twig.form.resources');
-            $container->setParameter('twig.form.resources', array_merge($resources, array('SymfonyCmfRoutingBundle:Form:terms_form_type.html.twig')));
+            $container->setParameter('twig.form.resources', array_merge($resources, array('CmfRoutingBundle:Form:terms_form_type.html.twig')));
         }
 
         if ($config['use_sonata_admin']) {
@@ -60,7 +60,7 @@ class SymfonyCmfRoutingExtension extends Extension
         $loader->load('form_type.xml');
 
         if (isset($config['dynamic'])) {
-            $routeTypeTypeDefinition = $container->getDefinition('symfony_cmf_routing.route_type_form_type');
+            $routeTypeTypeDefinition = $container->getDefinition('cmf_routing.route_type_form_type');
 
             foreach (array_keys($config['dynamic']['controllers_by_type']) as $routeType) {
                 $routeTypeTypeDefinition->addMethodCall('addRouteType', array($routeType));
@@ -98,11 +98,11 @@ class SymfonyCmfRoutingExtension extends Extension
         if (isset($config['locales']) && $config['locales']) {
             $container->setParameter($this->getAlias() . '.locales', $config['locales']);
         } else {
-            $container->removeDefinition('symfony_cmf_routing.phpcrodm_route_localeupdater_listener');
+            $container->removeDefinition('cmf_routing.phpcrodm_route_localeupdater_listener');
         }
 
-        $container->setAlias('symfony_cmf_routing.route_provider', $config['route_provider_service_id']);
-        $container->setAlias('symfony_cmf_routing.content_repository', $config['content_repository_service_id']);
+        $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
+        $container->setAlias('cmf_routing.content_repository', $config['content_repository_service_id']);
 
         $routeProvider = $container->getDefinition($this->getAlias() . '.default_route_provider');
         $routeProvider->replaceArgument(0, new Reference($config['manager_registry']));
@@ -127,7 +127,7 @@ class SymfonyCmfRoutingExtension extends Extension
             $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_templates_by_class')));
         }
         if (!empty($config['route_filters_by_id'])) {
-            $matcher = $container->getDefinition('symfony_cmf_routing.nested_matcher');
+            $matcher = $container->getDefinition('cmf_routing.nested_matcher');
             foreach ($config['route_filters_by_id'] as $id => $priority) {
                 $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
             }

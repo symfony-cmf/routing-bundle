@@ -16,11 +16,11 @@ class RouteEnhancerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('symfony_cmf_routing.dynamic_router')) {
+        if (!$container->hasDefinition('cmf_routing.dynamic_router')) {
             return;
         }
 
-        $router = $container->getDefinition('symfony_cmf_routing.dynamic_router');
+        $router = $container->getDefinition('cmf_routing.dynamic_router');
 
         foreach ($container->findTaggedServiceIds('dynamic_router_route_enhancer') as $id => $attributes) {
             $router->addMethodCall('addRouteEnhancer', array(new Reference($id)));

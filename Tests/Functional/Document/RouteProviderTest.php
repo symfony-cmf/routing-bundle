@@ -20,7 +20,7 @@ class RouteRepositoryTest extends BaseTestCase
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
         parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
-        self::$repository = self::$kernel->getContainer()->get('symfony_cmf_routing.route_provider');
+        self::$repository = self::$kernel->getContainer()->get('cmf_routing.route_provider');
     }
 
     public function testGetRouteCollectionForRequest()
