@@ -4,7 +4,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Listener;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
-use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Doctrine PHPCR-ODM listener to update the locale on routes based on the URL.
@@ -52,7 +52,7 @@ class LocaleUpdater
 
     public function postLoad(LifecycleEventArgs $args)
     {
-        $doc = $args->getDocument();
+        $doc = $args->getObject();
         if (! $doc instanceof Route) {
             return;
         }
@@ -61,7 +61,7 @@ class LocaleUpdater
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        $doc = $args->getDocument();
+        $doc = $args->getObject();
         if (! $doc instanceof Route) {
             return;
         }
@@ -70,7 +70,7 @@ class LocaleUpdater
 
     public function postMove(MoveEventArgs $args)
     {
-        $doc = $args->getDocument();
+        $doc = $args->getObject();
         if (! $doc instanceof Route) {
             return;
         }
