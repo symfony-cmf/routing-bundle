@@ -24,7 +24,10 @@ class CmfRoutingBundle extends Bundle
         $container->addCompilerPass(new ChainRouterPass());
         $container->addCompilerPass(new RouteEnhancerPass());
         $container->addCompilerPass(new SetRouterPass());
-        $container->addCompilerPass($this->buildBasePhpcrCompilerPass());
+
+        if (class_exists('Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass')) {
+            $container->addCompilerPass($this->buildBasePhpcrCompilerPass());
+        }
     }
 
     /**
