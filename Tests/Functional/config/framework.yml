@@ -11,3 +11,5 @@ framework:
     router:
         resource: %kernel.root_dir%/config/routing.yml
     default_locale: "en"
+    templating:
+        engines: ['twig']

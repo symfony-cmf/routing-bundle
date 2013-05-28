@@ -34,6 +34,10 @@ class AppKernel extends Kernel
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
             new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+            new \Sonata\AdminBundle\SonataAdminBundle(),
+            new \Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle(),
+            new \Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new \Symfony\Bundle\TwigBundle\TwigBundle()
         );
     }
 
