@@ -167,7 +167,7 @@ class RouteProvider implements RouteProviderInterface
     /**
      * Get the object manager from the registry, based on the current managerName
      *
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     protected function getObjectManager()
     {
