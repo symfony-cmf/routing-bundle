@@ -3,21 +3,54 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Document;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Document\ContentRepository;
-use Symfony\Cmf\Bundle\RoutingBundle\Tests\BaseTestCase;
 
-class ContentRepositoryTest extends BaseTestCase
+class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 {
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    private $document;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    private $document2;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    private $objectManager;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    private $objectManager2;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    private $managerRegistry;
+
+    public function setUp()
+    {
+        $this->document = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument');
+        $this->document2 = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument');
+        $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->objectManager2 = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+    }
+
     public function testFindById()
     {
-        $managerRegistry = $this->getManagerRegistry(
-            array(
-                'default' => $this->getObjectManager(
-                    array('id-123' => $this->getDocument('/cms/my-document'))
-                )
-            )
-        );
+        $this->document
+            ->expects($this->any())
+            ->method('getPath')
+            ->will($this->returnValue('/cms/my-document'))
+        ;
 
-        $contentRepository = new ContentRepository($managerRegistry);
+        $this->objectManager
+            ->expects($this->any())
+            ->method('find')
+            ->will($this->returnValue($this->document))
+        ;
+
+        $this->managerRegistry
+            ->expects($this->any())
+            ->method('getManager')
+            ->will($this->returnValue($this->objectManager))
+        ;
+
+        $contentRepository = new ContentRepository($this->managerRegistry);
         $contentRepository->setManagerName('default');
 
         $foundDocument = $contentRepository->findById('id-123');
@@ -37,17 +70,48 @@ class ContentRepositoryTest extends BaseTestCase
      */
     public function testChangingDocumentManager()
     {
-        $managerRegistry = $this->getManagerRegistry(
-            array(
-                'default' => $this->getObjectManager(
-                    array('id-123' => $this->getDocument('/cms/my-document'))
-                ),
-                'new_manager' => $this->getObjectManager(
-                    array('id-123' => $this->getDocument('/cms/new-document'))
-                )
-            )
+        $this->document
+            ->expects($this->any())
+            ->method('getPath')
+            ->will($this->returnValue('/cms/my-document'))
+        ;
+
+        $this->document2
+            ->expects($this->any())
+            ->method('getPath')
+            ->will($this->returnValue('/cms/new-document'))
+        ;
+
+        $this->objectManager
+            ->expects($this->any())
+            ->method('find')
+            ->with(null, 'id-123')
+            ->will($this->returnValue($this->document))
+        ;
+
+        $this->objectManager2
+            ->expects($this->any())
+            ->method('find')
+            ->with(null, 'id-123')
+            ->will($this->returnValue($this->document2))
+        ;
+
+        $objectManagers = array(
+            'default' => $this->objectManager,
+            'new_manager' => $this->objectManager2
         );
-        $contentRepository = new ContentRepository($managerRegistry);
+        $this->managerRegistry
+            ->expects($this->any())
+            ->method('getManager')
+            ->will(
+                $this->returnCallback(
+                    function ($name) use ($objectManagers) {
+                        return $objectManagers[$name];
+                    }
+                )
+            );
+
+        $contentRepository = new ContentRepository($this->managerRegistry);
 
         $contentRepository->setManagerName('default');
         $foundDocument = $contentRepository->findById('id-123');
@@ -58,19 +122,5 @@ class ContentRepositoryTest extends BaseTestCase
         $newFoundDocument = $contentRepository->findById('id-123');
         $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument', $newFoundDocument);
         $this->assertEquals('/cms/new-document', $newFoundDocument->getPath());
-    }
-
-    /**
-     * Get a mock document that returns the supplied $path for getPath().
-     *
-     * @param $path
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getDocument($path)
-    {
-        $document = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument');
-        $document->expects($this->any())->method('getPath')->will($this->returnValue($path));
-
-        return $document;
     }
 }
