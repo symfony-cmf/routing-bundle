@@ -39,7 +39,7 @@ class CmfRoutingBundle extends Bundle
      */
     private function buildBasePhpcrCompilerPass()
     {
-        $arguments = array(array(realpath(__DIR__ . '/Resources/config/doctrine')), '.phpcr.xml');
+        $arguments = array(array(realpath(__DIR__ . '/Resources/config/doctrine-base')), '.phpcr.xml');
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\DefaultFileLocator', $arguments);
         $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver', array($locator));
 
