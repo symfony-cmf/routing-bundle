@@ -25,7 +25,7 @@ See the [official documentation](http://symfony.com/doc/master/cmf/bundles/routi
 Add a requirement for ```symfony-cmf/routing-bundle``` to your
 composer.json and instantiate the bundle in your AppKernel.php
 
-    new Symfony\Cmf\Bundle\RoutingBundle\SymfonyCmfRoutingBundle()
+    new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle()
 
 If you just want to use the chain router, this is enough.
 For the DynamicRouter you need something to build a repository.

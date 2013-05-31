@@ -7,7 +7,7 @@
 >
 
     <testsuites>
-        <testsuite name="SymfonyCmfRoutingBundle Test Suite">
+        <testsuite name="Symfony CmfRoutingBundle Test Suite">
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>
@@ -16,7 +16,6 @@
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>.</directory>
             <exclude>
-                <file>SymfonyCmfRoutingBundle.php</file>
                 <directory>Resources/</directory>
                 <directory>Admin/</directory>
                 <directory>Tests/</directory>
