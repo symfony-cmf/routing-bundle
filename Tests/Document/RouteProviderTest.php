@@ -6,19 +6,10 @@ use Symfony\Cmf\Bundle\RoutingBundle\Document\RouteProvider;
 
 class RouteProviderTest extends \PHPUnit_Framework_Testcase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $route;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $route2;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $objectManager;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $objectManager2;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $managerRegistry;
 
     public function setUp()
