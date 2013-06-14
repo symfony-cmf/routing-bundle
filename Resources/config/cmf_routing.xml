@@ -11,10 +11,10 @@
         <parameter key="cmf_routing.final_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\UrlMatcher</parameter>
         <parameter key="cmf_routing.url_matcher_class">Symfony\Bundle\FrameworkBundle\Routing\RedirectableUrlMatcher</parameter>
         <parameter key="cmf_routing.generator_class">Symfony\Cmf\Bundle\RoutingBundle\Routing\ContentAwareGenerator</parameter>
-        <parameter key="cmf_routing.route_provider_class">Symfony\Cmf\Bundle\RoutingBundle\Document\RouteProvider</parameter>
-        <parameter key="cmf_routing.content_repository_class">Symfony\Cmf\Bundle\RoutingBundle\Document\ContentRepository</parameter>
-        <parameter key="cmf_routing.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Listener\IdPrefix</parameter>
-        <parameter key="cmf_routing.phpcrodm_route_localeupdater_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Listener\LocaleUpdater</parameter>
+        <parameter key="cmf_routing.route_provider_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider</parameter>
+        <parameter key="cmf_routing.content_repository_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\ContentRepository</parameter>
+        <parameter key="cmf_routing.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\IdPrefixListener</parameter>
+        <parameter key="cmf_routing.phpcrodm_route_localeupdater_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener</parameter>
         <parameter key="cmf_routing.enhancer_route_content_class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
         <parameter key="cmf_routing.enhancer_explicit_template_class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="cmf_routing.enhancer_controllers_by_type_class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>

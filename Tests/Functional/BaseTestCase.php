@@ -2,7 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

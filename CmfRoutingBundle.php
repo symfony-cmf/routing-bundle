@@ -27,6 +27,15 @@ class CmfRoutingBundle extends Bundle
 
         if (class_exists('Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass')) {
             $container->addCompilerPass($this->buildBasePhpcrCompilerPass());
+            $container->addCompilerPass(
+                DoctrinePhpcrMappingsPass::createXmlMappingDriver(
+                    array(
+                        realpath(__DIR__ . '/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
+                        realpath(__DIR__ . '/Resources/config/doctrine-phpcr') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr',
+                    ),
+                    array('cmf_routing.manager_name')
+                )
+            );
         }
     }
 

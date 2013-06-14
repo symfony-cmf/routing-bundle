@@ -1,9 +1,9 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
-use Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 

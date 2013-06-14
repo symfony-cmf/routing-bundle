@@ -6,8 +6,8 @@ use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
-use Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 
 class RedirectControllerTest extends BaseTestCase
