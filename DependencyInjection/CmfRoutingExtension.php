@@ -98,7 +98,7 @@ class CmfRoutingExtension extends Extension
         if (isset($config['locales']) && $config['locales']) {
             $container->setParameter($this->getAlias() . '.locales', $config['locales']);
         } else {
-            $container->removeDefinition('cmf_routing.phpcrodm_route_localeupdater_listener');
+            $container->removeDefinition('cmf_routing.phpcrodm_route_locale_listener');
         }
 
         $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
