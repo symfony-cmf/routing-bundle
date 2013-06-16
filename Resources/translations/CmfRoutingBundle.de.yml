@@ -1,0 +1,31 @@
+dashboard:
+    group_routing: Routen
+    label_routing: Route
+    label_redirect_routing: Umleitung
+
+breadcrumb:
+    link_route_list: Routen
+    link_route_create: Erstellen
+    link_route_edit: Bearbeiten
+    link_route_delete: Löschen
+    link_redirect_route_list: Umleitungen
+    link_redirect_route_create: Erstellen
+    link_redirect_route_edit: Bearbeiten
+    link_redirect_route_delete: Löschen
+
+filter:
+    label_name: Name
+
+list:
+    label_path: Pfad
+
+form:
+    group_general: Allgemein
+    label_parent: Übergeordnet
+    label_name: Letzter URL-Teil
+    label_variable_pattern: Variablenmuster
+    label_route_content: Inhalt
+    label_defaults: Vorgabewerte
+    label_route_name: Name
+    label_uri: URI
+    label_route_target: Routenziel
