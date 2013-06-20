@@ -27,19 +27,22 @@ class CmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getBuilder(
             array(
                 array(
-                    'dynamic' => array(),
-                    'use_sonata_admin' => false,
+                    'dynamic' => array(
+                        'phpcr_provider' => array(
+                            'use_sonata_admin' => false,
+                        ),
+                    ),
                 )
             )
         );
 
         $this->assertTrue($builder->hasAlias('cmf_routing.route_provider'));
         $alias = $builder->getAlias('cmf_routing.route_provider');
-        $this->assertEquals('cmf_routing.default_route_provider', $alias->__toString());
+        $this->assertEquals('cmf_routing.phpcr_route_provider', $alias->__toString());
 
         $this->assertTrue($builder->hasAlias('cmf_routing.content_repository'));
         $alias = $builder->getAlias('cmf_routing.content_repository');
-        $this->assertEquals('cmf_routing.default_content_repository', $alias->__toString());
+        $this->assertEquals('cmf_routing.phpcr_content_repository', $alias->__toString());
 
         $this->assertTrue($builder->getParameter('cmf_routing.replace_symfony_router'));
 
@@ -75,8 +78,10 @@ class CmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
                 'dynamic' => array(
                     'route_provider_service_id' => 'test_route_provider_service',
                     'content_repository_service_id' => 'test_content_repository_service',
+                    'phpcr_provider' => array(
+                        'use_sonata_admin' => false,
+                    ),
                 ),
-                'use_sonata_admin' => false,
                 'chain' => array(
                     'routers_by_id' => $providedRouters = array(
                         'router.custom' => 200,

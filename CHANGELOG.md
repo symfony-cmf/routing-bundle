@@ -6,6 +6,12 @@ Changelog
   RoutingBundle\Document\Route and RedirectRoute in favor of
   RoutingBundle\Doctrine\Phpcr\Route resp. RedirectRoute and also moved the
   PHPCR-ODM specific listeners and repository implementations to Doctrine\Phpcr
+  Configuration was cleaned up as well. PHPCR specific configurations moved
+  into dynamic.phpcr_provider: use_sonata_admin, 'manager_registry,
+  manager_name, route_basepath, content_basepath.
+  In preparation of other route provider support, you need to at least set
+  `phpcr_provider: ~` to have the PHPCR provider loaded.
+  Dropped redundant routing_repositoryroot.
 
 1.1.0-beta1
 -----------

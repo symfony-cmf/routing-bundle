@@ -24,11 +24,11 @@
             </call>
 
             <call method="setContentRoot">
-                <argument>%cmf_routing.content_basepath%</argument>
+                <argument>%cmf_routing.phpcr_provider.content_basepath%</argument>
             </call>
 
             <call method="setRouteRoot">
-                <argument>%cmf_routing.route_basepath%</argument>
+                <argument>%cmf_routing.phpcr_provider.route_basepath%</argument>
             </call>
             <call method="setControllerResolver">
                 <argument type="service" id="controller_resolver" />
@@ -46,7 +46,7 @@
             </call>
 
             <call method="setRouteRoot">
-                <argument>%cmf_routing.route_basepath%</argument>
+                <argument>%cmf_routing.phpcr_provider.route_basepath%</argument>
             </call>
         </service>
 

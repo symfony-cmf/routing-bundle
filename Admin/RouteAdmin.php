@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
+use PHPCR\Util\PathHelper;
 
 class RouteAdmin extends Admin
 {
@@ -74,7 +75,8 @@ class RouteAdmin extends Admin
 
     public function setRouteRoot($routeRoot)
     {
-        $this->routeRoot = $routeRoot;
+        // TODO: fix widget to show root node when root is selectable
+        $this->routeRoot = PathHelper::getParentPath($routeRoot);
     }
 
     public function setContentRoot($contentRoot)
