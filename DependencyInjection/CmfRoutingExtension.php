@@ -130,6 +130,8 @@ class CmfRoutingExtension extends Extension
     {
         $loader->load('provider_phpcr.xml');
 
+        $container->setParameter($this->getAlias() . '.backend_type_phpcr', true);
+
         $container->setParameter($this->getAlias() . '.phpcr_provider.route_basepath', $config['route_basepath']);
         $container->setParameter($this->getAlias() . '.phpcr_provider.content_basepath', $config['content_basepath']);
 

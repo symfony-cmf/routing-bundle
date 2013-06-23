@@ -56,7 +56,7 @@ class CmfRoutingBundle extends Bundle
             $driver,
             array('Symfony\Component\Routing'),
             array('cmf_routing.manager_name'),
-            false // TODO: once we have config for orm or phpcr-odm, configure the enabled parameter
+            'cmf_routing.backend_type_phpcr'
         );
     }
 }
