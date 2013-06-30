@@ -10,7 +10,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute as RedirectRouteModel;
  * This extends the RedirectRoute Model. We need to re-implement everything
  * that the PHPCR Route document adds.
  */
-class RedirectRoute extends RedirectRouteModel
+class RedirectRoute extends RedirectRouteModel implements PrefixInterface
 {
     /**
      * parent document
@@ -143,6 +143,9 @@ class RedirectRoute extends RedirectRouteModel
         return $this->idPrefix;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setPrefix($idPrefix)
     {
         $this->idPrefix = $idPrefix;

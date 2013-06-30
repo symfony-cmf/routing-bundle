@@ -12,7 +12,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
  *
  * @author david.buchmann@liip.ch
  */
-class Route extends RouteModel
+class Route extends RouteModel implements PrefixInterface
 {
     /**
      * parent document
@@ -145,6 +145,9 @@ class Route extends RouteModel
         return $this->idPrefix;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setPrefix($idPrefix)
     {
         $this->idPrefix = $idPrefix;
