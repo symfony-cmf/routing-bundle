@@ -2,6 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Document;
 
+use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute;
 
@@ -13,7 +14,7 @@ class RedirectRouteTest extends BaseTestCase
 
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
-        parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
+        parent::setupBeforeClass(array(), PathHelper::getNodeName(self::ROUTE_ROOT));
     }
 
     public function testRedirectDoctrine()
