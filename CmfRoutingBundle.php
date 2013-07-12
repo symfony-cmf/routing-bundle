@@ -6,7 +6,7 @@ use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappin
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\ChainRouterPass;
+use Symfony\Cmf\Component\Routing\DependencyInjection\RegisterRoutersPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\RouteEnhancerPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
 
@@ -21,7 +21,7 @@ class CmfRoutingBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-        $container->addCompilerPass(new ChainRouterPass());
+        $container->addCompilerPass(new RegisterRoutersPass());
         $container->addCompilerPass(new RouteEnhancerPass());
         $container->addCompilerPass(new SetRouterPass());
 
