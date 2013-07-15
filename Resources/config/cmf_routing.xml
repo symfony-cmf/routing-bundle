@@ -65,7 +65,7 @@
 
         <service id="cmf_routing.nested_matcher" class="%cmf_routing.nested_matcher_class%">
             <argument type="service" id="cmf_routing.route_provider" />
-            <call method="setFinalMatcher"><argument type="service" id="cmf_routing.final_matcher"/></call>
+            <argument type="service" id="cmf_routing.final_matcher"/>
         </service>
 
         <service id="cmf_routing.final_matcher" class="%cmf_routing.final_matcher_class%">

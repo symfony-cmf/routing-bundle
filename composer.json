@@ -14,7 +14,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "symfony-cmf/routing": "~1.1.0-dev",
+        "symfony-cmf/routing": "~1.1.0-beta2",
         "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {
