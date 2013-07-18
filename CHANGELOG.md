@@ -2,6 +2,10 @@ Changelog
 =========
 
 * **2013-07-17**: [FormType] Moved TermsFormType to CoreBundle and renamed it to CheckboxUrlLableFormType
+
+1.1.0-beta2
+-----------
+
 * **2013-05-28**: [Bundle] Only include Doctrine PHPCR compiler pass if PHPCR-ODM is present
 * **2013-05-25**: [Bundle] Drop symfony_ from symfony_cmf prefix
 * **2013-05-24**: [Document] ContentRepository now requires ManagerRegistry in the constructor and provides `setManagerName()` in the same way as RouteProvider
