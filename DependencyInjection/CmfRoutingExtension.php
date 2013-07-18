@@ -44,12 +44,6 @@ class CmfRoutingExtension extends Extension
 
         $this->setupFormTypes($config, $container, $loader);
 
-        // if there is twig, register our form type with twig
-        if ($container->hasParameter('twig.form.resources')) {
-            $resources = $container->getParameter('twig.form.resources');
-            $container->setParameter('twig.form.resources', array_merge($resources, array('CmfRoutingBundle:Form:terms_form_type.html.twig')));
-        }
-
         if ($config['use_sonata_admin']) {
             $this->loadSonataAdmin($config, $loader, $container);
         }
