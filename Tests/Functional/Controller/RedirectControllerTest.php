@@ -2,6 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Controller;
 
+use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,7 +22,7 @@ class RedirectControllerTest extends BaseTestCase
 
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
-        parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
+        parent::setupBeforeClass(array(), PathHelper::getNodeName(self::ROUTE_ROOT));
         $router = self::$kernel->getContainer()->get('router');
         self::$controller = new RedirectController($router);
     }

@@ -1,20 +1,11 @@
 Changelog
 =========
 
-* **2013-06-15**: [Model] Separated database agnostic, doctrine generic and
-  PHPCR-ODM specific code to prepare for Doctrine ORM support. Deprecated
-  RoutingBundle\Document\Route and RedirectRoute in favor of
-  RoutingBundle\Doctrine\Phpcr\Route resp. RedirectRoute and also moved the
-  PHPCR-ODM specific listeners and repository implementations to Doctrine\Phpcr
-  Configuration was cleaned up as well. PHPCR specific configurations moved
-  into dynamic.phpcr_provider: use_sonata_admin, 'manager_registry,
-  manager_name, route_basepath, content_basepath.
-  In preparation of other route provider support, you need to at least set
-  `phpcr_provider: ~` to have the PHPCR provider loaded.
-  Dropped redundant routing_repositoryroot.
+* **2013-07-19**: [Model] Separated database agnostic, doctrine generic and
+  PHPCR-ODM specific code to prepare for Doctrine ORM support.
+* **2013-07-17**: [FormType] Moved TermsFormType to CoreBundle and renamed it to CheckboxUrlLableFormType
 
-1.1.0-beta1
------------
+1.1.0-beta2
 
 * **2013-05-28**: [Bundle] Only include Doctrine PHPCR compiler pass if PHPCR-ODM is present
 * **2013-05-25**: [Bundle] Drop symfony_ from symfony_cmf prefix

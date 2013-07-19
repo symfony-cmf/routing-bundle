@@ -2,6 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Routing;
 
+use PHPCR\Util\PathHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
@@ -29,7 +30,7 @@ class DynamicRouterTest extends BaseTestCase
 
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
-        parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
+        parent::setupBeforeClass(array(), PathHelper::getNodeName(self::ROUTE_ROOT));
         self::$router = self::$kernel->getContainer()->get('router');
 
         $root = self::$dm->find(null, self::ROUTE_ROOT);

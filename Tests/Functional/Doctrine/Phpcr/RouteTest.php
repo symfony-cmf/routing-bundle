@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use PHPCR\Util\PathHelper;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
@@ -12,7 +13,7 @@ class RouteTest extends BaseTestCase
 
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
-        parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
+        parent::setupBeforeClass(array(), PathHelper::getNodeName(self::ROUTE_ROOT));
     }
 
     public function testPersist()
@@ -95,15 +96,15 @@ class RouteTest extends BaseTestCase
     /**
      * @depends testPersistEmptyOptions
      *
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
-    public function testSetPatternInvalid($route)
+    public function testSetPatternInvalid(Route $route)
     {
         $route->setPattern('/impossible');
     }
 
     /**
-     * @expectedException LogicException
+     * @expectedException \LogicException
      */
     public function testInvalidIdPrefix()
     {
@@ -113,7 +114,7 @@ class RouteTest extends BaseTestCase
     }
 
     /**
-     * @expectedException LogicException
+     * @expectedException \LogicException
      */
     public function testPrefixNonpersisted()
     {

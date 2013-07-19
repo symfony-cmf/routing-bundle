@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
+use PHPCR\Util\PathHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
@@ -19,7 +20,7 @@ class RouteRepositoryTest extends BaseTestCase
 
     public static function setupBeforeClass(array $options = array(), $routebase = null)
     {
-        parent::setupBeforeClass(array(), basename(self::ROUTE_ROOT));
+        parent::setupBeforeClass(array(), PathHelper::getNodeName(self::ROUTE_ROOT));
         self::$repository = self::$kernel->getContainer()->get('cmf_routing.route_provider');
     }
 
