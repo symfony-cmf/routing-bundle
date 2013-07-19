@@ -1,10 +1,11 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Listener;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 /**
  * Doctrine PHPCR-ODM listener to update the locale on routes based on the URL.
@@ -13,9 +14,9 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
  * determine if that segment matches one of the configured locales and if so
  * sets a requirement and default named _locale for that locale.
  *
- * @author David Buchmann <david@liip.ch>
+ * @author David Buchmann <mail@davidbu.ch>
  */
-class LocaleUpdater
+class LocaleListener
 {
     /**
      * The prefix to add to the url to create the repository path

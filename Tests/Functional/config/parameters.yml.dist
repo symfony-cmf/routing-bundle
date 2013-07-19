@@ -3,7 +3,7 @@ parameters:
         #type: jackrabbit
         #url: http://localhost:8080/server/
         type: doctrinedbal
-        connection: doctrine.dbal.default_connection
+        #connection: default
     phpcr_workspace: default
     phpcr_user: admin
     phpcr_pass: admin

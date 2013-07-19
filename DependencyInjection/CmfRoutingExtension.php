@@ -43,10 +43,6 @@ class CmfRoutingExtension extends Extension
         }
 
         $this->setupFormTypes($config, $container, $loader);
-
-        if ($config['use_sonata_admin']) {
-            $this->loadSonataAdmin($config, $loader, $container);
-        }
     }
 
     public function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader)
@@ -87,22 +83,18 @@ class CmfRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.defined_templates_class', $controllerForTemplates);
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
 
-        $loader->load('cmf_routing.xml');
-        $container->setParameter($this->getAlias() . '.routing_repositoryroot', $config['routing_repositoryroot']);
-        if (isset($config['locales']) && $config['locales']) {
-            $container->setParameter($this->getAlias() . '.locales', $config['locales']);
-        } else {
-            $container->removeDefinition('cmf_routing.phpcrodm_route_localeupdater_listener');
+        $loader->load('dynamic_routing.xml');
+
+        if (isset($config['phpcr_provider'])) {
+            $this->loadPhpcrProvider($config['phpcr_provider'], $loader, $container);
         }
 
-        $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
-        $container->setAlias('cmf_routing.content_repository', $config['content_repository_service_id']);
-
-        $routeProvider = $container->getDefinition($this->getAlias() . '.default_route_provider');
-        $routeProvider->replaceArgument(0, new Reference($config['manager_registry']));
-        $contentRepository = $container->getDefinition($this->getAlias() . '.default_content_repository');
-        $contentRepository->replaceArgument(0, new Reference($config['manager_registry']));
-        $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
+        if (isset($config['route_provider_service_id'])) {
+            $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
+        }
+        if (isset($config['content_repository_service_id'])) {
+            $container->setAlias('cmf_routing.content_repository', $config['content_repository_service_id']);
+        }
 
         $dynamic = $container->getDefinition($this->getAlias().'.dynamic_router');
 
@@ -128,16 +120,43 @@ class CmfRoutingExtension extends Extension
         }
     }
 
-    public function loadSonataAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
+    public function loadPhpcrProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        $loader->load('provider_phpcr.xml');
+
+        $container->setParameter($this->getAlias() . '.backend_type_phpcr', true);
+
+        $container->setParameter($this->getAlias() . '.phpcr_provider.route_basepath', $config['route_basepath']);
+        $container->setParameter($this->getAlias() . '.phpcr_provider.content_basepath', $config['content_basepath']);
+
+        $routeProvider = $container->getDefinition($this->getAlias() . '.phpcr_route_provider');
+        $routeProvider->replaceArgument(0, new Reference($config['manager_registry']));
+        $contentRepository = $container->getDefinition($this->getAlias() . '.phpcr_content_repository');
+        $contentRepository->replaceArgument(0, new Reference($config['manager_registry']));
+        $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
+
+        $container->setAlias($this->getAlias() . '.route_provider', $this->getAlias() . '.phpcr_route_provider');
+        $container->setAlias($this->getAlias() . '.content_repository', $this->getAlias() . '.phpcr_content_repository');
+
+        if (isset($config['locales']) && $config['locales']) {
+            $container->setParameter($this->getAlias() . '.locales', $config['locales']);
+        } else {
+            $container->removeDefinition('cmf_routing.phpcrodm_route_locale_listener');
+        }
+
+        if ($config['use_sonata_admin']) {
+            $this->loadSonataPhpcrAdmin($config, $loader, $container);
+        }
+    }
+
+    public function loadSonataPhpcrAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
         if ('auto' === $config['use_sonata_admin'] && !isset($bundles['SonataDoctrinePHPCRAdminBundle'])) {
             return;
         }
 
-        $loader->load('routing-admin.xml');
-        $container->setParameter($this->getAlias() . '.content_basepath', $config['content_basepath']);
-        $container->setParameter($this->getAlias() . '.route_basepath', $config['route_basepath']);
+        $loader->load('admin_phpcr.xml');
     }
 
     /**

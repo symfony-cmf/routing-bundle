@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\RouteProvider;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
 
 class RouteProviderTest extends \PHPUnit_Framework_Testcase
 {

@@ -8,7 +8,8 @@ cmf_routing:
         controllers_by_type:
             demo_alias: test.controller:aliasAction
         controllers_by_class:
-            Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute:  cmf_routing.redirect_controller:redirectAction
+            Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute:  cmf_routing.redirect_controller:redirectAction
         templates_by_class:
             Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Testdoc\Content: TestBundle:Content:index.html.twig
-        routing_repositoryroot: /test/routing
+        phpcr_provider:
+            route_basepath: /test/routing

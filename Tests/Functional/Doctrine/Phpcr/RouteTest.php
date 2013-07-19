@@ -1,9 +1,9 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use PHPCR\Util\PathHelper;
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
@@ -96,15 +96,15 @@ class RouteTest extends BaseTestCase
     /**
      * @depends testPersistEmptyOptions
      *
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
-    public function testSetPatternInvalid($route)
+    public function testSetPatternInvalid(Route $route)
     {
         $route->setPattern('/impossible');
     }
 
     /**
-     * @expectedException LogicException
+     * @expectedException \LogicException
      */
     public function testInvalidIdPrefix()
     {
@@ -114,7 +114,7 @@ class RouteTest extends BaseTestCase
     }
 
     /**
-     * @expectedException LogicException
+     * @expectedException \LogicException
      */
     public function testPrefixNonpersisted()
     {
