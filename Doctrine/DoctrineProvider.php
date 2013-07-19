@@ -1,0 +1,65 @@
+<?php
+
+namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine;
+
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+
+/**
+ * Abstract class for doctrine based content repository and route provider
+ * implementations.
+ *
+ * @author Uwe Jäger
+ * @author David Buchmann <mail@davidbu.ch>
+ */
+abstract class DoctrineProvider
+{
+    /**
+     * If this is null, the manager registry will return the default manager.
+     *
+     * @var string|null Name of object manager to use
+     */
+    protected $managerName;
+
+    /**
+     * @var ManagerRegistry
+     */
+    protected $managerRegistry;
+
+    /**
+     * Class name of the object class to find, null for PHPCR-ODM as it can
+     * determine the class on its own.
+     *
+     * @var string|null
+     */
+    protected $className;
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function __construct(ManagerRegistry $managerRegistry, $className = null)
+    {
+        $this->managerRegistry = $managerRegistry;
+    }
+
+    /**
+     * Set the object manager name to use for this loader. If not set, the
+     * default manager as decided by the manager registry will be used.
+     *
+     * @param string|null $managerName
+     */
+    public function setManagerName($managerName)
+    {
+        $this->managerName = $managerName;
+    }
+
+    /**
+     * Get the object manager named $managerName from the registry.
+     *
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->managerRegistry->getManager($this->managerName);
+    }
+}

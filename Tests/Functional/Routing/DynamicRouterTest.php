@@ -5,8 +5,8 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Routing;
 use PHPCR\Util\PathHelper;
 use Symfony\Component\HttpFoundation\Request;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
-use Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Listener;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
- * Doctrine PHPCR-ODM listener to set the idPrefix on new routes
+ * Doctrine PHPCR-ODM listener to set the idPrefix on routes
  *
- * @author david.buchmann@liip.ch
+ * @author David Buchmann <mail@davidbu.ch>
  */
-class IdPrefix
+class IdPrefixListener
 {
     /**
      * The prefix to add to the url to create the repository path
@@ -48,7 +48,7 @@ class IdPrefix
 
         // only update route objects and only if the prefix can match, to allow
         // for more than one listener and more than one route root
-        if ($doc instanceof Route
+        if (($doc instanceof PrefixInterface)
             && ! strncmp($this->idPrefix, $doc->getId(), strlen($this->idPrefix))
         ) {
             $doc->setPrefix($this->idPrefix);

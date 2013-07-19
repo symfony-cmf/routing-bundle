@@ -1,0 +1,23 @@
+<?php
+
+namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
+
+/**
+ * An interface for PHPCR route documents.
+ *
+ * We use the repository path as static part of the URL, but the documents
+ * need to know what their base path is to remove that from the URL.
+ */
+interface PrefixInterface
+{
+    /**
+     * @return string the full path of this document in the repository.
+     */
+    public function getId();
+
+    /**
+     * @param string $prefix The path in the repository to the routing root
+     *      document.
+     */
+    public function setPrefix($prefix);
+}

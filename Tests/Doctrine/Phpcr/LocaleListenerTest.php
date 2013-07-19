@@ -2,23 +2,23 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Listener;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Listener\LocaleUpdater;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
-use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
-class LocaleUpdaterTest extends CmfUnitTestCase
+class LocaleListenerTest extends CmfUnitTestCase
 {
-    /** @var LocaleUpdater */
+    /** @var LocaleListener */
     protected $listener;
     protected $routeMock;
     protected $dmMock;
 
     public function setUp()
     {
-        $this->listener = new LocaleUpdater('/prefix/path', array('en', 'de'));
-        $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Document\Route');
+        $this->listener = new LocaleListener('/prefix/path', array('en', 'de'));
+        $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route');
         $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
     }
     public function testMoved()

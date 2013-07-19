@@ -6,7 +6,10 @@
         https://github.com/doctrine/phpcr-odm/raw/master/doctrine-phpcr-odm-mapping.xsd"
 >
 
-    <document name="Symfony\Cmf\Bundle\RoutingBundle\Document\Route" referenceable="true"/>
-    <!-- map to have doctrine look at parent class mapping -->
+    <mapped-superclass name="Symfony\Cmf\Bundle\RoutingBundle\Model\Route" referenceable="true">
+        <field name="variablePattern" type="string"/>
+        <field name="addFormatPattern" type="boolean"/>
+        <reference-one name="routeContent"/>
+    </mapped-superclass>
 
 </doctrine-mapping>

@@ -5,14 +5,7 @@
     https://github.com/doctrine/phpcr-odm/raw/master/doctrine-phpcr-odm-mapping.xsd"
 >
 
-    <document name="Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute">
-
-        <field name="uri" type="uri"/>
-        <field name="routeName" type="string"/>
-        <field name="permanent" type="boolean"/>
-        <field name="parameters" type="string" assoc=""/>
-        <reference-one name="routeTarget"/>
-
-    </document>
+    <document name="Symfony\Cmf\Bundle\RoutingBundle\Document\RedirectRoute"/>
+    <!-- map to have doctrine look at parent class mapping -->
 
 </doctrine-mapping>

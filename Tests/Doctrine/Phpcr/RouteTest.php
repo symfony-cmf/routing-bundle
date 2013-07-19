@@ -1,11 +1,15 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 class RouteTest extends \PHPUnit_Framework_Testcase
 {
+    /** @var Route */
+    private $route;
+    private $childRoute1;
+
     public function setUp()
     {
         $this->route = new Route;

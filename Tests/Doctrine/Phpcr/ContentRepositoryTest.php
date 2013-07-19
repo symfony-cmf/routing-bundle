@@ -1,8 +1,8 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Document\ContentRepository;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\ContentRepository;
 
 class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 {
@@ -14,8 +14,8 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
     public function setUp()
     {
-        $this->document = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument');
-        $this->document2 = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument');
+        $this->document = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument');
+        $this->document2 = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument');
         $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->objectManager2 = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
@@ -46,7 +46,7 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
         $foundDocument = $contentRepository->findById('id-123');
 
-        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument', $foundDocument);
+        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument', $foundDocument);
         $this->assertEquals('/cms/my-document', $foundDocument->getPath());
     }
 
@@ -106,12 +106,22 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
         $contentRepository->setManagerName('default');
         $foundDocument = $contentRepository->findById('id-123');
-        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument', $foundDocument);
+        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument', $foundDocument);
         $this->assertEquals('/cms/my-document', $foundDocument->getPath());
 
         $contentRepository->setManagerName('new_manager');
         $newFoundDocument = $contentRepository->findById('id-123');
-        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Document\TestDocument', $newFoundDocument);
+        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument', $newFoundDocument);
         $this->assertEquals('/cms/new-document', $newFoundDocument->getPath());
+    }
+}
+
+/**
+ * Empty Document class for use with getMock()
+ */
+class TestDocument
+{
+    public function getPath()
+    {
     }
 }
