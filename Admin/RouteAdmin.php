@@ -97,14 +97,23 @@ class RouteAdmin extends Admin
 
     protected function configureFieldsForDefaults()
     {
-        return array(
-            array('_controller', 'text', array('required' => false)),
-            array('_template', 'text', array('required' => false)),
-            array('type', 'cmf_routing_route_type', array(
+        $defaults =  array(
+            '_controller' => array('_controller', 'text', array('required' => false)),
+            '_template' => array('_template', 'text', array('required' => false)),
+            'type' => array('type', 'cmf_routing_route_type', array(
                 'empty_value' => '',
                 'required' => false,
             )),
         );
+
+        $dynamicDefaults = $this->getSubject()->getDefaults();
+        foreach ($dynamicDefaults as $name => $value) {
+            if (!isset($defaults[$name])) {
+                $defaults[$name] = array($name, 'text', array('required' => false));
+            }
+        }
+
+        return $defaults;
     }
 
     public function prePersist($object)
