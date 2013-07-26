@@ -25,7 +25,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @var object
      */
-    protected $routeContent;
+    protected $content;
 
     /**
      * Part of the URL that does not have parameters and thus can be used to
@@ -116,11 +116,22 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * Set the object this url points to
+     * @deprecated use setContent instead
      */
     public function setRouteContent($object)
     {
-        $this->routeContent = $object;
+        $this->setContent($object);
+    }
+
+    /**
+     * Set the object this url points to
+     *
+     * @param mixed $object A content object that can be persisted by the
+     *      storage layer.
+     */
+    public function setContent($object)
+    {
+        $this->content = $object;
 
         return $this;
     }
@@ -130,7 +141,15 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function getRouteContent()
     {
-        return $this->routeContent;
+        return $this->getContent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
     /**

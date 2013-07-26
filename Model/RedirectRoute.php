@@ -45,7 +45,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      *
      * @throws LogicException
      */
-    public function setRouteContent($document)
+    public function setContent($document)
     {
         throw new LogicException('Do not set a content for the redirect route. It is its own content.');
     }
@@ -53,7 +53,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritDoc}
      */
-    public function getRouteContent()
+    public function getContent()
     {
         return $this;
     }

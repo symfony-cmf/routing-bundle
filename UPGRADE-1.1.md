@@ -17,3 +17,6 @@ PHPCR specific configurations moved into
 You need to at least set `phpcr_provider: ~` to have the PHPCR provider loaded.
 
 Dropped redundant unused `routing_repositoryroot` configuration.
+
+Deprecated the setRouteContent and getRouteContent methods. Use setContent and
+getContent instead.

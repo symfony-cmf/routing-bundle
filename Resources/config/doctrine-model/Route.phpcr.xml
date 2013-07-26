@@ -9,7 +9,7 @@
     <mapped-superclass name="Symfony\Cmf\Bundle\RoutingBundle\Model\Route" referenceable="true">
         <field name="variablePattern" type="string"/>
         <field name="addFormatPattern" type="boolean"/>
-        <reference-one name="routeContent"/>
+        <reference-one name="content" property="routeContent"/>
     </mapped-superclass>
 
 </doctrine-mapping>
