@@ -11,6 +11,16 @@ class RedirectRouteAdmin extends Admin
 {
     protected $translationDomain = 'CmfRoutingBundle';
 
+    /**
+     * work around https://github.com/sonata-project/SonataAdminBundle/pull/1472
+     */
+    protected $baseRouteName = 'cmf_routing';
+    
+    /**
+     * work around https://github.com/sonata-project/SonataAdminBundle/pull/1472
+     */
+    protected $baseRoutePattern = '/cmf/routing/redirectroute';
+
      /**
      * Root path for the route parent selection
      * @var string
