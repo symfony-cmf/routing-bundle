@@ -116,14 +116,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * @deprecated use setContent instead
-     */
-    public function setRouteContent($object)
-    {
-        $this->setContent($object);
-    }
-
-    /**
      * Set the object this url points to
      *
      * @param mixed $object A content object that can be persisted by the
@@ -134,14 +126,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $this->content = $object;
 
         return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRouteContent()
-    {
-        return $this->getContent();
     }
 
     /**
