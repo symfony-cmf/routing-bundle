@@ -85,7 +85,7 @@ class CmfRoutingExtension extends Extension
 
         $loader->load('dynamic_routing.xml');
 
-        if (isset($config['phpcr_provider'])) {
+        if (!empty($config['phpcr_provider']['enabled'])) {
             $this->loadPhpcrProvider($config['phpcr_provider'], $loader, $container);
         }
 
