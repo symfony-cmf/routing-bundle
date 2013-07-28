@@ -2,6 +2,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
@@ -85,12 +86,18 @@ class CmfRoutingExtension extends Extension
 
         $loader->load('dynamic_routing.xml');
 
+        $hasProvider = false;
         if (!empty($config['phpcr_provider']['enabled'])) {
             $this->loadPhpcrProvider($config['phpcr_provider'], $loader, $container);
+            $hasProvider = true;
         }
 
         if (isset($config['route_provider_service_id'])) {
             $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
+            $hasProvider = true;
+        }
+        if (!$hasProvider) {
+            throw new InvalidConfigurationException('When the dynamic router is enabled, you need to either set dynamic.phpcr_provider.enabled or specify dynamic.route_provider_service_id');
         }
         if (isset($config['content_repository_service_id'])) {
             $container->setAlias('cmf_routing.content_repository', $config['content_repository_service_id']);
