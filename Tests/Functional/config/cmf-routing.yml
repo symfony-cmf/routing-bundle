@@ -12,4 +12,5 @@ cmf_routing:
         templates_by_class:
             Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Testdoc\Content: TestBundle:Content:index.html.twig
         phpcr_provider:
+            enabled: true
             route_basepath: /test/routing
