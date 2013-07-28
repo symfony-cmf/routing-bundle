@@ -12,6 +12,7 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": false,
     "require": {
         "php": ">=5.3.3",
         "symfony-cmf/routing": "~1.1.0-beta2",
