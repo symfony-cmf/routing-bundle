@@ -220,7 +220,7 @@ class DynamicRouterTest extends BaseTestCase
         // put a route for this content
         $root = self::$dm->find(null, self::ROUTE_ROOT);
         $route = new Route;
-        $route->setRouteContent($document);
+        $route->setContent($document);
         $route->setPosition($root, 'templatebyclass');
         self::$dm->persist($route);
         self::$dm->flush();

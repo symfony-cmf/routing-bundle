@@ -21,7 +21,7 @@ class RouteTest extends BaseTestCase
         $route = new Route;
         $root = self::$dm->find(null, self::ROUTE_ROOT);
 
-        $route->setRouteContent($root); // this happens to be a referenceable node
+        $route->setContent($root); // this happens to be a referenceable node
         $route->setPosition($root, 'testroute');
         $route->setDefault('x', 'y');
         $route->setRequirement('testreq', 'testregex');
@@ -36,7 +36,7 @@ class RouteTest extends BaseTestCase
 
         $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute');
 
-        $this->assertNotNull($route->getRouteContent());
+        $this->assertNotNull($route->getContent());
         $this->assertEquals('/testroute', $route->getPattern());
 
         $this->assertEquals('y', $route->getDefault('x'));

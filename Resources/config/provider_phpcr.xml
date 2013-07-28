@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="cmf_routing.route_provider_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider</parameter>
+        <parameter key="cmf_routing.phpcr_route_provider_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider</parameter>
         <parameter key="cmf_routing.content_repository_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\ContentRepository</parameter>
         <parameter key="cmf_routing.phpcrodm_route_idprefix_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\IdPrefixListener</parameter>
         <parameter key="cmf_routing.phpcrodm_route_locale_listener_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener</parameter>
@@ -12,15 +12,15 @@
 
     <services>
 
-        <service id="cmf_routing.phpcr_route_provider" class="%cmf_routing.route_provider_class%">
-            <argument/>
+        <service id="cmf_routing.phpcr_route_provider" class="%cmf_routing.phpcr_route_provider_class%">
+            <argument type="service" id="doctrine_phpcr"/>
             <argument>%cmf_routing.route_model_class%</argument>
             <call method="setManagerName"><argument>%cmf_routing.manager_name%</argument></call>
             <call method="setPrefix"><argument>%cmf_routing.phpcr_provider.route_basepath%</argument></call>
         </service>
 
         <service id="cmf_routing.phpcr_content_repository" class="%cmf_routing.content_repository_class%">
-            <argument/>
+            <argument type="service" id="doctrine_phpcr"/>
             <call method="setManagerName"><argument>%cmf_routing.manager_name%</argument></call>
         </service>
 

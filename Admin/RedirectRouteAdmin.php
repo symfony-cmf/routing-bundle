@@ -15,7 +15,7 @@ class RedirectRouteAdmin extends Admin
      * work around https://github.com/sonata-project/SonataAdminBundle/pull/1472
      */
     protected $baseRouteName = 'cmf_routing';
-    
+
     /**
      * work around https://github.com/sonata-project/SonataAdminBundle/pull/1472
      */

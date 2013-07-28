@@ -29,6 +29,7 @@ class CmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
                 array(
                     'dynamic' => array(
                         'phpcr_provider' => array(
+                            'enabled' => true,
                             'use_sonata_admin' => false,
                         ),
                     ),

@@ -61,7 +61,6 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('phpcr_provider')
                             ->children()
                                 ->scalarNode('enabled')->defaultNull()->end()
-                                ->scalarNode('manager_registry')->defaultValue('doctrine_phpcr')->end()
                                 ->scalarNode('manager_name')->defaultNull()->end()
                                 ->scalarNode('route_basepath')->defaultValue('/cms/routes')->end()
                                 ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()

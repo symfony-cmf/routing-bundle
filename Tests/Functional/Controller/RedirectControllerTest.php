@@ -55,7 +55,7 @@ class RedirectControllerTest extends BaseTestCase
         $root = self::$dm->find(null, self::ROUTE_ROOT);
 
         $route = new Route;
-        $route->setRouteContent($root); // this happens to be a referenceable node
+        $route->setContent($root); // this happens to be a referenceable node
         $route->setPosition($root, 'testroute');
         self::$dm->persist($route);
 

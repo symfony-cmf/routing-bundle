@@ -136,10 +136,6 @@ class CmfRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.phpcr_provider.route_basepath', $config['route_basepath']);
         $container->setParameter($this->getAlias() . '.phpcr_provider.content_basepath', $config['content_basepath']);
 
-        $routeProvider = $container->getDefinition($this->getAlias() . '.phpcr_route_provider');
-        $routeProvider->replaceArgument(0, new Reference($config['manager_registry']));
-        $contentRepository = $container->getDefinition($this->getAlias() . '.phpcr_content_repository');
-        $contentRepository->replaceArgument(0, new Reference($config['manager_registry']));
         $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
 
         $container->setAlias($this->getAlias() . '.route_provider', $this->getAlias() . '.phpcr_route_provider');
