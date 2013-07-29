@@ -14,6 +14,7 @@ controller for redirection routes.
 ## Requirements
 
 * Symfony 2.2.x
+* See also the `require` section of [composer.json](composer.json)
 
 
 ## Documentation
