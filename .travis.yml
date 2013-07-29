@@ -3,6 +3,7 @@ language: php
 php:
     - 5.3
     - 5.4
+    - 5.5
 
 env:
   - SYMFONY_VERSION=2.2.*
@@ -10,8 +11,7 @@ env:
   - SYMFONY_VERSION=dev-master
 
 before_script:
-  - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
-  - composer update
+  - composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
   - cp ./Tests/Functional/config/parameters.yml.dist ./Tests/Functional/config/parameters.yml
   - php Tests/Functional/console doctrine:phpcr:init:dbal
   - php Tests/Functional/console doctrine:phpcr:repository:init
@@ -21,3 +21,7 @@ script: phpunit --coverage-text
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
   email: "symfony-cmf-devs@googlegroups.com"
+
+matrix:
+  allow_failures:
+    - env: SYMFONY_VERSION=dev-master
