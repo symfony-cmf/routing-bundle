@@ -28,9 +28,11 @@ class CmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'dynamic' => array(
-                        'phpcr_provider' => array(
-                            'enabled' => true,
-                            'use_sonata_admin' => false,
+                        'persistence' => array(
+                            'phpcr' => array(
+                                'enabled' => true,
+                                'use_sonata_admin' => false,
+                            ),
                         ),
                     ),
                 )
@@ -79,8 +81,10 @@ class CmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
                 'dynamic' => array(
                     'route_provider_service_id' => 'test_route_provider_service',
                     'content_repository_service_id' => 'test_content_repository_service',
-                    'phpcr_provider' => array(
-                        'use_sonata_admin' => false,
+                    'persistence' => array(
+                        'phpcr' => array(
+                            'use_sonata_admin' => false,
+                        ),
                     ),
                 ),
                 'chain' => array(
