@@ -88,8 +88,8 @@ class CmfRoutingExtension extends Extension
 
         $hasProvider = false;
         $hasContentRepository = false;
-        if (!empty($config['phpcr_provider']['enabled'])) {
-            $this->loadPhpcrProvider($config['phpcr_provider'], $loader, $container);
+        if (!empty($config['persistence']['phpcr']['enabled'])) {
+            $this->loadPhpcrProvider($config['persistence']['phpcr'], $loader, $container);
             $hasProvider = true;
             $hasContentRepository = true;
         }
