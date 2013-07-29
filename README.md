@@ -1,6 +1,8 @@
 # Symfony CMF Routing Bundle
 
-[![Build Status](https://secure.travis-ci.org/symfony-cmf/RoutingBundle.png)](http://travis-ci.org/symfony-cmf/RoutingBundle) [![Latest Stable Version](https://poser.pugx.org/symfony-cmf/routing-bundle/version.png)](https://packagist.org/packages/symfony-cmf/routing-bundle) [![Total Downloads](https://poser.pugx.org/symfony-cmf/routing-bundle/d/total.png)](https://packagist.org/packages/symfony-cmf/routing-bundle)
+[![Build Status](https://secure.travis-ci.org/symfony-cmf/RoutingBundle.png)](http://travis-ci.org/symfony-cmf/RoutingBundle)
+[![Latest Stable Version](https://poser.pugx.org/symfony-cmf/routing-bundle/version.png)](https://packagist.org/packages/symfony-cmf/routing-bundle)
+[![Total Downloads](https://poser.pugx.org/symfony-cmf/routing-bundle/d/total.png)](https://packagist.org/packages/symfony-cmf/routing-bundle)
 
 This bundle is part of the [Symfony Content Management Framework (CMF)](http://cmf.symfony.com/)
 and licensed under the [MIT License](LICENSE).
