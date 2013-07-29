@@ -87,11 +87,12 @@ class CmfRoutingExtension extends Extension
         $loader->load('dynamic_routing.xml');
 
         $hasProvider = false;
+        $hasContentRepository = false;
         if (!empty($config['phpcr_provider']['enabled'])) {
             $this->loadPhpcrProvider($config['phpcr_provider'], $loader, $container);
             $hasProvider = true;
+            $hasContentRepository = true;
         }
-
         if (isset($config['route_provider_service_id'])) {
             $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
             $hasProvider = true;
@@ -101,6 +102,14 @@ class CmfRoutingExtension extends Extension
         }
         if (isset($config['content_repository_service_id'])) {
             $container->setAlias('cmf_routing.content_repository', $config['content_repository_service_id']);
+            $hasContentRepository = true;
+        }
+        // content repository is optional
+        if ($hasContentRepository) {
+            $generator = $container->getDefinition($this->getAlias() . '.generator');
+            $generator->addMethodCall('setContentRepository', array(
+                new Reference($this->getAlias() . '.content_repository'),
+            ));
         }
 
         $dynamic = $container->getDefinition($this->getAlias().'.dynamic_router');

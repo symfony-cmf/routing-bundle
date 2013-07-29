@@ -76,7 +76,6 @@
             <argument type="service" id="cmf_routing.route_provider" />
             <argument type="service" id="logger" on-invalid="ignore" />
             <call method="setContainer"><argument type="service" id="service_container"/></call>
-            <call method="setContentRepository"><argument type="service" id="cmf_routing.content_repository"/></call>
         </service>
 
         <service id="cmf_routing.redirect_controller" class="%cmf_routing.redirect_controller_class%">
