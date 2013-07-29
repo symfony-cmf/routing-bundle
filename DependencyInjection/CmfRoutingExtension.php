@@ -98,7 +98,7 @@ class CmfRoutingExtension extends Extension
             $hasProvider = true;
         }
         if (!$hasProvider) {
-            throw new InvalidConfigurationException('When the dynamic router is enabled, you need to either set dynamic.phpcr_provider.enabled or specify dynamic.route_provider_service_id');
+            throw new InvalidConfigurationException('When the dynamic router is enabled, you need to either set dynamic.persistence.phpcr.enabled or specify dynamic.route_provider_service_id');
         }
         if (isset($config['content_repository_service_id'])) {
             $container->setAlias('cmf_routing.content_repository', $config['content_repository_service_id']);
@@ -142,8 +142,8 @@ class CmfRoutingExtension extends Extension
 
         $container->setParameter($this->getAlias() . '.backend_type_phpcr', true);
 
-        $container->setParameter($this->getAlias() . '.phpcr_provider.route_basepath', $config['route_basepath']);
-        $container->setParameter($this->getAlias() . '.phpcr_provider.content_basepath', $config['content_basepath']);
+        $container->setParameter($this->getAlias() . '.persistence.phpcr.route_basepath', $config['route_basepath']);
+        $container->setParameter($this->getAlias() . '.persistence.phpcr.content_basepath', $config['content_basepath']);
 
         $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
 
