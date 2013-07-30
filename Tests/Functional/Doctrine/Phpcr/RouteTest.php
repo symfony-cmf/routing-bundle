@@ -11,15 +11,17 @@ class RouteTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
-    public static function setupBeforeClass(array $options = array(), $routebase = null)
+    public function setUp()
     {
-        parent::setupBeforeClass(array(), PathHelper::getNodeName(self::ROUTE_ROOT));
+        parent::setUp();
+        $this->db('PHPCR')->createTestNode();
+        $this->createRoute(self::ROUTE_ROOT);
     }
 
     public function testPersist()
     {
         $route = new Route;
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         $route->setContent($root); // this happens to be a referenceable node
         $route->setPosition($root, 'testroute');
@@ -28,13 +30,13 @@ class RouteTest extends BaseTestCase
         $route->setOptions(array('test' => 'value'));
         $route->setOption('another', 'value2');
 
-        self::$dm->persist($route);
-        self::$dm->flush();
+        $this->getDm()->persist($route);
+        $this->getDm()->flush();
         $this->assertEquals('/testroute', $route->getPattern());
 
-        self::$dm->clear();
+        $this->getDm()->clear();
 
-        $route = self::$dm->find(null, self::ROUTE_ROOT.'/testroute');
+        $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
         $this->assertNotNull($route->getContent());
         $this->assertEquals('/testroute', $route->getPattern());
@@ -58,15 +60,15 @@ class RouteTest extends BaseTestCase
     public function testPersistEmptyOptions()
     {
         $route = new Route;
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         $route->setPosition($root, 'empty');
-        self::$dm->persist($route);
-        self::$dm->flush();
+        $this->getDm()->persist($route);
+        $this->getDm()->flush();
 
-        self::$dm->clear();
+        $this->getDm()->clear();
 
-        $route = self::$dm->find(null, self::ROUTE_ROOT.'/empty');
+        $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/empty');
 
         $defaults = $route->getDefaults();
         $this->assertCount(0, $defaults);
@@ -82,13 +84,13 @@ class RouteTest extends BaseTestCase
 
     public function testRootRoute()
     {
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $this->assertEquals('/', $root->getPattern());
     }
 
     public function testSetPattern()
     {
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setPattern('/{test}');
         $this->assertEquals('{test}', $root->getVariablePattern());
     }
@@ -108,7 +110,7 @@ class RouteTest extends BaseTestCase
      */
     public function testInvalidIdPrefix()
     {
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setPrefix('/changed'); // simulate a problem with the prefix setter listener
         $this->assertEquals('/', $root->getPattern());
     }
@@ -126,15 +128,15 @@ class RouteTest extends BaseTestCase
     {
         $route = new Route(true);
 
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         $route->setPosition($root, 'format');
-        self::$dm->persist($route);
-        self::$dm->flush();
+        $this->getDm()->persist($route);
+        $this->getDm()->flush();
 
-        self::$dm->clear();
+        $this->getDm()->clear();
 
-        $route = self::$dm->find(null, self::ROUTE_ROOT.'/format');
+        $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
         $this->assertEquals('/format.{_format}', $route->getPattern());
     }

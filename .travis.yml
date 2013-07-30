@@ -11,11 +11,8 @@ env:
   - SYMFONY_VERSION=dev-master
 
 before_script:
-  - composer self-update
   - composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
-  - cp ./Tests/Functional/config/parameters.yml.dist ./Tests/Functional/config/parameters.yml
-  - php Tests/Functional/console doctrine:phpcr:init:dbal
-  - php Tests/Functional/console doctrine:phpcr:repository:init
+  - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
 script: phpunit --coverage-text
 
