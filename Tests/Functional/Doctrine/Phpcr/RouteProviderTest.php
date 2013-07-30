@@ -16,37 +16,39 @@ class RouteRepositoryTest extends BaseTestCase
     const ROUTE_ROOT = '/test/routing';
 
     /** @var RouteProvider */
-    private static $repository;
+    private $repository;
 
-    public static function setupBeforeClass(array $options = array(), $routebase = null)
+    public function setUp()
     {
-        parent::setupBeforeClass(array(), PathHelper::getNodeName(self::ROUTE_ROOT));
-        self::$repository = self::$kernel->getContainer()->get('cmf_routing.route_provider');
+        parent::setUp();
+        $this->db('PHPCR')->createTestNode();
+        $this->createRoute(self::ROUTE_ROOT);
+        $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
     }
 
     public function testGetRouteCollectionForRequest()
     {
         $route = new Route;
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         $route->setPosition($root, 'testroute');
-        self::$dm->persist($route);
+        $this->getDm()->persist($route);
 
         // smuggle a non-route thing into the repository
         $noroute = new Generic;
         $noroute->setParent($route);
         $noroute->setNodename('noroute');
-        self::$dm->persist($noroute);
+        $this->getDm()->persist($noroute);
 
         $childroute = new Route;
         $childroute->setPosition($noroute, 'child');
-        self::$dm->persist($childroute);
+        $this->getDm()->persist($childroute);
 
-        self::$dm->flush();
+        $this->getDm()->flush();
 
-        self::$dm->clear();
+        $this->getDm()->clear();
 
-        $routes = self::$repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child'));
+        $routes = $this->repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child'));
         $this->assertCount(3, $routes);
 
         foreach ($routes as $route) {
@@ -56,13 +58,13 @@ class RouteRepositoryTest extends BaseTestCase
 
     public function testFindNophpcrUrl()
     {
-        $collection = self::$repository->getRouteCollectionForRequest(Request::create(':///'));
+        $collection = $this->repository->getRouteCollectionForRequest(Request::create(':///'));
         $this->assertInstanceOf('Symfony\\Component\\Routing\\RouteCollection', $collection);
         $this->assertCount(0, $collection);
     }
 
     public function testSetPrefix()
     {
-        self::$repository->setPrefix(self::ROUTE_ROOT);
+        $this->repository->setPrefix(self::ROUTE_ROOT);
     }
 }
