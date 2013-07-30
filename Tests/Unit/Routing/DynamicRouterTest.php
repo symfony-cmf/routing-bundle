@@ -1,8 +1,11 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Routing;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Routing;
 
+use Symfony\Cmf\Component\Routing\Event\Events;
+use Symfony\Cmf\Component\Routing\Event\RouterMatchEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
@@ -20,6 +23,8 @@ class DynamicRouterTest extends CmfUnitTestCase
     protected $context;
     /** @var Request */
     protected $request;
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
     protected $container;
 
     public function setUp()
@@ -36,8 +41,8 @@ class DynamicRouterTest extends CmfUnitTestCase
         $this->request = Request::create('/foo');
         $this->container = $this->buildMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
         $this->context = $this->buildMock('Symfony\\Component\\Routing\\RequestContext');
-
-        $this->router = new DynamicRouter($this->context, $this->matcher, $this->generator);
+        $this->eventDispatcher = $this->buildMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->router = new DynamicRouter($this->context, $this->matcher, $this->generator, '', $this->eventDispatcher);
         $this->router->setContainer($this->container);
     }
 
@@ -57,6 +62,11 @@ class DynamicRouterTest extends CmfUnitTestCase
             ->will($this->returnValue($this->request))
         ;
 
+        $this->eventDispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with(Events::PRE_DYNAMIC_MATCH, $this->equalTo(new RouterMatchEvent()))
+        ;
+
         $parameters = $this->router->match('/foo');
         $this->assertEquals(array('foo' => 'bar'), $parameters);
 
@@ -65,10 +75,9 @@ class DynamicRouterTest extends CmfUnitTestCase
 
     public function testMatchRequest()
     {
-        $this->container->expects($this->once())
-            ->method('get')
-            ->with('request')
-            ->will($this->returnValue($this->request))
+        $this->eventDispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with(Events::PRE_DYNAMIC_MATCH_REQUEST, $this->equalTo(new RouterMatchEvent($this->request)))
         ;
 
         $parameters = $this->router->matchRequest($this->request);
@@ -88,6 +97,22 @@ class DynamicRouterTest extends CmfUnitTestCase
             ->will($this->returnValue(null))
         ;
 
+        $this->eventDispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with(Events::PRE_DYNAMIC_MATCH, $this->equalTo(new RouterMatchEvent()))
+        ;
+
         $this->router->match('/foo');
     }
+
+    public function testEventOptional()
+    {
+        $router = new DynamicRouter($this->context, $this->matcher, $this->generator);
+
+        $parameters = $router->matchRequest($this->request);
+        $this->assertEquals(array('foo' => 'bar'), $parameters);
+
+        $this->assertRequestAttributes($this->request);
+    }
+
 }
