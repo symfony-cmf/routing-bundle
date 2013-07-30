@@ -18,7 +18,7 @@ class RouteAdmin extends Admin
     /**
      * work around https://github.com/sonata-project/SonataAdminBundle/pull/1472
      */
-    protected $baseRouteName = 'cmf_routing';
+    protected $baseRouteName = 'cmf_routing_route';
 
     /**
      * work around https://github.com/sonata-project/SonataAdminBundle/pull/1472
@@ -71,7 +71,7 @@ class RouteAdmin extends Admin
             $formMapper
                 ->with('form.group_general')
                 ->add('variablePattern', 'text', array('required' => false))
-                ->add('routeContent', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
+                ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
                 ->end();
         }
