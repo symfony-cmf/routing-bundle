@@ -8,7 +8,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Admin;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Admin\RouteAdmin;
 use Symfony\Component\Routing\Route;
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RouteAdminTest extends BaseTestCase
 {
@@ -24,6 +24,7 @@ class RouteAdminTest extends BaseTestCase
 
     protected function setUp()
     {
+        parent::setUp();
         $this->db('PHPCR')->createTestNode();
         $this->routeAdmin = $this->getContainer()->get('cmf_routing.route_admin');
         $this->errorElement = $this->getMockBuilder('Sonata\AdminBundle\Validator\ErrorElement')

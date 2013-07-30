@@ -6,7 +6,6 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
-use Symfony\Cmf\Component\Testing\Document\Content;
 
 class RedirectRouteTest extends BaseTestCase
 {
@@ -21,13 +20,8 @@ class RedirectRouteTest extends BaseTestCase
 
     public function testRedirectDoctrine()
     {
+        $content = $this->createContent('/test/content');
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-
-        $content = new Content;
-        $content->setId('/test/content');
-        $content->setTitle('Foo Content');
-        $this->getDm()->persist($content);
-        $this->getDm()->flush();
 
         $route = new Route;
         $route->setContent($content);

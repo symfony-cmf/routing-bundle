@@ -1,5 +1,0 @@
-doctrine:
-    dbal:
-        driver:   %database_driver%
-        path:     %database_path%
-        charset:  UTF8

@@ -1,7 +1,0 @@
-imports:
-    - { resource: parameters.yml }
-    - { resource: framework.yml }
-    - { resource: monolog.yml }
-    - { resource: doctrine.yml }
-    - { resource: phpcrodm.yml }
-    - { resource: cmf-routing.yml }
