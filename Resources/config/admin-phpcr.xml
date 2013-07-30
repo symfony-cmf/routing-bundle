@@ -25,11 +25,11 @@
             </call>
 
             <call method="setContentRoot">
-                <argument>%cmf_routing.persistence.phpcr.content_basepath%</argument>
+                <argument>%cmf_routing.dynamic.persistence.phpcr.content_basepath%</argument>
             </call>
 
             <call method="setRouteRoot">
-                <argument>%cmf_routing.persistence.phpcr.route_basepath%</argument>
+                <argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument>
             </call>
             <call method="setControllerResolver">
                 <argument type="service" id="controller_resolver" />
@@ -47,7 +47,7 @@
             </call>
 
             <call method="setRouteRoot">
-                <argument>%cmf_routing.persistence.phpcr.route_basepath%</argument>
+                <argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument>
             </call>
         </service>
 
