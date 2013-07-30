@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute as RedirectRouteModel;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
  * {@inheritDoc}

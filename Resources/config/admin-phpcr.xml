@@ -9,6 +9,7 @@
         <parameter key="cmf_routing.redirect_route_admin_class">Symfony\Cmf\Bundle\RoutingBundle\Admin\RedirectRouteAdmin</parameter>
         <parameter key="cmf_routing.route_document_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route</parameter>
         <parameter key="cmf_routing.redirect_route_document_class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute</parameter>
+        <parameter key="cmf_routing.admin_extension.route_referrers.class">Symfony\Cmf\Bundle\RoutingBundle\Admin\Extension\RouteReferrersExtension</parameter>
     </parameters>
 
     <services>
@@ -48,6 +49,10 @@
             <call method="setRouteRoot">
                 <argument>%cmf_routing.persistence.phpcr.route_basepath%</argument>
             </call>
+        </service>
+
+        <service id="cmf_routing.admin_extension.route_referrers" class="%cmf_routing.admin_extension.route_referrers.class%">
+            <tag name="sonata.admin.extension"/>
         </service>
 
     </services>

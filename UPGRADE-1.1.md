@@ -1,7 +1,7 @@
 UPGRADE FROM 1.0 TO 1.1
 =======================
 
-Deprecated `RoutingBundle\Document\Route` and `RedirectRoute` in favor of
+Removed `RoutingBundle\Document\Route` and `RedirectRoute` in favor of
 `RoutingBundle\Doctrine\Phpcr\Route` resp. `RedirectRoute`.
 
 PHPCR specific configurations moved into
@@ -20,5 +20,5 @@ You need to at least set `persistence.phpcr.enabled: true` to have the PHPCR pro
 
 Dropped redundant unused `routing_repositoryroot` configuration.
 
-Deprecated the setRouteContent and getRouteContent methods. Use setContent and
+Removed the setRouteContent and getRouteContent methods. Use setContent and
 getContent instead.

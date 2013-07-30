@@ -10,7 +10,7 @@ cmf_routing:
         controllers_by_class:
             Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute:  cmf_routing.redirect_controller:redirectAction
         templates_by_class:
-            Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Testdoc\Content: TestBundle:Content:index.html.twig
+            Symfony\Cmf\Component\Testing\Document\Content: TestBundle:Content:index.html.twig
         persistence:
             phpcr:
                 enabled: true
