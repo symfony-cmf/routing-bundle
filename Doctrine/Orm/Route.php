@@ -24,24 +24,4 @@ class Route extends RouteModel
      * {@inheritDoc}
      */
     protected $addTrailingSlash;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $host;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $defaults;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $requirements;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $options;
 }

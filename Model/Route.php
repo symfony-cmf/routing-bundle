@@ -259,16 +259,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return parent::compile();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * Required by orm
-     */
-    public function getDefaults()
-    {
-        return $this->defaults;
-    }
-
     public function __toString()
     {
         return (string) $this->id;

@@ -10,15 +10,8 @@
 
         <field name="name" type="string" unique="true"/>
         <field name="staticPrefix" type="string"/>
-
         <field name="position" type="integer"/>
-
         <field name="addTrailingSlash" type="boolean"/>
-
-        <field name="host" type="string"/>
-        <field name="defaults" type="array"/>
-        <field name="requirements" type="array"/>
-        <field name="options" type="array"/>
 
         <indexes>
             <index name="name_idx" columns="name"/>

@@ -40,6 +40,7 @@ class CmfRoutingBundle extends Bundle
         }
 
         if (class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
+            $container->addCompilerPass($this->buildBaseOrmCompilerPass());
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver(
                     array(
@@ -51,6 +52,20 @@ class CmfRoutingBundle extends Bundle
                 )
             );
         }
+    }
+
+    private function buildBaseOrmCompilerPass()
+    {
+        $arguments = array(array(realpath(__DIR__ . '/Resources/config/doctrine-base')), '.orm.xml');
+        $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\DefaultFileLocator', $arguments);
+        $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', array($locator));
+
+        return new DoctrineOrmMappingsPass(
+            $driver,
+            array('Symfony\Component\Routing'),
+            array('cmf_routing.dynamic.persistence.orm.manager_name'),
+            'cmf_routing.persistence.orm.enabled'
+        );
     }
 
     /**
