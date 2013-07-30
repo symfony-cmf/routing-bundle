@@ -40,6 +40,7 @@ abstract class DoctrineProvider
     public function __construct(ManagerRegistry $managerRegistry, $className = null)
     {
         $this->managerRegistry = $managerRegistry;
+        $this->className = $className;
     }
 
     /**
