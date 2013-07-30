@@ -5,8 +5,9 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Cmf\Component\Testing\Functional\BaseTestCase ;
 
-class BaseTestCase extends WebTestCase
+class BaseTestCase extends BaseTestCase
 {
     /**
      * @var \Doctrine\ODM\PHPCR\DocumentManager
