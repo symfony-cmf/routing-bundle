@@ -45,7 +45,9 @@ class CmfRoutingBundle extends Bundle
                     array(
                         realpath(__DIR__ . '/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
                         realpath(__DIR__ . '/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
-                    )
+                    ),
+                    array('cmf_routing.dynamic.persistence.orm.manager_name'),
+                    'cmf_routing.persistence.orm.enabled'
                 )
             );
         }

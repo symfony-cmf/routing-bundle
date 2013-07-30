@@ -180,6 +180,7 @@ class CmfRoutingExtension extends Extension
     public function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
         $container->setParameter($this->getAlias() . '.persistence.orm.manager_name', $config['manager_name']);
+        $container->setParameter($this->getAlias() . '.persistence.orm.enabled', $config['enabled']);
         $loader->load('provider_orm.xml');
     }
 
