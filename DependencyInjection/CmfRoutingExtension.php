@@ -148,10 +148,10 @@ class CmfRoutingExtension extends Extension
 
         $container->setParameter($this->getAlias() . '.backend_type_phpcr', true);
 
-        $container->setParameter($this->getAlias() . '.persistence.phpcr.route_basepath', $config['route_basepath']);
-        $container->setParameter($this->getAlias() . '.persistence.phpcr.content_basepath', $config['content_basepath']);
+        $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.route_basepath', $config['route_basepath']);
+        $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.content_basepath', $config['content_basepath']);
 
-        $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
+        $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.manager_name', $config['manager_name']);
 
         $container->setAlias($this->getAlias() . '.route_provider', $this->getAlias() . '.phpcr_route_provider');
         $container->setAlias($this->getAlias() . '.content_repository', $this->getAlias() . '.phpcr_content_repository');
@@ -179,8 +179,8 @@ class CmfRoutingExtension extends Extension
 
     public function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
-        $container->setParameter($this->getAlias() . '.persistence.orm.manager_name', $config['manager_name']);
-        $container->setParameter($this->getAlias() . '.persistence.orm.enabled', $config['enabled']);
+        $container->setParameter($this->getAlias() . '.dynamic.persistence.orm.manager_name', $config['manager_name']);
+        $container->setParameter($this->getAlias() . '.backend_type_orm', true);
         $loader->load('provider_orm.xml');
     }
 

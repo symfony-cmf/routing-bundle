@@ -9,14 +9,7 @@
         </id>
 
         <field name="name" type="string" unique="true"/>
-        <field name="staticPrefix" type="string"/>
         <field name="position" type="integer"/>
-        <field name="addTrailingSlash" type="boolean"/>
-
-        <indexes>
-            <index name="name_idx" columns="name"/>
-            <index name="prefix_idx" columns="staticPrefix"/>
-        </indexes>
 
     </entity>
 

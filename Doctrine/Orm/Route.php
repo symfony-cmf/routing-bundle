@@ -19,9 +19,4 @@ class Route extends RouteModel
      * {@inheritDoc}
      */
     protected $position;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $addTrailingSlash;
 }

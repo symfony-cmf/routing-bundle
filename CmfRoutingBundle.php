@@ -3,7 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -34,12 +34,13 @@ class CmfRoutingBundle extends Bundle
                         realpath(__DIR__ . '/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
                         realpath(__DIR__ . '/Resources/config/doctrine-phpcr') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr',
                     ),
-                    array('cmf_routing.manager_name')
+                    array('cmf_routing.dynamic.persistence.phpcr.manager_name'),
+                    'cmf_routing.backend_type_phpcr'
                 )
             );
         }
 
-        if (class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
+        if (class_exists('Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
             $container->addCompilerPass($this->buildBaseOrmCompilerPass());
             $container->addCompilerPass(
                 DoctrineOrmMappingsPass::createXmlMappingDriver(
@@ -48,7 +49,7 @@ class CmfRoutingBundle extends Bundle
                         realpath(__DIR__ . '/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
                     ),
                     array('cmf_routing.dynamic.persistence.orm.manager_name'),
-                    'cmf_routing.persistence.orm.enabled'
+                    'cmf_routing.backend_type_orm'
                 )
             );
         }
@@ -64,7 +65,7 @@ class CmfRoutingBundle extends Bundle
             $driver,
             array('Symfony\Component\Routing'),
             array('cmf_routing.dynamic.persistence.orm.manager_name'),
-            'cmf_routing.persistence.orm.enabled'
+            'cmf_routing.backend_type_orm'
         );
     }
 
@@ -84,7 +85,7 @@ class CmfRoutingBundle extends Bundle
         return new DoctrinePhpcrMappingsPass(
             $driver,
             array('Symfony\Component\Routing'),
-            array('cmf_routing.manager_name'),
+            array('cmf_routing.dynamic.persistence.phpcr.manager_name'),
             'cmf_routing.backend_type_phpcr'
         );
     }
