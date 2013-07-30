@@ -2,8 +2,11 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm;
 
+use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
+
 /**
- * Abstract content repository for PHPCR-ODM
+ * Abstract content repository for ORM
  *
  * @author teito
  */
@@ -46,6 +49,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
             if (0 !== count($ids)) {
                 throw new \Exception('Multi identifier values not supported in ' . get_class($content));
             }
+
             return implode(':', array(
                 get_class($content),
                 reset($ids)

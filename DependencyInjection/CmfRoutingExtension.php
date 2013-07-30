@@ -93,6 +93,12 @@ class CmfRoutingExtension extends Extension
             $hasProvider = true;
             $hasContentRepository = true;
         }
+
+        if (!empty($config['persistence']['orm']['enabled'])) {
+            $this->loadOrmProvider($config['persistence']['orm'], $loader, $container);
+            $hasProvider = true;
+        }
+
         if (isset($config['route_provider_service_id'])) {
             $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
             $hasProvider = true;
@@ -169,6 +175,12 @@ class CmfRoutingExtension extends Extension
         }
 
         $loader->load('admin_phpcr.xml');
+    }
+
+    public function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        $container->setParameter($this->getAlias() . '.manager_name', $config['manager_name']);
+        $loader->load('provider_orm.xml');
     }
 
     /**
