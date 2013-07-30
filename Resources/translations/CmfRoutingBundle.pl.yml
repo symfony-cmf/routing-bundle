@@ -30,3 +30,5 @@ form:
     label_route_name: Nazwa
     label_uri: URI
     label_route_target: Ścieżka wkazuje na
+    group_routes: Ścieżki
+    label_routes: Ścieżki
