@@ -47,7 +47,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteByName($name, $parameters = array())
     {
-        $route = $this->getRoutesRepository()->findOneByName($name);
+        $route = $this->getRoutesRepository()->findBy(array('name' => $name));
         if (!$route) {
             throw new RouteNotFoundException("No route found for name '$name'");
         }
