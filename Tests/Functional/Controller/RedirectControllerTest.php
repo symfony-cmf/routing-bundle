@@ -3,13 +3,15 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Controller;
 
 use PHPCR\Util\PathHelper;
-use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
+use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Cmf\Component\Testing\Document\Content;
+use PHPCR\Util\NodeHelper;
 
 class RedirectControllerTest extends BaseTestCase
 {
@@ -18,32 +20,36 @@ class RedirectControllerTest extends BaseTestCase
     /**
      * @var \Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController
      */
-    protected static $controller;
+    protected $controller;
 
-    public static function setupBeforeClass(array $options = array(), $routebase = null)
+    public function setUp()
     {
-        parent::setupBeforeClass(array(), PathHelper::getNodeName(self::ROUTE_ROOT));
-        $router = self::$kernel->getContainer()->get('router');
-        self::$controller = new RedirectController($router);
+        parent::setUp();
+        $this->db('PHPCR')->createTestNode();
+        $this->db('PHPCR')->createPath(self::ROUTE_ROOT);
+        $this->dm = $this->db('PHPCR')->getOm();
+
+        $router = $this->getContainer()->get('router');
+        $this->controller = new RedirectController($router);
     }
 
     public function testRedirectUri()
     {
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->dm->find(null, self::ROUTE_ROOT);
 
         $redirect = new RedirectRoute;
         $redirect->setPosition($root, 'redirectUri');
         $redirect->setUri('http://example.com/test-url');
         $redirect->setParameters(array('test' => 7)); // parameters should be ignored in this case
         $redirect->setPermanent(true);
-        self::$dm->persist($redirect);
+        $this->dm->persist($redirect);
 
-        self::$dm->flush();
+        $this->dm->flush();
 
-        self::$dm->clear();
+        $this->dm->clear();
 
-        $redirect = self::$dm->find(null, self::ROUTE_ROOT.'/redirectUri');
-        $response = self::$controller->redirectAction($redirect);
+        $redirect = $this->dm->find(null, self::ROUTE_ROOT.'/redirectUri');
+        $response = $this->controller->redirectAction($redirect);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
         $this->assertSame(301, $response->getStatusCode());
@@ -52,25 +58,31 @@ class RedirectControllerTest extends BaseTestCase
 
     public function testRedirectContent()
     {
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->dm->find(null, self::ROUTE_ROOT);
+
+        $content = new Content;
+        $content->setId('/test/content');
+        $content->setTitle('Foo Content');
+        $this->dm->persist($content);
+        $this->dm->flush();
 
         $route = new Route;
-        $route->setContent($root); // this happens to be a referenceable node
+        $route->setContent($content);
         $route->setPosition($root, 'testroute');
-        self::$dm->persist($route);
+        $this->dm->persist($route);
 
         $redirect = new RedirectRoute;
         $redirect->setPosition($root, 'redirectContent');
         $redirect->setRouteTarget($route);
         $redirect->setParameters(array('test' => 'content'));
-        self::$dm->persist($redirect);
+        $this->dm->persist($redirect);
 
-        self::$dm->flush();
+        $this->dm->flush();
 
-        self::$dm->clear();
+        $this->dm->clear();
 
-        $redirect = self::$dm->find(null, self::ROUTE_ROOT.'/redirectContent');
-        $response = self::$controller->redirectAction($redirect);
+        $redirect = $this->dm->find(null, self::ROUTE_ROOT.'/redirectContent');
+        $response = $this->controller->redirectAction($redirect);
 
         $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $response);
         $this->assertSame(302, $response->getStatusCode());
@@ -79,21 +91,20 @@ class RedirectControllerTest extends BaseTestCase
 
     public function testRedirectName()
     {
-        $root = self::$dm->find(null, self::ROUTE_ROOT);
+        $root = $this->dm->find(null, self::ROUTE_ROOT);
 
         $redirect = new RedirectRoute;
         $redirect->setPosition($root, 'redirectName');
         $redirect->setRouteName('symfony_route');
         $redirect->setParameters(array('param'=>7)); // parameters should be ignored in this case
-        self::$dm->persist($redirect);
+        $this->dm->persist($redirect);
 
-        self::$dm->flush();
+        $this->dm->flush();
 
-        self::$dm->clear();
+        $this->dm->clear();
 
-        $redirect = self::$dm->find(null, self::ROUTE_ROOT.'/redirectName');
-        $response = self::$controller->redirectAction($redirect);
-
+        $redirect = $this->dm->find(null, self::ROUTE_ROOT.'/redirectName');
+        $response = $this->controller->redirectAction($redirect);
         $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $response);
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://localhost/symfony_route_test?param=7', $response->getTargetUrl());
