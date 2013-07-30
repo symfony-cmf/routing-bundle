@@ -18,7 +18,7 @@
         <service id="cmf_routing.route_provider" class="%cmf_routing.route_entity_provider%">
             <argument type="service" id="doctrine"/>
             <argument>%cmf_routing.route_entity_class%</argument>
-            <call method="setManagerName"><argument>%cmf_routing.manager_name%</argument></call>
+            <call method="setManagerName"><argument>%cmf_routing.persistence.orm.manager_name%</argument></call>
         </service>
     </services>
 </container>
