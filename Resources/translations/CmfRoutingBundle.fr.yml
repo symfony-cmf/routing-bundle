@@ -29,3 +29,5 @@ form:
     label_route_name: Nom
     label_uri: URI
     label_route_target: Route objectif
+    group_routes: Routes
+    label_routes: Routes
