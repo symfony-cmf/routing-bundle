@@ -34,7 +34,7 @@ class CmfRoutingExtension extends Extension
         }
 
         /* set up the chain router */
-        $loader->load('chain_routing.xml');
+        $loader->load('routing-chain.xml');
         $container->setParameter($this->getAlias() . '.replace_symfony_router', $config['chain']['replace_symfony_router']);
 
         // add the routers defined in the configuration mapping
@@ -48,7 +48,7 @@ class CmfRoutingExtension extends Extension
 
     public function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
-        $loader->load('form_type.xml');
+        $loader->load('form-type.xml');
 
         if (isset($config['dynamic'])) {
             $routeTypeTypeDefinition = $container->getDefinition('cmf_routing.route_type_form_type');
@@ -84,7 +84,7 @@ class CmfRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.defined_templates_class', $controllerForTemplates);
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
 
-        $loader->load('dynamic_routing.xml');
+        $loader->load('routing-dynamic.xml');
 
         $hasProvider = false;
         $hasContentRepository = false;
@@ -138,7 +138,7 @@ class CmfRoutingExtension extends Extension
 
     public function loadPhpcrProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
-        $loader->load('provider_phpcr.xml');
+        $loader->load('provider-phpcr.xml');
 
         $container->setParameter($this->getAlias() . '.backend_type_phpcr', true);
 
@@ -168,7 +168,7 @@ class CmfRoutingExtension extends Extension
             return;
         }
 
-        $loader->load('admin_phpcr.xml');
+        $loader->load('admin-phpcr.xml');
     }
 
     /**
