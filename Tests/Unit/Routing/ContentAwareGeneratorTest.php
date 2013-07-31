@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Routing;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 
