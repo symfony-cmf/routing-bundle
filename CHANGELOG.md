@@ -1,6 +1,7 @@
 Changelog
 =========
 
+* **2013-07-31**: [EventDispatcher] Added events to the dynamic router at the start of match and matchRequest
 * **2013-07-29**: [DependencyInjection] restructured `phpcr_provider` config into `persistence` -> `phpcr` to match other Bundles
 * **2013-07-28**: [DependencyInjection] added `enabled` flag to `phpcr_provider` config
 * **2013-07-26**: [Model] Removed setRouteContent and getRouteContent, use setContent and getContent instead.

@@ -55,6 +55,7 @@
             <argument type="service" id="cmf_routing.nested_matcher" />
             <argument type="service" id="cmf_routing.generator" />
             <argument>%cmf_routing.uri_filter_regexp%</argument>
+            <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
             <call method="setContainer"><argument type="service" id="service_container"/></call>
             <call method="addRouteEnhancer"><argument type="service" id="cmf_routing.enhancer_route_content"/></call>
         </service>
