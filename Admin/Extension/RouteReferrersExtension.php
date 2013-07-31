@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 /**
  * Admin extension to add routes tab to content implementing the
- * RouteReferrersWriteInterface.
+ * RouteReferrersInterface.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */

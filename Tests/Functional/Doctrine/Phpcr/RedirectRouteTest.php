@@ -54,7 +54,7 @@ class RedirectRouteTest extends BaseTestCase
      */
     public function testSetContent()
     {
-        $content = $this->getMock('Symfony\\Cmf\\Component\\Routing\\RouteReferrersInterface');
+        $content = $this->getMock('Symfony\\Cmf\\Component\\Routing\\RouteReferrersReadInterface');
         $redirect = new RedirectRoute;
         $redirect->setContent($content);
     }
