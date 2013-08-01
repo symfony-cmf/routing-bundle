@@ -58,21 +58,27 @@ class CmfRoutingBundle extends Bundle
     }
 
     /**
-     * Searches a mapping compiler: try cmf CoreBundle first and fallback on DoctrineBundle.
+     * Searches a mapping compiler (doctrine bridge compiler is missing in symfony < 2.3).
+     * Use Cmf\CoreBundle in that case.
      */
     private function findDoctrineOrmCompiler()
     {
-        if (class_exists('Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
-            return 'Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
+        $symfonyVersion = class_exists('Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass');
+
+        if (symfonyVersion && class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
+            return 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
         }
 
-        if (class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
-            return 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
+        if (class_exists('Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
+            return 'Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
         }
 
         return false;
     }
 
+    /**
+     * Instantiate compiler now because of SymfonyFileLocator namespace issue (see phpcr method comment).
+     */
     private function buildBaseOrmCompilerPass($doctrineOrmCompiler)
     {
         $arguments = array(array(realpath(__DIR__ . '/Resources/config/doctrine-base')), '.orm.xml');
