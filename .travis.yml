@@ -11,6 +11,7 @@ env:
   - SYMFONY_VERSION=dev-master
 
 before_script:
+  - composer self-update
   - composer require symfony/framework-bundle:${SYMFONY_VERSION} --prefer-source
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
