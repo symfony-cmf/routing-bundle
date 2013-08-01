@@ -15,3 +15,6 @@ cmf_routing:
             phpcr:
                 enabled: true
                 route_basepath: /test/routing
+        locales:
+            - en
+            - de
