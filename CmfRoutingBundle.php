@@ -40,10 +40,12 @@ class CmfRoutingBundle extends Bundle
             );
         }
 
-        if (class_exists('Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
-            $container->addCompilerPass($this->buildBaseOrmCompilerPass());
+        $doctrineOrmCompiler = $this->findDoctrineOrmCompiler();
+
+        if ($doctrineOrmCompiler) {
+            $container->addCompilerPass($this->buildBaseOrmCompilerPass($doctrineOrmCompiler));
             $container->addCompilerPass(
-                DoctrineOrmMappingsPass::createXmlMappingDriver(
+                $doctrineOrmCompiler::createXmlMappingDriver(
                     array(
                         realpath(__DIR__ . '/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
                         realpath(__DIR__ . '/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
@@ -55,13 +57,35 @@ class CmfRoutingBundle extends Bundle
         }
     }
 
-    private function buildBaseOrmCompilerPass()
+    /**
+     * Searches a mapping compiler (doctrine bridge compiler is missing in symfony < 2.3).
+     * Use Cmf\CoreBundle in that case.
+     */
+    private function findDoctrineOrmCompiler()
+    {
+        $symfonyVersion = class_exists('Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass');
+
+        if ($symfonyVersion && class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
+            return 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
+        }
+
+        if (class_exists('Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
+            return 'Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
+        }
+
+        return false;
+    }
+
+    /**
+     * Instantiate compiler now because of SymfonyFileLocator namespace issue (see phpcr method comment).
+     */
+    private function buildBaseOrmCompilerPass($doctrineOrmCompiler)
     {
         $arguments = array(array(realpath(__DIR__ . '/Resources/config/doctrine-base')), '.orm.xml');
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\DefaultFileLocator', $arguments);
         $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', array($locator));
 
-        return new DoctrineOrmMappingsPass(
+        return new $doctrineOrmCompiler(
             $driver,
             array('Symfony\Component\Routing'),
             array('cmf_routing.dynamic.persistence.orm.manager_name'),
