@@ -62,7 +62,7 @@ class CmfRoutingBundle extends Bundle
      */
     private function findDoctrineOrmCompiler()
     {
-        if ($this->symfonyVersion()) {
+        if ($this->requiredClassesDoesExists()) {
             return 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
         }
 
@@ -73,7 +73,7 @@ class CmfRoutingBundle extends Bundle
         return false;
     }
 
-    private function symfonyVersion()
+    private function requiredClassesDoesExists()
     {
         $symfonyVersion = class_exists('Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass');
         $doctrineVersion = class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass');
@@ -93,7 +93,7 @@ class CmfRoutingBundle extends Bundle
         /**
          * if we got here a compiler has been found so this test is enough
          */
-        if ($this->symfonyVersion()) {
+        if ($this->requiredClassesDoesExists()) {
             return new $doctrineOrmCompiler(
                 $driver,
                 array('Symfony\Component\Routing'),
