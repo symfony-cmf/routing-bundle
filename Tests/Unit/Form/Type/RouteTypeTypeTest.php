@@ -44,4 +44,3 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
         $this->type->setDefaultOptions($this->ori);
     }
 }
-

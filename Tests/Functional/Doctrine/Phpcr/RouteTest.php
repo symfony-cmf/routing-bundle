@@ -3,7 +3,6 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
-use PHPCR\Util\PathHelper;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 

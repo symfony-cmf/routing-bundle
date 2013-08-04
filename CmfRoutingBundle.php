@@ -115,7 +115,6 @@ class CmfRoutingBundle extends Bundle
         return false;
     }
 
-
     /**
      * Builds the compiler pass for the symfony core routing component. The
      * compiler pass factory method uses the SymfonyFileLocator which does

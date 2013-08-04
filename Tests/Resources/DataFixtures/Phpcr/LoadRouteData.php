@@ -39,4 +39,3 @@ class LoadRouteData implements FixtureInterface, DependentFixtureInterface
         $manager->flush();
     }
 }
-

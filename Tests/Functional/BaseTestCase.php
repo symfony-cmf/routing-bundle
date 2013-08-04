@@ -4,7 +4,6 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
 use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Component\Testing\Document\Content;
@@ -14,6 +13,7 @@ class BaseTestCase extends ComponentBaseTestCase
     protected function getDm()
     {
         $dm = $this->db('PHPCR')->getOm();
+
         return $dm;
     }
 

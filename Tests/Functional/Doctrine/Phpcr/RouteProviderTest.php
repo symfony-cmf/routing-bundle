@@ -3,7 +3,6 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
-use PHPCR\Util\PathHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;

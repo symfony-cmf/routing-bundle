@@ -4,7 +4,6 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class RouteTypeType extends AbstractType
 {
@@ -50,4 +49,3 @@ class RouteTypeType extends AbstractType
         return 'cmf_routing_route_type';
     }
 }
-

@@ -2,7 +2,6 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Routing;
 
-use PHPCR\Util\PathHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;

@@ -57,4 +57,3 @@ class RouteAdminTest extends BaseTestCase
         $this->assertEquals(302, $res->getStatusCode());
     }
 }
-

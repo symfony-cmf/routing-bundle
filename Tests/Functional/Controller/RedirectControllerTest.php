@@ -2,15 +2,12 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Controller;
 
-use PHPCR\Util\PathHelper;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
-use PHPCR\Util\NodeHelper;
 
 class RedirectControllerTest extends BaseTestCase
 {
