@@ -83,13 +83,18 @@ class CmfRoutingExtension extends Extension
         }
         $container->setParameter($this->getAlias() . '.defined_templates_class', $controllerForTemplates);
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
+        $locales = false;
+        if (isset($config['locales'])) {
+            $locales = $config['locales'];
+            $container->setParameter($this->getAlias() . '.dynamic.locales', $locales);
+        }
 
         $loader->load('routing-dynamic.xml');
 
         $hasProvider = false;
         $hasContentRepository = false;
         if (!empty($config['persistence']['phpcr']['enabled'])) {
-            $this->loadPhpcrProvider($config['persistence']['phpcr'], $loader, $container);
+            $this->loadPhpcrProvider($config['persistence']['phpcr'], $loader, $container, $locales);
             $hasProvider = true;
             $hasContentRepository = true;
         }
@@ -142,7 +147,7 @@ class CmfRoutingExtension extends Extension
         }
     }
 
-    public function loadPhpcrProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
+    public function loadPhpcrProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $locales)
     {
         $loader->load('provider-phpcr.xml');
 
@@ -156,9 +161,7 @@ class CmfRoutingExtension extends Extension
         $container->setAlias($this->getAlias() . '.route_provider', $this->getAlias() . '.phpcr_route_provider');
         $container->setAlias($this->getAlias() . '.content_repository', $this->getAlias() . '.phpcr_content_repository');
 
-        if (isset($config['locales']) && $config['locales']) {
-            $container->setParameter($this->getAlias() . '.locales', $config['locales']);
-        } else {
+        if (!$locales) {
             $container->removeDefinition('cmf_routing.phpcrodm_route_locale_listener');
         }
 
