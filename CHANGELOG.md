@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.0.0-RC2
+---------
+
+* **2013-08-04**: [PHPCR-ODM] Fixed the configuration of the LocaleListener to
+  make routes again automatically provide the _locale based on their repository
+  path if the bundle is configured with locales.
+* **2013-08-04**: [Bundle] Only build the compiler passes for ORM and PHPCR-ODM
+  if all required repositories are present.
+
 1.0.0-RC1
 ---------
 
