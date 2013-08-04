@@ -32,7 +32,7 @@
 
         <service id="cmf_routing.phpcrodm_route_locale_listener" class="%cmf_routing.phpcrodm_route_locale_listener_class%">
             <argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument>
-            <argument>%cmf_routing.locales%</argument>
+            <argument>%cmf_routing.dynamic.locales%</argument>
             <tag name="doctrine_phpcr.event_listener" event="postLoad" />
             <tag name="doctrine_phpcr.event_listener" event="postPersist" />
             <tag name="doctrine_phpcr.event_listener" event="postMove" />

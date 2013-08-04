@@ -163,6 +163,49 @@ class DynamicRouterTest extends BaseTestCase
         $this->router->matchRequest(Request::create('/format/48.xml'));
     }
 
+    public function testMatchLocale()
+    {
+        $route = new Route;
+        $route->setPosition($this->getDm()->find(null, self::ROUTE_ROOT), 'de');
+        $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
+        $this->getDm()->persist($route);
+        $childroute = new Route;
+        $childroute->setPosition($route, 'testroute');
+        $this->getDm()->persist($childroute);
+        $nolocale = new Route;
+        $nolocale->setPosition($this->getDm()->find(null, self::ROUTE_ROOT), 'es');
+        $nolocale->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
+        $this->getDm()->persist($nolocale);
+        $this->getDm()->flush();
+
+        $expected = array(
+            '_controller' => 'testController',
+            '_locale' => 'de',
+            '_route' => self::ROUTE_ROOT . '/de'
+        );
+        $this->assertEquals(
+            $expected,
+            $this->router->match('/de')
+        );
+        $expected = array(
+            '_locale' => 'de',
+            '_route' => self::ROUTE_ROOT . '/de/testroute'
+        );
+        $this->assertEquals(
+            $expected,
+            $this->router->match('/de/testroute')
+        );
+        // es is not a configured locale
+        $expected = array(
+            '_controller' => 'testController',
+            '_route' => self::ROUTE_ROOT . '/es'
+        );
+        $this->assertEquals(
+            $expected,
+            $this->router->match('/es')
+        );
+    }
+
     public function testEnhanceControllerByAlias()
     {
         // put a redirect route
