@@ -41,7 +41,6 @@ class CmfRoutingBundle extends Bundle
         }
 
         $doctrineOrmCompiler = $this->findDoctrineOrmCompiler();
-
         if ($doctrineOrmCompiler) {
             $container->addCompilerPass($this->buildBaseOrmCompilerPass($doctrineOrmCompiler));
             $container->addCompilerPass(
@@ -63,9 +62,7 @@ class CmfRoutingBundle extends Bundle
      */
     private function findDoctrineOrmCompiler()
     {
-        $symfonyVersion = class_exists('Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass');
-
-        if ($symfonyVersion && class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
+        if ($this->requiredClassesDoesExists()) {
             return 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
         }
 
@@ -74,6 +71,14 @@ class CmfRoutingBundle extends Bundle
         }
 
         return false;
+    }
+
+    private function requiredClassesDoesExists()
+    {
+        $symfonyVersion = class_exists('Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass');
+        $doctrineVersion = class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass');
+
+        return ( $symfonyVersion && $doctrineVersion );
     }
 
     /**
@@ -85,12 +90,25 @@ class CmfRoutingBundle extends Bundle
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\DefaultFileLocator', $arguments);
         $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', array($locator));
 
-        return new $doctrineOrmCompiler(
-            $driver,
-            array('Symfony\Component\Routing'),
-            array('cmf_routing.dynamic.persistence.orm.manager_name'),
-            'cmf_routing.backend_type_orm'
-        );
+        /**
+         * if we got here a compiler has been found so this test is enough
+         */
+        if ($this->requiredClassesDoesExists()) {
+            return new $doctrineOrmCompiler(
+                $driver,
+                array('Symfony\Component\Routing'),
+                array('cmf_routing.dynamic.persistence.orm.manager_name'),
+                'cmf_routing.backend_type_orm'
+            );
+        } else {
+            return new $doctrineOrmCompiler(
+                $driver,
+                array('Symfony\Component\Routing'),
+                array('cmf_routing.dynamic.persistence.orm.manager_name'),
+                'doctrine.orm.%s_metadata_driver',
+                'cmf_routing.backend_type_orm'
+            );
+        }
     }
 
     /**
