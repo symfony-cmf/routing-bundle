@@ -50,9 +50,9 @@
         <source>filter.label_name</source>
         <target>Nom</target>
       </trans-unit>
-      <trans-unit id="list.label_path">
-        <source>list.label_path</source>
-        <target>Chemin</target>
+      <trans-unit id="list.label_id">
+        <source>list.label_id</source>
+        <target>Id</target>
       </trans-unit>
       <trans-unit id="form.group_general">
         <source>form.group_general</source>
@@ -70,8 +70,8 @@
         <source>form.label_variable_pattern</source>
         <target>Motif variable</target>
       </trans-unit>
-      <trans-unit id="form.label_route_content">
-        <source>form.label_route_content</source>
+      <trans-unit id="form.label_content">
+        <source>form.label_content</source>
         <target>Contenu</target>
       </trans-unit>
       <trans-unit id="form.label_defaults">

@@ -50,10 +50,6 @@
         <source>filter.label_name</source>
         <target>Nazwa</target>
       </trans-unit>
-      <trans-unit id="list.label_path">
-        <source>list.label_path</source>
-        <target>Ścieżka</target>
-      </trans-unit>
       <trans-unit id="list.label_id">
         <source>list.label_id</source>
         <target>Ścieżka</target>
@@ -74,8 +70,8 @@
         <source>form.label_variable_pattern</source>
         <target>Wzór zmiennych</target>
       </trans-unit>
-      <trans-unit id="form.label_route_content">
-        <source>form.label_route_content</source>
+      <trans-unit id="form.label_content">
+        <source>form.label_content</source>
         <target>Zawartość</target>
       </trans-unit>
       <trans-unit id="form.label_defaults">

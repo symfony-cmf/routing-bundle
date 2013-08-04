@@ -35,6 +35,11 @@ class RouteAdminTest extends BaseTestCase
     public function testCorrectControllerPath()
     {
         $route = new Route('/', array('_controller' => 'FrameworkBundle:Redirect:redirect'));
+
+        $this->errorElement->expects($this->never())
+            ->method('with')
+        ;
+
         $this->routeAdmin->validate($this->errorElement, $route);
     }
 
@@ -74,7 +79,13 @@ class RouteAdminTest extends BaseTestCase
 
     public function testCorrectTemplate()
     {
-        $route = new Route('/', array('_template' => 'TwigBundle::layout.html.twig'));
+        // the template 'TwigBundle::layout.html.twig' is not found in the test setup...
+        $mockTemplate = $this->getMockBuilder('Twig_Template')->disableOriginalConstructor()->getMockForAbstractClass();
+        $route = new Route('/', array('_template' => $mockTemplate));
+        $this->errorElement->expects($this->never())
+            ->method('with')
+        ;
+
         $this->routeAdmin->validate($this->errorElement, $route);
     }
 }
