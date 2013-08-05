@@ -2,7 +2,6 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**

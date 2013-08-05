@@ -38,8 +38,6 @@ class RedirectRouteAdmin extends Admin
     {
         $formMapper
             ->with('form.group_general')
-                // TODO: show resulting url; strip /cms/routes and prepend eventual route prefix
-                // ->add('path', 'text', array('label' => 'URL', 'attr' => array('readonly' => 'readonly')))
                 ->add('parent', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
                 ->add('name', 'text')
                 ->add('routeName', 'text', array('required' => false))

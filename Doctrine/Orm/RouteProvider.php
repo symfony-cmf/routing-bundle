@@ -82,15 +82,14 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
                     $route->setDefault('_format', $matches[1]);
                 }
-                // SYMFONY 2.1 COMPATIBILITY: tweak route name
-                $key = trim(preg_replace('/[^a-z0-9A-Z_.]/', '_', $key), '_');
                 $collection->add($key, $route);
             }
         } catch (RepositoryException $e) {
-            // TODO: how to determine whether this is a relevant exception or not?
-            // for example, getting /my//test (note the double /) is just an invalid path
-            // and means another router might handle this.
-            // but if the PHPCR backend is down for example, we want to alert the user
+            // TODO: this is not an orm exception
+            // https://github.com/symfony-cmf/RoutingBundle/issues/142
+            // also check if there are valid reasons for the orm manager to
+            // throw an exception or if we should just not catch it to not hide
+            // a severe problem.
         }
 
         return $collection;

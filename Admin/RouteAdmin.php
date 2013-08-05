@@ -86,6 +86,7 @@ class RouteAdmin extends Admin
     public function setRouteRoot($routeRoot)
     {
         // TODO: fix widget to show root node when root is selectable
+        // https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/issues/148
         $this->routeRoot = PathHelper::getParentPath($routeRoot);
     }
 

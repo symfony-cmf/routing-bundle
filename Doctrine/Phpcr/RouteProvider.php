@@ -59,8 +59,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         try {
             $routes = $this->getObjectManager()->findMany($this->className, $candidates);
             // filter for valid route objects
-            // we can not search for a specific class as PHPCR does not know class inheritance
-            // but optionally we could define a node type
             foreach ($routes as $key => $route) {
                 if ($route instanceof SymfonyRoute) {
                     if (preg_match('/.+\.([a-z]+)$/i', $url, $matches)) {
@@ -75,6 +73,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             }
         } catch (RepositoryException $e) {
             // TODO: how to determine whether this is a relevant exception or not?
+            // https://github.com/symfony-cmf/RoutingBundle/issues/143
             // for example, getting /my//test (note the double /) is just an invalid path
             // and means another router might handle this.
             // but if the PHPCR backend is down for example, we want to alert the user
