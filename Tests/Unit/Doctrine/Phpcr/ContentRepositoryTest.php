@@ -14,8 +14,8 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
     public function setUp()
     {
-        $this->document = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument');
-        $this->document2 = $this->getMock('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument');
+        $this->document = new \stdClass;
+        $this->document2 = new \stdClass;
         $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->objectManager2 = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
@@ -23,15 +23,10 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
     public function testFindById()
     {
-        $this->document
-            ->expects($this->any())
-            ->method('getPath')
-            ->will($this->returnValue('/cms/my-document'))
-        ;
-
         $this->objectManager
             ->expects($this->any())
             ->method('find')
+            ->with(null, 'id-123')
             ->will($this->returnValue($this->document))
         ;
 
@@ -44,10 +39,7 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
         $contentRepository = new ContentRepository($this->managerRegistry);
         $contentRepository->setManagerName('default');
 
-        $foundDocument = $contentRepository->findById('id-123');
-
-        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument', $foundDocument);
-        $this->assertEquals('/cms/my-document', $foundDocument->getPath());
+        $this->assertSame($this->document, $contentRepository->findById('id-123'));
     }
 
     public function testGetContentId()
@@ -61,18 +53,6 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
      */
     public function testChangingDocumentManager()
     {
-        $this->document
-            ->expects($this->any())
-            ->method('getPath')
-            ->will($this->returnValue('/cms/my-document'))
-        ;
-
-        $this->document2
-            ->expects($this->any())
-            ->method('getPath')
-            ->will($this->returnValue('/cms/new-document'))
-        ;
-
         $this->objectManager
             ->expects($this->any())
             ->method('find')
@@ -105,23 +85,9 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
         $contentRepository = new ContentRepository($this->managerRegistry);
 
         $contentRepository->setManagerName('default');
-        $foundDocument = $contentRepository->findById('id-123');
-        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument', $foundDocument);
-        $this->assertEquals('/cms/my-document', $foundDocument->getPath());
+        $this->assertSame($this->document, $contentRepository->findById('id-123'));
 
         $contentRepository->setManagerName('new_manager');
-        $newFoundDocument = $contentRepository->findById('id-123');
-        $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr\TestDocument', $newFoundDocument);
-        $this->assertEquals('/cms/new-document', $newFoundDocument->getPath());
-    }
-}
-
-/**
- * Empty Document class for use with getMock()
- */
-class TestDocument
-{
-    public function getPath()
-    {
+        $this->assertSame($this->document2, $contentRepository->findById('id-123'));
     }
 }

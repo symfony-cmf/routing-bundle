@@ -21,6 +21,7 @@ class LocaleListenerTest extends CmfUnitTestCase
         $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route');
         $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
     }
+
     public function testMoved()
     {
         $moveArgs = new MoveEventArgs(
