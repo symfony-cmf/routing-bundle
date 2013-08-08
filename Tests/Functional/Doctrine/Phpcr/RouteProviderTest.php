@@ -49,10 +49,7 @@ class RouteRepositoryTest extends BaseTestCase
 
         $routes = $this->repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child'));
         $this->assertCount(3, $routes);
-
-        foreach ($routes as $route) {
-            $this->assertInstanceOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $route);
-        }
+        $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
     }
 
     public function testFindNophpcrUrl()
