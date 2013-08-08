@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest\Admin\MenuNodeAdminTest;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
@@ -14,7 +14,7 @@ class RouteAdminTest extends BaseTestCase
         $this->client = $this->createClient();
     }
 
-    public function testMenuList()
+    public function testRouteList()
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/list');
         $res = $this->client->getResponse();
@@ -22,7 +22,7 @@ class RouteAdminTest extends BaseTestCase
         $this->assertCount(1, $crawler->filter('html:contains("route-1")'));
     }
 
-    public function testMenuEdit()
+    public function testRouteEdit()
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/test/routing/route-1/edit');
         $res = $this->client->getResponse();
@@ -30,12 +30,12 @@ class RouteAdminTest extends BaseTestCase
         $this->assertCount(1, $crawler->filter('input[value="route-1"]'));
     }
 
-    public function testMenuShow()
+    public function testRouteShow()
     {
         $this->markTestSkipped('Not implemented yet.');
     }
 
-    public function testMenuCreate()
+    public function testRouteCreate()
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/create');
         $res = $this->client->getResponse();

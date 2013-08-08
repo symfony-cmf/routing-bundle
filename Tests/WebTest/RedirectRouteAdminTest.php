@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest\Admin\RedirectRouteNodeAdminTest;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
