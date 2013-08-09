@@ -28,7 +28,7 @@ class CmfRoutingExtension extends Extension
 
         $config = $processor->processConfiguration($configuration, $configs);
 
-        if (!empty($config['dynamic'])) {
+        if (!empty($config['dynamic']['enabled'])) {
             // load this even if no explicit enabled value but some configuration
             $this->setupDynamicRouter($config['dynamic'], $container, $loader);
         }
@@ -68,10 +68,6 @@ class CmfRoutingExtension extends Extension
      */
     private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
-        if (isset($config['enabled']) && false == $config['enabled']) {
-            // prevent wtf if somebody is playing around with configs
-            return;
-        }
         $container->setParameter($this->getAlias() . '.generic_controller', $config['generic_controller']);
         $container->setParameter($this->getAlias() . '.controllers_by_type', $config['controllers_by_type']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
