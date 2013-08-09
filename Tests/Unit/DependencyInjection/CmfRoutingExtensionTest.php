@@ -28,6 +28,7 @@ class CmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'dynamic' => array(
+                        'enabled' => true,
                         'persistence' => array(
                             'phpcr' => array(
                                 'enabled' => true,
@@ -79,6 +80,7 @@ class CmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
         $config = array(
             array(
                 'dynamic' => array(
+                    'enabled' => true,
                     'route_provider_service_id' => 'test_route_provider_service',
                     'content_repository_service_id' => 'test_content_repository_service',
                     'persistence' => array(
