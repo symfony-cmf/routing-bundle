@@ -26,6 +26,10 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
 
     /**
      * {@inheritDoc}
+     *
+     * @param string $id The ID contains both model name and id, seperated by a colon.
+     *     The model name must not contain a colon. For instance, "Acme\Content:12"
+     *     tries to find the Acme\Content object where id = 12
      */
     public function findById($id)
     {
