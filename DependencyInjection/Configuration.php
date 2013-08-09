@@ -45,7 +45,7 @@ class Configuration implements ConfigurationInterface
                     ->fixXmlConfig('locale')
                     ->children()
                         ->scalarNode('enabled')->defaultNull()->end()
-                        ->scalarNode('generic_controller')->defaultValue('cmf_content.controller:indexAction')->end()
+                        ->scalarNode('generic_controller')->defaultNull()->end()
                         ->arrayNode('controllers_by_type')
                             ->useAttributeAsKey('type')
                             ->prototype('scalar')->end()
