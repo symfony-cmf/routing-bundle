@@ -12,24 +12,24 @@ use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 class RedirectRoute extends Route implements RedirectRouteInterface
 {
     /**
-     * Absolute uri to redirect to
+     * Absolute uri to redirect to.
      */
     protected $uri;
 
     /**
-     * The name of a target route (for use with standard symfony routes)
+     * The name of a target route (for use with standard symfony routes).
      */
     protected $routeName;
 
     /**
-     * Target route document to redirect to different dynamic route
+     * Target route document to redirect to different dynamic route.
      */
     protected $routeTarget;
 
     /**
-     * Whether this is a permanent redirect
+     * Whether this is a permanent redirect. Defaults to false.
      */
-    protected $permanent;
+    protected $permanent = false;
 
     /**
      * @var array

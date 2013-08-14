@@ -6,10 +6,10 @@
 >
 
     <mapped-superclass name="Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute">
-        <field name="uri" type="uri"/>
-        <field name="routeName" type="string"/>
+        <field name="uri" type="uri" nullable="true"/>
+        <field name="routeName" type="string" nullable="true"/>
         <field name="permanent" type="boolean"/>
-        <field name="parameters" type="string" assoc=""/>
+        <field name="parameters" type="string" assoc="" nullable="true"/>
         <reference-one name="routeTarget"/>
     </mapped-superclass>
 
