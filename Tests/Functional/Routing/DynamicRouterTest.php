@@ -260,6 +260,7 @@ class DynamicRouterTest extends BaseTestCase
         }
         $document = new Content();
         $document->setId('/test/templatebyclass');
+        $document->setTitle('the title');
         $this->getDm()->persist($document);
 
         // put a route for this content
