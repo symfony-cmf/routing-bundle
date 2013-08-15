@@ -15,7 +15,7 @@
     <services>
 
         <service id="cmf_routing.route_admin" class="%cmf_routing.route_admin_class%">
-            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="CmfRoutingBundle" label="dashboard.label_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.cmf" label_catalogue="CmfRoutingBundle" label="dashboard.label_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
             <argument/>
             <argument>%cmf_routing.route_document_class%</argument>
             <argument>SonataAdminBundle:CRUD</argument>
@@ -37,7 +37,7 @@
         </service>
 
         <service id="cmf_routing.redirect_route_admin" class="%cmf_routing.redirect_route_admin_class%">
-            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.group_routing" label_catalogue="CmfRoutingBundle" label="dashboard.label_redirect_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <tag name="sonata.admin" manager_type="doctrine_phpcr" group="dashboard.cmf" label_catalogue="CmfRoutingBundle" label="dashboard.label_redirect_routing" label_translator_strategy="sonata.admin.label.strategy.underscore" />
             <argument/>
             <argument>%cmf_routing.redirect_route_document_class%</argument>
             <argument>SonataAdminBundle:CRUD</argument>
