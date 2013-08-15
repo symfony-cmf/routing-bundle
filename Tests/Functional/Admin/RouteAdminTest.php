@@ -79,9 +79,7 @@ class RouteAdminTest extends BaseTestCase
 
     public function testCorrectTemplate()
     {
-        // the template 'TwigBundle::layout.html.twig' is not found in the test setup...
-        $mockTemplate = $this->getMockBuilder('Twig_Template')->disableOriginalConstructor()->getMockForAbstractClass();
-        $route = new Route('/', array('_template' => $mockTemplate));
+        $route = new Route('/', array('_template' => 'TwigBundle::layout.html.twig'));
         $this->errorElement->expects($this->never())
             ->method('with')
         ;
