@@ -22,7 +22,7 @@ class RouteAdminTest extends BaseTestCase
      */
     private $errorElement;
 
-    protected function setUp()
+    public function setUp()
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();

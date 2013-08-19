@@ -30,6 +30,7 @@ class DynamicRouterTest extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
+
         $this->db('PHPCR')->createTestNode();
         $this->createRoute(self::ROUTE_ROOT);
 
