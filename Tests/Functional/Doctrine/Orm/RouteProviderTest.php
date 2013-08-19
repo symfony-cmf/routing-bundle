@@ -11,7 +11,7 @@ class RouteProviderTest extends OrmTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->clearDb('CmfRoutingBundle:Route');
+        $this->clearDb('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route');
 
         $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
     }
