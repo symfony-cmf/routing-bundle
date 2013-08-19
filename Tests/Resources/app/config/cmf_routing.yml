@@ -12,10 +12,6 @@ cmf_routing:
             Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute:  cmf_routing.redirect_controller:redirectAction
         templates_by_class:
             Symfony\Cmf\Component\Testing\Document\Content: TestBundle:Content:index.html.twig
-        persistence:
-            phpcr:
-                enabled: true
-                route_basepath: /test/routing
         locales:
             - en
             - de
