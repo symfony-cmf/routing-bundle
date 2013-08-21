@@ -47,10 +47,20 @@ class IdPrefixListener
 
         // only update route objects and only if the prefix can match, to allow
         // for more than one listener and more than one route root
-        if (($doc instanceof PrefixInterface)
+        if (($doc instanceof Route)
             && ! strncmp($this->idPrefix, $doc->getId(), strlen($this->idPrefix))
         ) {
-            $doc->setPrefix($this->idPrefix);
+            $prefix = $this->idPrefix;
+            $parent = $doc;
+
+            do {
+                if ($parent instanceof Host) {
+                    $prefix = $parent->getId();
+                    break;
+                }
+            } while ($parent = $parent->getParent());
+
+            $doc->setPrefix($prefix);
         }
     }
 }
