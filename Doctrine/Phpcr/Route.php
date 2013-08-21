@@ -54,15 +54,25 @@ class Route extends RouteModel implements PrefixInterface
     /**
      * Overwrite to be able to create route without pattern
      *
-     * @param bool $addFormatPattern if to add ".{_format}" to the route pattern
+     * @param Boolean $addFormatPattern if to add ".{_format}" to the route pattern
      *                                  also implicitly sets a default/require on "_format" to "html"
-     * @param bool $addTrailingSlash whether to add a trailing slash to the route, defaults to not add one
+     * @param Boolean $addTrailingSlash whether to add a trailing slash to the route, defaults to not add one
      */
     public function __construct($addFormatPattern = false, $addTrailingSlash = false)
     {
         parent::__construct($addFormatPattern);
 
         $this->children = array();
+        $this->addTrailingSlash = $addTrailingSlash;
+    }
+
+    public function getAddTrailingSlash()
+    {
+        return $this->addTrailingSlash;
+    }
+
+    public function setAddTrailingSlash($addTrailingSlash)
+    {
         $this->addTrailingSlash = $addTrailingSlash;
     }
 

@@ -98,6 +98,14 @@
         <source>form.label_routes</source>
         <target>Routen</target>
       </trans-unit>
+      <trans-unit id=" form.label_add_format_pattern">
+        <source>form.label_add_format_pattern</source>
+        <target>Add format pattern</target>
+      </trans-unit>
+      <trans-unit id=" form.label_add_trailing_slash">
+        <source>form.label_add_trailing_slash</source>
+        <target>Add trailing slash</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
