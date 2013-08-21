@@ -78,6 +78,16 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         }
     }
 
+    public function getAddFormatPattern()
+    {
+        return $this->addFormatPattern;
+    }
+
+    public function setAddFormatPattern($addFormatPattern)
+    {
+        $this->addFormatPattern = $addFormatPattern;
+    }
+
     /**
      * {@inheritDoc}
      */
