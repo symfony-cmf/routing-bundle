@@ -2,9 +2,9 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" target-language="en" datatype="plaintext" original="CmfRoutingBundle.en.xliff">
     <body>
-      <trans-unit id="dashboard.group_routing">
-        <source>dashboard.group_routing</source>
-        <target>Routing</target>
+      <trans-unit id="dashboard.cmf">
+        <source>dashboard.cmf</source>
+        <target>Symfony CMF</target>
       </trans-unit>
       <trans-unit id="dashboard.label_routing">
         <source>dashboard.label_routing</source>
