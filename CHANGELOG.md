@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.0-RC2
+1.1.0-RC2
 ---------
 
 * **2013-08-04**: [PHPCR-ODM] Fixed the configuration of the LocaleListener to
@@ -10,7 +10,7 @@ Changelog
 * **2013-08-04**: [Bundle] Only build the compiler passes for ORM and PHPCR-ODM
   if all required repositories are present.
 
-1.0.0-RC1
+1.1.0-RC1
 ---------
 
 * **2013-07-31**: [EventDispatcher] Added events to the dynamic router at the start of match and matchRequest
