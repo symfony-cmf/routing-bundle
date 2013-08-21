@@ -65,6 +65,8 @@ class RouteAdmin extends Admin
                 array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
             )
             ->add('name', 'text')
+            ->add('addFormatPattern')
+            ->add('addTrailingSlash')
             ->end();
 
         if (null === $this->getParentFieldDescription()) {
