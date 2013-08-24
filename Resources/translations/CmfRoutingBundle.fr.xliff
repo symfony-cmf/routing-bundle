@@ -98,6 +98,14 @@
         <source>form.label_routes</source>
         <target>Routes</target>
       </trans-unit>
+      <trans-unit id="form.label_add_format_pattern">
+        <source>form.label_add_format_pattern</source>
+        <target>Ajouter le motif du format</target>
+      </trans-unit>
+      <trans-unit id="form.label_add_trailing_slash">
+        <source>form.label_add_trailing_slash</source>
+        <target>Ajouter une barre oblique en fin</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
