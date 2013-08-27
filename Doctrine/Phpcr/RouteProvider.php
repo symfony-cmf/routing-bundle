@@ -110,8 +110,12 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     {
         // $name is the route document path
         $route = $this->getObjectManager()->find($this->className, $name);
+
         if (!$route) {
-            throw new RouteNotFoundException("No route found for path '$name'");
+            throw new RouteNotFoundException(sprintf('No route found for path "%s"', $name));
+        }
+        if (!$route instanceof SymfonyRoute) {
+            throw new RouteNotFoundException(sprintf('Document at path "%s" is no route', $name));
         }
 
         return $route;
