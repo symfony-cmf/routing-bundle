@@ -33,10 +33,12 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
 
     public function testGetRouteByName()
     {
+
         $this->route
             ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue('/cms/routes/test-route'));
+            ->will($this->returnValue('/cms/routes/test-route'))
+        ;
 
         $this->objectManager
             ->expects($this->any())
@@ -58,6 +60,54 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
 
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
+     */
+    public function testGetRouteByNameNotFound()
+    {
+        $this->objectManager
+            ->expects($this->any())
+            ->method('find')
+            ->with(null, '/cms/routes/test-route')
+            ->will($this->returnValue(null))
+        ;
+
+        $this->managerRegistry
+            ->expects($this->any())
+            ->method('getManager')
+            ->will($this->returnValue($this->objectManager))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistry);
+        $routeProvider->setManagerName('default');
+
+        $routeProvider->getRouteByName('/cms/routes/test-route');
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
+     */
+    public function testGetRouteByNameNoRoute()
+    {
+        $this->objectManager
+            ->expects($this->any())
+            ->method('find')
+            ->with(null, '/cms/routes/test-route')
+            ->will($this->returnValue($this))
+        ;
+
+        $this->managerRegistry
+            ->expects($this->any())
+            ->method('getManager')
+            ->will($this->returnValue($this->objectManager))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistry);
+        $routeProvider->setManagerName('default');
+
+        $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
     public function testGetRoutesByNames()
