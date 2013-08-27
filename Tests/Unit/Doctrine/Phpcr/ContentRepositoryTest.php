@@ -44,7 +44,49 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
     public function testGetContentId()
     {
-        $this->markTestIncomplete();
+        $uow = $this->getMockBuilder('Doctrine\ODM\PHPCR\UnitOfWork')->disableOriginalConstructor()->getMock();
+        $uow->expects($this->once())
+            ->method('getDocumentId')
+            ->with($this->document)
+            ->will($this->returnValue('id-123'))
+        ;
+
+        $dm = $this->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')->disableOriginalConstructor()->getMock();
+        $dm
+            ->expects($this->once())
+            ->method('getUnitOfWork')
+            ->will($this->returnValue($uow))
+        ;
+        $this->managerRegistry
+            ->expects($this->once())
+            ->method('getManager')
+            ->will($this->returnValue($dm))
+        ;
+
+        $contentRepository = new ContentRepository($this->managerRegistry);
+        $contentRepository->setManagerName('default');
+
+        $this->assertEquals('id-123', $contentRepository->getContentId($this->document));
+    }
+
+    public function testGetContentIdNoObject()
+    {
+        $contentRepository = new ContentRepository($this->managerRegistry);
+        $this->assertNull($contentRepository->getContentId('hello'));
+    }
+
+    public function testGetContentIdException()
+    {
+        $this->managerRegistry
+            ->expects($this->once())
+            ->method('getManager')
+            ->will($this->throwException(new \Exception()))
+        ;
+
+        $contentRepository = new ContentRepository($this->managerRegistry);
+        $contentRepository->setManagerName('default');
+
+        $this->assertNull($contentRepository->getContentId($this->document));
     }
 
     /**
