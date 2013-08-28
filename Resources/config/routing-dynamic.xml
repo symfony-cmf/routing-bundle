@@ -10,7 +10,7 @@
         <parameter key="cmf_routing.nested_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\NestedMatcher</parameter>
         <parameter key="cmf_routing.final_matcher_class">Symfony\Cmf\Component\Routing\NestedMatcher\UrlMatcher</parameter>
         <parameter key="cmf_routing.url_matcher_class">Symfony\Bundle\FrameworkBundle\Routing\RedirectableUrlMatcher</parameter>
-        <parameter key="cmf_routing.generator_class">Symfony\Cmf\Bundle\RoutingBundle\Routing\ContentAwareGenerator</parameter>
+        <parameter key="cmf_routing.generator_class">Symfony\Cmf\Component\Routing\ContentAwareGenerator</parameter>
         <parameter key="cmf_routing.enhancer_route_content_class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
         <parameter key="cmf_routing.enhancer_explicit_template_class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="cmf_routing.enhancer_controllers_by_type_class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
@@ -76,7 +76,6 @@
         <service id="cmf_routing.generator" class="%cmf_routing.generator_class%">
             <argument type="service" id="cmf_routing.route_provider" />
             <argument type="service" id="logger" on-invalid="ignore" />
-            <call method="setContainer"><argument type="service" id="service_container"/></call>
         </service>
 
         <service id="cmf_routing.redirect_controller" class="%cmf_routing.redirect_controller_class%">
