@@ -267,9 +267,4 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
         return parent::compile();
     }
-
-    public function __toString()
-    {
-        return (string) $this->id;
-    }
 }
