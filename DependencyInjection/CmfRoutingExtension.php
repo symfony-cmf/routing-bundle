@@ -72,13 +72,8 @@ class CmfRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.controllers_by_type', $config['controllers_by_type']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
         $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
-        // if the content class defines the template, we also need to make sure we use the generic controller for those routes
-        $controllerForTemplates = array();
-        foreach ($config['templates_by_class'] as $key => $value) {
-            $controllerForTemplates[$key] = $config['generic_controller'];
-        }
-        $container->setParameter($this->getAlias() . '.defined_templates_class', $controllerForTemplates);
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
+
         $locales = false;
         if (isset($config['locales'])) {
             $locales = $config['locales'];
@@ -131,9 +126,21 @@ class CmfRoutingExtension extends Extension
         if (!empty($config['controllers_by_class'])) {
             $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_class')));
         }
-        if (!empty($config['generic_controller']) && !empty($config['templates_by_class'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controller_for_templates_by_class')));
+
+        if (!empty($config['templates_by_class'])) {
             $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_templates_by_class')));
+
+            if (null === $config['generic_controller']) {
+                throw new InvalidConfigurationException('If you configure templates_by_class, you need to configure a generic_router. If you are sure you do not need a generic router, set the field to false to disable explicitly.');
+            } elseif (is_string($config['generic_controller'])) {
+                // if the content class defines the template, we also need to make sure we use the generic controller for those routes
+                $controllerForTemplates = array();
+                foreach ($config['templates_by_class'] as $key => $value) {
+                    $controllerForTemplates[$key] = $config['generic_controller'];
+                }
+                $container->setParameter($this->getAlias() . '.defined_templates_class', $controllerForTemplates);
+                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controller_for_templates_by_class')));
+            }
         }
         if (!empty($config['route_filters_by_id'])) {
             $matcher = $container->getDefinition('cmf_routing.nested_matcher');

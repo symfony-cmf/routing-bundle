@@ -1,6 +1,13 @@
 Changelog
 =========
 
+* **2013-08-09**: dynamic.generic_controller is now defaulting to null instead
+  of the controller from CmfContentBundle. CmfCoreBundle is prepending the
+  CmfContentBundle generic controller if that bundle is present. If you do not
+  have Core and Content, you need to configure the value explicitly if you want
+  routes specifying a template to use the generic controller or have
+  template_by_class mapping configuration.
+
 1.1.0-RC2
 ---------
 
