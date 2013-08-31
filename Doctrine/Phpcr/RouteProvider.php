@@ -48,7 +48,8 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     public function getRouteCollectionForRequest(Request $request)
     {
         $url = $request->getPathInfo();
-        $candidates = $this->getCandidates($url);
+        $host = $request->getHost();
+        $candidates = $this->getCandidates($url, $host);
 
         $collection = new RouteCollection();
 
@@ -82,23 +83,33 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $collection;
     }
 
-    protected function getCandidates($url)
+    protected function getCandidates($url, $host)
     {
+        $prefixes = array(
+            $this->idPrefix,
+            sprintf('%s/%s', $this->idPrefix, $host),
+        );
+
         $candidates = array();
-        if ('/' !== $url) {
-            if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
-                $candidates[] = $this->idPrefix.$url;
-                $url = $matches[1];
+
+        foreach ($prefixes as $prefix) {
+            if ('/' !== $url) {
+                if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
+                    $candidates[] = $prefix.$url;
+                    $urlWithoutFormat = $matches[1];
+                } else {
+                    $urlWithoutFormat = $url;
+                }
+
+                $part = $urlWithoutFormat;
+                while (false !== ($pos = strrpos($part, '/'))) {
+                    $candidates[] = $prefix.$part;
+                    $part = substr($urlWithoutFormat, 0, $pos);
+                }
             }
 
-            $part = $url;
-            while (false !== ($pos = strrpos($part, '/'))) {
-                $candidates[] = $this->idPrefix.$part;
-                $part = substr($url, 0, $pos);
-            }
+            $candidates[] = $prefix;
         }
-
-        $candidates[] = $this->idPrefix;
 
         return $candidates;
     }
