@@ -13,7 +13,7 @@ env:
 before_script:
   - composer self-update
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source
-  - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_orm_dbal.sh
+  - vendor/symfony-cmf/testing/bin/travis/doctrine_orm.sh
 
 script: phpunit --coverage-text
 
