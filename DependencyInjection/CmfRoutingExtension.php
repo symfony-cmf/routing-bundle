@@ -145,7 +145,10 @@ class CmfRoutingExtension extends Extension
             } else {
                 $container->removeDefinition($this->getAlias() . '.enhancer_controller_for_templates_by_class');
             }
+        } else {
+            $container->removeDefinition($this->getAlias() . '.enhancer_controller_for_templates_by_class');
         }
+
         if (!empty($config['route_filters_by_id'])) {
             $matcher = $container->getDefinition('cmf_routing.nested_matcher');
             foreach ($config['route_filters_by_id'] as $id => $priority) {
