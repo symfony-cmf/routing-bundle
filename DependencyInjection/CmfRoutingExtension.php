@@ -22,11 +22,8 @@ class CmfRoutingExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $processor = new Processor();
-        $configuration = new Configuration();
+        $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
-        $config = $processor->processConfiguration($configuration, $configs);
 
         if (!empty($config['dynamic']['enabled'])) {
             // load this even if no explicit enabled value but some configuration
