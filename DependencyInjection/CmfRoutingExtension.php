@@ -25,7 +25,7 @@ class CmfRoutingExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        if (!empty($config['dynamic']['enabled'])) {
+        if ($config['dynamic']['enabled']) {
             // load this even if no explicit enabled value but some configuration
             $this->setupDynamicRouter($config['dynamic'], $container, $loader);
         }
@@ -88,13 +88,17 @@ class CmfRoutingExtension extends Extension
 
         $hasProvider = false;
         $hasContentRepository = false;
-        if (!empty($config['persistence']['phpcr']['enabled'])) {
+        if ($config['persistence']['phpcr']['enabled'] && $config['persistence']['orm']['enabled']) {
+            throw new InvalidConfigurationException('You can only enable either phpcr or orm, not both.');
+        }
+
+        if ($config['persistence']['phpcr']['enabled']) {
             $this->loadPhpcrProvider($config['persistence']['phpcr'], $loader, $container, $locales);
             $hasProvider = true;
             $hasContentRepository = true;
         }
 
-        if (!empty($config['persistence']['orm']['enabled'])) {
+        if ($config['persistence']['orm']['enabled']) {
             $this->loadOrmProvider($config['persistence']['orm'], $loader, $container);
             $hasProvider = true;
         }
