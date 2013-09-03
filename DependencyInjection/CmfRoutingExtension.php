@@ -122,17 +122,17 @@ class CmfRoutingExtension extends Extension
 
         // if any mappings are defined, set the respective route enhancer
         if (!empty($config['generic_controller'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_explicit_template')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.explicit_template')));
         }
         if (!empty($config['controllers_by_type'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_type')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.controllers_by_type')));
         }
         if (!empty($config['controllers_by_class'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controllers_by_class')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.controllers_by_class')));
         }
 
         if (!empty($config['templates_by_class'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_templates_by_class')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.templates_by_class')));
 
             if (null === $config['generic_controller']) {
                 throw new InvalidConfigurationException('If you configure templates_by_class, you need to configure a generic_router. If you are sure you do not need a generic router, set the field to false to disable explicitly.');
@@ -145,10 +145,10 @@ class CmfRoutingExtension extends Extension
                     $controllerForTemplates[$key] = $config['generic_controller'];
                 }
 
-                $definition = $container->getDefinition($this->getAlias() . '.enhancer_controller_for_templates_by_class');
+                $definition = $container->getDefinition($this->getAlias() . '.enhancer.controller_for_templates_by_class');
                 $definition->replaceArgument(2, $controllerForTemplates);
 
-                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controller_for_templates_by_class')));
+                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.controller_for_templates_by_class')));
             }
         }
 
