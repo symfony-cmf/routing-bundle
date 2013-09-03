@@ -100,7 +100,7 @@ class CmfRoutingExtension extends Extension
             $hasProvider = true;
         }
         if (!$hasProvider) {
-            throw new InvalidConfigurationException('When the dynamic router is enabled, you need to either set dynamic.persistence.phpcr.enabled or specify dynamic.route_provider_service_id');
+            throw new InvalidConfigurationException('When the dynamic router is enabled, you need to either enable one of the persistence layers or set the cmf_routing.dynamic.route_provider_service_id option');
         }
         if (isset($config['content_repository_service_id'])) {
             $container->setAlias('cmf_routing.content_repository', $config['content_repository_service_id']);
