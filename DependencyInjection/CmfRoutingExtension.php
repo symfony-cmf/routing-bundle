@@ -197,7 +197,7 @@ class CmfRoutingExtension extends Extension
     {
         $container->setParameter($this->getAlias() . '.dynamic.persistence.orm.manager_name', $config['manager_name']);
         $container->setParameter($this->getAlias() . '.backend_type_orm', true);
-        $loader->load('provider_orm.xml');
+        $loader->load('provider-orm.xml');
     }
 
     /**
