@@ -48,7 +48,7 @@ class CmfRoutingExtension extends Extension
         $loader->load('form-type.xml');
 
         if (isset($config['dynamic'])) {
-            $routeTypeTypeDefinition = $container->getDefinition('cmf_routing.route_type_form_type');
+            $routeTypeTypeDefinition = $container->getDefinition($this->getAlias() . '.route_type_form_type');
 
             foreach (array_keys($config['dynamic']['controllers_by_type']) as $routeType) {
                 $routeTypeTypeDefinition->addMethodCall('addRouteType', array($routeType));
@@ -93,14 +93,14 @@ class CmfRoutingExtension extends Extension
         }
 
         if (isset($config['route_provider_service_id'])) {
-            $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
+            $container->setAlias($this->getAlias() . '.route_provider', $config['route_provider_service_id']);
             $hasProvider = true;
         }
         if (!$hasProvider) {
             throw new InvalidConfigurationException('When the dynamic router is enabled, you need to either enable one of the persistence layers or set the cmf_routing.dynamic.route_provider_service_id option');
         }
         if (isset($config['content_repository_service_id'])) {
-            $container->setAlias('cmf_routing.content_repository', $config['content_repository_service_id']);
+            $container->setAlias($this->getAlias() . '.content_repository', $config['content_repository_service_id']);
             $hasContentRepository = true;
         }
         // content repository is optional
@@ -111,7 +111,7 @@ class CmfRoutingExtension extends Extension
             ));
         }
 
-        $dynamic = $container->getDefinition($this->getAlias().'.dynamic_router');
+        $dynamic = $container->getDefinition($this->getAlias() . '.dynamic_router');
 
         // if any mappings are defined, set the respective route enhancer
         if (!empty($config['generic_controller'])) {
@@ -147,7 +147,7 @@ class CmfRoutingExtension extends Extension
         }
 
         if (!empty($config['route_filters_by_id'])) {
-            $matcher = $container->getDefinition('cmf_routing.nested_matcher');
+            $matcher = $container->getDefinition($this->getAlias() . '.nested_matcher');
             foreach ($config['route_filters_by_id'] as $id => $priority) {
                 $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
             }
@@ -169,7 +169,7 @@ class CmfRoutingExtension extends Extension
         $container->setAlias($this->getAlias() . '.content_repository', $this->getAlias() . '.phpcr_content_repository');
 
         if (!$locales) {
-            $container->removeDefinition('cmf_routing.phpcrodm_route_locale_listener');
+            $container->removeDefinition($this->getAlias() . '.phpcrodm_route_locale_listener');
         }
 
         if ($config['use_sonata_admin']) {
