@@ -35,21 +35,7 @@ class ContentAwareGeneratorTest extends CmfUnitTestCase
 
     public function testGetLocaleRequest()
     {
-        $request = Request::create('/foo');
-        $request->setDefaultLocale('de');
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-
-        $container->expects($this->once())
-            ->method('isScopeActive')
-            ->with('request')
-            ->will($this->returnValue(true))
-        ;
-        $container->expects($this->once())
-            ->method('get')
-            ->with('request')
-            ->will($this->returnValue($request))
-        ;
-        $this->generator->setContainer($container);
+        $this->generator->context->setParameter('_locale', 'de');
 
         $attributes = array();
         $this->assertEquals('de', $this->generator->getLocale($attributes));
@@ -60,6 +46,8 @@ class ContentAwareGeneratorTest extends CmfUnitTestCase
 /** overwrite getLocale to make it public */
 class TestableContentAwareGenerator extends ContentAwareGenerator
 {
+    public $context;
+
     public function getLocale($parameters)
     {
         return parent::getLocale($parameters);
