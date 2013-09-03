@@ -135,4 +135,46 @@ class CmfRoutingExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($providedRouters, $routersAdded);
     }
 
+    public function testWhitespaceInPriorities()
+    {
+        $config = array(
+            array(
+                'dynamic' => array(
+                    'route_provider_service_id' => 'test_route_provider_service',
+                    'enabled' => true,
+                    'controllers_by_type' => array(
+                        'Acme\Foo' => '
+                            acme_main.controller:indexAction
+                        '
+                    ),
+                ),
+                'chain' => array(
+                    'routers_by_id' => array(
+                        'acme_test.router' => '
+                            100
+                        ',
+                    ),
+                ),
+            )
+        );
+
+        $builder = $this->getBuilder($config);
+
+        $methodCalls = $builder->getDefinition('cmf_routing.router')->getMethodCalls();
+        $addMethodCalls = array_filter(
+            $methodCalls,
+            function ($call) {
+                return 'add' == $call[0];
+            }
+        );
+
+        $this->assertCount(1, $addMethodCalls);
+
+        $methodCall = current($addMethodCalls);
+
+        $this->assertSame('100', $methodCall[1][1]);
+
+        $controllers = $builder->getParameter('cmf_routing.controllers_by_type');
+        $this->assertSame('acme_main.controller:indexAction', $controllers['Acme\Foo']);
+    }
 }

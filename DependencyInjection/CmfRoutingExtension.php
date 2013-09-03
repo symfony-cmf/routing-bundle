@@ -37,7 +37,7 @@ class CmfRoutingExtension extends Extension
         // add the routers defined in the configuration mapping
         $router = $container->getDefinition($this->getAlias() . '.router');
         foreach ($config['chain']['routers_by_id'] as $id => $priority) {
-            $router->addMethodCall('add', array(new Reference($id), $priority));
+            $router->addMethodCall('add', array(new Reference($id), trim($priority)));
         }
 
         $this->setupFormTypes($config, $container, $loader);
@@ -65,6 +65,13 @@ class CmfRoutingExtension extends Extension
      */
     private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
+        // strip whitespace (XML support)
+        foreach (array('controllers_by_type', 'controllers_by_class', 'templates_by_class', 'route_filters_by_id') as $option) {
+            $config[$option] = array_map(function ($value) {
+                return trim($value);
+            }, $config[$option]);
+        }
+
         $container->setParameter($this->getAlias() . '.generic_controller', $config['generic_controller']);
         $container->setParameter($this->getAlias() . '.controllers_by_type', $config['controllers_by_type']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
