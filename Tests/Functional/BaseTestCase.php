@@ -2,14 +2,17 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
-
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
+use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\Util\PathHelper;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
 use Symfony\Cmf\Component\Testing\Document\Content;
 
 class BaseTestCase extends ComponentBaseTestCase
 {
+    /**
+     * @return DocumentManager
+     */
     protected function getDm()
     {
         $dm = $this->db('PHPCR')->getOm();
@@ -17,6 +20,11 @@ class BaseTestCase extends ComponentBaseTestCase
         return $dm;
     }
 
+    /**
+     * @param string $path
+     *
+     * @return Route
+     */
     protected function createRoute($path)
     {
         $parentPath = PathHelper::getParentPath($path);
@@ -30,6 +38,11 @@ class BaseTestCase extends ComponentBaseTestCase
         return $route;
     }
 
+    /**
+     * @param string $path
+     *
+     * @return Content
+     */
     protected function createContent($path)
     {
         $content = new Content;
