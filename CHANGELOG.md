@@ -4,6 +4,8 @@ Changelog
 1.1.0-RC3
 ---------
 
+* **2013-09-04**: If the route matched a pattern with a format extension, the format
+  extension is no longer set as route a default
 * **2013-09-04**: Marked ContentAwareGenerator as obsolete, use ContentAwareGenerator
    from the CMF routing component directly instead. This class will be removed in 1.2
 * **2013-08-09**: dynamic.generic_controller is now defaulting to null instead

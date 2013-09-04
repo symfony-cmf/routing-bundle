@@ -60,6 +60,18 @@ class DynamicRouterTest extends BaseTestCase
         $formatroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($formatroute);
 
+        $format2jsonroute = new Route(true);
+        $format2jsonroute->setPosition($root, 'format2.json');
+        $format2jsonroute->setDefault('_format', 'json');
+        $format2jsonroute->setRequirement('_format', 'json');
+        $format2jsonroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testJsonController');
+        $this->getDm()->persist($format2jsonroute);
+
+        $format2route = new Route(true);
+        $format2route->setPosition($root, 'format2');
+        $format2route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
+        $this->getDm()->persist($format2route);
+
         $this->getDm()->flush();
     }
 
@@ -148,6 +160,30 @@ class DynamicRouterTest extends BaseTestCase
             'id'          => '48',
         );
         $request = Request::create('/format/48.json');
+        $matches = $this->router->matchRequest($request);
+        ksort($matches);
+
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
+        $this->assertEquals($expected, $matches);
+
+        $expected = array(
+            '_controller' => 'testController',
+            '_format'     => 'html',
+            RouteObjectInterface::ROUTE_NAME => '/test/routing/format2',
+        );
+        $request = Request::create('/format2.html');
+        $matches = $this->router->matchRequest($request);
+        ksort($matches);
+
+        $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
+        $this->assertEquals($expected, $matches);
+
+        $expected = array(
+            '_controller' => 'testJsonController',
+            '_format'     => 'json',
+            RouteObjectInterface::ROUTE_NAME => '/test/routing/format2.json',
+        );
+        $request = Request::create('/format2.json');
         $matches = $this->router->matchRequest($request);
         ksort($matches);
 

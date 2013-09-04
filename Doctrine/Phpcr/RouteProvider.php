@@ -61,13 +61,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             // filter for valid route objects
             foreach ($routes as $key => $route) {
                 if ($route instanceof SymfonyRoute) {
-                    if (preg_match('/.+\.([a-z]+)$/i', $url, $matches)) {
-                        if ($route->getDefault('_format') === $matches[1]) {
-                            continue;
-                        }
-
-                        $route->setDefault('_format', $matches[1]);
-                    }
                     $collection->add($key, $route);
                 }
             }
@@ -87,13 +80,13 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         $candidates = array();
         if ('/' !== $url) {
             if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
-                $candidates[] = $this->idPrefix.$url;
+                $candidates[] = $this->idPrefix . $url;
                 $url = $matches[1];
             }
 
             $part = $url;
             while (false !== ($pos = strrpos($part, '/'))) {
-                $candidates[] = $this->idPrefix.$part;
+                $candidates[] = $this->idPrefix . $part;
                 $part = substr($url, 0, $pos);
             }
         }
@@ -114,6 +107,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         if (!$route) {
             throw new RouteNotFoundException(sprintf('No route found for path "%s"', $name));
         }
+
         if (!$route instanceof SymfonyRoute) {
             throw new RouteNotFoundException(sprintf('Document at path "%s" is no route', $name));
         }
@@ -121,9 +115,20 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $route;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getRoutesByNames($names, $parameters = array())
     {
-        return $this->getObjectManager()->findMany($this->className, $names);
+        $collection = $this->getObjectManager()->findMany($this->className, $names);
+        foreach ($collection as $key => $document) {
+            if (!$document instanceof SymfonyRoute) {
+                // we follow the logic of DocumentManager::findMany and do not throw an exception
+                unset($collection[$key]);
+            }
+        }
+
+        return $collection;
     }
 
 }

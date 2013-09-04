@@ -25,12 +25,13 @@ class RouteRepositoryTest extends BaseTestCase
         $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
     }
 
-    public function testGetRouteCollectionForRequest()
+    private function buildRoutes()
     {
-        $route = new Route;
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
+        $route = new Route;
         $route->setPosition($root, 'testroute');
+        $route->setDefault('_format', 'html');
         $this->getDm()->persist($route);
 
         // smuggle a non-route thing into the repository
@@ -41,23 +42,75 @@ class RouteRepositoryTest extends BaseTestCase
 
         $childroute = new Route;
         $childroute->setPosition($noroute, 'child');
+        $childroute->setDefault('_format', 'json');
         $this->getDm()->persist($childroute);
 
         $this->getDm()->flush();
-
         $this->getDm()->clear();
+    }
+
+    public function testGetRouteCollectionForRequest()
+    {
+        $this->buildRoutes();
 
         $routes = $this->repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child'));
         $this->assertCount(3, $routes);
         $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
+
+        $routes = $routes->all();
+        list($key, $child) = each($routes);
+        $this->assertEquals(self::ROUTE_ROOT . '/testroute/noroute/child', $key);
+        $this->assertEquals('json', $child->getDefault('_format'));
+        list($key, $testroute) = each($routes);
+        $this->assertEquals(self::ROUTE_ROOT . '/testroute', $key);
+        $this->assertEquals('html', $testroute->getDefault('_format'));
+        list($key, $root) = each($routes);
+        $this->assertEquals(self::ROUTE_ROOT, $key);
+        $this->assertNull($root->getDefault('_format'));
     }
 
-    public function testFindNophpcrUrl()
+    public function testGetRouteCollectionForRequestFormat()
+    {
+        $this->buildRoutes();
+
+        $routes = $this->repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child.html'));
+        $this->assertCount(3, $routes);
+        $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
+
+        $routes = $routes->all();
+        list($key, $child) = each($routes);
+        $this->assertEquals(self::ROUTE_ROOT . '/testroute/noroute/child', $key);
+        $this->assertEquals('json', $child->getDefault('_format'));
+        list($key, $testroute) = each($routes);
+        $this->assertEquals(self::ROUTE_ROOT . '/testroute', $key);
+        $this->assertEquals('html', $testroute->getDefault('_format'));
+        list($key, $root) = each($routes);
+        $this->assertEquals(self::ROUTE_ROOT, $key);
+        $this->assertEquals(null, $root->getDefault('_format'));
+    }
+
+    public function testGetRouteCollectionForRequestNophpcrUrl()
     {
         $collection = $this->repository->getRouteCollectionForRequest(Request::create(':///'));
         $this->assertInstanceOf('Symfony\\Component\\Routing\\RouteCollection', $collection);
         $this->assertCount(0, $collection);
     }
+
+    public function testGetRoutesByNames()
+    {
+        $this->buildRoutes();
+
+        $routeNames = array(
+            self::ROUTE_ROOT . '/testroute/noroute/child',
+            self::ROUTE_ROOT . '/testroute/noroute',
+            self::ROUTE_ROOT . '/testroute'
+        );
+
+        $routes = $this->repository->getRoutesByNames($routeNames);
+        $this->assertCount(2, $routes);
+        $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
+    }
+
 
     public function testSetPrefix()
     {
