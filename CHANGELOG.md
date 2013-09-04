@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.1.0-RC3
+---------
+
+* **2013-09-04**: Marked ContentAwareGenerator as obsolete, use ContentAwareGenerator
+   from the CMF routing component directly instead. This class will be removed in 1.2
 * **2013-08-09**: dynamic.generic_controller is now defaulting to null instead
   of the controller from CmfContentBundle. CmfCoreBundle is prepending the
   CmfContentBundle generic controller if that bundle is present. If you do not
