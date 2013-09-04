@@ -11,15 +11,15 @@
         <parameter key="cmf_routing.final_matcher.class">Symfony\Cmf\Component\Routing\NestedMatcher\UrlMatcher</parameter>
         <parameter key="cmf_routing.url_matcher.class">Symfony\Bundle\FrameworkBundle\Routing\RedirectableUrlMatcher</parameter>
         <parameter key="cmf_routing.generator.class">Symfony\Cmf\Component\Routing\ContentAwareGenerator</parameter>
-        <parameter key="cmf_routing.enhancer_route_content.class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
-        <parameter key="cmf_routing.enhancer_explicit_template.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
-        <parameter key="cmf_routing.enhancer_controllers_by_type.class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
-        <parameter key="cmf_routing.enhancer_field_by_class.class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.route_content.class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.explicit_template.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.controllers_by_type.class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.field_by_class.class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
         <parameter key="cmf_routing.redirect_controller.class">Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController</parameter>
     </parameters>
 
     <services>
-        <service id="cmf_routing.enhancer_route_content" class="%cmf_routing.enhancer_route_content.class%">
+        <service id="cmf_routing.enhancer.route_content" class="%cmf_routing.enhancer.route_content.class%">
             <argument>_route_object</argument>
             <argument>_content</argument>
         </service>
@@ -30,25 +30,25 @@
             <argument>%cmf_routing.generic_controller%</argument>
         </service>
 
-        <service id="cmf_routing.enhancer_controllers_by_type" class="%cmf_routing.enhancer_controllers_by_type.class%" public="false">
+        <service id="cmf_routing.enhancer.controllers_by_type" class="%cmf_routing.enhancer.controllers_by_type.class%" public="false">
             <argument>type</argument>
             <argument>_controller</argument>
             <argument>%cmf_routing.controllers_by_type%</argument>
         </service>
 
-        <service id="cmf_routing.enhancer.controllers_by_class" class="%cmf_routing.enhancer.field_by.class.class%" public="false">
+        <service id="cmf_routing.enhancer.controllers_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
             <argument>_content</argument>
             <argument>_controller</argument>
             <argument>%cmf_routing.controllers_by_class%</argument>
         </service>
 
-        <service id="cmf_routing.enhancer.controller_for_templates_by_class" class="%cmf_routing.enhancer.field_by.class.class%" public="false">
+        <service id="cmf_routing.enhancer.controller_for_templates_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
             <argument>_content</argument>
             <argument>_controller</argument>
             <argument>%cmf_routing.defined_templates.class%</argument>
         </service>
 
-        <service id="cmf_routing.enhancer.templates_by_class" class="%cmf_routing.enhancer.field_by.class.class%" public="false">
+        <service id="cmf_routing.enhancer.templates_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
             <argument>_content</argument>
             <argument>_template</argument>
             <argument>%cmf_routing.templates_by_class%</argument>

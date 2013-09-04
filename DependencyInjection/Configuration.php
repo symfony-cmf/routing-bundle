@@ -60,6 +60,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('persistence')
+                            ->addDefaultsIfNotSet()
                             ->children()
                                 ->arrayNode('phpcr')
                                     ->addDefaultsIfNotSet()
