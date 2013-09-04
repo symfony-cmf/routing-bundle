@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.0-RC3
+1.1.0-RC5
 ---------
 
 * **2013-09-04**: If the route matched a pattern with a format extension, the format
