@@ -86,7 +86,7 @@ class RouteRepositoryTest extends BaseTestCase
         $this->assertEquals('html', $testroute->getDefault('_format'));
         list($key, $root) = each($routes);
         $this->assertEquals(self::ROUTE_ROOT, $key);
-        $this->assertEquals('html', $root->getDefault('_format'));
+        $this->assertEquals(null, $root->getDefault('_format'));
     }
 
     public function testGetRouteCollectionForRequestNophpcrUrl()

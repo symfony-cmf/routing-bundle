@@ -19,7 +19,7 @@
         "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {
-        "symfony-cmf/core-bundle": "~1.0.0-alpha1",
+        "symfony-cmf/core-bundle": "1.0.*",
         "symfony-cmf/testing": "1.0.*",
         "sonata-project/doctrine-phpcr-admin-bundle": "1.0.*",
         "symfony/monolog-bundle": "2.2.*",
@@ -31,7 +31,7 @@
         "doctrine/orm": "To enable support for the ORM entities",
 
         "symfony-cmf/content-bundle": "To optionally use the configured value for 'content_basepath' from the CoreBundle",
-        "symfony-cmf/core-bundle": "For compatibility with Symfony 2.2",
+        "symfony-cmf/core-bundle": "For compatibility with Symfony 2.2 and easier configuration",
 
         "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents"
     },
