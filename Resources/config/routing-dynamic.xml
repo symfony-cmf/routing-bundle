@@ -19,32 +19,32 @@
     </parameters>
 
     <services>
-
         <service id="cmf_routing.enhancer_route_content" class="%cmf_routing.enhancer_route_content_class%">
             <argument>_route_object</argument>
             <argument>_content</argument>
         </service>
-        <service id="cmf_routing.enhancer_explicit_template" class="%cmf_routing.enhancer_explicit_template_class%">
+
+        <service id="cmf_routing.enhancer_explicit_template" class="%cmf_routing.enhancer_explicit_template_class%" public="false">
             <argument>_template</argument>
             <argument>_controller</argument>
             <argument>%cmf_routing.generic_controller%</argument>
         </service>
-        <service id="cmf_routing.enhancer_controllers_by_type" class="%cmf_routing.enhancer_controllers_by_type_class%">
+        <service id="cmf_routing.enhancer_controllers_by_type" class="%cmf_routing.enhancer_controllers_by_type_class%" public="false">
             <argument>type</argument>
             <argument>_controller</argument>
             <argument>%cmf_routing.controllers_by_type%</argument>
         </service>
-        <service id="cmf_routing.enhancer_controllers_by_class" class="%cmf_routing.enhancer_field_by_class_class%">
+        <service id="cmf_routing.enhancer_controllers_by_class" class="%cmf_routing.enhancer_field_by_class_class%" public="false">
             <argument>_content</argument>
             <argument>_controller</argument>
             <argument>%cmf_routing.controllers_by_class%</argument>
         </service>
-        <service id="cmf_routing.enhancer_controller_for_templates_by_class" class="%cmf_routing.enhancer_field_by_class_class%">
+        <service id="cmf_routing.enhancer_controller_for_templates_by_class" class="%cmf_routing.enhancer_field_by_class_class%" public="false">
             <argument>_content</argument>
             <argument>_controller</argument>
-            <argument>%cmf_routing.defined_templates_class%</argument>
+            <argument type="collection" />
         </service>
-        <service id="cmf_routing.enhancer_templates_by_class" class="%cmf_routing.enhancer_field_by_class_class%">
+        <service id="cmf_routing.enhancer_templates_by_class" class="%cmf_routing.enhancer_field_by_class_class%" public="false">
             <argument>_content</argument>
             <argument>_template</argument>
             <argument>%cmf_routing.templates_by_class%</argument>
