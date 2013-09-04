@@ -8,9 +8,13 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Cmf\Component\Routing\ContentAwareGenerator as BaseGenerator;
 
 /**
- * Symfony framework integration of the CMF routing component ContentAwareGenerator class
+ * **Deprecated**
  *
  * @author David Buchmann
+ *
+ * @deprecated This class is obsolete and the ContentAwareGenerator from the
+ *  CMF routing component should be used directly instead. This class will be
+ *  removed in 1.2.
  */
 class ContentAwareGenerator extends BaseGenerator implements ContainerAwareInterface
 {
