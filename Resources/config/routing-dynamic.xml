@@ -45,7 +45,7 @@
         <service id="cmf_routing.enhancer.controller_for_templates_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
             <argument>_content</argument>
             <argument>_controller</argument>
-            <argument>%cmf_routing.defined_templates.class%</argument>
+            <argument type="collection" />
         </service>
 
         <service id="cmf_routing.enhancer.templates_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
