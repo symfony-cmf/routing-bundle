@@ -2,14 +2,14 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
  * @author Philippo de Santis
@@ -144,13 +144,12 @@ class CmfRoutingExtension extends Extension
                 foreach ($config['templates_by_class'] as $key => $value) {
                     $controllerForTemplates[$key] = $config['generic_controller'];
                 }
-                $container->setParameter($this->getAlias() . '.defined_templates_class', $controllerForTemplates);
+
+                $definition = $container->getDefinition($this->getAlias() . '.enhancer_controller_for_templates_by_class');
+                $definition->replaceArgument(2, $controllerForTemplates);
+
                 $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer_controller_for_templates_by_class')));
-            } else {
-                $container->removeDefinition($this->getAlias() . '.enhancer_controller_for_templates_by_class');
             }
-        } else {
-            $container->removeDefinition($this->getAlias() . '.enhancer_controller_for_templates_by_class');
         }
 
         if (!empty($config['route_filters_by_id'])) {
