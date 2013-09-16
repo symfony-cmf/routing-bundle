@@ -46,6 +46,12 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
      */
     protected $container;
 
+    /**
+     * TODO: use synchronized service once we up the minimum requirement to symfony 2.3
+     * https://github.com/symfony-cmf/RoutingBundle/issues/177
+     *
+     * @param ContainerInterface $container
+     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
