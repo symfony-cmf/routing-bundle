@@ -3,6 +3,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
 
@@ -90,6 +91,12 @@ class Route extends RouteModel implements PrefixInterface
         return $this;
     }
 
+    /**
+     * The parent document, which might be another route or some other
+     * document.
+     *
+     * @return Generic object
+     */
     public function getParent()
     {
         return $this->parent;
