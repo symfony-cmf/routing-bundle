@@ -106,6 +106,14 @@
         <source>form.label_add_trailing_slash</source>
         <target>Abschließenden Schrägstrich hinzufügen</target>
       </trans-unit>
+      <trans-unit id="form.help_add_format_pattern">
+        <source>form.help_add_format_pattern</source>
+        <target>Format zu URL hinzufügen: /eine/url.{format}. Wenn nichts angegeben wird ist das Format html.</target>
+      </trans-unit>
+      <trans-unit id="form.help_add_trailing_slash">
+        <source>form.help_add_trailing_slash</source>
+        <target>Die URL hört in diesem Fall mit einem Schrägstrich auf, zum Beispiel /eine/url/.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
