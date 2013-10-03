@@ -42,6 +42,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     protected $idPrefix = '';
 
+    /**
+     * @param $prefix
+     */
     public function setPrefix($prefix)
     {
         $this->idPrefix = $prefix;
@@ -85,6 +88,11 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $collection;
     }
 
+    /**
+     * @param $url
+     *
+     * @return array
+     */
     protected function getCandidates($url)
     {
         $candidates = array();

@@ -31,6 +31,11 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
  */
 class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 {
+    /**
+     * @param $url
+     *
+     * @return array
+     */
     protected function getCandidates($url)
     {
         $candidates = array();
@@ -65,10 +70,17 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $route;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getRoutesByNames($names, $parameters = array())
     {
+        return array();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getRouteCollectionForRequest(Request $request)
     {
         $url = $request->getPathInfo();
@@ -105,6 +117,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $collection;
     }
 
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
     protected function getRoutesRepository()
     {
         return $this->getObjectManager()->getRepository($this->className);
