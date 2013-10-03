@@ -46,7 +46,7 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
 
         $this->objectRepository
             ->expects($this->any())
-            ->method('findBy')
+            ->method('findOneBy')
             ->with(array('name' => '/cms/routes/test-route'))
             ->will($this->returnValue($this->route))
         ;
