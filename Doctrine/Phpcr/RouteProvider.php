@@ -60,7 +60,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteCollectionForRequest(Request $request)
     {
-        $url        = $request->getPathInfo();
+        $url = $request->getPathInfo();
         $candidates = $this->getCandidates($url);
 
         $collection = new RouteCollection();
@@ -78,7 +78,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                 }
             }
         }
-        catch (RepositoryException $e) {
+        } catch (RepositoryException $e) {
             // TODO: how to determine whether this is a relevant exception or not?
             // https://github.com/symfony-cmf/RoutingBundle/issues/143
             // for example, getting /my//test (note the double /) is just an invalid path
@@ -96,17 +96,17 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     protected function getCandidates($url)
     {
-        $candidates = array ();
+        $candidates = array();
         if ('/' !== $url) {
             if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
                 $candidates[] = $this->idPrefix . $url;
-                $url          = $matches[1];
+                $url = $matches[1];
             }
 
             $part = $url;
             while (false !== ($pos = strrpos($part, '/'))) {
                 $candidates[] = $this->idPrefix . $part;
-                $part         = substr($url, 0, $pos);
+                $part = substr($url, 0, $pos);
             }
         }
 
@@ -118,11 +118,11 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRouteByName($name, $parameters = array ())
+    public function getRouteByName($name, $parameters = array())
     {
 
         // $name is the route document path
-        if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
+        if ( '' === $this->idPrefix || 0 === strpos($name, $this->idPrefix) ) {
             $route = $this->getObjectManager()->find($this->className, $name);
         }
 
@@ -140,12 +140,12 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRoutesByNames($names, $parameters = array ())
+    public function getRoutesByNames($names, $parameters = array())
     {
-        $routes = array ();
+        $routes = array();
         if ('' === $this->idPrefix) {
             foreach ($names as $name) {
-                if (0 === strpos($name, $this->idPrefix)) {
+                if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
                     $routes[] = $name;
                 }
             }
@@ -164,4 +164,5 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         return $collection;
     }
+
 }
