@@ -230,6 +230,10 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
+    public function testGetRoutesByNames()
+    {
+        $this->markTestIncomplete();
+    }
 
     /**
      * Use getRouteByName() with two different document managers.
