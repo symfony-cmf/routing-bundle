@@ -77,7 +77,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                     $collection->add($key, $route);
                 }
             }
-        }
         } catch (RepositoryException $e) {
             // TODO: how to determine whether this is a relevant exception or not?
             // https://github.com/symfony-cmf/RoutingBundle/issues/143
@@ -122,7 +121,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     {
 
         // $name is the route document path
-        if ( '' === $this->idPrefix || 0 === strpos($name, $this->idPrefix) ) {
+        if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
             $route = $this->getObjectManager()->find($this->className, $name);
         }
 
@@ -152,7 +151,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         } else {
             $routes = $names;
         }
-
 
         $collection = $this->getObjectManager()->findMany($this->className, $routes);
         foreach ($collection as $key => $document) {

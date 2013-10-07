@@ -118,7 +118,6 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
         $routeProvider = new RouteProvider($this->managerRegistry);
         $routeProvider->setManagerName('default');
         $routeProvider->setPrefix('/cms/routes/');
-
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
@@ -144,7 +143,6 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
         $routeProvider->setPrefix('/cms/routes');
 
         $routeProvider->getRouteByName('invalid_route');
-
     }
 
     public function testGetRouteByNameIdPrefixEmptyString()
@@ -177,7 +175,6 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
 
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
-
     }
 
 
