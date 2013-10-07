@@ -120,9 +120,11 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     public function getRouteByName($name, $parameters = array())
     {
         // $name is the route document path
-        $route = $this->getObjectManager()->find($this->className, $name);
+        if (0 === strpos($name, $this->idPrefix)) {
+            $route = $this->getObjectManager()->find($this->className, $name);
+        }
 
-        if (!$route) {
+        if (empty($route)) {
             throw new RouteNotFoundException(sprintf('No route found for path "%s"', $name));
         }
 
@@ -138,7 +140,14 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRoutesByNames($names, $parameters = array())
     {
-        $collection = $this->getObjectManager()->findMany($this->className, $names);
+        $routes = array();
+        foreach ($names as $name) {
+            if (0 === strpos($name, $this->idPrefix)) {
+                $routes[] = $name;
+            }
+        }
+
+        $collection = $this->getObjectManager()->findMany($this->className, $routes);
         foreach ($collection as $key => $document) {
             if (!$document instanceof SymfonyRoute) {
                 // we follow the logic of DocumentManager::findMany and do not throw an exception
