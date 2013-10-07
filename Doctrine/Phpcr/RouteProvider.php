@@ -119,8 +119,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteByName($name, $parameters = array())
     {
+
         // $name is the route document path
-        if (0 === strpos($name, $this->idPrefix)) {
+        if ( '' === $this->idPrefix || 0 === strpos($name, $this->idPrefix) ) {
             $route = $this->getObjectManager()->find($this->className, $name);
         }
 
@@ -142,7 +143,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     {
         $routes = array();
         foreach ($names as $name) {
-            if (0 === strpos($name, $this->idPrefix)) {
+            if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
                 $routes[] = $name;
             }
         }
