@@ -75,7 +75,16 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRoutesByNames($names, $parameters = array())
     {
-        return array();
+        $routes = array();
+        foreach ($names as $name) {
+            try {
+                $routes[] = $this->getRouteByName($name, $parameters);
+            } catch (RouteNotFoundException $e) {
+                // not found
+            }
+        }
+
+        return $routes;
     }
 
     /**
@@ -93,25 +102,16 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             return $collection;
         }
 
-        try {
-            $routes = $this->getRoutesRepository()->findByStaticPrefix($candidates, array('position' => 'ASC'));
-
-            foreach ($routes as $key => $route) {
-                if (preg_match('/.+\.([a-z]+)$/i', $url, $matches)) {
-                    if ($route->getDefault('_format') === $matches[1]) {
-                        continue;
-                    }
-
-                    $route->setDefault('_format', $matches[1]);
+        $routes = $this->getRoutesRepository()->findByStaticPrefix($candidates, array('position' => 'ASC'));
+        foreach ($routes as $key => $route) {
+            if (preg_match('/.+\.([a-z]+)$/i', $url, $matches)) {
+                if ($route->getDefault('_format') === $matches[1]) {
+                    continue;
                 }
-                $collection->add($key, $route);
+
+                $route->setDefault('_format', $matches[1]);
             }
-        } catch (RepositoryException $e) {
-            // TODO: this is not an orm exception
-            // https://github.com/symfony-cmf/RoutingBundle/issues/142
-            // also check if there are valid reasons for the orm manager to
-            // throw an exception or if we should just not catch it to not hide
-            // a severe problem.
+            $collection->add($key, $route);
         }
 
         return $collection;
