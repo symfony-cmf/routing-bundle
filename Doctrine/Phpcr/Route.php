@@ -246,12 +246,11 @@ class Route extends RouteModel implements PrefixInterface
     }
 
     /**
-     * Return this routes children
+     * Get all route children of this route.
      *
-     * Filters out children that do not implement
-     * the RouteObjectInterface.
+     * Filters out children that do not implement the RouteObjectInterface.
      *
-     * @return array - array of RouteObjectInterface's
+     * @return RouteObjectInterface[]
      *
      */
     public function getRouteChildren()
@@ -265,5 +264,15 @@ class Route extends RouteModel implements PrefixInterface
         }
 
         return $children;
+    }
+
+    /**
+     * Get all children of this route including non-routes.
+     *
+     * @return array
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }
