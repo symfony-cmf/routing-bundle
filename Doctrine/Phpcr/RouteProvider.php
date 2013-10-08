@@ -143,13 +143,13 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     {
         $routes = array();
         if ('' === $this->idPrefix) {
+            $routes = $names;
+        } else {
             foreach ($names as $name) {
-                if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
+                if (0 === strpos($name, $this->idPrefix)) {
                     $routes[] = $name;
                 }
             }
-        } else {
-            $routes = $names;
         }
 
         $collection = $this->getObjectManager()->findMany($this->className, $routes);
