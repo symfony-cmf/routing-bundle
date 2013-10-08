@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1.0-RC8
+---------
+
+* **2013-10-08**: The idPrefix is now used as a filter in getRouteByName() and getRoutesByNames()
+  in the PHPCR RouteProvider. This means its no longer possible to get routes that are not children
+  of a path that begins with idPrefix
+
 1.1.0-RC5
 ---------
 
