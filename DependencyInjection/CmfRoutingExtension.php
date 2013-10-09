@@ -148,8 +148,16 @@ class CmfRoutingExtension extends Extension
         if (!empty($config['templates_by_class'])) {
             $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.templates_by_class')));
 
+            /*
+             * The CoreBundle prepends the controller from ContentBundle if the
+             * ContentBundle is present in the project.
+             * If you are sure you do not need a generic router, set the field
+             * to false to disable explicitly. But you would need something
+             * else to determine the controller in that case, as no controller
+             * will not be set by the default route enhancers.
+             */
             if (null === $config['generic_controller']) {
-                throw new InvalidConfigurationException('If you configure templates_by_class, you need to configure a generic_router. If you are sure you do not need a generic router, set the field to false to disable explicitly.');
+                throw new InvalidConfigurationException('If you want to configure templates_by_class, you need to configure the generic_controller option.');
             }
 
             if (is_string($config['generic_controller'])) {
