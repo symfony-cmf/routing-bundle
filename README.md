@@ -23,7 +23,7 @@ controller for redirection routes.
 
 For the install guide and reference, see:
 
-* [RoutingBundle documentation](http://symfony.com/doc/master/cmf/bundles/routing.html)
+* [RoutingBundle documentation](http://symfony.com/doc/master/cmf/bundles/routing/index.html)
 
 See also:
 
