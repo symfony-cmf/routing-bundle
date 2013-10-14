@@ -136,7 +136,7 @@ class CmfRoutingExtension extends Extension
 
         // if any mappings are defined, set the respective route enhancer
         if (!empty($config['generic_controller'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.explicit_template')));
+            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.generic_controller')));
         }
         if (!empty($config['controllers_by_type'])) {
             $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.controllers_by_type')));

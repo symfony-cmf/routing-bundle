@@ -12,7 +12,7 @@
         <parameter key="cmf_routing.url_matcher.class">Symfony\Bundle\FrameworkBundle\Routing\RedirectableUrlMatcher</parameter>
         <parameter key="cmf_routing.generator.class">Symfony\Cmf\Component\Routing\ContentAwareGenerator</parameter>
         <parameter key="cmf_routing.enhancer.route_content.class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
-        <parameter key="cmf_routing.enhancer.explicit_template.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.generic_controller.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="cmf_routing.enhancer.controllers_by_type.class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
         <parameter key="cmf_routing.enhancer.field_by_class.class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
         <parameter key="cmf_routing.redirect_controller.class">Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController</parameter>
@@ -24,8 +24,8 @@
             <argument>_content</argument>
         </service>
 
-        <service id="cmf_routing.enhancer.explicit_template" class="%cmf_routing.enhancer.explicit_template.class%" public="false">
-            <argument>_template</argument>
+        <service id="cmf_routing.enhancer.generic_controller" class="%cmf_routing.enhancer.generic_controller.class%" public="false">
+            <argument>null</argument>
             <argument>_controller</argument>
             <argument>%cmf_routing.generic_controller%</argument>
         </service>
