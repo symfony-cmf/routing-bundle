@@ -57,6 +57,7 @@ class Configuration implements ConfigurationInterface
                     ->canBeEnabled()
                     ->children()
                         ->scalarNode('generic_controller')->defaultNull()->end()
+                        ->scalarNode('default_controller')->defaultNull()->end()
                         ->arrayNode('controllers_by_type')
                             ->useAttributeAsKey('type')
                             ->prototype('scalar')->end()
