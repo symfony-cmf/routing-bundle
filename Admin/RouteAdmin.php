@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
+use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
 use PHPCR\Util\PathHelper;
 
 class RouteAdmin extends Admin
@@ -184,5 +185,13 @@ class RouteAdmin extends Admin
                 ->addViolation(sprintf('Template "%s" does not exist.', $template))
                 ->end();
         }
+    }
+
+    public function toString($object)
+    {
+        return $object instanceof Route && $object->getId()
+            ? $object->getId()
+            : $this->trans('link_add', array(), 'SonataAdminBundle')
+            ;
     }
 }

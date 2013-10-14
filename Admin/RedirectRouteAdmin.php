@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
+use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
 
 class RedirectRouteAdmin extends Admin
 {
@@ -63,4 +64,11 @@ class RedirectRouteAdmin extends Admin
         return array();
     }
 
+    public function toString($object)
+    {
+        return $object instanceof Route && $object->getId()
+            ? $object->getId()
+            : $this->trans('link_add', array(), 'SonataAdminBundle')
+            ;
+    }
 }
