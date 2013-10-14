@@ -15,11 +15,11 @@
     "prefer-stable": false,
     "require": {
         "php": ">=5.3.3",
-        "symfony-cmf/routing": "~1.1.0-RC3",
+        "symfony-cmf/routing": "1.1.*",
         "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {
-        "symfony-cmf/core-bundle": "~1.0.0-RC4",
+        "symfony-cmf/core-bundle": "1.0.*",
         "symfony-cmf/testing": "1.0.*",
         "sonata-project/doctrine-phpcr-admin-bundle": "1.0.*",
         "symfony/monolog-bundle": "2.2.*",
