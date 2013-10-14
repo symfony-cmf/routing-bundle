@@ -12,7 +12,8 @@
         <parameter key="cmf_routing.url_matcher.class">Symfony\Bundle\FrameworkBundle\Routing\RedirectableUrlMatcher</parameter>
         <parameter key="cmf_routing.generator.class">Symfony\Cmf\Component\Routing\ContentAwareGenerator</parameter>
         <parameter key="cmf_routing.enhancer.route_content.class">Symfony\Cmf\Component\Routing\Enhancer\RouteContentEnhancer</parameter>
-        <parameter key="cmf_routing.enhancer.generic_controller.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.default_controller.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.explicit_template.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="cmf_routing.enhancer.controllers_by_type.class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
         <parameter key="cmf_routing.enhancer.field_by_class.class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
         <parameter key="cmf_routing.redirect_controller.class">Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController</parameter>
@@ -24,8 +25,14 @@
             <argument>_content</argument>
         </service>
 
-        <service id="cmf_routing.enhancer.generic_controller" class="%cmf_routing.enhancer.generic_controller.class%" public="false">
+        <service id="cmf_routing.enhancer.default_controller" class="%cmf_routing.enhancer.default_controller.class%" public="false">
             <argument>null</argument>
+            <argument>_controller</argument>
+            <argument>%cmf_routing.default_controller%</argument>
+        </service>
+
+        <service id="cmf_routing.enhancer.explicit_template" class="%cmf_routing.enhancer.explicit_template.class%" public="false">
+            <argument>_template</argument>
             <argument>_controller</argument>
             <argument>%cmf_routing.generic_controller%</argument>
         </service>
@@ -61,7 +68,10 @@
             <argument>%cmf_routing.uri_filter_regexp%</argument>
             <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
             <call method="setContainer"><argument type="service" id="service_container"/></call>
-            <call method="addRouteEnhancer"><argument type="service" id="cmf_routing.enhancer.route_content"/></call>
+            <call method="addRouteEnhancer">
+                <argument type="service" id="cmf_routing.enhancer.route_content"/>
+                <argument>100</argument>
+            </call>
         </service>
 
         <service id="cmf_routing.nested_matcher" class="%cmf_routing.nested_matcher.class%">

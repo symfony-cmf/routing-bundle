@@ -82,6 +82,11 @@ class CmfRoutingExtension extends Extension
             }, $config[$option]);
         }
 
+        $defaultController = $config['default_controller'];
+        if (null === $defaultController) {
+            $defaultController = $config['generic_controller'];
+        }
+        $container->setParameter($this->getAlias() . '.default_controller', $defaultController);
         $container->setParameter($this->getAlias() . '.generic_controller', $config['generic_controller']);
         $container->setParameter($this->getAlias() . '.controllers_by_type', $config['controllers_by_type']);
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
@@ -135,26 +140,40 @@ class CmfRoutingExtension extends Extension
         $dynamic = $container->getDefinition($this->getAlias() . '.dynamic_router');
 
         // if any mappings are defined, set the respective route enhancer
-        if (!empty($config['generic_controller'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.generic_controller')));
-        }
         if (!empty($config['controllers_by_type'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.controllers_by_type')));
+            $dynamic->addMethodCall(
+                'addRouteEnhancer',
+                array(
+                    new Reference($this->getAlias() . '.enhancer.controllers_by_type'),
+                    60
+                )
+            );
         }
         if (!empty($config['controllers_by_class'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.controllers_by_class')));
+            $dynamic->addMethodCall(
+                'addRouteEnhancer',
+                array(
+                    new Reference($this->getAlias() . '.enhancer.controllers_by_class'),
+                    50
+                )
+            );
         }
-
         if (!empty($config['templates_by_class'])) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.templates_by_class')));
+            $dynamic->addMethodCall(
+                'addRouteEnhancer',
+                array(
+                    new Reference($this->getAlias() . '.enhancer.templates_by_class'),
+                    40
+                )
+            );
 
             /*
              * The CoreBundle prepends the controller from ContentBundle if the
              * ContentBundle is present in the project.
-             * If you are sure you do not need a generic router, set the field
-             * to false to disable explicitly. But you would need something
-             * else to determine the controller in that case, as no controller
-             * will not be set by the default route enhancers.
+             * If you are sure you do not need a generic controller, set the field
+             * to false to disable this check explicitly. But you would need
+             * something else like the default_controller to set the controller,
+             * as no controller will be set here.
              */
             if (null === $config['generic_controller']) {
                 throw new InvalidConfigurationException('If you want to configure templates_by_class, you need to configure the generic_controller option.');
@@ -170,8 +189,32 @@ class CmfRoutingExtension extends Extension
                 $definition = $container->getDefinition($this->getAlias() . '.enhancer.controller_for_templates_by_class');
                 $definition->replaceArgument(2, $controllerForTemplates);
 
-                $dynamic->addMethodCall('addRouteEnhancer', array(new Reference($this->getAlias() . '.enhancer.controller_for_templates_by_class')));
+                $dynamic->addMethodCall(
+                    'addRouteEnhancer',
+                    array(
+                        new Reference($this->getAlias() . '.enhancer.controller_for_templates_by_class'),
+                        30
+                    )
+                );
             }
+        }
+        if (!empty($config['generic_controller']) && $config['generic_controller'] !== $defaultController) {
+            $dynamic->addMethodCall(
+                'addRouteEnhancer',
+                array(
+                    new Reference($this->getAlias() . '.enhancer.explicit_template'),
+                    10
+                )
+            );
+        }
+        if ($defaultController) {
+            $dynamic->addMethodCall(
+                'addRouteEnhancer',
+                array(
+                    new Reference($this->getAlias() . '.enhancer.default_controller'),
+                    -100
+                )
+            );
         }
 
         if (!empty($config['route_filters_by_id'])) {

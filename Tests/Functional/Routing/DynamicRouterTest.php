@@ -217,6 +217,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->getDm()->persist($route);
         $childroute = new Route;
         $childroute->setPosition($route, 'testroute');
+        $childroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($childroute);
         $nolocale = new Route;
         $nolocale->setPosition($this->getDm()->find(null, self::ROUTE_ROOT), 'es');
@@ -234,6 +235,7 @@ class DynamicRouterTest extends BaseTestCase
             $this->router->match('/de')
         );
         $expected = array(
+            '_controller' => 'testController',
             '_locale' => 'de',
             '_route' => self::ROUTE_ROOT . '/de/testroute'
         );
