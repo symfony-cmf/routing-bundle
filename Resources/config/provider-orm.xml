@@ -12,7 +12,8 @@
     <services>
 
         <service id="cmf_routing.content_repository" class="%cmf_routing.orm.content_repository.class%">
-            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="doctrine"/>
+            <call method="setManagerName"><argument>%cmf_routing.dynamic.persistence.orm.manager_name%</argument></call>
         </service>
 
         <service id="cmf_routing.route_provider" class="%cmf_routing.route_entity_provider%">
