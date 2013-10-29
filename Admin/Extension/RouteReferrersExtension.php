@@ -32,9 +32,7 @@ class RouteReferrersExtension extends AdminExtension
             ->add(
                 'routes',
                 'sonata_type_collection',
-                array(
-                    'by_reference' => false,
-                ),
+                array(),
                 array(
                     'edit' => 'inline',
                     'inline' => 'table',
