@@ -37,4 +37,8 @@
         <server name="KERNEL_DIR" value="Tests/Resources/app" />
     </php>
 
+    <listeners>
+        <listener class="Symfony\Cmf\Component\Testing\Phpunit\DatabaseTestListener" />
+    </listeners>
+
 </phpunit>
