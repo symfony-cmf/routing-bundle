@@ -67,7 +67,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('templates_by_class')
-                            ->useAttributeAsKey('alias')
+                            ->useAttributeAsKey('class')
                             ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('persistence')
@@ -81,6 +81,21 @@ class Configuration implements ConfigurationInterface
                                         ->scalarNode('route_basepath')->defaultValue('/cms/routes')->end()
                                         ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()
                                         ->enumNode('use_sonata_admin')
+                                            ->beforeNormalization()
+                                                ->ifString()
+                                                ->then(function ($v) {
+                                                    switch ($v) {
+                                                        case 'true':
+                                                            return true;
+
+                                                        case 'false':
+                                                            return false;
+
+                                                        default:
+                                                            return $v;
+                                                    }
+                                                })
+                                            ->end()
                                             ->values(array(true, false, 'auto'))
                                             ->defaultValue('auto')
                                         ->end()
