@@ -14,37 +14,30 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection\Compiler;
 
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 
-class SetRouterPassTest extends \PHPUnit_Framework_TestCase
+class SetRouterPassTest extends AbstractCompilerPassTestCase
 {
-    public function testMapperPassReplacesRouterAlias()
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $pass = new SetRouterPass();
-
-        $builder = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-        $builder->expects($this->once())
-            ->method('getParameter')
-            ->with('cmf_routing.replace_symfony_router')
-            ->will($this->returnValue(true));
-        $builder->expects($this->once())
-            ->method('setAlias')
-            ->with('router', 'cmf_routing.router');
-
-        $pass->process($builder);
+        $container->addCompilerPass(new SetRouterPass());
     }
 
-    public function testMapperPassDoesntReplaceRouterAlias()
+    public function testMapperPassReplacesRouterAlias()
     {
-        $pass = new SetRouterPass();
+        $this->container->setParameter('cmf_routing.replace_symfony_router', true);
 
-        $builder = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-        $builder->expects($this->once())
-            ->method('getParameter')
-            ->with('cmf_routing.replace_symfony_router')
-            ->will($this->returnValue(false));
-        $builder->expects($this->never())
-            ->method('setAlias');
+        $this->compile();
 
-        $pass->process($builder);
+        $this->assertContainerBuilderHasAlias('router', 'cmf_routing.router');
+    }
+
+    public function testMapperPassDoesNotReplaceRouterAlias()
+    {
+        $this->container->setParameter('cmf_routing.replace_symfony_router', false);
+
+        $this->compile();
+
+        $this->assertFalse($this->container->hasAlias('router'));
     }
 }

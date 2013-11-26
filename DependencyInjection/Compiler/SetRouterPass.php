@@ -25,7 +25,7 @@ class SetRouterPass implements CompilerPassInterface
     {
 
         // only replace the default router by overwriting the 'router' alias if config tells us to
-        if (true === $container->getParameter('cmf_routing.replace_symfony_router')) {
+        if ($container->hasParameter('cmf_routing.replace_symfony_router') && true === $container->getParameter('cmf_routing.replace_symfony_router')) {
             $container->setAlias('router', 'cmf_routing.router');
         }
 
