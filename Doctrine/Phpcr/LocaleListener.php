@@ -49,6 +49,8 @@ class LocaleListener
     }
 
     /**
+     * The repository path prefix where routes handled by this listener are located.
+     *
      * @param $prefix
      */
     public function setPrefix($prefix)
@@ -56,11 +58,21 @@ class LocaleListener
         $this->idPrefix = $prefix;
     }
 
+    /**
+     * Specify the list of allowed locales.
+     *
+     * @param array $locales
+     */
     public function setLocales(array $locales)
     {
         $this->locales = $locales;
     }
 
+    /**
+     * Update locale after loading a route.
+     *
+     * @param LifecycleEventArgs $args
+     */
     public function postLoad(LifecycleEventArgs $args)
     {
         $doc = $args->getObject();
@@ -70,6 +82,11 @@ class LocaleListener
         $this->updateLocale($doc, $doc->getId());
     }
 
+    /**
+     * Update locale after persisting a route.
+     *
+     * @param LifecycleEventArgs $args
+     */
     public function postPersist(LifecycleEventArgs $args)
     {
         $doc = $args->getObject();
@@ -79,16 +96,31 @@ class LocaleListener
         $this->updateLocale($doc, $doc->getId());
     }
 
+    /**
+     * Update a locale after the route has been moved.
+     *
+     * @param MoveEventArgs $args
+     */
     public function postMove(MoveEventArgs $args)
     {
         $doc = $args->getObject();
         if (! $doc instanceof Route) {
             return;
         }
-        $this->updateLocale($doc, $args->getTargetPath());
+        $this->updateLocale($doc, $args->getTargetPath(), true);
     }
 
-    protected function updateLocale(Route $doc, $id)
+    /**
+     * Update the locale of a route if $id starts with the prefix and has a
+     * valid locale right after.
+     *
+     * @param Route   $doc   The route object
+     * @param string  $id    The id (in move case, this is not the current id
+     *                       of $route)
+     * @param boolean $force Whether to update the locale even if the route
+     *                       already has a locale.
+     */
+    protected function updateLocale(Route $doc, $id, $force = false)
     {
         $matches = array();
 
@@ -98,12 +130,13 @@ class LocaleListener
             return;
         }
 
-        if (in_array($matches[1], $this->locales)
-            && ! $doc->getDefault('_locale')
-            && ! $doc->getRequirement('_locale')
-        ) {
-            $doc->setDefault('_locale', $matches[1]);
-            $doc->setRequirement('_locale', $matches[1]);
+        if (in_array($matches[1], $this->locales)) {
+            if ($force || ! $doc->getDefault('_locale')) {
+                $doc->setDefault('_locale', $matches[1]);
+            }
+            if ($force || ! $doc->getRequirement('_locale')) {
+                $doc->setRequirement('_locale', $matches[1]);
+            }
         }
     }
 }
