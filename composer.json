@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "symfony-cmf/core-bundle": "1.0.*",
-        "symfony-cmf/testing": "1.0.*",
+        "symfony-cmf/testing": "1.1.*",
         "sonata-project/doctrine-phpcr-admin-bundle": "1.0.*",
         "symfony/monolog-bundle": "2.2.*",
         "doctrine/orm": "2.3.*"
