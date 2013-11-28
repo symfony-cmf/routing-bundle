@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2013-11-28**: [BC BREAK] the alias attribute of the <template-by-class> is
+  renamed to class in the bundle configuration.
+
 1.1.0
 -----
 
