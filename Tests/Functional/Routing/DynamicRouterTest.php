@@ -12,6 +12,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Routing;
 
+use PHPCR\Util\NodeHelper;
+use PHPCR\Util\PathHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
@@ -303,12 +305,13 @@ class DynamicRouterTest extends BaseTestCase
 
     public function testEnhanceTemplateByClass()
     {
-        if ($content = $this->getDm()->find(null, '/templatebyclass')) {
+        if ($content = $this->getDm()->find(null, '/test/content/templatebyclass')) {
             $this->getDm()->remove($content);
             $this->getDm()->flush();
         }
+        NodeHelper::createPath($this->getDm()->getPhpcrSession(), '/test/content');
         $document = new Content();
-        $document->setId('/test/templatebyclass');
+        $document->setId('/test/content/templatebyclass');
         $document->setTitle('the title');
         $this->getDm()->persist($document);
 
@@ -322,7 +325,7 @@ class DynamicRouterTest extends BaseTestCase
 
         $expected = array(
             '_controller' => 'cmf_content.controller:indexAction',
-            RouteObjectInterface::ROUTE_NAME => '/test/routing/templatebyclass',
+            RouteObjectInterface::ROUTE_NAME => self::ROUTE_ROOT . '/templatebyclass',
         );
         $request = Request::create('/templatebyclass');
         $matches = $this->router->matchRequest($request);
