@@ -13,6 +13,7 @@ env:
 
 before_script:
   - composer self-update
+  - echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - composer require symfony/symfony:${SYMFONY_VERSION} --prefer-source
 
 script: phpunit --coverage-text
