@@ -12,6 +12,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use PHPCR\Query\QueryInterface;
 use PHPCR\RepositoryException;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
@@ -136,10 +137,39 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
+     * Get list of route names
+     *
+     * @return array
+     */
+    private function getRouteNames()
+    {
+        $dm = $this->getObjectManager();
+        $sql2 = 'SELECT * FROM [nt:unstructured] WHERE [phpcr:classparents] = '.$dm->quote('Symfony\Component\Routing\Route');
+
+        if ('' !== $this->idPrefix) {
+            $sql2.= ' AND ISDESCENDANTNODE('.$dm->quote($this->idPrefix).')';
+        }
+
+        $query = $dm->createPhpcrQuery($sql2, QueryInterface::JCR_SQL2);
+        $result = $query->execute();
+
+        $names = array();
+        foreach ($result as $row) {
+            $names[] = $row->getPath();
+        }
+
+        return $names;
+    }
+
+    /**
      * {@inheritDoc}
      */
-    public function getRoutesByNames($names, $parameters = array())
+    public function getRoutesByNames($names = null, $parameters = array())
     {
+        if (null === $names) {
+            $names = $this->getRouteNames();
+        }
+
         if ('' !== $this->idPrefix) {
             foreach ($names as $key => $name) {
                 if (0 !== strpos($name, $this->idPrefix)) {
@@ -158,5 +188,4 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         return $collection;
     }
-
 }
