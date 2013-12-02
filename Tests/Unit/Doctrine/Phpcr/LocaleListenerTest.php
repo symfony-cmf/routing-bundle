@@ -108,6 +108,12 @@ class LocaleListenerTest extends CmfUnitTestCase
             ->will($this->returnValue('some'))
         ;
 
+        $this->routeMock->expects($this->once())
+            ->method('getRequirement')
+            ->with('_locale')
+            ->will($this->returnValue('some'))
+        ;
+
         $this->routeMock->expects($this->never())
             ->method('setDefault')
         ;
