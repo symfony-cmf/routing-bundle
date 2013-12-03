@@ -92,6 +92,7 @@ class CmfRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
         $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
+        $container->setParameter($this->getAlias() . '.route_collection_limit', $config['route_collection_limit']);
 
         $locales = false;
         if (isset($config['locales'])) {

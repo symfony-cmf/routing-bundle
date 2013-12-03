@@ -20,6 +20,7 @@
             <argument type="service" id="doctrine"/>
             <argument>%cmf_routing.route_entity.class%</argument>
             <call method="setManagerName"><argument>%cmf_routing.dynamic.persistence.orm.manager_name%</argument></call>
+            <call method="setRouteCollectionLimit"><argument>%cmf_routing.route_collection_limit%</argument></call>
         </service>
     </services>
 </container>

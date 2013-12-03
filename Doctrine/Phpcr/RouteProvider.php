@@ -12,8 +12,12 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\DocumentManager;
+
 use PHPCR\Query\QueryInterface;
 use PHPCR\RepositoryException;
+
+use PHPCR\Query\RowInterface;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
@@ -71,7 +75,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         }
 
         try {
-            $routes = $this->getObjectManager()->findMany($this->className, $candidates);
+            /** @var $dm DocumentManager */
+            $dm = $this->getObjectManager();
+            $routes = $dm->findMany($this->className, $candidates);
             // filter for valid route objects
             foreach ($routes as $key => $route) {
                 if ($route instanceof SymfonyRoute) {
@@ -143,6 +149,11 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     private function getRouteNames()
     {
+        if (0 === $this->routeCollectionLimit) {
+            return array();
+        }
+
+        /** @var $dm DocumentManager */
         $dm = $this->getObjectManager();
         $sql2 = 'SELECT * FROM [nt:unstructured] WHERE [phpcr:classparents] = '.$dm->quote('Symfony\Component\Routing\Route');
 
@@ -151,10 +162,15 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         }
 
         $query = $dm->createPhpcrQuery($sql2, QueryInterface::JCR_SQL2);
+        if (null !== $this->routeCollectionLimit) {
+            $query->setLimit($this->routeCollectionLimit);
+        }
+
         $result = $query->execute();
 
         $names = array();
         foreach ($result as $row) {
+            /** @var $row RowInterface */
             $names[] = $row->getPath();
         }
 
@@ -178,7 +194,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             }
         }
 
-        $collection = $this->getObjectManager()->findMany($this->className, $names);
+        /** @var $dm DocumentManager */
+        $dm = $this->getObjectManager();
+        $collection = $dm->findMany($this->className, $names);
         foreach ($collection as $key => $document) {
             if (!$document instanceof SymfonyRoute) {
                 // we follow the logic of DocumentManager::findMany and do not throw an exception
