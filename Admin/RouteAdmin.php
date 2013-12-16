@@ -125,6 +125,19 @@ class RouteAdmin extends Admin
                 $defaults[$name] = array($name, 'text', array('required' => false));
             }
         }
+        
+        //parse variable pattern and add defaults for it - taken from routecompiler
+        /** @var $route Route */
+        $route =  $this->subject;
+        if ($route && $route->getVariablePattern()) {
+            preg_match_all('#\{\w+\}#', $route->getVariablePattern(), $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
+            foreach ($matches as $match) {
+                $name = substr($match[0][0], 1, -1);
+                if (!isset($defaults[$name])) {
+                    $defaults[$name] = array($name, 'text', array('required' => true));
+                }
+            }
+        }
 
         return $defaults;
     }
