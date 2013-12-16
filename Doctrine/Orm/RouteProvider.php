@@ -73,8 +73,20 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRoutesByNames($names, $parameters = array())
+    public function getRoutesByNames($names = null, $parameters = array())
     {
+        if (null === $names) {
+            $names = array();
+            if (0 === $this->routeCollectionLimit) {
+                return $names;
+            }
+            if (null !== $this->routeCollectionLimit) {
+                return $this->getRoutesRepository()->findBy(array(), null, $this->routeCollectionLimit);
+            }
+
+            return $this->getRoutesRepository()->findAll();
+        }
+
         $routes = array();
         foreach ($names as $name) {
             try {
