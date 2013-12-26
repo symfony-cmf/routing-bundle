@@ -52,7 +52,7 @@ class RouteAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id', 'text')
+            ->addIdentifier('path', 'text')
         ;
     }
 
