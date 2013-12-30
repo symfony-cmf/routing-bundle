@@ -66,10 +66,10 @@
     </xsd:complexType>
 
     <xsd:complexType name="persistence">
-        <xsd:sequence>
+        <xsd:choice>
             <xsd:element name="phpcr" type="phpcr" minOccurs="0"/>
             <xsd:element name="orm" type="orm" minOccurs="0"/>
-        </xsd:sequence>
+        </xsd:choice>
     </xsd:complexType>
 
     <xsd:complexType name="phpcr">
