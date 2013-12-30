@@ -1,0 +1,10 @@
+<config xmlns="http://cmf.symfony.com/schema/dic/routing">
+
+    <dynamic>
+        <persistence>
+            <phpcr
+                manager-name="default"
+            />
+        </persistence>
+    </dynamic>
+</config>
