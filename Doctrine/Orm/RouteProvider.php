@@ -60,7 +60,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRouteByName($name, $parameters = array())
+    public function getRouteByName($name)
     {
         $route = $this->getRoutesRepository()->findOneBy(array('name' => $name));
         if (!$route) {
@@ -73,7 +73,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRoutesByNames($names = null, $parameters = array())
+    public function getRoutesByNames($names = null)
     {
         if (null === $names) {
             $names = array();

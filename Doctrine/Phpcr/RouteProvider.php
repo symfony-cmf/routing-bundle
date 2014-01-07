@@ -124,7 +124,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRouteByName($name, $parameters = array())
+    public function getRouteByName($name)
     {
         // $name is the route document path
         if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
@@ -180,7 +180,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRoutesByNames($names = null, $parameters = array())
+    public function getRoutesByNames($names = null)
     {
         if (null === $names) {
             $names = $this->getRouteNames();
