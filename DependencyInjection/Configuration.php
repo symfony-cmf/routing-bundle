@@ -44,7 +44,7 @@ class Configuration implements ConfigurationInterface
                             ->useAttributeAsKey('id')
                             ->prototype('scalar')->end()
                         ->end()
-                        ->scalarNode('replace_symfony_router')->defaultTrue()->end()
+                        ->booleanNode('replace_symfony_router')->defaultTrue()->end()
                     ->end()
                 ->end()
                 ->arrayNode('dynamic')
