@@ -35,6 +35,7 @@ class XmlSchemaTest extends XmlSchemaTestCase
             'config1.xml',
             'config2.xml',
             'config3.xml',
+            'config4.xml',
         ));
 
         $this->assertSchemaAcceptsXml($xmlFiles, $this->schemaPath);
