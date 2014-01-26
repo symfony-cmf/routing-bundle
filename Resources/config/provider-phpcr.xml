@@ -16,7 +16,7 @@
             <argument type="service" id="doctrine_phpcr"/>
             <argument>%cmf_routing.route_model.class%</argument>
             <call method="setManagerName"><argument>%cmf_routing.dynamic.persistence.phpcr.manager_name%</argument></call>
-            <call method="setPrefix"><argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument></call>
+            <call method="addPrefix"><argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument></call>
             <call method="setRouteCollectionLimit"><argument>%cmf_routing.route_collection_limit%</argument></call>
         </service>
 
@@ -26,14 +26,16 @@
         </service>
 
         <service id="cmf_routing.phpcrodm_route_idprefix_listener" class="%cmf_routing.phpcrodm_route_idprefix_listener.class%">
-            <argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument>
+            <argument type="service" id="cmf_routing.phpcr_route_provider"/>
             <tag name="doctrine_phpcr.event_listener" event="postLoad" />
             <tag name="doctrine_phpcr.event_listener" event="postPersist" />
+            <tag name="doctrine_phpcr.event_listener" event="postMove" />
         </service>
 
         <service id="cmf_routing.phpcrodm_route_locale_listener" class="%cmf_routing.phpcrodm_route_locale_listener.class%">
-            <argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument>
+            <argument type="service" id="cmf_routing.phpcr_route_provider"/>
             <argument>%cmf_routing.dynamic.locales%</argument>
+            <argument>%cmf_routing.dynamic.auto_locale_pattern%</argument>
             <tag name="doctrine_phpcr.event_listener" event="postLoad" />
             <tag name="doctrine_phpcr.event_listener" event="postPersist" />
             <tag name="doctrine_phpcr.event_listener" event="postMove" />

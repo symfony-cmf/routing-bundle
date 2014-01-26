@@ -29,11 +29,12 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 class LocaleListener
 {
     /**
-     * The prefix to add to the url to create the repository path
+     * Used to ask for the possible prefixes to determine the possible locale
+     * segment of the id.
      *
-     * @var string
+     * @var RouteProvider
      */
-    protected $idPrefix = '';
+    protected $provider;
 
     /**
      * List of possible locales to detect on URL after idPrefix
@@ -42,20 +43,24 @@ class LocaleListener
      */
     protected $locales;
 
-    public function __construct($prefix, array $locales)
-    {
-        $this->idPrefix = $prefix;
-        $this->locales = $locales;
-    }
+    /**
+     * If set, call Route::setAddLocalePattern.
+     * @var boolean
+     */
+    protected $addLocalePattern;
 
     /**
-     * The repository path prefix where routes handled by this listener are located.
-     *
-     * @param $prefix
+     * @param RouteProvider $provider         To get prefixes from.
+     * @param array         $locales          Locales that should be detected.
+     * @param bool          $addLocalePattern Whether to make route prepend the
+     *                                        locale pattern if it does not have
+     *                                        one of the allowed locals in its id.
      */
-    public function setPrefix($prefix)
+    public function __construct(RouteProvider $provider, array $locales, $addLocalePattern = false)
     {
-        $this->idPrefix = $prefix;
+        $this->provider = $provider;
+        $this->locales = $locales;
+        $this->addLocalePattern = $addLocalePattern;
     }
 
     /**
@@ -66,6 +71,17 @@ class LocaleListener
     public function setLocales(array $locales)
     {
         $this->locales = $locales;
+    }
+
+    /**
+     * Whether to make the route prepend the locale pattern if it does not
+     * have one of the allowed locals in its id.
+     *
+     * @param boolean $addLocalePattern
+     */
+    public function setAddLocalePattern($addLocalePattern)
+    {
+        $this->addLocalePattern = $addLocalePattern;
     }
 
     /**
@@ -111,6 +127,14 @@ class LocaleListener
     }
 
     /**
+     * @return array
+     */
+    protected function getPrefixes()
+    {
+        return $this->provider->getPrefixes();
+    }
+
+    /**
      * Update the locale of a route if $id starts with the prefix and has a
      * valid locale right after.
      *
@@ -126,17 +150,19 @@ class LocaleListener
 
         // only update route objects and only if the prefix can match, to allow
         // for more than one listener and more than one route root
-        if (! preg_match('#' . $this->idPrefix . '/([^/]+)(/|$)#', $id, $matches)) {
+        if (! preg_match('#(' . implode('|', $this->getPrefixes()) . ')/([^/]+)(/|$)#', $id, $matches)) {
             return;
         }
 
-        if (in_array($matches[1], $this->locales)) {
+        if (in_array($locale = $matches[2], $this->locales)) {
             if ($force || ! $doc->getDefault('_locale')) {
-                $doc->setDefault('_locale', $matches[1]);
+                $doc->setDefault('_locale', $locale);
             }
             if ($force || ! $doc->getRequirement('_locale')) {
-                $doc->setRequirement('_locale', $matches[1]);
+                $doc->setRequirement('_locale', $locale);
             }
+        } elseif ($this->addLocalePattern) {
+            $doc->setAddLocalePattern(true);
         }
     }
 }

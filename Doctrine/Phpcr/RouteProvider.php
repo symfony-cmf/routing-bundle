@@ -30,7 +30,7 @@ use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 
 /**
- * Provide routes loaded from PHPCR-ODM
+ * Loads routes from Doctrine PHPCR-ODM.
  *
  * This is <strong>NOT</strong> not a doctrine repository but just the route
  * provider for the NestedMatcher. (you could of course implement this
@@ -41,18 +41,38 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 {
     /**
-     * The prefix to add to the url to create the repository path
+     * Places in the PHPCR tree where routes are located.
      *
-     * @var string
+     * @var array
      */
-    protected $idPrefix = '';
+    protected $idPrefixes = array();
 
     /**
      * @param $prefix
      */
-    public function setPrefix($prefix)
+    public function setPrefixes($prefixes)
     {
-        $this->idPrefix = $prefix;
+        $this->idPrefixes = $prefixes;
+    }
+
+    /**
+     * Append a repository prefix to the possible prefixes.
+     *
+     * @param $prefix
+     */
+    public function addPrefix($prefix)
+    {
+        $this->idPrefixes[] = $prefix;
+    }
+
+    /**
+     * Get all currently configured prefixes where to look for routes.
+     *
+     * @return array
+     */
+    public function getPrefixes()
+    {
+        return $this->idPrefixes;
     }
 
     /**
@@ -96,27 +116,47 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * @param $url
+     * Get id candidates for all configured prefixes.
      *
-     * @return array
+     * @param string $url
+     *
+     * @return array PHPCR ids that could load routes that match $url.
      */
     protected function getCandidates($url)
     {
         $candidates = array();
+        foreach ($this->getPrefixes() as $prefix) {
+            $candidates = array_merge($prefix, $url);
+        }
+
+        return $candidates;
+    }
+
+    /**
+     * Get the id candidates for one prefix.
+     *
+     * @param string $url
+     *
+     * @return array PHPCR ids that could load routes that match $url and are
+     *      child of $prefix.
+     */
+    protected function getCandidatesFor ($prefix, $url)
+    {
+        $candidates = array();
         if ('/' !== $url) {
             if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
-                $candidates[] = $this->idPrefix . $url;
+                $candidates[] = $prefix . $url;
                 $url = $matches[1];
             }
 
             $part = $url;
             while (false !== ($pos = strrpos($part, '/'))) {
-                $candidates[] = $this->idPrefix . $part;
+                $candidates[] = $prefix . $part;
                 $part = substr($url, 0, $pos);
             }
         }
 
-        $candidates[] = $this->idPrefix;
+        $candidates[] = $prefix;
 
         return $candidates;
     }
@@ -126,9 +166,14 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteByName($name)
     {
-        // $name is the route document path
-        if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
-            $route = $this->getObjectManager()->find($this->className, $name);
+        foreach ($this->getPrefixes() as $prefix) {
+            // $name is the route document path
+            if ('' === $prefix || 0 === strpos($name, $prefix)) {
+                $route = $this->getObjectManager()->find($this->className, $name);
+                if ($route) {
+                    break;
+                }
+            }
         }
 
         if (empty($route)) {
@@ -143,11 +188,12 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * Get list of route names
+     * Get all the routes in the repository that are under one of the
+     * configured prefixes. This respects the limit.
      *
      * @return array
      */
-    private function getRouteNames()
+    private function getAllRoutes()
     {
         if (0 === $this->routeCollectionLimit) {
             return array();
@@ -157,8 +203,16 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         $dm = $this->getObjectManager();
         $sql2 = 'SELECT * FROM [nt:unstructured] WHERE [phpcr:classparents] = '.$dm->quote('Symfony\Component\Routing\Route');
 
-        if ('' !== $this->idPrefix) {
-            $sql2.= ' AND ISDESCENDANTNODE('.$dm->quote($this->idPrefix).')';
+        $prefixConstraints = array();
+        foreach ($this->getPrefixes() as $prefix) {
+            if ('' == $prefix) {
+                $prefixConstraints = array();
+                break;
+            }
+            $prefixConstraints[] = 'ISDESCENDANTNODE('.$dm->quote($prefix).')';
+        }
+        if ($prefixConstraints) {
+            $sql2 .= ' AND (' . implode(' OR ', $prefixConstraints) . ')';
         }
 
         $query = $dm->createPhpcrQuery($sql2, QueryInterface::JCR_SQL2);
@@ -166,15 +220,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             $query->setLimit($this->routeCollectionLimit);
         }
 
-        $result = $query->execute();
-
-        $names = array();
-        foreach ($result as $row) {
-            /** @var $row RowInterface */
-            $names[] = $row->getPath();
-        }
-
-        return $names;
+        return $dm->getDocumentsByPhpcrQuery($query);
     }
 
     /**
@@ -183,20 +229,29 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     public function getRoutesByNames($names = null)
     {
         if (null === $names) {
-            $names = $this->getRouteNames();
+            return $this->getAllRoutes();
         }
 
-        if ('' !== $this->idPrefix) {
-            foreach ($names as $key => $name) {
-                if (0 !== strpos($name, $this->idPrefix)) {
-                    unset($names[$key]);
+        $candidates = array();
+        foreach ($names as $key => $name) {
+            foreach ($this->getPrefixes() as $prefix) {
+                if ('' == $prefix) {
+                    $candidates = $names;
+                    break 2;
+                }
+                if (0 === strpos($name, $prefix)) {
+                    $candidates[$key] = $name;
                 }
             }
         }
 
+        if (!$candidates) {
+            return array();
+        }
+
         /** @var $dm DocumentManager */
         $dm = $this->getObjectManager();
-        $collection = $dm->findMany($this->className, $names);
+        $collection = $dm->findMany($this->className, $candidates);
         foreach ($collection as $key => $document) {
             if (!$document instanceof SymfonyRoute) {
                 // we follow the logic of DocumentManager::findMany and do not throw an exception

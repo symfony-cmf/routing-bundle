@@ -122,6 +122,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('locales')
                             ->prototype('scalar')->end()
                         ->end()
+                        ->booleanNode('auto_locale_pattern')->defaultValue(false)->end()
                     ->end()
                 ->end()
             ->end()

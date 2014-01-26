@@ -39,6 +39,7 @@
         <xsd:attribute name="uri-filter-regexp" type="xsd:string" />
         <xsd:attribute name="route-provider-service-id" type="xsd:string" />
         <xsd:attribute name="content-repository-service-id" type="xsd:string" />
+        <xsd:attribute name="auto-locale-pattern" type="xsd:boolean" />
     </xsd:complexType>
 
     <xsd:complexType name="controller_by_type">

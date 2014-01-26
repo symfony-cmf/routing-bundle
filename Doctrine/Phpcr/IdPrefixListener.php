@@ -15,30 +15,38 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
- * Doctrine PHPCR-ODM listener to set the idPrefix on routes
+ * Doctrine PHPCR-ODM listener to tell routes what part of their id is the URL.
+ *
+ * This listener knows about the RouteProvider and uses its prefixes to
+ * identify routes that could need the prefix. In case prefixes overlap, the
+ * order matters as the first matching prefix is taken.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
 class IdPrefixListener
 {
     /**
-     * The prefix to add to the url to create the repository path
+     *  Used to ask for the possible prefixes to remove from the repository ID
+     * to create the URL.
      *
-     * @var string
+     * @var RouteProvider
      */
-    protected $idPrefix = '';
+    protected $provider;
 
-    public function __construct($prefix)
+    /**
+     * @param RouteProvider $provider
+     */
+    public function __construct(RouteProvider $provider)
     {
-        $this->idPrefix = $prefix;
+        $this->provider = $provider;
     }
 
     /**
-     * @param $prefix
+     * @return array
      */
-    public function setPrefix($prefix)
+    protected function getPrefixes()
     {
-        $this->idPrefix = $prefix;
+        return $this->provider->getPrefixes();
     }
 
     public function postLoad(LifecycleEventArgs $args)
@@ -51,16 +59,24 @@ class IdPrefixListener
         $this->updateId($args);
     }
 
+    public function postMove(LifecycleEventArgs $args)
+    {
+        $this->updateId($args);
+    }
+
     protected function updateId(LifecycleEventArgs $args)
     {
         $doc = $args->getObject();
 
         // only update route objects and only if the prefix can match, to allow
         // for more than one listener and more than one route root
-        if (($doc instanceof PrefixInterface)
-            && ! strncmp($this->idPrefix, $doc->getId(), strlen($this->idPrefix))
-        ) {
-            $doc->setPrefix($this->idPrefix);
+        if ($doc instanceof PrefixInterface) {
+            foreach ($this->getPrefixes() as $prefix) {
+                if (! strncmp($prefix, $doc->getId(), strlen($prefix))) {
+                    $doc->setPrefix($prefix);
+                    break;
+                }
+            }
         }
     }
 }

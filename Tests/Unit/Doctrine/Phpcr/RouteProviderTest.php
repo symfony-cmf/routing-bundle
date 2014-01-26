@@ -10,9 +10,13 @@
  */
 
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use PHPCR\Query\QueryInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends \PHPUnit_Framework_Testcase
 {
@@ -31,9 +35,23 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
         $this->route2 = $this->getMockBuilder('Symfony\Component\Routing\Route')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $this->objectManager2 = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->objectManager = $this
+            ->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->objectManager2 = $this
+            ->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+
+        $this->managerRegistry
+            ->expects($this->any())
+            ->method('getManager')
+            ->will($this->returnValue($this->objectManager))
+        ;
     }
 
     public function testGetRouteCollectionForRequest()
@@ -43,7 +61,6 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
 
     public function testGetRouteByName()
     {
-
         $this->route
             ->expects($this->any())
             ->method('getPath')
@@ -57,16 +74,10 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             ->will($this->returnValue($this->route))
         ;
 
-        $this->managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
-        ;
-
         $routeProvider = new RouteProvider($this->managerRegistry);
         $routeProvider->setManagerName('default');
 
-        $routeProvider->setPrefix('/cms/routes/');
+        $routeProvider->setPrefixes(array('/cms/routes/'));
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
 
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
@@ -85,15 +96,9 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             ->will($this->returnValue(null))
         ;
 
-        $this->managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
-        ;
-
         $routeProvider = new RouteProvider($this->managerRegistry);
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefix('/cms/routes/');
+        $routeProvider->setPrefixes(array('/cms/routes/'));
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
@@ -109,15 +114,9 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             ->will($this->returnValue($this))
         ;
 
-        $this->managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
-        ;
-
         $routeProvider = new RouteProvider($this->managerRegistry);
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefix('/cms/routes/');
+        $routeProvider->setPrefixes(array('/cms/routes/'));
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
@@ -131,16 +130,10 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             ->method('find')
         ;
 
-        $this->managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
-        ;
-
         $routeProvider = new RouteProvider($this->managerRegistry);
         $routeProvider->setManagerName('default');
 
-        $routeProvider->setPrefix('/cms/routes');
+        $routeProvider->setPrefixes(array('/cms/routes'));
 
         $routeProvider->getRouteByName('invalid_route');
     }
@@ -161,16 +154,10 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             ->will($this->returnValue($this->route))
         ;
 
-        $this->managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
-        ;
-
         $routeProvider = new RouteProvider($this->managerRegistry);
         $routeProvider->setManagerName('default');
 
-        $routeProvider->setPrefix('');
+        $routeProvider->setPrefixes(array(''));
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
 
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
@@ -190,15 +177,9 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             ->will($this->returnValue(null))
         ;
 
-        $this->managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
-        ;
-
         $routeProvider = new RouteProvider($this->managerRegistry);
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefix('');
+        $routeProvider->setPrefixes(array(''));
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
@@ -208,29 +189,123 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
     public function testGetRouteByNameNoRoutePrefixEmptyString()
     {
         $this->objectManager
-            ->expects($this->any())
+            ->expects($this->once())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
             ->will($this->returnValue($this))
         ;
 
-        $this->managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
-        ;
-
         $routeProvider = new RouteProvider($this->managerRegistry);
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefix('');
+        $routeProvider->setPrefixes(array(''));
 
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
     public function testGetRoutesByNames()
     {
-        $this->markTestIncomplete();
+        $paths = array(
+            '/cms/routes/test-route',
+            '/cms/simple/other-route',
+            '/cms/routes/not-a-route',
+        );
+
+        $collection = new ArrayCollection();
+        $collection->set('/cms/routes/test-route', new Route('/test-route'));
+        $collection->set('/cms/simple/other-route', new Route('/other-route'));
+        $collection->set('/cms/routes/not-a-route', $this);
+
+        $this->objectManager
+            ->expects($this->once())
+            ->method('findMany')
+            ->with(null, $paths)
+            ->will($this->returnValue($collection))
+        ;
+        $paths[] = '/outside/prefix';
+
+        $routeProvider = new RouteProvider($this->managerRegistry);
+        $routeProvider->setManagerName('default');
+        $routeProvider->setPrefixes(array('/cms/routes', '/cms/simple'));
+        $routeProvider->setRouteCollectionLimit(1);
+
+        $collection = $routeProvider->getRoutesByNames($paths);
+        $this->assertCount(2, $collection);
     }
+
+    private function doRouteDump($limit)
+    {
+        if ($limit === 0) {
+            $this->objectManager
+                ->expects($this->never())
+                ->method('createPhpcrQuery')
+            ;
+            $this->objectManager
+                ->expects($this->never())
+                ->method('getDocumentsByPhpcrQuery')
+            ;
+        } else {
+            $query = $this->getMock('\PHPCR\Query\QueryInterface');
+            $sql2 = 'SELECT * FROM [nt:unstructured] WHERE [phpcr:classparents] = "Symfony\Component\Routing\Route" AND (ISDESCENDANTNODE("/cms/routes") OR ISDESCENDANTNODE("/cms/simple"))';
+            $this->objectManager
+                ->expects($this->once())
+                ->method('createPhpcrQuery')
+                ->with($sql2, QueryInterface::JCR_SQL2)
+                ->will($this->returnValue($query))
+            ;
+            if ($limit) {
+                $query
+                    ->expects($this->once())
+                    ->method('setLimit')
+                    ->with($limit)
+                ;
+            } else {
+                $query
+                    ->expects($this->never())
+                    ->method('setLimit')
+                ;
+            }
+            $this->objectManager
+                ->expects($this->once())
+                ->method('getDocumentsByPhpcrQuery')
+                ->with($query)
+                ->will($this->returnValue(new ArrayCollection()))
+            ;
+            $this->objectManager
+                ->expects($this->any())
+                ->method('quote')
+                ->will(
+                    $this->returnCallback(
+                        function ($text) {
+                            return '"' . $text . '"';
+                        }
+                    )
+                )
+            ;
+        }
+
+        $routeProvider = new RouteProvider($this->managerRegistry);
+        $routeProvider->setManagerName('default');
+        $routeProvider->setPrefixes(array('/cms/routes', '/cms/simple'));
+        $routeProvider->setRouteCollectionLimit($limit);
+
+        $routeProvider->getRoutesByNames();
+    }
+
+    public function testDumpRoutesNoLimit()
+    {
+        $this->doRouteDump(null);
+    }
+
+    public function testDumpRoutesLimit()
+    {
+        $this->doRouteDump(1);
+    }
+
+    public function testDumpRoutesDisabled()
+    {
+        $this->doRouteDump(0);
+    }
+
 
     /**
      * Use getRouteByName() with two different document managers.
@@ -266,6 +341,7 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             'default' => $this->objectManager,
             'new_manager' => $this->objectManager2
         );
+        $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
         $this->managerRegistry
             ->expects($this->any())
             ->method('getManager')
@@ -280,7 +356,7 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
         $routeProvider = new RouteProvider($this->managerRegistry);
 
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefix('/cms/routes/');
+        $routeProvider->setPrefixes(array('/cms/routes/'));
 
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);

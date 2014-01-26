@@ -8,7 +8,10 @@
             <router-by-id id="router.default">100</router-by-id>
         </chain>
 
-        <dynamic generic-controller="acme_main.controller:mainAction">
+        <dynamic
+            generic-controller="acme_main.controller:mainAction"
+            auto-locale-pattern="true"
+        >
             <controller-by-type type="editable">acme_main.some_controller:editableAction</controller-by-type>
             <controller-by-class class="Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent">
                 cmf_content.controller:indexAction

@@ -54,11 +54,17 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $variablePattern;
 
     /**
-     * if to add ".{_format}" to the pattern
+     * Whether to append ".{_format}" to the pattern.
      *
      * @var Boolean
      */
     protected $addFormatPattern;
+
+    /**
+     * Whether to prepend "{_locale}" to the pattern.
+     * @var boolean
+     */
+    protected $addLocalePattern;
 
     /**
      * Whether this route was changed since being last compiled.
@@ -72,20 +78,26 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * Overwrite to be able to create route without pattern
      *
-     * @param bool $addFormatPattern if to add ".{_format}" to the route pattern
-     *                                  also implicitly sets a default/require on "_format" to "html"
+     * Supported settings are:
+     *
+     * * addFormatPattern: When set, ".{_format}" is appended to the route pattern.
+     *                     Also implicitly sets a default/require on "_format" to "html".
+     * * addLocalePattern: When set, "/{_locale}" is prepended to the route pattern.
+     *
+     * @param array $settings
      */
-    public function __construct($addFormatPattern = false)
+    public function __construct(array $settings = array())
     {
         $this->setDefaults(array());
         $this->setRequirements(array());
         $this->setOptions(array());
 
-        $this->addFormatPattern = $addFormatPattern;
+        $this->addFormatPattern = empty($settings['addFormatPattern']);
         if ($this->addFormatPattern) {
             $this->setDefault('_format', 'html');
             $this->setRequirement('_format', 'html');
         }
+        $this->addLocalePattern = empty($settings['addLocalePattern']);
     }
 
     public function getAddFormatPattern()
@@ -96,6 +108,16 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function setAddFormatPattern($addFormatPattern)
     {
         $this->addFormatPattern = $addFormatPattern;
+    }
+
+    public function getAddLocalePattern()
+    {
+        return $this->addLocalePattern;
+    }
+
+    public function setAddLocalePattern($addLocalePattern)
+    {
+        $this->addLocalePattern = $addLocalePattern;
     }
 
     /**

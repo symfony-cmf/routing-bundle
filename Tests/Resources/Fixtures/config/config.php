@@ -27,5 +27,6 @@ $container->loadFromExtension('cmf_routing', array(
             ),
         ),
         'locales' => array('en', 'fr'),
+        'auto_locale_pattern' => true,
     ),
 ));
