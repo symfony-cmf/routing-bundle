@@ -34,6 +34,7 @@ class CmfRoutingExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('metadata.xml');
 
         if ($config['dynamic']['enabled']) {
             // load this even if no explicit enabled value but some configuration
@@ -150,55 +151,23 @@ class CmfRoutingExtension extends Extension
                 )
             );
         }
-        if (!empty($config['controllers_by_class'])) {
-            $dynamic->addMethodCall(
-                'addRouteEnhancer',
-                array(
-                    new Reference($this->getAlias() . '.enhancer.controllers_by_class'),
-                    50
-                )
-            );
-        }
-        if (!empty($config['templates_by_class'])) {
-            $dynamic->addMethodCall(
-                'addRouteEnhancer',
-                array(
-                    new Reference($this->getAlias() . '.enhancer.templates_by_class'),
-                    40
-                )
-            );
 
-            /*
-             * The CoreBundle prepends the controller from ContentBundle if the
-             * ContentBundle is present in the project.
-             * If you are sure you do not need a generic controller, set the field
-             * to false to disable this check explicitly. But you would need
-             * something else like the default_controller to set the controller,
-             * as no controller will be set here.
-             */
-            if (null === $config['generic_controller']) {
-                throw new InvalidConfigurationException('If you want to configure templates_by_class, you need to configure the generic_controller option.');
-            }
+        $dynamic->addMethodCall(
+            'addRouteEnhancer',
+            array(
+                new Reference($this->getAlias() . '.enhancer.controllers_by_class'),
+                50
+            )
+        );
 
-            if (is_string($config['generic_controller'])) {
-                // if the content class defines the template, we also need to make sure we use the generic controller for those routes
-                $controllerForTemplates = array();
-                foreach ($config['templates_by_class'] as $key => $value) {
-                    $controllerForTemplates[$key] = $config['generic_controller'];
-                }
+        $dynamic->addMethodCall(
+            'addRouteEnhancer',
+            array(
+                new Reference($this->getAlias() . '.enhancer.templates_by_class'),
+                40
+            )
+        );
 
-                $definition = $container->getDefinition($this->getAlias() . '.enhancer.controller_for_templates_by_class');
-                $definition->replaceArgument(2, $controllerForTemplates);
-
-                $dynamic->addMethodCall(
-                    'addRouteEnhancer',
-                    array(
-                        new Reference($this->getAlias() . '.enhancer.controller_for_templates_by_class'),
-                        30
-                    )
-                );
-            }
-        }
         if (!empty($config['generic_controller']) && $config['generic_controller'] !== $defaultController) {
             $dynamic->addMethodCall(
                 'addRouteEnhancer',

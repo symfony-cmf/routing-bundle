@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- Factory -->
+        <service 
+            id="cmf_routing.metadata.factory"
+            class="Metadata\MetadataFactory"
+            >
+            <argument 
+                type="service" 
+                id="cmf_routing.metadata.driver.chain"
+                />
+        </service>
+
+        <!-- Chain Driver !-->
+        <service
+            id="cmf_routing.metadata.driver.chain"
+            class="Metadata\Driver\DriverChain"
+            >
+            <argument type="collection">
+                <argument type="service" id="cmf_routing.metadata.driver.annotation"/>
+            </argument>
+        </service>
+
+        <!-- Annotations Driver -->
+        <service
+            id="cmf_routing.metadata.driver.annotation"
+            class="Symfony\Cmf\Bundle\RoutingBundle\Metadata\Driver\AnnotationDriver"
+            >
+            <argument type="service" id="annotation_reader"/>
+            <argument type="collection"/>
+        </service>
+    </services>
+</container>

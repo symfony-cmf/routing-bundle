@@ -23,6 +23,7 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 use Symfony\Cmf\Component\Testing\Document\Content;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\AnnotatedContent;
 
 /**
  * The goal of these tests is to test the interoperation with DI and everything.
@@ -310,7 +311,7 @@ class DynamicRouterTest extends BaseTestCase
             $this->getDm()->flush();
         }
         NodeHelper::createPath($this->getDm()->getPhpcrSession(), '/test/content');
-        $document = new Content();
+        $document = new AnnotatedContent();
         $document->setId('/test/content/templatebyclass');
         $document->setTitle('the title');
         $this->getDm()->persist($document);

@@ -15,7 +15,7 @@
         <parameter key="cmf_routing.enhancer.default_controller.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="cmf_routing.enhancer.explicit_template.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="cmf_routing.enhancer.controllers_by_type.class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
-        <parameter key="cmf_routing.enhancer.field_by_class.class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.field_by_class.class">Symfony\Cmf\Bundle\RoutingBundle\Enhancer\FieldByClassEnhancer</parameter>
         <parameter key="cmf_routing.redirect_controller.class">Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController</parameter>
     </parameters>
 
@@ -46,19 +46,22 @@
         <service id="cmf_routing.enhancer.controllers_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
             <argument>_content</argument>
             <argument>_controller</argument>
-            <argument>%cmf_routing.controllers_by_class%</argument>
+            <argument>controller</argument>
+            <argument type="service" id="cmf_routing.metadata.factory"/>
         </service>
 
         <service id="cmf_routing.enhancer.controller_for_templates_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
             <argument>_content</argument>
             <argument>_controller</argument>
-            <argument type="collection" />
+            <argument>controller</argument>
+            <argument type="service" id="cmf_routing.metadata.factory"/>
         </service>
 
         <service id="cmf_routing.enhancer.templates_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
             <argument>_content</argument>
             <argument>_template</argument>
-            <argument>%cmf_routing.templates_by_class%</argument>
+            <argument>template</argument>
+            <argument type="service" id="cmf_routing.metadata.factory"/>
         </service>
 
         <service id="cmf_routing.dynamic_router" class="%cmf_routing.dynamic_router.class%">
