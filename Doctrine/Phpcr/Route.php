@@ -12,6 +12,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
@@ -65,18 +66,18 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
     protected $idPrefix;
 
     /**
-     * Overwrite to be able to create route without pattern
+     * PHPCR id can not end on '/', so we need an additional option.
      *
-     * @param Boolean $addFormatPattern if to add ".{_format}" to the route pattern
-     *                                  also implicitly sets a default/require on "_format" to "html"
-     * @param Boolean $addTrailingSlash whether to add a trailing slash to the route, defaults to not add one
+     * Additional supported settings are:
+     *
+     * * addTrailingSlash: When set, a trailing slash is appended to the route
      */
-    public function __construct($addFormatPattern = false, $addTrailingSlash = false)
+    public function __construct(array $settings = array())
     {
-        parent::__construct($addFormatPattern);
+        parent::__construct($settings);
 
-        $this->children = array();
-        $this->addTrailingSlash = $addTrailingSlash;
+        $this->children = new ArrayCollection();
+        $this->addTrailingSlash = empty($settings['addTrailingSlash']);
     }
 
     public function getAddTrailingSlash()
@@ -217,7 +218,14 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
      */
     public function getStaticPrefix()
     {
-        return $this->generateStaticPrefix($this->getId(), $this->idPrefix);
+        $path = $this->getId();
+        $prefix = $this->getPrefix();
+
+        if ($this->addLocalePattern) {
+            $path = $prefix . '/{_locale}' . substr($path, strlen($prefix));
+        }
+
+        return $this->generateStaticPrefix($path, $prefix);
     }
 
     /**
@@ -297,7 +305,7 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
     /**
      * Get all children of this route including non-routes.
      *
-     * @return array
+     * @return Collection
      */
     public function getChildren()
     {

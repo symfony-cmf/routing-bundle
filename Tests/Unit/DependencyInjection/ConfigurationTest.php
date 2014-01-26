@@ -68,6 +68,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'uri_filter_regexp' => '',
                 'route_filters_by_id' => array(),
                 'locales' => array('en', 'fr'),
+                'auto_locale_pattern' => true,
             ),
         );
 

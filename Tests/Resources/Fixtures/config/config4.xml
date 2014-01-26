@@ -7,6 +7,7 @@
         uri-filter-regexp=".*"
         route-provider-service-id="my-provider"
         content-repository-service-id="my-repo"
+        auto-locale-pattern="true"
     >
         <controller-by-type type="type-a">type-controller</controller-by-type>
         <controller-by-class class="class-a">class-controller</controller-by-class>

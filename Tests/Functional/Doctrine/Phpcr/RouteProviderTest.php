@@ -122,8 +122,8 @@ class RouteRepositoryTest extends BaseTestCase
     }
 
 
-    public function testSetPrefix()
+    public function testSetPrefixes()
     {
-        $this->repository->setPrefix(self::ROUTE_ROOT);
+        $this->repository->setPrefixes(array(self::ROUTE_ROOT));
     }
 }
