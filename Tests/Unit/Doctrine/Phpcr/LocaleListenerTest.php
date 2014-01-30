@@ -185,7 +185,7 @@ class LocaleListenerTest extends CmfUnitTestCase
     }
 
     /**
-     * URL without locale, addLocalePattern not set.
+     * URL without locale, add_locale_pattern not set.
      */
     public function testNolocaleUrl()
     {
@@ -217,8 +217,8 @@ class LocaleListenerTest extends CmfUnitTestCase
         ;
 
         $this->routeMock->expects($this->once())
-            ->method('setAddLocalePattern')
-            ->with(true)
+            ->method('setOption')
+            ->with('add_locale_pattern', true)
         ;
 
         $this->listener->setAddLocalePattern(true);

@@ -50,13 +50,6 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
     protected $children;
 
     /**
-     * if to add "/" to the pattern
-     *
-     * @var Boolean
-     */
-    protected $addTrailingSlash;
-
-    /**
      * The part of the PHPCR path that does not belong to the url
      *
      * This field is not persisted in storage.
@@ -66,28 +59,34 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
     protected $idPrefix;
 
     /**
-     * PHPCR id can not end on '/', so we need an additional option.
+     * PHPCR id can not end on '/', so we need an additional option for a
+     * trailing slash.
      *
-     * Additional supported settings are:
+     * Additional supported option is:
      *
-     * * addTrailingSlash: When set, a trailing slash is appended to the route
+     * * add_trailing_slash: When set, a trailing slash is appended to the route
      */
-    public function __construct(array $settings = array())
+    public function __construct(array $options= array())
     {
-        parent::__construct($settings);
+        parent::__construct($options);
 
         $this->children = new ArrayCollection();
-        $this->addTrailingSlash = empty($settings['addTrailingSlash']);
     }
 
+    /**
+     * @deprecated use getOption('add_trailing_slash') instead
+     */
     public function getAddTrailingSlash()
     {
-        return $this->addTrailingSlash;
+        return $this->getOption('add_trailing_slash');
     }
 
+    /**
+     * @deprecated use setOption('add_trailing_slash', $add) instead
+     */
     public function setAddTrailingSlash($addTrailingSlash)
     {
-        $this->addTrailingSlash = $addTrailingSlash;
+        $this->setOption('add_trailing_slash', $addTrailingSlash);
     }
 
     /**
@@ -221,10 +220,6 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
         $path = $this->getId();
         $prefix = $this->getPrefix();
 
-        if ($this->addLocalePattern) {
-            $path = $prefix . '/{_locale}' . substr($path, strlen($prefix));
-        }
-
         return $this->generateStaticPrefix($path, $prefix);
     }
 
@@ -256,11 +251,13 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
 
     /**
      * {@inheritDoc}
+     *
+     * Handle the trailing slash option.
      */
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->addTrailingSlash && '/' !== $pattern[strlen($pattern)-1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern)-1]) {
             $pattern .= '/';
         };
 
