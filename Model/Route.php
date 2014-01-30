@@ -54,19 +54,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     protected $variablePattern;
 
     /**
-     * Whether to append ".{_format}" to the pattern.
-     *
-     * @var Boolean
-     */
-    protected $addFormatPattern;
-
-    /**
-     * Whether to prepend "{_locale}" to the pattern.
-     * @var boolean
-     */
-    protected $addLocalePattern;
-
-    /**
      * Whether this route was changed since being last compiled.
      *
      * State information not persisted in storage.
@@ -78,46 +65,40 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * Overwrite to be able to create route without pattern
      *
-     * Supported settings are:
+     * Additional supported options are:
      *
-     * * addFormatPattern: When set, ".{_format}" is appended to the route pattern.
-     *                     Also implicitly sets a default/require on "_format" to "html".
-     * * addLocalePattern: When set, "/{_locale}" is prepended to the route pattern.
+     * * add_format_pattern: When set, ".{_format}" is appended to the route pattern.
+     *                       Also implicitly sets a default/require on "_format" to "html".
+     * * add_locale_pattern: When set, "/{_locale}" is prepended to the route pattern.
      *
-     * @param array $settings
+     * @param array $options
      */
-    public function __construct(array $settings = array())
+    public function __construct(array $options = array())
     {
         $this->setDefaults(array());
         $this->setRequirements(array());
-        $this->setOptions(array());
+        $this->setOptions($options);
 
-        $this->addFormatPattern = !empty($settings['addFormatPattern']);
-        if ($this->addFormatPattern) {
+        if ($this->getOption('add_format_pattern')) {
             $this->setDefault('_format', 'html');
             $this->setRequirement('_format', 'html');
         }
-        $this->addLocalePattern = !empty($settings['addLocalePattern']);
     }
 
+    /**
+     * @deprecated use getOption('add_format_pattern') instead
+     */
     public function getAddFormatPattern()
     {
-        return $this->addFormatPattern;
+        return $this->getOption('add_format_pattern');
     }
 
+    /**
+     * @deprecated use setOption('add_format_pattern', $bool) instead
+     */
     public function setAddFormatPattern($addFormatPattern)
     {
-        $this->addFormatPattern = $addFormatPattern;
-    }
-
-    public function getAddLocalePattern()
-    {
-        return $this->addLocalePattern;
-    }
-
-    public function setAddLocalePattern($addLocalePattern)
-    {
-        $this->addLocalePattern = $addLocalePattern;
+        $this->setOption('add_format_pattern', $addFormatPattern);
     }
 
     /**
@@ -235,8 +216,13 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function getPath()
     {
-        $pattern = $this->getStaticPrefix() . $this->getVariablePattern();
-        if ($this->addFormatPattern && !preg_match('/(.+)\.[a-z]+$/i', $pattern, $matches)) {
+        $pattern = '';
+        if ($this->getOption('add_locale_pattern')) {
+            $pattern .= '/{_locale}';
+        }
+        $pattern .= $this->getStaticPrefix();
+        $pattern .= $this->getVariablePattern();
+        if ($this->getOption('add_format_pattern') && !preg_match('/(.+)\.[a-z]+$/i', $pattern, $matches)) {
             $pattern .= '.{_format}';
         };
 
