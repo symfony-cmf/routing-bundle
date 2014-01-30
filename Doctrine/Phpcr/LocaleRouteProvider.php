@@ -74,6 +74,7 @@ class LocaleRouteProvider extends RouteProvider
 
     protected function configureLocale($route)
     {
+        crap. that if is about simple cms
         if ($this->getObjectManager()->isDocumentTranslatable($route)) {
             // add locale requirement
             if (!$route->getRequirement('_locale')) {

@@ -104,7 +104,6 @@ class IdPrefixListenerTest extends CmfUnitTestCase
 
     public function testOutside()
     {
-
         $this->routeMock
             ->expects($this->exactly(2))
             ->method('getId')

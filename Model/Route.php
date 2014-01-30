@@ -92,12 +92,12 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $this->setRequirements(array());
         $this->setOptions(array());
 
-        $this->addFormatPattern = empty($settings['addFormatPattern']);
+        $this->addFormatPattern = !empty($settings['addFormatPattern']);
         if ($this->addFormatPattern) {
             $this->setDefault('_format', 'html');
             $this->setRequirement('_format', 'html');
         }
-        $this->addLocalePattern = empty($settings['addLocalePattern']);
+        $this->addLocalePattern = !empty($settings['addLocalePattern']);
     }
 
     public function getAddFormatPattern()

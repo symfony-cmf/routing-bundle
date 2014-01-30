@@ -90,7 +90,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         $routes = array();
         foreach ($names as $name) {
             try {
-                $routes[] = $this->getRouteByName($name, $parameters);
+                $routes[] = $this->getRouteByName($name);
             } catch (RouteNotFoundException $e) {
                 // not found
             }

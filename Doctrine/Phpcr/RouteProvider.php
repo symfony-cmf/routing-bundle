@@ -126,7 +126,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     {
         $candidates = array();
         foreach ($this->getPrefixes() as $prefix) {
-            $candidates = array_merge($prefix, $url);
+            $candidates = array_merge($candidates, $this->getCandidatesFor($prefix, $url));
         }
 
         return $candidates;
@@ -140,7 +140,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      * @return array PHPCR ids that could load routes that match $url and are
      *      child of $prefix.
      */
-    protected function getCandidatesFor ($prefix, $url)
+    protected function getCandidatesFor($prefix, $url)
     {
         $candidates = array();
         if ('/' !== $url) {

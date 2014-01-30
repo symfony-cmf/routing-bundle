@@ -306,7 +306,6 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
         $this->doRouteDump(0);
     }
 
-
     /**
      * Use getRouteByName() with two different document managers.
      * The two document managers will return different route objects when searching for the same path.

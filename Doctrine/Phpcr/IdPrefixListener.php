@@ -26,7 +26,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 class IdPrefixListener
 {
     /**
-     *  Used to ask for the possible prefixes to remove from the repository ID
+     * Used to ask for the possible prefixes to remove from the repository ID
      * to create the URL.
      *
      * @var RouteProvider
