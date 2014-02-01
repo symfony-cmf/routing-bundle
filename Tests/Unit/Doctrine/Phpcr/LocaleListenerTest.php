@@ -12,29 +12,45 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Component\Routing\Candidates\PrefixCandidates;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
 class LocaleListenerTest extends CmfUnitTestCase
 {
     /** @var LocaleListener */
     protected $listener;
-    protected $routeMock;
+
+    /**
+     * @var PrefixCandidates|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $candidatesMock;
+
+    /**
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected $dmMock;
-    protected $provider;
+
+    /**
+     * @var Route|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $routeMock;
+
 
     public function setUp()
     {
-        $this->provider = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider');
+        $this->candidatesMock = $this->buildMock('Symfony\Cmf\Component\Routing\Candidates\PrefixCandidates');
 
-        $this->provider->expects($this->any())
+        $this->candidatesMock->expects($this->any())
             ->method('getPrefixes')
             ->will($this->returnValue(array('/cms/routes', '/cms/simple')))
         ;
-        $this->listener = new LocaleListener($this->provider, array('en', 'de'));
+        $this->listener = new LocaleListener($this->candidatesMock, array('en', 'de'));
         $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route');
         $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
     }

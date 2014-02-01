@@ -16,6 +16,7 @@ use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Component\Routing\Candidates\PrefixCandidates;
 
 /**
  * Doctrine PHPCR-ODM listener to update the locale on routes based on the URL.
@@ -34,7 +35,7 @@ class LocaleListener
      *
      * @var RouteProvider
      */
-    protected $provider;
+    protected $candidates;
 
     /**
      * List of possible locales to detect on URL after idPrefix
@@ -50,15 +51,17 @@ class LocaleListener
     protected $addLocalePattern;
 
     /**
-     * @param RouteProvider $provider         To get prefixes from.
-     * @param array         $locales          Locales that should be detected.
-     * @param bool          $addLocalePattern Whether to make route prepend the
-     *                                        locale pattern if it does not have
-     *                                        one of the allowed locals in its id.
+     * This listener is built to work with the prefix candidates strategy.
+     *
+     * @param PrefixCandidates $candidates       To get prefixes from.
+     * @param array            $locales          Locales that should be detected.
+     * @param bool             $addLocalePattern Whether to make route prepend the
+     *                                           locale pattern if it does not have
+     *                                           one of the allowed locals in its id.
      */
-    public function __construct(RouteProvider $provider, array $locales, $addLocalePattern = false)
+    public function __construct(PrefixCandidates $candidates, array $locales, $addLocalePattern = false)
     {
-        $this->provider = $provider;
+        $this->candidates = $candidates;
         $this->locales = $locales;
         $this->addLocalePattern = $addLocalePattern;
     }
@@ -131,7 +134,7 @@ class LocaleListener
      */
     protected function getPrefixes()
     {
-        return $this->provider->getPrefixes();
+        return $this->candidates->getPrefixes();
     }
 
     /**

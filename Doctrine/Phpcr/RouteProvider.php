@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
 use PHPCR\Query\QueryInterface;
@@ -19,6 +19,7 @@ use PHPCR\RepositoryException;
 
 use PHPCR\Query\RowInterface;
 
+use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -41,38 +42,14 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 {
     /**
-     * Places in the PHPCR tree where routes are located.
-     *
-     * @var array
+     * @var CandidatesInterface
      */
-    protected $idPrefixes = array();
+    private $candidatesStrategy;
 
-    /**
-     * @param $prefix
-     */
-    public function setPrefixes($prefixes)
+    public function __construct(ManagerRegistry $managerRegistry, CandidatesInterface $candidatesStrategy, $className = null)
     {
-        $this->idPrefixes = $prefixes;
-    }
-
-    /**
-     * Append a repository prefix to the possible prefixes.
-     *
-     * @param $prefix
-     */
-    public function addPrefix($prefix)
-    {
-        $this->idPrefixes[] = $prefix;
-    }
-
-    /**
-     * Get all currently configured prefixes where to look for routes.
-     *
-     * @return array
-     */
-    public function getPrefixes()
-    {
-        return $this->idPrefixes;
+        parent::__construct($managerRegistry, $className);
+        $this->candidatesStrategy = $candidatesStrategy;
     }
 
     /**
@@ -85,8 +62,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteCollectionForRequest(Request $request)
     {
-        $url = $request->getPathInfo();
-        $candidates = $this->getCandidates($url);
+        $candidates = $this->candidatesStrategy->getCandidates($request);
 
         $collection = new RouteCollection();
 
@@ -116,65 +92,15 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * Get id candidates for all configured prefixes.
-     *
-     * @param string $url
-     *
-     * @return array PHPCR ids that could load routes that match $url.
-     */
-    protected function getCandidates($url)
-    {
-        $candidates = array();
-        foreach ($this->getPrefixes() as $prefix) {
-            $candidates = array_merge($candidates, $this->getCandidatesFor($prefix, $url));
-        }
-
-        return $candidates;
-    }
-
-    /**
-     * Get the id candidates for one prefix.
-     *
-     * @param string $url
-     *
-     * @return array PHPCR ids that could load routes that match $url and are
-     *      child of $prefix.
-     */
-    protected function getCandidatesFor($prefix, $url)
-    {
-        $candidates = array();
-        if ('/' !== $url) {
-            if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
-                $candidates[] = $prefix . $url;
-                $url = $matches[1];
-            }
-
-            $part = $url;
-            while (false !== ($pos = strrpos($part, '/'))) {
-                $candidates[] = $prefix . $part;
-                $part = substr($url, 0, $pos);
-            }
-        }
-
-        $candidates[] = $prefix;
-
-        return $candidates;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getRouteByName($name)
     {
-        foreach ($this->getPrefixes() as $prefix) {
-            // $name is the route document path
-            if ('' === $prefix || 0 === strpos($name, $prefix)) {
-                $route = $this->getObjectManager()->find($this->className, $name);
-                if ($route) {
-                    break;
-                }
-            }
+        if (!$this->candidatesStrategy->isCandidate($name)) {
+            throw new RouteNotFoundException(sprintf('Path "%s" is not handled by this route provider', $name));
         }
+
+        $route = $this->getObjectManager()->find($this->className, $name);
 
         if (empty($route)) {
             throw new RouteNotFoundException(sprintf('No route found for path "%s"', $name));
@@ -201,26 +127,18 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         /** @var $dm DocumentManager */
         $dm = $this->getObjectManager();
-        $sql2 = 'SELECT * FROM [nt:unstructured] WHERE [phpcr:classparents] = '.$dm->quote('Symfony\Component\Routing\Route');
+        $qb = $dm->createQueryBuilder();
 
-        $prefixConstraints = array();
-        foreach ($this->getPrefixes() as $prefix) {
-            if ('' == $prefix) {
-                $prefixConstraints = array();
-                break;
-            }
-            $prefixConstraints[] = 'ISDESCENDANTNODE('.$dm->quote($prefix).')';
-        }
-        if ($prefixConstraints) {
-            $sql2 .= ' AND (' . implode(' OR ', $prefixConstraints) . ')';
-        }
+        $qb->from('d')->document('Symfony\Component\Routing\Route', 'd');
 
-        $query = $dm->createPhpcrQuery($sql2, QueryInterface::JCR_SQL2);
+        $this->candidatesStrategy->restrictQuery($qb);
+
+        $query = $qb->getQuery();
         if (null !== $this->routeCollectionLimit) {
-            $query->setLimit($this->routeCollectionLimit);
+            $query->setMaxResults($this->routeCollectionLimit);
         }
 
-        return $dm->getDocumentsByPhpcrQuery($query);
+        return $query->getResult();
     }
 
     /**
@@ -234,14 +152,8 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         $candidates = array();
         foreach ($names as $key => $name) {
-            foreach ($this->getPrefixes() as $prefix) {
-                if ('' == $prefix) {
-                    $candidates = $names;
-                    break 2;
-                }
-                if (0 === strpos($name, $prefix)) {
-                    $candidates[$key] = $name;
-                }
+            if ($this->candidatesStrategy->isCandidate($name)) {
+                $candidates[$key] = $name;
             }
         }
 

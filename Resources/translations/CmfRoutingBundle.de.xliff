@@ -78,6 +78,10 @@
         <source>form.label_defaults</source>
         <target>Vorgabewerte</target>
       </trans-unit>
+      <trans-unit id="form.label_options">
+        <source>form.label_options</source>
+        <target>Optionen</target>
+      </trans-unit>
       <trans-unit id="form.label_route_name">
         <source>form.label_route_name</source>
         <target>Name</target>

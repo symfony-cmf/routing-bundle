@@ -66,8 +66,6 @@ class RouteAdmin extends Admin
                 array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
             )
             ->add('name', 'text')
-            ->add('addFormatPattern', null, array('required' => false, 'help' => 'form.help_add_format_pattern'))
-            ->add('addTrailingSlash', null, array('required' => false, 'help' => 'form.help_add_trailing_slash'))
         ->end();
 
         if (null === $this->getParentFieldDescription()) {
@@ -76,6 +74,7 @@ class RouteAdmin extends Admin
                 ->add('variablePattern', 'text', array('required' => false))
                 ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
+                ->add('options', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForOptions()))
             ->end();
         }
     }
@@ -110,7 +109,7 @@ class RouteAdmin extends Admin
 
     protected function configureFieldsForDefaults()
     {
-        $defaults =  array(
+        $defaults = array(
             '_controller' => array('_controller', 'text', array('required' => false)),
             '_template' => array('_template', 'text', array('required' => false)),
             'type' => array('type', 'cmf_routing_route_type', array(
@@ -125,7 +124,7 @@ class RouteAdmin extends Admin
                 $defaults[$name] = array($name, 'text', array('required' => false));
             }
         }
-        
+
         //parse variable pattern and add defaults for it - taken from routecompiler
         /** @var $route Route */
         $route =  $this->subject;
@@ -140,6 +139,23 @@ class RouteAdmin extends Admin
         }
 
         return $defaults;
+    }
+
+    protected function configureFieldsForOptions()
+    {
+        $options = array(
+            'addFormatPattern' => array('addFormatPattern', 'text', array('required' => false), array('help' => 'form.help_add_format_pattern')),
+            'addTrailingSlash' => array('addTrailingSlash', 'text', array('required' => false), array('help' => 'form.help_add_trailing_slash')),
+        );
+
+        $dynamicOptions = $this->getSubject()->getOptions();
+        foreach ($dynamicOptions as $name => $value) {
+            if (!isset($options[$name])) {
+                $options[$name] = array($name, 'text', array('required' => false));
+            }
+        }
+
+        return $options;
     }
 
     public function prePersist($object)

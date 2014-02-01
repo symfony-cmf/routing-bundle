@@ -13,6 +13,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Symfony\Cmf\Component\Routing\Candidates\PrefixCandidates;
 
 /**
  * Doctrine PHPCR-ODM listener to tell routes what part of their id is the URL.
@@ -29,16 +30,19 @@ class IdPrefixListener
      * Used to ask for the possible prefixes to remove from the repository ID
      * to create the URL.
      *
-     * @var RouteProvider
+     * @var PrefixCandidates
      */
-    protected $provider;
+    protected $candidates;
 
     /**
-     * @param RouteProvider $provider
+     * This listener only makes sense together with the PrefixCandidates
+     * strategy.
+     *
+     * @param PrefixCandidates $candidates
      */
-    public function __construct(RouteProvider $provider)
+    public function __construct(PrefixCandidates $candidates)
     {
-        $this->provider = $provider;
+        $this->candidates = $candidates;
     }
 
     /**
@@ -46,7 +50,7 @@ class IdPrefixListener
      */
     protected function getPrefixes()
     {
-        return $this->provider->getPrefixes();
+        return $this->candidates->getPrefixes();
     }
 
     public function postLoad(LifecycleEventArgs $args)
