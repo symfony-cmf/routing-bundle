@@ -51,35 +51,37 @@ class DynamicRouterTest extends BaseTestCase
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         // do not set a content here, or we need a valid request and so on...
-        $route = new Route;
+        $route = new Route();
         $route->setPosition($root, 'testroute');
         $route->setVariablePattern('/{slug}/{id}');
         $route->setDefault('id', '0');
         $route->setRequirement('id', '[0-9]+');
         $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
-        // TODO: what are the options used for? we should test them too if it makes sense
+
+        //TODO options
+
         $this->getDm()->persist($route);
 
-        $childroute = new Route;
+        $childroute = new Route();
         $childroute->setPosition($route, 'child');
         $childroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($childroute);
 
-        $formatroute = new Route(true);
+        $formatroute = new Route(array('add_format_pattern' => true));
         $formatroute->setPosition($root, 'format');
         $formatroute->setVariablePattern('/{id}');
         $formatroute->setRequirement('_format', 'html|json');
         $formatroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($formatroute);
 
-        $format2jsonroute = new Route(true);
+        $format2jsonroute = new Route(array('add_format_pattern' => true));
         $format2jsonroute->setPosition($root, 'format2.json');
         $format2jsonroute->setDefault('_format', 'json');
         $format2jsonroute->setRequirement('_format', 'json');
         $format2jsonroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testJsonController');
         $this->getDm()->persist($format2jsonroute);
 
-        $format2route = new Route(true);
+        $format2route = new Route(array('add_format_pattern' => true));
         $format2route->setPosition($root, 'format2');
         $format2route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($format2route);
@@ -137,7 +139,7 @@ class DynamicRouterTest extends BaseTestCase
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         // do not set a content here, or we need a valid request and so on...
-        $route = new Route;
+        $route = new Route();
         $route->setPosition($root, 'notallowed');
         $route->setRequirement('_method', 'GET');
         $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
@@ -213,15 +215,15 @@ class DynamicRouterTest extends BaseTestCase
 
     public function testMatchLocale()
     {
-        $route = new Route;
+        $route = new Route();
         $route->setPosition($this->getDm()->find(null, self::ROUTE_ROOT), 'de');
         $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($route);
-        $childroute = new Route;
+        $childroute = new Route();
         $childroute->setPosition($route, 'testroute');
         $childroute->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($childroute);
-        $nolocale = new Route;
+        $nolocale = new Route();
         $nolocale->setPosition($this->getDm()->find(null, self::ROUTE_ROOT), 'es');
         $nolocale->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($nolocale);
@@ -317,7 +319,7 @@ class DynamicRouterTest extends BaseTestCase
 
         // put a route for this content
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-        $route = new Route;
+        $route = new Route();
         $route->setContent($document);
         $route->setPosition($root, 'templatebyclass');
         $this->getDm()->persist($route);

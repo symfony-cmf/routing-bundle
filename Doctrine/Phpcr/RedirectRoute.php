@@ -12,6 +12,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\Collection;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute as RedirectRouteModel;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
@@ -45,13 +46,6 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
     protected $children;
 
     /**
-     * if to add "/" to the pattern
-     *
-     * @var Boolean
-     */
-    protected $addTrailingSlash;
-
-    /**
      * The part of the PHPCR path that does not belong to the url
      *
      * This field is not persisted in storage.
@@ -61,18 +55,17 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
     protected $idPrefix;
 
     /**
-     * Overwrite to be able to create route without pattern
+     * Overwrite to be able to create route without pattern.
      *
-     * @param bool $addFormatPattern if to add ".{_format}" to the route pattern
-     *                                  also implicitly sets a default/require on "_format" to "html"
-     * @param bool $addTrailingSlash whether to add a trailing slash to the route, defaults to not add one
+     * Additional options:
+     *
+     * * add_trailing_slash: When set, a trailing slash is appended to the route
      */
-    public function __construct($addFormatPattern = false, $addTrailingSlash = false)
+    public function __construct(array $options = array())
     {
-        parent::__construct($addFormatPattern);
+        parent::__construct($options);
 
         $this->children = array();
-        $this->addTrailingSlash = $addTrailingSlash;
     }
 
     /**
@@ -206,7 +199,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->addTrailingSlash && '/' !== $pattern[strlen($pattern)-1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern)-1]) {
             $pattern .= '/';
         };
 

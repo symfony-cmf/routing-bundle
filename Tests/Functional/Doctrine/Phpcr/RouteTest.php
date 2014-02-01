@@ -29,7 +29,7 @@ class RouteTest extends BaseTestCase
 
     public function testPersist()
     {
-        $route = new Route;
+        $route = new Route();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         $route->setContent($root); // this happens to be a referenceable node
@@ -68,7 +68,7 @@ class RouteTest extends BaseTestCase
 
     public function testPersistEmptyOptions()
     {
-        $route = new Route;
+        $route = new Route();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         $route->setPosition($root, 'empty');
@@ -129,13 +129,13 @@ class RouteTest extends BaseTestCase
      */
     public function testPrefixNonpersisted()
     {
-        $route = new Route;
+        $route = new Route();
         $route->getPattern();
     }
 
     public function testDefaultFormat()
     {
-        $route = new Route(true);
+        $route = new Route(array('add_format_pattern' => true));
 
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 

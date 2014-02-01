@@ -162,7 +162,7 @@ class LocaleListener
                 $doc->setRequirement('_locale', $locale);
             }
         } elseif ($this->addLocalePattern) {
-            $doc->setAddLocalePattern(true);
+            $doc->setOption('add_locale_pattern', true);
         }
     }
 }

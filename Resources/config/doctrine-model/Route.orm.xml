@@ -4,7 +4,6 @@
 
     <mapped-superclass name="Symfony\Cmf\Bundle\RoutingBundle\Model\Route">
         <field name="variablePattern" type="string" nullable="true"/>
-        <field name="addFormatPattern" type="boolean"/>
         <field name="staticPrefix" type="string" nullable="true"/>
 
         <indexes>
