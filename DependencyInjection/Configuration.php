@@ -77,9 +77,32 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('phpcr')
                                     ->addDefaultsIfNotSet()
                                     ->canBeEnabled()
+                                    ->fixXmlConfig('route_basepath')
+                                    ->beforeNormalization()
+                                        ->ifTrue(function ($v) {
+                                            return isset($v['route_basepath']);
+                                        })
+                                        ->then(function ($v) {
+                                            $base = isset($v['route_basepaths']) ? $v['route_basepaths'] : array();
+                                            if (is_array($v['route_basepath'])) {
+                                                // xml configuration
+                                                $base += $v['route_basepath'];
+                                            } else {
+                                                $base[] = $v['route_basepath'];
+                                            }
+                                            $v['route_basepaths'] = array_unique($base);
+                                            unset($v['route_basepath']);
+
+                                            return $v;
+                                        })
+                                    ->end()
                                     ->children()
                                         ->scalarNode('manager_name')->defaultNull()->end()
-                                        ->scalarNode('route_basepath')->defaultValue('/cms/routes')->end()
+                                        ->arrayNode('route_basepaths')
+                                            ->prototype('scalar')->end()
+                                            ->defaultValue(array('/cms/routes'))
+                                        ->end()
+                                        ->scalarNode('admin_basepath')->end()
                                         ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()
                                         ->enumNode('use_sonata_admin')
                                             ->beforeNormalization()
@@ -122,6 +145,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('locales')
                             ->prototype('scalar')->end()
                         ->end()
+                        ->booleanNode('match_implicit_locale')->defaultValue(true)->end()
                         ->booleanNode('auto_locale_pattern')->defaultValue(false)->end()
                     ->end()
                 ->end()

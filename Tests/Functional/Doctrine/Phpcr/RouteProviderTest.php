@@ -20,7 +20,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
-class RouteRepositoryTest extends BaseTestCase
+class RouteProviderTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
@@ -65,7 +65,7 @@ class RouteRepositoryTest extends BaseTestCase
 
         $routes = $this->repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child'));
         $this->assertCount(3, $routes);
-        $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
+        $this->assertContainsOnlyInstancesOf('Symfony\Cmf\Component\Routing\RouteObjectInterface', $routes);
 
         $routes = $routes->all();
         list($key, $child) = each($routes);
@@ -102,7 +102,7 @@ class RouteRepositoryTest extends BaseTestCase
     public function testGetRouteCollectionForRequestNophpcrUrl()
     {
         $collection = $this->repository->getRouteCollectionForRequest(Request::create(':///'));
-        $this->assertInstanceOf('Symfony\\Component\\Routing\\RouteCollection', $collection);
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
         $this->assertCount(0, $collection);
     }
 
@@ -118,12 +118,6 @@ class RouteRepositoryTest extends BaseTestCase
 
         $routes = $this->repository->getRoutesByNames($routeNames);
         $this->assertCount(2, $routes);
-        $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
-    }
-
-
-    public function testSetPrefixes()
-    {
-        $this->repository->setPrefixes(array(self::ROUTE_ROOT));
+        $this->assertContainsOnlyInstancesOf('Symfony\Cmf\Component\Routing\RouteObjectInterface', $routes);
     }
 }

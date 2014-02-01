@@ -13,28 +13,39 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\IdPrefixListener;
 
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
 class IdPrefixListenerTest extends CmfUnitTestCase
 {
-    protected $provider;
-    protected $dmMock;
-    protected $routeMock;
-
     /**
      * @var IdPrefixListener
      */
     protected $listener;
 
+    /**
+     * @var PrefixCandidates|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $candidatesMock;
+
+    /**
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $dmMock;
+
+    /**
+     * @var Route|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $routeMock;
+
     public function setUp()
     {
-        $this->provider = $this->getMockBuilder('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $this->provider
+        $this->candidatesMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates');
+        $this->candidatesMock
             ->expects($this->any())
             ->method('getPrefixes')
             ->will($this->returnValue(array('/cms/routes', '/cms/simple')))
@@ -42,7 +53,7 @@ class IdPrefixListenerTest extends CmfUnitTestCase
         $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
         $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route');
 
-        $this->listener = new IdPrefixListener($this->provider);
+        $this->listener = new IdPrefixListener($this->candidatesMock);
     }
 
     public function testNoRoute()

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* **2014-03-26**: [ORM] Applied the cleanup for the PHPCR provider to the ORM
+  provider now: If the route matched a pattern with a format extension, the
+  format extension is no longer set as route a default.
+
 * **2014-03-25**: setParent() and getParent() are now deprecated.
   Use setParentDocument() and getParentDocument() instead.
   Moreover, you should now enable the ChildExtension from the CoreBundle.
@@ -8,8 +12,8 @@ Changelog
 * **2014-03-23**: When using PHPCR-ODM, routes can now be generated with their
   uuid as route name as well, in addition to the repository path.
 
-* **2013-11-28**: [BC BREAK] the alias attribute of the <template-by-class> is
-  renamed to class in the bundle configuration.
+* **2013-11-28**: [BC BREAK for xml configuration] the alias attribute of the
+  <template-by-class> is renamed to class in the bundle configuration.
 
 1.1.0
 -----

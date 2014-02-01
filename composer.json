@@ -15,7 +15,7 @@
     "prefer-stable": false,
     "require": {
         "php": ">=5.3.3",
-        "symfony-cmf/routing": "~1.2.0",
+        "symfony-cmf/routing": "dev-candidates as 1.2.0",
         "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {

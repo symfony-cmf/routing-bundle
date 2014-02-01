@@ -9,76 +9,139 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
 use PHPCR\Util\UUIDHelper;
 use PHPCR\Query\QueryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
+use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteProviderTest extends \PHPUnit_Framework_Testcase
+class RouteProviderTest extends CmfUnitTestCase
 {
-    private $route;
-    private $route2;
-    private $objectManager;
-    private $objectManager2;
-    private $managerRegistry;
+    /**
+     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $managerRegistryMock;
+
+    /**
+     * @var PrefixCandidates|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $candidatesMock;
+
+    /**
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $dmMock;
+    /**
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $dm2Mock;
+
+    /**
+     * @var Route|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $routeMock;
+    /**
+     * @var Route|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $route2Mock;
 
     public function setUp()
     {
-        $this->route = $this->getMockBuilder('Symfony\Component\Routing\Route')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $this->route2 = $this->getMockBuilder('Symfony\Component\Routing\Route')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->objectManager = $this
-            ->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $this->objectManager2 = $this
-            ->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->routeMock = $this->buildMock('Symfony\Component\Routing\Route');
+        $this->route2Mock = $this->buildMock('Symfony\Component\Routing\Route');
+        $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
+        $this->dm2Mock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
+        $this->managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
 
-        $this->managerRegistry
+        $this->managerRegistryMock
             ->expects($this->any())
             ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
+            ->will($this->returnValue($this->dmMock))
         ;
+
+        $this->candidatesMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates');
     }
 
     public function testGetRouteCollectionForRequest()
     {
-        $this->markTestIncomplete();
+        $request = Request::create('/my/path');
+        $candidates = array('/prefix/my/path', '/prefix/my');
+
+        $this->candidatesMock
+            ->expects($this->once())
+            ->method('getCandidates')
+            ->with($request)
+            ->will($this->returnValue($candidates))
+        ;
+
+        $objects = array(
+            new Route('/my'),
+            $this,
+        );
+
+        $this->dmMock
+            ->expects($this->once())
+            ->method('findMany')
+            ->with(null, $candidates)
+            ->will($this->returnValue($objects))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $collection = $routeProvider->getRouteCollectionForRequest($request);
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertCount(1, $collection);
+    }
+
+    public function testGetRouteCollectionForRequestEmpty()
+    {
+        $request = Request::create('/my/path');
+
+        $this->candidatesMock
+           ->expects($this->once())
+           ->method('getCandidates')
+           ->with($request)
+           ->will($this->returnValue(array()))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $collection = $routeProvider->getRouteCollectionForRequest($request);
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertCount(0, $collection);
     }
 
     public function testGetRouteByName()
     {
-        $this->route
+        $this->routeMock
             ->expects($this->any())
             ->method('getPath')
             ->will($this->returnValue('/cms/routes/test-route'))
         ;
 
-        $this->objectManager
+        $this->dmMock
             ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this->route))
+            ->will($this->returnValue($this->routeMock))
         ;
 
-        $routeProvider = new RouteProvider($this->managerRegistry);
+        $this->candidatesMock
+            ->expects($this->once())
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(true))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
 
-        $routeProvider->setPrefixes(array('/cms/routes/'));
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
 
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
@@ -88,28 +151,87 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
     public function testGetRouteByNameUuid()
     {
         $uuid = UUIDHelper::generateUUID();
-        $this->route
+        $this->routeMock
             ->expects($this->any())
             ->method('getPath')
             ->will($this->returnValue('/cms/routes/test-route'))
         ;
-        $objectManager = $this
-            ->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $uow = $this
-            ->getMockBuilder('Doctrine\ODM\PHPCR\UnitOfWork')
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $objectManager
+
+        $uow = $this->buildMock('Doctrine\ODM\PHPCR\UnitOfWork');
+        $this->dmMock
             ->expects($this->any())
             ->method('find')
             ->with(null, $uuid)
-            ->will($this->returnValue($this->route))
+            ->will($this->returnValue($this->routeMock))
         ;
-        $objectManager
+        $this->dmMock
+            ->expects($this->any())
+            ->method('getUnitOfWork')
+            ->will($this->returnValue($uow))
+        ;
+        $uow
+            ->expects($this->any())
+            ->method('getDocumentId')
+            ->with($this->routeMock)
+            ->will($this->returnValue('/cms/routes/test-route'))
+        ;
+
+        $this->candidatesMock
+            ->expects($this->once())
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(true))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $routeProvider->setManagerName('default');
+
+        $foundRoute = $routeProvider->getRouteByName($uuid);
+
+        $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
+        $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
+     */
+    public function testGetRouteByNameUuidNotFound()
+    {
+        $uuid = UUIDHelper::generateUUID();
+
+        $this->dmMock
+            ->expects($this->any())
+            ->method('find')
+            ->with(null, $uuid)
+            ->will($this->returnValue(null))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $routeProvider->setManagerName('default');
+
+        $routeProvider->getRouteByName($uuid);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
+     */
+    public function testGetRouteByNameUuidNotCandidate()
+    {
+        $uuid = UUIDHelper::generateUUID();
+        $this->routeMock
+            ->expects($this->any())
+            ->method('getPath')
+            ->will($this->returnValue('/cms/routes/test-route'))
+        ;
+
+        $uow = $this->buildMock('Doctrine\ODM\PHPCR\UnitOfWork');
+        $this->dmMock
+            ->expects($this->any())
+            ->method('find')
+            ->with(null, $uuid)
+            ->will($this->returnValue($this->routeMock))
+        ;
+        $this->dmMock
             ->expects($this->any())
             ->method('getUnitOfWork')
             ->will($this->returnValue($uow))
@@ -120,20 +242,39 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             ->will($this->returnValue('/cms/routes/test-route'))
         ;
 
-        $this->managerRegistry
-            ->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($objectManager))
+        $this->candidatesMock
+            ->expects($this->once())
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(false))
         ;
 
-        $routeProvider = new RouteProvider($this->managerRegistry);
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
 
-        $routeProvider->setPrefix('/cms/routes/');
-        $foundRoute = $routeProvider->getRouteByName($uuid);
+        $routeProvider->getRouteByName($uuid);
+    }
 
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
-        $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
+     */
+    public function testGetRouteByNameNotCandidate()
+    {
+        $this->dmMock
+            ->expects($this->never())
+            ->method('find')
+        ;
+
+        $this->candidatesMock
+            ->expects($this->once())
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(false))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $routeProvider->setManagerName('default');
+        $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
     /**
@@ -141,16 +282,22 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
      */
     public function testGetRouteByNameNotFound()
     {
-        $this->objectManager
+        $this->dmMock
             ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
             ->will($this->returnValue(null))
         ;
 
-        $routeProvider = new RouteProvider($this->managerRegistry);
+        $this->candidatesMock
+            ->expects($this->once())
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(true))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefixes(array('/cms/routes/'));
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
@@ -159,98 +306,21 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
      */
     public function testGetRouteByNameNoRoute()
     {
-        $this->objectManager
+        $this->dmMock
             ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
             ->will($this->returnValue($this))
         ;
-
-        $routeProvider = new RouteProvider($this->managerRegistry);
-        $routeProvider->setManagerName('default');
-        $routeProvider->setPrefixes(array('/cms/routes/'));
-        $routeProvider->getRouteByName('/cms/routes/test-route');
-    }
-
-    /**
-     * @expectedException  \Symfony\Component\Routing\Exception\RouteNotFoundException
-     */
-    public function testGetRouteByNameInvalidRoute()
-    {
-        $this->objectManager
-            ->expects($this->never())
-            ->method('find')
-        ;
-
-        $routeProvider = new RouteProvider($this->managerRegistry);
-        $routeProvider->setManagerName('default');
-
-        $routeProvider->setPrefixes(array('/cms/routes'));
-
-        $routeProvider->getRouteByName('invalid_route');
-    }
-
-    public function testGetRouteByNameIdPrefixEmptyString()
-    {
-
-        $this->route
-            ->expects($this->any())
-            ->method('getPath')
-            ->will($this->returnValue('/cms/routes/test-route'))
-        ;
-
-        $this->objectManager
-            ->expects($this->any())
-            ->method('find')
-            ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this->route))
-        ;
-
-        $routeProvider = new RouteProvider($this->managerRegistry);
-        $routeProvider->setManagerName('default');
-
-        $routeProvider->setPrefixes(array(''));
-        $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
-
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
-        $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
-    }
-
-
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
-     */
-    public function testGetRouteByNameNotFoundIdPrefixEmptyString()
-    {
-        $this->objectManager
-            ->expects($this->any())
-            ->method('find')
-            ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue(null))
-        ;
-
-        $routeProvider = new RouteProvider($this->managerRegistry);
-        $routeProvider->setManagerName('default');
-        $routeProvider->setPrefixes(array(''));
-        $routeProvider->getRouteByName('/cms/routes/test-route');
-    }
-
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
-     */
-    public function testGetRouteByNameNoRoutePrefixEmptyString()
-    {
-        $this->objectManager
+        $this->candidatesMock
             ->expects($this->once())
-            ->method('find')
-            ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this))
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(true))
         ;
 
-        $routeProvider = new RouteProvider($this->managerRegistry);
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefixes(array(''));
-
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
@@ -262,82 +332,202 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             '/cms/routes/not-a-route',
         );
 
-        $collection = new ArrayCollection();
-        $collection->set('/cms/routes/test-route', new Route('/test-route'));
-        $collection->set('/cms/simple/other-route', new Route('/other-route'));
-        $collection->set('/cms/routes/not-a-route', $this);
+        $routes = new ArrayCollection();
+        $routes->set('/cms/routes/test-route', new Route('/test-route'));
+        $routes->set('/cms/simple/other-route', new Route('/other-route'));
+        $routes->set('/cms/routes/not-a-route', $this);
 
-        $this->objectManager
+        $this->dmMock
             ->expects($this->once())
             ->method('findMany')
             ->with(null, $paths)
-            ->will($this->returnValue($collection))
+            ->will($this->returnValue($routes))
         ;
+
+        $this->candidatesMock
+            ->expects($this->at(0))
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(true))
+        ;
+        $this->candidatesMock
+            ->expects($this->at(1))
+            ->method('isCandidate')
+            ->with('/cms/simple/other-route')
+            ->will($this->returnValue(true))
+        ;
+        $this->candidatesMock
+            ->expects($this->at(2))
+            ->method('isCandidate')
+            ->with('/cms/routes/not-a-route')
+            ->will($this->returnValue(true))
+        ;
+        $this->candidatesMock
+            ->expects($this->at(3))
+            ->method('isCandidate')
+            ->with('/outside/prefix')
+            ->will($this->returnValue(false))
+        ;
+
         $paths[] = '/outside/prefix';
 
-        $routeProvider = new RouteProvider($this->managerRegistry);
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefixes(array('/cms/routes', '/cms/simple'));
-        $routeProvider->setRouteCollectionLimit(1);
 
-        $collection = $routeProvider->getRoutesByNames($paths);
-        $this->assertCount(2, $collection);
+        $routes = $routeProvider->getRoutesByNames($paths);
+        $this->assertCount(2, $routes);
+    }
+
+    public function testGetRoutesByNamesNotCandidates()
+    {
+        $paths = array(
+            '/cms/routes/test-route',
+            '/cms/simple/other-route',
+            '/cms/routes/not-a-route',
+        );
+
+        $this->dmMock
+            ->expects($this->never())
+            ->method('findMany')
+        ;
+
+        $this->candidatesMock
+            ->expects($this->at(0))
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(false))
+        ;
+        $this->candidatesMock
+            ->expects($this->at(1))
+            ->method('isCandidate')
+            ->with('/cms/simple/other-route')
+            ->will($this->returnValue(false))
+        ;
+        $this->candidatesMock
+            ->expects($this->at(2))
+            ->method('isCandidate')
+            ->with('/cms/routes/not-a-route')
+            ->will($this->returnValue(false))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $routeProvider->setManagerName('default');
+
+        $routes = $routeProvider->getRoutesByNames($paths);
+        $this->assertCount(0, $routes);
+    }
+
+    public function testGetRoutesByNamesUuid()
+    {
+        $uuid1 = UUIDHelper::generateUUID();
+        $uuid2 = UUIDHelper::generateUUID();
+        $paths = array(
+            $uuid1,
+            $uuid2,
+        );
+
+        $route1 = new Route('/test-route');
+        $route2 = new Route('/other-route');
+
+        $routes = new ArrayCollection();
+        $routes->set($uuid1, $route1);
+        $routes->set($uuid2, $route2);
+
+        $this->dmMock
+            ->expects($this->once())
+            ->method('findMany')
+            ->with(null, $paths)
+            ->will($this->returnValue($routes))
+        ;
+
+        $uow = $this->buildMock('Doctrine\ODM\PHPCR\UnitOfWork');
+
+        $this->dmMock
+            ->expects($this->any())
+            ->method('getUnitOfWork')
+            ->will($this->returnValue($uow))
+        ;
+        $uow
+            ->expects($this->at(0))
+            ->method('getDocumentId')
+            ->with($route1)
+            ->will($this->returnValue('/cms/routes/test-route'))
+        ;
+        $uow
+            ->expects($this->at(1))
+            ->method('getDocumentId')
+            ->with($route2)
+            ->will($this->returnValue('/cms/routes/other-route'))
+        ;
+
+        $this->candidatesMock
+            ->expects($this->at(0))
+            ->method('isCandidate')
+            ->with('/cms/routes/test-route')
+            ->will($this->returnValue(true))
+        ;
+        $this->candidatesMock
+            ->expects($this->at(1))
+            ->method('isCandidate')
+            ->with('/cms/routes/other-route')
+            ->will($this->returnValue(false))
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $routeProvider->setManagerName('default');
+
+        $routes = $routeProvider->getRoutesByNames($paths);
+        $this->assertCount(1, $routes);
     }
 
     private function doRouteDump($limit)
     {
-        if ($limit === 0) {
-            $this->objectManager
-                ->expects($this->never())
-                ->method('createPhpcrQuery')
-            ;
-            $this->objectManager
-                ->expects($this->never())
-                ->method('getDocumentsByPhpcrQuery')
+        $from = $this->getMock('Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder', array('document'));
+        $from->expects($this->once())
+            ->method('document')
+            ->with('Symfony\Component\Routing\Route', 'd')
+        ;
+
+        $query = $this->buildMock('Doctrine\ODM\PHPCR\Query\Query');
+        $query->expects($this->once())->method('getResult');
+        if ($limit) {
+            $query
+                ->expects($this->once())
+                ->method('setMaxResults')
+                ->with($limit)
             ;
         } else {
-            $query = $this->getMock('\PHPCR\Query\QueryInterface');
-            $sql2 = 'SELECT * FROM [nt:unstructured] WHERE [phpcr:classparents] = "Symfony\Component\Routing\Route" AND (ISDESCENDANTNODE("/cms/routes") OR ISDESCENDANTNODE("/cms/simple"))';
-            $this->objectManager
-                ->expects($this->once())
-                ->method('createPhpcrQuery')
-                ->with($sql2, QueryInterface::JCR_SQL2)
-                ->will($this->returnValue($query))
-            ;
-            if ($limit) {
-                $query
-                    ->expects($this->once())
-                    ->method('setLimit')
-                    ->with($limit)
-                ;
-            } else {
-                $query
-                    ->expects($this->never())
-                    ->method('setLimit')
-                ;
-            }
-            $this->objectManager
-                ->expects($this->once())
-                ->method('getDocumentsByPhpcrQuery')
-                ->with($query)
-                ->will($this->returnValue(new ArrayCollection()))
-            ;
-            $this->objectManager
-                ->expects($this->any())
-                ->method('quote')
-                ->will(
-                    $this->returnCallback(
-                        function ($text) {
-                            return '"' . $text . '"';
-                        }
-                    )
-                )
+            $query
+                ->expects($this->never())
+                ->method('setMaxResults')
             ;
         }
 
-        $routeProvider = new RouteProvider($this->managerRegistry);
+        $queryBuilder = $this->getMock('Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder', array('from', 'getQuery'));
+        $queryBuilder->expects($this->once())
+            ->method('from')
+            ->with('d')
+            ->will($this->returnValue($from))
+        ;
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query))
+        ;
+
+        $this->dmMock
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->will($this->returnValue($queryBuilder))
+        ;
+
+        $this->candidatesMock
+            ->expects($this->once())
+            ->method('restrictQuery')
+            ->with($queryBuilder)
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefixes(array('/cms/routes', '/cms/simple'));
         $routeProvider->setRouteCollectionLimit($limit);
 
         $routeProvider->getRoutesByNames();
@@ -355,7 +545,19 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
 
     public function testDumpRoutesDisabled()
     {
-        $this->doRouteDump(0);
+        $this->dmMock
+            ->expects($this->never())
+            ->method('createPhpcrQuery')
+        ;
+        $this->dmMock
+            ->expects($this->never())
+            ->method('getDocumentsByPhpcrQuery')
+        ;
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $routeProvider->setManagerName('default');
+        $routeProvider->setRouteCollectionLimit(0);
+
+        $this->assertEquals(array(), $routeProvider->getRoutesByNames());
     }
 
     /**
@@ -364,36 +566,36 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
      */
     public function testChangingDocumentManager()
     {
-        $this->route
+        $this->routeMock
             ->expects($this->any())
             ->method('getPath')
             ->will($this->returnValue('/cms/routes/test-route'));
 
-        $this->route2
+        $this->route2Mock
             ->expects($this->any())
             ->method('getPath')
             ->will($this->returnValue('/cms/routes/new-route'));
 
-        $this->objectManager
+        $this->dmMock
             ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this->route))
+            ->will($this->returnValue($this->routeMock))
         ;
 
-        $this->objectManager2
+        $this->dm2Mock
             ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this->route2))
+            ->will($this->returnValue($this->route2Mock))
         ;
 
         $objectManagers = array(
-            'default' => $this->objectManager,
-            'new_manager' => $this->objectManager2
+            'default' => $this->dmMock,
+            'new_manager' => $this->dm2Mock
         );
-        $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->managerRegistry
+        $this->managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->managerRegistryMock
             ->expects($this->any())
             ->method('getManager')
             ->will(
@@ -402,12 +604,17 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
                         return $objectManagers[$name];
                     }
                 )
-            );
+            )
+        ;
 
-        $routeProvider = new RouteProvider($this->managerRegistry);
+        $this->candidatesMock
+            ->expects($this->any())
+            ->method('isCandidate')
+            ->will($this->returnValue(true))
+        ;
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
 
         $routeProvider->setManagerName('default');
-        $routeProvider->setPrefixes(array('/cms/routes/'));
 
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
         $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);

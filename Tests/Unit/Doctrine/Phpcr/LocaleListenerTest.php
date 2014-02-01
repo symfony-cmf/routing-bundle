@@ -12,29 +12,44 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
 class LocaleListenerTest extends CmfUnitTestCase
 {
     /** @var LocaleListener */
     protected $listener;
-    protected $routeMock;
+
+    /**
+     * @var PrefixCandidates|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $candidatesMock;
+
+    /**
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected $dmMock;
-    protected $provider;
+
+    /**
+     * @var Route|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $routeMock;
 
     public function setUp()
     {
-        $this->provider = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider');
+        $this->candidatesMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates');
 
-        $this->provider->expects($this->any())
+        $this->candidatesMock->expects($this->any())
             ->method('getPrefixes')
             ->will($this->returnValue(array('/cms/routes', '/cms/simple')))
         ;
-        $this->listener = new LocaleListener($this->provider, array('en', 'de'));
+        $this->listener = new LocaleListener($this->candidatesMock, array('en', 'de'));
         $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route');
         $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
     }
@@ -185,7 +200,7 @@ class LocaleListenerTest extends CmfUnitTestCase
     }
 
     /**
-     * URL without locale, add_locale_pattern not set.
+     * URL without locale, addLocalePattern not set.
      */
     public function testNolocaleUrl()
     {
@@ -222,6 +237,36 @@ class LocaleListenerTest extends CmfUnitTestCase
         ;
 
         $this->listener->setAddLocalePattern(true);
+        $args = new LifecycleEventArgs($this->routeMock, $this->dmMock);
+        $this->listener->postLoad($args);
+    }
+
+    /**
+     * URL without locale, set available translations
+     */
+    public function testAvailableTranslations()
+    {
+        $this->routeMock->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue('/cms/simple/something'))
+        ;
+
+        $this->dmMock->expects($this->once())
+            ->method('isDocumentTranslatable')
+            ->with($this->routeMock)
+            ->will($this->returnValue(true))
+        ;
+        $this->dmMock->expects($this->once())
+            ->method('getLocalesFor')
+            ->with($this->routeMock, true)
+            ->will($this->returnValue(array('en', 'de', 'fr')))
+        ;
+        $this->routeMock->expects($this->once())
+            ->method('setRequirement')
+            ->with('_locale', 'en|de|fr')
+        ;
+
+        $this->listener->setUpdateAvailableTranslations(true);
         $args = new LifecycleEventArgs($this->routeMock, $this->dmMock);
         $this->listener->postLoad($args);
     }

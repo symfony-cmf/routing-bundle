@@ -9,24 +9,22 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use PHPCR\Query\QueryInterface;
+use PHPCR\Query\RowInterface;
+use PHPCR\RepositoryException;
+use PHPCR\Util\UUIDHelper;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
-use PHPCR\Query\QueryInterface;
-use PHPCR\RepositoryException;
-
-use PHPCR\Query\RowInterface;
-
-use PHPCR\Util\UUIDHelper;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
+use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 
@@ -42,38 +40,14 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 {
     /**
-     * Places in the PHPCR tree where routes are located.
-     *
-     * @var array
+     * @var CandidatesInterface
      */
-    protected $idPrefixes = array();
+    private $candidatesStrategy;
 
-    /**
-     * @param $prefix
-     */
-    public function setPrefixes($prefixes)
+    public function __construct(ManagerRegistry $managerRegistry, CandidatesInterface $candidatesStrategy, $className = null)
     {
-        $this->idPrefixes = $prefixes;
-    }
-
-    /**
-     * Append a repository prefix to the possible prefixes.
-     *
-     * @param $prefix
-     */
-    public function addPrefix($prefix)
-    {
-        $this->idPrefixes[] = $prefix;
-    }
-
-    /**
-     * Get all currently configured prefixes where to look for routes.
-     *
-     * @return array
-     */
-    public function getPrefixes()
-    {
-        return $this->idPrefixes;
+        parent::__construct($managerRegistry, $className);
+        $this->candidatesStrategy = $candidatesStrategy;
     }
 
     /**
@@ -86,8 +60,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteCollectionForRequest(Request $request)
     {
-        $url = $request->getPathInfo();
-        $candidates = $this->getCandidates($url);
+        $candidates = $this->candidatesStrategy->getCandidates($request);
 
         $collection = new RouteCollection();
 
@@ -117,52 +90,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * Get id candidates for all configured prefixes.
-     *
-     * @param string $url
-     *
-     * @return array PHPCR ids that could load routes that match $url.
-     */
-    protected function getCandidates($url)
-    {
-        $candidates = array();
-        foreach ($this->getPrefixes() as $prefix) {
-            $candidates = array_merge($candidates, $this->getCandidatesFor($prefix, $url));
-        }
-
-        return $candidates;
-    }
-
-    /**
-     * Get the id candidates for one prefix.
-     *
-     * @param string $url
-     *
-     * @return array PHPCR ids that could load routes that match $url and are
-     *      child of $prefix.
-     */
-    protected function getCandidatesFor($prefix, $url)
-    {
-        $candidates = array();
-        if ('/' !== $url) {
-            if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
-                $candidates[] = $prefix . $url;
-                $url = $matches[1];
-            }
-
-            $part = $url;
-            while (false !== ($pos = strrpos($part, '/'))) {
-                $candidates[] = $prefix . $part;
-                $part = substr($url, 0, $pos);
-            }
-        }
-
-        $candidates[] = $prefix;
-
-        return $candidates;
-    }
-
-    /**
      * {@inheritDoc}
      *
      * @param string $name The absolute path or uuid of the Route document.
@@ -172,23 +99,20 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         if (UUIDHelper::isUUID($name)) {
             $route = $this->getObjectManager()->find($this->className, $name);
             if ($route
-                && '' !== $this->idPrefix
-                && 0 !== strpos($this->getObjectManager()->getUnitOfWork()->getDocumentId($route), $this->idPrefix)
+                && !$this->candidatesStrategy->isCandidate($this->getObjectManager()->getUnitOfWork()->getDocumentId($route))
             ) {
-                $route = null;
+                throw new RouteNotFoundException(
+                    sprintf(
+                        'Route with uuid "%s" and id "%s" is not handled by this route provider',
+                        $name,
+                        $this->getObjectManager()->getUnitOfWork()->getDocumentId($route)
+                    )
+                );
             }
+        } elseif (!$this->candidatesStrategy->isCandidate($name)) {
+            throw new RouteNotFoundException(sprintf('Route name "%s" is not handled by this route provider', $name));
         } else {
             $route = $this->getObjectManager()->find($this->className, $name);
-
-            foreach ($this->getPrefixes() as $prefix) {
-                // $name is the route document path
-                if ('' === $prefix || 0 === strpos($name, $prefix)) {
-                    $route = $this->getObjectManager()->find($this->className, $name);
-                    if ($route) {
-                        break;
-                    }
-                }
-            }
         }
 
         if (empty($route)) {
@@ -216,26 +140,18 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         /** @var $dm DocumentManager */
         $dm = $this->getObjectManager();
-        $sql2 = 'SELECT * FROM [nt:unstructured] WHERE [phpcr:classparents] = '.$dm->quote('Symfony\Component\Routing\Route');
+        $qb = $dm->createQueryBuilder();
 
-        $prefixConstraints = array();
-        foreach ($this->getPrefixes() as $prefix) {
-            if ('' == $prefix) {
-                $prefixConstraints = array();
-                break;
-            }
-            $prefixConstraints[] = 'ISDESCENDANTNODE('.$dm->quote($prefix).')';
-        }
-        if ($prefixConstraints) {
-            $sql2 .= ' AND (' . implode(' OR ', $prefixConstraints) . ')';
-        }
+        $qb->from('d')->document('Symfony\Component\Routing\Route', 'd');
 
-        $query = $dm->createPhpcrQuery($sql2, QueryInterface::JCR_SQL2);
+        $this->candidatesStrategy->restrictQuery($qb);
+
+        $query = $qb->getQuery();
         if (null !== $this->routeCollectionLimit) {
-            $query->setLimit($this->routeCollectionLimit);
+            $query->setMaxResults($this->routeCollectionLimit);
         }
 
-        return $dm->getDocumentsByPhpcrQuery($query);
+        return $query->getResult();
     }
 
     /**
@@ -249,19 +165,8 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         $candidates = array();
         foreach ($names as $key => $name) {
-            if (UUIDHelper::isUUID($name)) {
-                continue;
-            }
-            foreach ($this->getPrefixes() as $prefix) {
-                if ('' == $prefix) {
-                    $candidates = $names;
-                    break 2;
-                }
-                foreach ($names as $key => $name) {
-                    if (0 === strpos($name, $prefix)) {
-                        $candidates[$key] = $name;
-                    }
-                }
+            if (UUIDHelper::isUUID($name) || $this->candidatesStrategy->isCandidate($name)) {
+                $candidates[$key] = $name;
             }
         }
 
@@ -271,14 +176,20 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         /** @var $dm DocumentManager */
         $dm = $this->getObjectManager();
-        $collection = $dm->findMany($this->className, $candidates);
-        foreach ($collection as $key => $document) {
+        $documents = $dm->findMany($this->className, $candidates);
+        foreach ($documents as $key => $document) {
+            if (UUIDHelper::isUUID($key)
+                && !$this->candidatesStrategy->isCandidate($this->getObjectManager()->getUnitOfWork()->getDocumentId($document))
+            ) {
+                // this uuid pointed out of our path. can only determine after fetching the document
+                unset($documents[$key]);
+            }
             if (!$document instanceof SymfonyRoute) {
                 // we follow the logic of DocumentManager::findMany and do not throw an exception
-                unset($collection[$key]);
+                unset($documents[$key]);
             }
         }
 
-        return $collection;
+        return $documents;
     }
 }

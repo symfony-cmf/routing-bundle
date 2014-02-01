@@ -95,11 +95,11 @@ class CmfRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.route_collection_limit', $config['route_collection_limit']);
 
         $locales = false;
-        if (isset($config['locales'])) {
+        if (!empty($config['locales'])) {
             $locales = $config['locales'];
             $container->setParameter($this->getAlias() . '.dynamic.locales', $locales);
+            $container->setParameter($this->getAlias() . '.dynamic.auto_locale_pattern', $config['auto_locale_pattern']);
         }
-        $container->setParameter($this->getAlias() . '.dynamic.auto_locale_pattern', $config['auto_locale_pattern']);
 
         $loader->load('routing-dynamic.xml');
 
@@ -110,13 +110,13 @@ class CmfRoutingExtension extends Extension
         }
 
         if ($config['persistence']['phpcr']['enabled']) {
-            $this->loadPhpcrProvider($config['persistence']['phpcr'], $loader, $container, $locales);
+            $this->loadPhpcrProvider($config['persistence']['phpcr'], $loader, $container, $locales, $config['match_implicit_locale']);
             $hasProvider = true;
             $hasContentRepository = true;
         }
 
         if ($config['persistence']['orm']['enabled']) {
-            $this->loadOrmProvider($config['persistence']['orm'], $loader, $container);
+            $this->loadOrmProvider($config['persistence']['orm'], $loader, $container, $locales, $config['match_implicit_locale']);
             $hasProvider = true;
         }
 
@@ -227,22 +227,41 @@ class CmfRoutingExtension extends Extension
         }
     }
 
-    public function loadPhpcrProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $locales)
+    public function loadPhpcrProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $locales, $matchImplicitLocale)
     {
         $loader->load('provider-phpcr.xml');
 
         $container->setParameter($this->getAlias() . '.backend_type_phpcr', true);
 
-        $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.route_basepath', $config['route_basepath']);
-        $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.content_basepath', $config['content_basepath']);
+        $container->setParameter(
+            $this->getAlias() . '.dynamic.persistence.phpcr.route_basepaths',
+            $config['route_basepaths']
+        );
+        $container->setParameter(
+            $this->getAlias() . '.dynamic.persistence.phpcr.content_basepath',
+            $config['content_basepath']
+        );
 
-        $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.manager_name', $config['manager_name']);
+        $container->setParameter(
+            $this->getAlias() . '.dynamic.persistence.phpcr.manager_name',
+            $config['manager_name']
+        );
 
-        $container->setAlias($this->getAlias() . '.route_provider', $this->getAlias() . '.phpcr_route_provider');
-        $container->setAlias($this->getAlias() . '.content_repository', $this->getAlias() . '.phpcr_content_repository');
+        $container->setAlias(
+            $this->getAlias() . '.route_provider',
+            $this->getAlias() . '.phpcr_route_provider'
+        );
+        $container->setAlias(
+            $this->getAlias() . '.content_repository',
+            $this->getAlias() . '.phpcr_content_repository'
+        );
 
         if (!$locales) {
             $container->removeDefinition($this->getAlias() . '.phpcrodm_route_locale_listener');
+        } elseif (!$matchImplicitLocale) {
+            // remove all but the prefixes configuration from the service definition.
+            $definition = $container->getDefinition($this->getAlias() . '.phpcr_candidates_prefix');
+            $definition->setArguments(array($definition->getArgument(0)));
         }
 
         if ($config['use_sonata_admin']) {
@@ -257,14 +276,25 @@ class CmfRoutingExtension extends Extension
             return;
         }
 
+        $basePath = empty($config['admin_basepath']) ? reset($config['route_basepaths']) : $config['admin_basepath'];
+
+        $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.admin_basepath', $basePath);
+
+
         $loader->load('admin-phpcr.xml');
     }
 
-    public function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
+    public function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $matchImplicitLocale)
     {
         $container->setParameter($this->getAlias() . '.dynamic.persistence.orm.manager_name', $config['manager_name']);
         $container->setParameter($this->getAlias() . '.backend_type_orm', true);
         $loader->load('provider-orm.xml');
+
+        if (!$matchImplicitLocale) {
+            // remove the locales argument from the candidates
+            $definition = $container->getDefinition($this->getAlias() . '.orm_candidates');
+            $definition->setArguments(array());
+        }
     }
 
     /**
