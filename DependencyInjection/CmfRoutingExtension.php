@@ -39,6 +39,7 @@ class CmfRoutingExtension extends Extension
         if ($config['dynamic']['enabled']) {
             // load this even if no explicit enabled value but some configuration
             $this->setupDynamicRouter($config['dynamic'], $container, $loader);
+            $this->setupMetadataConfigurationDriver($config['dynamic'], $container);
         }
 
         /* set up the chain router */
@@ -52,6 +53,46 @@ class CmfRoutingExtension extends Extension
         }
 
         $this->setupFormTypes($config, $container, $loader);
+    }
+
+    public function setupMetadataConfigurationDriver($config, ContainerBuilder $container)
+    {
+        $driver = $container->getDefinition($this->getAlias() . '.metadata.driver.configuration');
+        $mapping = array();
+
+        $controller = $container->getParameter($this->getAlias() . '.generic_controller');;
+
+        $mappings = array();
+
+        if (!empty($config['controllers_by_class'])) {
+            foreach ($config['controllers_by_class'] as $classFqn => $controller) {
+                if (!isset($mappings[$classFqn])) {
+                    $mappings[$classFqn] = array();
+                }
+
+                $mappings[$classFqn]['controller'] = $controller;
+            }
+        }
+
+        if (!empty($config['templates_by_class'])) {
+            foreach ($config['templates_by_class'] as $classFqn => $template) {
+                if (!isset($mappings[$classFqn])) {
+                    $mappings[$classFqn] = array();
+                }
+
+                $mappings[$classFqn]['template'] = $template;
+            }
+        }
+
+        foreach ($mappings as $classFqn => &$mapping) {
+            if (!isset($mapping['controller'])) {
+                $mapping['controller'] = $container->getParameter(
+                    $this->getAlias() . '.generic_controller'
+                );
+            }
+
+            $driver->addMethodCall('registerMapping', array($classFqn, $mapping));
+        }
     }
 
     public function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader)
@@ -77,7 +118,7 @@ class CmfRoutingExtension extends Extension
     private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
         // strip whitespace (XML support)
-        foreach (array('controllers_by_type', 'controllers_by_class', 'templates_by_class', 'route_filters_by_id') as $option) {
+        foreach (array('controllers_by_type', 'route_filters_by_id') as $option) {
             $config[$option] = array_map(function ($value) {
                 return trim($value);
             }, $config[$option]);
@@ -87,11 +128,10 @@ class CmfRoutingExtension extends Extension
         if (null === $defaultController) {
             $defaultController = $config['generic_controller'];
         }
+
         $container->setParameter($this->getAlias() . '.default_controller', $defaultController);
         $container->setParameter($this->getAlias() . '.generic_controller', $config['generic_controller']);
         $container->setParameter($this->getAlias() . '.controllers_by_type', $config['controllers_by_type']);
-        $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
-        $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
         $container->setParameter($this->getAlias() . '.route_collection_limit', $config['route_collection_limit']);
 

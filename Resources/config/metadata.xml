@@ -21,6 +21,7 @@
             class="Metadata\Driver\DriverChain"
             >
             <argument type="collection">
+                <argument type="service" id="cmf_routing.metadata.driver.configuration"/>
                 <argument type="service" id="cmf_routing.metadata.driver.annotation"/>
             </argument>
         </service>
@@ -31,6 +32,14 @@
             class="Symfony\Cmf\Bundle\RoutingBundle\Metadata\Driver\AnnotationDriver"
             >
             <argument type="service" id="annotation_reader"/>
+            <argument type="collection"/>
+        </service>
+
+        <!-- Annotations Driver -->
+        <service
+            id="cmf_routing.metadata.driver.configuration"
+            class="Symfony\Cmf\Bundle\RoutingBundle\Metadata\Driver\ConfigurationDriver"
+            >
             <argument type="collection"/>
         </service>
     </services>

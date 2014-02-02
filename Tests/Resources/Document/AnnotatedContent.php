@@ -20,7 +20,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Metadata\Annotations as CmfRouting;
  * @PHPCRODM\Document(referenceable=true)
  *
  * @CmfRouting\Template("TestBundle:Content:index.html.twig")
- * @CmfRouting\Controller("cmf_content.controller:indexAction")
+ * @CmfRouting\Controller("ThisIsAController")
  */
 class AnnotatedContent
 {

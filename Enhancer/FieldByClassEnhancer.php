@@ -74,7 +74,9 @@ class FieldByClassEnhancer implements RouteEnhancerInterface
 
         if (null !== $meta) {
             $meta = $meta->getOutsideClassMetadata();
-            $defaults[$this->targetField] = $meta->{$this->metaField};
+            if (null !== $meta->{$this->metaField}) {
+                $defaults[$this->targetField] = $meta->{$this->metaField};
+            }
         }
 
         return $defaults;

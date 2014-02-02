@@ -2,11 +2,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Metadata\Driver;
 
-use Metadata\Driver\DriverInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Metadata\ClassMetadata;
 use Doctrine\Common\Annotations\Reader;
 
-class AnnotationDriver implements DriverInterface
+class AnnotationDriver implements AbstractDriver
 {
     protected $reader;
 
@@ -39,6 +38,8 @@ class AnnotationDriver implements DriverInterface
         if (null !== $controllerAnnotation) {
             $meta->controller = $controllerAnnotation->controller;
         }
+
+        $this->validateMetadata($meta);
 
         return $meta;
     }
