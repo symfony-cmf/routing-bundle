@@ -5,9 +5,10 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Metadata\Driver;
 use Symfony\Cmf\Bundle\RoutingBundle\Metadata\ClassMetadata;
 use Doctrine\Common\Annotations\Reader;
 
-class AnnotationDriver implements AbstractDriver
+class AnnotationDriver extends AbstractDriver
 {
     protected $reader;
+    protected $genericController;
 
     /**
      * @param AnnotationReader $reader
@@ -17,6 +18,11 @@ class AnnotationDriver implements AbstractDriver
         $this->reader = $reader;
     }
 
+    public function setGenericController($genericController)
+    {
+        $this->genericController = $genericController;
+    }
+    
     public function loadMetadataForClass(\ReflectionClass $class)
     {
         $templateAnnotation = $this->reader->getClassAnnotation(
@@ -37,6 +43,10 @@ class AnnotationDriver implements AbstractDriver
 
         if (null !== $controllerAnnotation) {
             $meta->controller = $controllerAnnotation->controller;
+        }
+
+        if (null === $meta->controller) {
+            $meta->controller = $this->genericController;
         }
 
         $this->validateMetadata($meta);

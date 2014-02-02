@@ -39,7 +39,7 @@ class CmfRoutingExtension extends Extension
         if ($config['dynamic']['enabled']) {
             // load this even if no explicit enabled value but some configuration
             $this->setupDynamicRouter($config['dynamic'], $container, $loader);
-            $this->setupMetadataConfigurationDriver($config['dynamic'], $container);
+            $this->setupMetadataDrivers($config['dynamic'], $container);
         }
 
         /* set up the chain router */
@@ -55,15 +55,21 @@ class CmfRoutingExtension extends Extension
         $this->setupFormTypes($config, $container, $loader);
     }
 
-    public function setupMetadataConfigurationDriver($config, ContainerBuilder $container)
+    public function setupMetadataDrivers($config, ContainerBuilder $container)
     {
-        $driver = $container->getDefinition($this->getAlias() . '.metadata.driver.configuration');
+        $configDriver = $container->getDefinition($this->getAlias() . '.metadata.driver.configuration');
+        $annotationDriver = $container->getDefinition($this->getAlias() . '.metadata.driver.annotation');
+
         $mapping = array();
 
         $controller = $container->getParameter($this->getAlias() . '.generic_controller');;
 
+        // configure annotation driver
+        $annotationDriver->addMethodCall('setGenericController', array($controller));
+
         $mappings = array();
 
+        // configure configuration driver
         if (!empty($config['controllers_by_class'])) {
             foreach ($config['controllers_by_class'] as $classFqn => $controller) {
                 if (!isset($mappings[$classFqn])) {
@@ -91,7 +97,7 @@ class CmfRoutingExtension extends Extension
                 );
             }
 
-            $driver->addMethodCall('registerMapping', array($classFqn, $mapping));
+            $configDriver->addMethodCall('registerMapping', array($classFqn, $mapping));
         }
     }
 

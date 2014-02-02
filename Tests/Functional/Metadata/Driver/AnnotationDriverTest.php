@@ -25,12 +25,13 @@ class AnnotationDriverTest extends BaseTestCase
     {
         parent::setUp();
 
-        $this->driver = $this->getContainer()->get('cmf_routing.metadata.factory');
+        $this->chainDriver = $this->getContainer()->get('cmf_routing.metadata.factory');
+        $this->annotDriver = $this->getContainer()->get('cmf_routing.metadata.driver.annotation');
     }
 
-    public function testDriver()
+    public function testDriverTemplateAndContent()
     {
-        $meta = $this->driver->getMetadataForClass(
+        $meta = $this->chainDriver->getMetadataForClass(
             'Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\AnnotatedContent'
         );
 
@@ -40,5 +41,31 @@ class AnnotationDriverTest extends BaseTestCase
 
         $this->assertEquals('TestBundle:Content:index.html.twig', $meta->template);
         $this->assertEquals('ThisIsAController', $meta->controller);
+    }
+
+    public function testDriverTemplateOnlyWithGenericController()
+    {
+        $meta = $this->chainDriver->getMetadataForClass(
+            'Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\AnnotatedContentTemplateOnly'
+        );
+
+        $this->assertNotNull($meta);
+
+        $meta = $meta->getOutsideClassMetadata();
+
+        $this->assertEquals('TestBundle:Content:index.html.twig', $meta->template);
+        $this->assertEquals('cmf_content.controller:indexAction', $meta->controller);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage but no controller specified
+     */
+    public function testDriverTemplateOnlyNoController()
+    {
+        $this->annotDriver->setGenericController(null);
+        $meta = $this->chainDriver->getMetadataForClass(
+            'Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\AnnotatedContentTemplateOnly'
+        );
     }
 }
