@@ -248,4 +248,14 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
 
         return $children;
     }
+
+    /**
+     * Get all children of this route including non-routes.
+     *
+     * @return array
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
 }
