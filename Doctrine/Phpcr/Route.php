@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Document\Generic;
+use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
 
@@ -96,6 +97,9 @@ class Route extends RouteModel implements PrefixInterface
      */
     public function setParent($parent)
     {
+        if(!is_object($parent))
+            throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
+
         $this->parent = $parent;
 
         return $this;
@@ -138,6 +142,9 @@ class Route extends RouteModel implements PrefixInterface
      */
     public function setPosition($parent, $name)
     {
+        if(!is_object($parent))
+            throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
+
         $this->parent = $parent;
         $this->name = $name;
 
