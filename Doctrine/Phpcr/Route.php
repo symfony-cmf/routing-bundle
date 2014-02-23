@@ -97,8 +97,9 @@ class Route extends RouteModel implements PrefixInterface
      */
     public function setParent($parent)
     {
-        if(!is_object($parent))
+        if (!is_object($parent)) {
             throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
+        }
 
         $this->parent = $parent;
 
@@ -142,8 +143,9 @@ class Route extends RouteModel implements PrefixInterface
      */
     public function setPosition($parent, $name)
     {
-        if(!is_object($parent))
+        if (!is_object($parent)) {
             throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
+        }
 
         $this->parent = $parent;
         $this->name = $name;
