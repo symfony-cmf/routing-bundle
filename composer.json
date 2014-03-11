@@ -19,7 +19,7 @@
         "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {
-        "symfony-cmf/core-bundle": "1.0.*",
+        "symfony-cmf/core-bundle": "~1.0",
         "symfony-cmf/testing": "1.1.*",
         "matthiasnoback/symfony-dependency-injection-test": "0.*",
         "matthiasnoback/symfony-config-test": "0.*",
