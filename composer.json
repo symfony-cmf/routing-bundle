@@ -19,12 +19,12 @@
         "symfony/framework-bundle": "~2.2"
     },
     "require-dev": {
-        "symfony-cmf/core-bundle": "1.0.*",
+        "symfony-cmf/core-bundle": ">=1.0.0,<1.2.0",
         "symfony-cmf/testing": "1.1.*",
         "matthiasnoback/symfony-dependency-injection-test": "0.*",
         "matthiasnoback/symfony-config-test": "0.*",
-        "sonata-project/doctrine-phpcr-admin-bundle": "1.0.*",
-        "symfony/monolog-bundle": "2.2.*",
+        "sonata-project/doctrine-phpcr-admin-bundle": "1.1.*",
+        "symfony/monolog-bundle": "2.*",
         "doctrine/orm": "2.3.*"
     },
     "suggest": {
