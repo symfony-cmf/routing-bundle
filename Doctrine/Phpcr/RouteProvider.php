@@ -19,6 +19,7 @@ use PHPCR\RepositoryException;
 
 use PHPCR\Query\RowInterface;
 
+use PHPCR\Util\UUIDHelper;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -123,20 +124,29 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param string $name The absolute path or uuid of the Route document.
      */
     public function getRouteByName($name)
     {
-        // $name is the route document path
-        if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
+        if (UUIDHelper::isUUID($name)) {
+            $route = $this->getObjectManager()->find($this->className, $name);
+            if ($route
+                && '' !== $this->idPrefix
+                && 0 !== strpos($name, $this->getObjectManager()->getUnitOfWork()->getDocumentId($route), $this->idPrefix)
+            ) {
+                $route = null;
+            }
+        } elseif ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
             $route = $this->getObjectManager()->find($this->className, $name);
         }
 
         if (empty($route)) {
-            throw new RouteNotFoundException(sprintf('No route found for path "%s"', $name));
+            throw new RouteNotFoundException(sprintf('No route found at "%s"', $name));
         }
 
         if (!$route instanceof SymfonyRoute) {
-            throw new RouteNotFoundException(sprintf('Document at path "%s" is no route', $name));
+            throw new RouteNotFoundException(sprintf('Document at "%s" is no route', $name));
         }
 
         return $route;
@@ -188,7 +198,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         if ('' !== $this->idPrefix) {
             foreach ($names as $key => $name) {
-                if (0 !== strpos($name, $this->idPrefix)) {
+                if (!UUIDHelper::isUUID($name) && 0 !== strpos($name, $this->idPrefix)) {
                     unset($names[$key]);
                 }
             }
