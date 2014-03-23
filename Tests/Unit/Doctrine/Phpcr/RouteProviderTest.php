@@ -87,7 +87,11 @@ class RouteProviderTest extends \PHPUnit_Framework_Testcase
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $uow = $this->getMock('Doctrine\ODM\PHPCR\UnitOfWork');
+        $uow = $this
+            ->getMockBuilder('Doctrine\ODM\PHPCR\UnitOfWork')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $objectManager
             ->expects($this->any())
             ->method('find')

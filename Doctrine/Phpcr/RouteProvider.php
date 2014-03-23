@@ -133,7 +133,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             $route = $this->getObjectManager()->find($this->className, $name);
             if ($route
                 && '' !== $this->idPrefix
-                && 0 !== strpos($name, $this->getObjectManager()->getUnitOfWork()->getDocumentId($route), $this->idPrefix)
+                && 0 !== strpos($this->getObjectManager()->getUnitOfWork()->getDocumentId($route), $this->idPrefix)
             ) {
                 $route = null;
             }
