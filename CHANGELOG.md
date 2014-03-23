@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2014-03-23**: When using PHPCR-ODM, routes can now be generated with their
+  uuid as route name as well, in addition to the repository path.
+
 * **2013-11-28**: [BC BREAK] the alias attribute of the <template-by-class> is
   renamed to class in the bundle configuration.
 
