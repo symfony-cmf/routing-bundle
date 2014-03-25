@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* **2014-03-25**: setParent() and getParent() are now deprecated.
+  Use setParentDocument() and getParentDocument() instead.
+  Moreover, you should now enable the ChildExtension from the CoreBundle.
+
 * **2014-03-23**: When using PHPCR-ODM, routes can now be generated with their
   uuid as route name as well, in addition to the repository path.
 

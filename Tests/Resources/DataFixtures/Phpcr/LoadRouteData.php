@@ -37,12 +37,12 @@ class LoadRouteData implements FixtureInterface, DependentFixtureInterface
         $manager->persist($parent);
 
         $route = new Route;
-        $route->setParent($parent);
+        $route->setParentDocument($parent);
         $route->setName('route-1');
         $manager->persist($route);
 
         $redirectRoute = new RedirectRoute;
-        $redirectRoute->setParent($parent);
+        $redirectRoute->setParentDocument($parent);
         $redirectRoute->setName('redirect-route-1');
         $manager->persist($redirectRoute);
 

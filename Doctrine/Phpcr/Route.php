@@ -15,6 +15,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
+use Symfony\Cmf\Bundle\CoreBundle\Model\ChildInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
 
@@ -24,7 +25,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
  *
  * @author david.buchmann@liip.ch
  */
-class Route extends RouteModel implements PrefixInterface
+class Route extends RouteModel implements PrefixInterface, ChildInterface
 {
     /**
      * parent document
@@ -89,13 +90,31 @@ class Route extends RouteModel implements PrefixInterface
     }
 
     /**
+     * @deprecated Use setParentDocument instead.
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated Use getParentDocument instead.
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
      * Move the route by setting a parent.
      *
      * Note that this will change the URL this route matches.
      *
      * @param object $parent the new parent document
      */
-    public function setParent($parent)
+    public function setParentDocument($parent)
     {
         if (!is_object($parent)) {
             throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
@@ -112,7 +131,7 @@ class Route extends RouteModel implements PrefixInterface
      *
      * @return Generic object
      */
-    public function getParent()
+    public function getParentDocument()
     {
         return $this->parent;
     }
