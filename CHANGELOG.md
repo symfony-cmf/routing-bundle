@@ -1,6 +1,15 @@
 Changelog
 =========
 
+* **2014-03-29**: [Multilang] Added some options to support locale matching
+  without separate routes per locale. See the new configuration options
+  `match_implicit_locale` and `auto_locale_pattern`.
+
+* **2014-03-29**: [PHPCR] The route provider can now load Routes from more than
+  path in PHPCR. The configuration option `route_basepath` is renamed to
+  `route_basepaths` and accepts a list of base paths. See the changelog of
+  the SimpleCmsBundle as the main impact is on that side.
+
 * **2014-03-26**: [ORM] Applied the cleanup for the PHPCR provider to the ORM
   provider now: If the route matched a pattern with a format extension, the
   format extension is no longer set as route a default.

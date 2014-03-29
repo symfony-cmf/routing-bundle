@@ -142,6 +142,8 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
      * Note that this will change the URL this route matches.
      *
      * @param string $name the new name
+     *
+     * @return self
      */
     public function setName($name)
     {

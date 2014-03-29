@@ -277,9 +277,7 @@ class CmfRoutingExtension extends Extension
         }
 
         $basePath = empty($config['admin_basepath']) ? reset($config['route_basepaths']) : $config['admin_basepath'];
-
         $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.admin_basepath', $basePath);
-
 
         $loader->load('admin-phpcr.xml');
     }
