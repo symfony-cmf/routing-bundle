@@ -71,10 +71,13 @@ class RouteAdmin extends Admin
         if (null === $this->getParentFieldDescription()) {
             $formMapper
                 ->with('form.group_general')
-                ->add('variablePattern', 'text', array('required' => false))
-                ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
-                ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
-                ->add('options', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForOptions()))
+                    ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
+                ->end()
+                ->with('form.group_advanced')
+                    ->add('variablePattern', 'text', array('required' => false), array('help' => 'form.help_variable_pattern'))
+                    ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
+                    ->add('options', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForOptions()), array('help' => 'form.help_options'))
+                ->end()
             ->end();
         }
     }
@@ -144,8 +147,8 @@ class RouteAdmin extends Admin
     protected function configureFieldsForOptions()
     {
         $options = array(
-            'addFormatPattern' => array('addFormatPattern', 'text', array('required' => false), array('help' => 'form.help_add_format_pattern')),
-            'addTrailingSlash' => array('addTrailingSlash', 'text', array('required' => false), array('help' => 'form.help_add_trailing_slash')),
+            'addFormatPattern' => array('addFormatPattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => $this->translationDomain)),
+            'addTrailingSlash' => array('addTrailingSlash', 'checkbox', array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => $this->translationDomain)),
         );
 
         $dynamicOptions = $this->getSubject()->getOptions();

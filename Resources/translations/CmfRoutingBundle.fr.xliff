@@ -58,6 +58,10 @@
         <source>form.group_general</source>
         <target>Général</target>
       </trans-unit>
+      <trans-unit id="form.group_advanced">
+        <source>form.group_advanced</source>
+        <target>Avancé</target>
+      </trans-unit>
       <trans-unit id="form.label_parent">
         <source>form.label_parent</source>
         <target>Parent</target>
@@ -69,6 +73,10 @@
       <trans-unit id="form.label_variable_pattern">
         <source>form.label_variable_pattern</source>
         <target>Motif variable</target>
+      </trans-unit>
+      <trans-unit id="form.help_variable_pattern">
+        <source>form.help_variable_pattern</source>
+        <target>Un motif en format {variable}/{plus}... Les variables sont passé au controlleur s'il les déclare comme arguments.</target>
       </trans-unit>
       <trans-unit id="form.label_content">
         <source>form.label_content</source>
@@ -110,13 +118,13 @@
         <source>form.label_add_trailing_slash</source>
         <target>Ajouter une barre oblique en fin</target>
       </trans-unit>
-      <trans-unit id="form.help_add_format_pattern">
-        <source>form.help_add_format_pattern</source>
-        <target>Ajoute le format à la route tel que /your/route.{format}. Le format par défaut est html.</target>
-      </trans-unit>
-      <trans-unit id="form.help_add_trailing_slash">
-        <source>form.help_add_trailing_slash</source>
-        <target>Ajoute un slash à la fin de la route tel que /your/route/.</target>
+      <trans-unit id="form.help_options">
+        <source>form.help_options</source>
+        <target><![CDATA[
+            Format: Ajoute le format à la route tel que /your/route.{format}. Le format par défaut est 'html'<br/>
+            Barre Oblique: Ajoute un slash à la fin de la route tel que /your/route/
+            ]]>
+        </target>
       </trans-unit>
     </body>
   </file>
