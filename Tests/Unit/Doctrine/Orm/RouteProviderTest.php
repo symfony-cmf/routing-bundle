@@ -59,7 +59,10 @@ class RouteProviderTest extends CmfUnitTestCase
         $this->route2Mock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route');
         $this->objectManagerMock = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->objectRepositoryMock = $this->getMock('Doctrine\Orm\EntityRepository', array('findByStaticPrefix', 'findOneBy', 'findBy'));
+        $this->objectRepositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->setMethods(array('findByStaticPrefix', 'findOneBy', 'findBy'))
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->candidatesMock = $this->getMock('Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface');
         $this->candidatesMock
             ->expects($this->any())
