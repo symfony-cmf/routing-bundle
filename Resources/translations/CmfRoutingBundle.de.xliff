@@ -110,6 +110,10 @@
         <source>form.label_routes</source>
         <target>Routen</target>
       </trans-unit>
+      <trans-unit id="form.label_add_locale_pattern">
+        <source>form.label_add_locale_pattern</source>
+        <target>Sprache hinzufügen</target>
+      </trans-unit>
       <trans-unit id="form.label_add_format_pattern">
         <source>form.label_add_format_pattern</source>
         <target>Formatmuster hinzufügen</target>
@@ -122,6 +126,7 @@
         <source>form.help_options</source>
         <target>
             <![CDATA[
+                Sprache: Die URL enthält in diesem Fall die Sprache: /{locale}/eine/url
                 Format: Format zu URL hinzufügen: /eine/url.{format}. Wenn nichts angegeben wird, ist das Format 'html'<br/>
                 Schrägstrich: Die URL hört in diesem Fall mit einem Schrägstrich auf, zum Beispiel /eine/url/
             ]]>

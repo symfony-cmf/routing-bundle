@@ -110,6 +110,10 @@
         <source>form.label_routes</source>
         <target>Routes</target>
       </trans-unit>
+      <trans-unit id="form.label_add_locale_pattern">
+        <source>form.label_add_locale_pattern</source>
+        <target>Ajouter le langage</target>
+      </trans-unit>
       <trans-unit id="form.label_add_format_pattern">
         <source>form.label_add_format_pattern</source>
         <target>Ajouter le motif du format</target>
@@ -121,6 +125,7 @@
       <trans-unit id="form.help_options">
         <source>form.help_options</source>
         <target><![CDATA[
+            Langage: Prefix la route avec le langage tel que /{locale}/your/route<br/>
             Format: Ajoute le format à la route tel que /your/route.{format}. Le format par défaut est 'html'<br/>
             Barre Oblique: Ajoute un slash à la fin de la route tel que /your/route/
             ]]>

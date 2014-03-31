@@ -110,6 +110,10 @@
         <source>form.label_routes</source>
         <target>Routes</target>
       </trans-unit>
+      <trans-unit id="form.label_add_locale_pattern">
+        <source>form.label_add_locale_pattern</source>
+        <target>Add locale pattern</target>
+      </trans-unit>
       <trans-unit id="form.label_add_format_pattern">
         <source>form.label_add_format_pattern</source>
         <target>Add format pattern</target>
@@ -121,7 +125,9 @@
       <trans-unit id="form.help_add_format_pattern">
         <source>form.help_options</source>
         <target>
-            <![CDATA[Format: Append format to route like /your/route.{format}. Default format is 'html'<br/>
+            <![CDATA[
+            Locale: Prepend locale to route like /{locale}/your/route<br/>
+            Format: Append format to route like /your/route.{format}. Default format is 'html'<br/>
             Slash: Append a trailing slash to route like /your/route/
             ]]>
         </target>

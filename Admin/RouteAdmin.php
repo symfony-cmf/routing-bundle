@@ -147,8 +147,9 @@ class RouteAdmin extends Admin
     protected function configureFieldsForOptions()
     {
         $options = array(
-            'addFormatPattern' => array('addFormatPattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => $this->translationDomain)),
-            'addTrailingSlash' => array('addTrailingSlash', 'checkbox', array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => $this->translationDomain)),
+            array('add_locale_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => $this->translationDomain)),
+            array('add_format_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => $this->translationDomain)),
+            array('add_trailing_slash', 'checkbox', array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => $this->translationDomain)),
         );
 
         $dynamicOptions = $this->getSubject()->getOptions();
