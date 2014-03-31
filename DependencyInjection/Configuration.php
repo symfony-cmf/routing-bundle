@@ -131,6 +131,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('locales')
                             ->prototype('scalar')->end()
                         ->end()
+                        ->scalarNode('limit_candidates')->defaultValue(20)->end()
                         ->booleanNode('match_implicit_locale')->defaultValue(true)->end()
                         ->booleanNode('auto_locale_pattern')->defaultValue(false)->end()
                     ->end()

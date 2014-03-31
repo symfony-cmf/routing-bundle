@@ -25,6 +25,7 @@
             <argument>%cmf_routing.dynamic.persistence.phpcr.route_basepaths%</argument>
             <argument>%cmf_routing.dynamic.locales%</argument>
             <argument type="service" id="doctrine_phpcr"/>
+            <argument>%cmf_routing.dynamic.limit_candidates%</argument>
             <call method="setManagerName"><argument>%cmf_routing.dynamic.persistence.phpcr.manager_name%</argument></call>
         </service>
 

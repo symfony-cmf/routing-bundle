@@ -100,6 +100,7 @@ class CmfRoutingExtension extends Extension
             $container->setParameter($this->getAlias() . '.dynamic.locales', $locales);
             $container->setParameter($this->getAlias() . '.dynamic.auto_locale_pattern', $config['auto_locale_pattern']);
         }
+        $container->setParameter($this->getAlias() . '.dynamic.limit_candidates', $config['limit_candidates']);
 
         $loader->load('routing-dynamic.xml');
 

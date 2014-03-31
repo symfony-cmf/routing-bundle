@@ -50,10 +50,11 @@ class PrefixCandidates extends Candidates
      *                                  $locales. This must be the same
      *                                  document manager as the RouteProvider
      *                                  is using.
+     * @param int             $limit    Limit to candidates generated per prefix.
      */
-    public function __construct(array $prefixes, array $locales = array(), ManagerRegistry $doctrine = null)
+    public function __construct(array $prefixes, array $locales = array(), ManagerRegistry $doctrine = null, $limit = 20)
     {
-        parent::__construct($locales);
+        parent::__construct($locales, $limit);
         $this->setPrefixes($prefixes);
         $this->doctrine = $doctrine;
     }

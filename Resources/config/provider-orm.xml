@@ -19,6 +19,7 @@
 
         <service id="cmf_routing.orm_candidates" class="%cmf_routing.orm_candidates.class%">
             <argument>%cmf_routing.dynamic.locales%</argument>
+            <argument>%cmf_routing.dynamic.limit_candidates%</argument>
         </service>
 
         <service id="cmf_routing.route_provider" class="%cmf_routing.route_entity_provider%">
