@@ -83,7 +83,19 @@ class RouteAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', 'doctrine_phpcr_string');
+            ->add('name', 'doctrine_phpcr_string')
+            ->add('route_name', 'doctrine_phpcr_nodename')
+            ->add('search_by_parent', 'doctrine_phpcr_callback', array(
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) return false;
+
+                    if (!empty($value['value']['route_name'])){
+                        $queryBuilder->where()->child($value['value']['route_name'], 'a')->end()->end();
+                    }
+                    return true;
+                },
+                'field_type' => new RouteFilterType(),
+            ));
     }
 
     public function setRouteRoot($routeRoot)
