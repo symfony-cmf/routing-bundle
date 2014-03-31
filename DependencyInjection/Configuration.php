@@ -78,23 +78,9 @@ class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->canBeEnabled()
                                     ->fixXmlConfig('route_basepath')
-                                    ->beforeNormalization()
-                                        ->ifTrue(function ($v) {
-                                            return isset($v['route_basepath']);
-                                        })
-                                        ->then(function ($v) {
-                                            $base = isset($v['route_basepaths']) ? $v['route_basepaths'] : array();
-                                            if (is_array($v['route_basepath'])) {
-                                                // xml configuration
-                                                $base += $v['route_basepath'];
-                                            } else {
-                                                $base[] = $v['route_basepath'];
-                                            }
-                                            $v['route_basepaths'] = array_unique($base);
-                                            unset($v['route_basepath']);
-
-                                            return $v;
-                                        })
+                                    ->validate()
+                                        ->ifTrue(function ($v) { isset($v['route_basepath']) && isset($v['route_basepaths']); })
+                                        ->thenInvalid('Found values for both "route_basepath" and "route_basepaths", use "route_basepaths" instead.')
                                     ->end()
                                     ->children()
                                         ->scalarNode('manager_name')->defaultNull()->end()
