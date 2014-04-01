@@ -39,6 +39,8 @@
         <xsd:attribute name="uri-filter-regexp" type="xsd:string" />
         <xsd:attribute name="route-provider-service-id" type="xsd:string" />
         <xsd:attribute name="content-repository-service-id" type="xsd:string" />
+        <xsd:attribute name="auto-locale-pattern" type="xsd:boolean" />
+        <xsd:attribute name="match-implicit-locale" type="xsd:boolean" />
     </xsd:complexType>
 
     <xsd:complexType name="controller_by_type">
@@ -73,11 +75,22 @@
     </xsd:complexType>
 
     <xsd:complexType name="phpcr">
+        <xsd:sequence>
+            <xsd:element name="route-basepath" type="route_basepath" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+
         <xsd:attribute name="enabled" type="xsd:boolean" />
         <xsd:attribute name="manager-name" type="xsd:string" />
+        <!-- the route-basepath is for BC only. you should use the route-basepath children elements -->
         <xsd:attribute name="route-basepath" type="xsd:string" />
         <xsd:attribute name="content-basepath" type="xsd:string" />
         <xsd:attribute name="use-sonata-admin" type="enable_auto" />
+    </xsd:complexType>
+
+    <xsd:complexType name="route_basepath">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string"/>
+        </xsd:simpleContent>
     </xsd:complexType>
 
     <xsd:complexType name="orm">

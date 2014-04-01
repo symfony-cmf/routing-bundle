@@ -14,7 +14,11 @@ cmf_routing:
             Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent: CmfContentBundle:StaticContent:index.html.twig
         persistence:
             phpcr:
-                route_basepath: /cms/routes
+                route_basepaths:
+                    - /cms/routes
+                    - /simple
                 content_basepath: /cms/content
                 use_sonata_admin: false
         locales: [en, fr]
+        auto_locale_pattern: true
+        match_implicit_locale: true

@@ -8,7 +8,11 @@
             <router-by-id id="router.default">100</router-by-id>
         </chain>
 
-        <dynamic generic-controller="acme_main.controller:mainAction">
+        <dynamic
+            generic-controller="acme_main.controller:mainAction"
+            auto-locale-pattern="true"
+            match-implicit-locale="true"
+        >
             <controller-by-type type="editable">acme_main.some_controller:editableAction</controller-by-type>
             <controller-by-class class="Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent">
                 cmf_content.controller:indexAction
@@ -22,7 +26,9 @@
                     route-basepath="/cms/routes"
                     content-basepath="/cms/content"
                     use-sonata-admin="false"
-                />
+                >
+                    <route-basepath>/simple</route-basepath>
+                </phpcr>
             </persistence>
 
             <locale>en</locale>

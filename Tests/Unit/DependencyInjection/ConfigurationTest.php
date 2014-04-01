@@ -53,7 +53,10 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'persistence' => array(
                     'phpcr' => array(
                         'enabled' => true,
-                        'route_basepath' => '/cms/routes',
+                        'route_basepaths' => array(
+                            '/cms/routes',
+                            '/simple',
+                        ),
                         'content_basepath' => '/cms/content',
                         'manager_name' => null,
                         'use_sonata_admin' => false,
@@ -68,6 +71,9 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'uri_filter_regexp' => '',
                 'route_filters_by_id' => array(),
                 'locales' => array('en', 'fr'),
+                'limit_candidates' => true,
+                'auto_locale_pattern' => true,
+                'match_implicit_locale' => true,
             ),
         );
 

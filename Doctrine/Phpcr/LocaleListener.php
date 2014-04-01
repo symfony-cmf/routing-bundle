@@ -12,10 +12,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 /**
  * Doctrine PHPCR-ODM listener to update the locale on routes based on the URL.
@@ -29,11 +29,12 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 class LocaleListener
 {
     /**
-     * The prefix to add to the url to create the repository path
+     * Used to ask for the possible prefixes to determine the possible locale
+     * segment of the id.
      *
-     * @var string
+     * @var RouteProvider
      */
-    protected $idPrefix = '';
+    protected $candidates;
 
     /**
      * List of possible locales to detect on URL after idPrefix
@@ -42,20 +43,47 @@ class LocaleListener
      */
     protected $locales;
 
-    public function __construct($prefix, array $locales)
-    {
-        $this->idPrefix = $prefix;
-        $this->locales = $locales;
-    }
+    /**
+     * Whether to enforce the route option add_locale_pattern.
+     *
+     * @var bool
+     */
+    protected $addLocalePattern;
 
     /**
-     * The repository path prefix where routes handled by this listener are located.
+     * Whether to update the _locales requirement based on available
+     * translations of the document.
      *
-     * @param $prefix
+     * This is only done for routes that are translated documents at the same
+     * time, and only if their path does not start with one of the available
+     * locales. An example are the CmfSimpleCmsBundle Page documents.
+     *
+     * @var bool
      */
-    public function setPrefix($prefix)
-    {
-        $this->idPrefix = $prefix;
+    protected $updateAvailableTranslations;
+
+    /**
+     * This listener is built to work with the prefix candidates strategy.
+     *
+     * @param PrefixCandidates $candidates                  To get prefixes from.
+     * @param array            $locales                     Locales that should be detected.
+     * @param bool             $addLocalePattern            Whether to enforce the add_locale_pattern
+     *                                                      option if the route does not have one of
+     *                                                      the allowed locales in its id.
+     * @param bool             $updateAvailableTranslations Whether to update the route document with
+     *                                                      its available translations if it does not
+     *                                                      have one of the allowed locales in its id.
+     */
+    public function __construct(
+        PrefixCandidates $candidates,
+        array $locales,
+        $addLocalePattern = false,
+        $updateAvailableTranslations = false
+    ) {
+        $this->candidates = $candidates;
+        $this->locales = $locales;
+        $this->setAddLocalePattern($addLocalePattern);
+        $this->setUpdateAvailableTranslations($updateAvailableTranslations);
     }
 
     /**
@@ -69,6 +97,22 @@ class LocaleListener
     }
 
     /**
+     * Whether to make the route prepend the locale pattern if it does not
+     * have one of the allowed locals in its id.
+     *
+     * @param boolean $addLocalePattern
+     */
+    public function setAddLocalePattern($addLocalePattern)
+    {
+        $this->addLocalePattern = $addLocalePattern;
+    }
+
+    public function setUpdateAvailableTranslations($update)
+    {
+        $this->updateAvailableTranslations = $update;
+    }
+
+    /**
      * Update locale after loading a route.
      *
      * @param LifecycleEventArgs $args
@@ -79,7 +123,7 @@ class LocaleListener
         if (! $doc instanceof Route) {
             return;
         }
-        $this->updateLocale($doc, $doc->getId());
+        $this->updateLocale($doc, $doc->getId(), $args->getObjectManager());
     }
 
     /**
@@ -93,7 +137,7 @@ class LocaleListener
         if (! $doc instanceof Route) {
             return;
         }
-        $this->updateLocale($doc, $doc->getId());
+        $this->updateLocale($doc, $doc->getId(), $args->getObjectManager());
     }
 
     /**
@@ -107,35 +151,57 @@ class LocaleListener
         if (! $doc instanceof Route) {
             return;
         }
-        $this->updateLocale($doc, $args->getTargetPath(), true);
+        $this->updateLocale($doc, $args->getTargetPath(), $args->getObjectManager(), true);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getPrefixes()
+    {
+        return $this->candidates->getPrefixes();
     }
 
     /**
      * Update the locale of a route if $id starts with the prefix and has a
      * valid locale right after.
      *
-     * @param Route   $doc   The route object
-     * @param string  $id    The id (in move case, this is not the current id
-     *                       of $route)
-     * @param boolean $force Whether to update the locale even if the route
-     *                       already has a locale.
+     * @param Route   $doc        The route object
+     * @param string  $id         The id (in move case, this is not the current
+     *                            id of $route).
+     * @param DocumentManager $dm The document manager to get locales from if
+     *                            the setAvailableTranslations option is
+     *                            enabled.
+     * @param boolean $force      Whether to update the locale even if the
+     *                            route already has a locale.
      */
-    protected function updateLocale(Route $doc, $id, $force = false)
+    protected function updateLocale(Route $doc, $id, DocumentManager $dm, $force = false)
     {
         $matches = array();
 
-        // only update route objects and only if the prefix can match, to allow
-        // for more than one listener and more than one route root
-        if (! preg_match('#' . $this->idPrefix . '/([^/]+)(/|$)#', $id, $matches)) {
+        // only update if the prefix matches, to allow for more than one
+        // listener and more than one route root.
+        if (! preg_match('#(' . implode('|', $this->getPrefixes()) . ')/([^/]+)(/|$)#', $id, $matches)) {
             return;
         }
 
-        if (in_array($matches[1], $this->locales)) {
-            if ($force || ! $doc->getDefault('_locale')) {
-                $doc->setDefault('_locale', $matches[1]);
+        if (in_array($locale = $matches[2], $this->locales)) {
+            if ($force || !$doc->getDefault('_locale')) {
+                $doc->setDefault('_locale', $locale);
             }
-            if ($force || ! $doc->getRequirement('_locale')) {
-                $doc->setRequirement('_locale', $matches[1]);
+            if ($force || !$doc->getRequirement('_locale')) {
+                $doc->setRequirement('_locale', $locale);
+            }
+        } else {
+            if ($this->addLocalePattern) {
+                $doc->setOption('add_locale_pattern', true);
+            }
+            if ($this->updateAvailableTranslations
+                && $dm->isDocumentTranslatable($doc)
+                && !$doc->getRequirement('_locale')
+            ) {
+                $locales = $dm->getLocalesFor($doc, true);
+                $doc->setRequirement('_locale', implode('|', $locales));
             }
         }
     }

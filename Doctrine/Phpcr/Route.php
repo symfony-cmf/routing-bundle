@@ -12,6 +12,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
@@ -49,13 +50,6 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
     protected $children;
 
     /**
-     * if to add "/" to the pattern
-     *
-     * @var Boolean
-     */
-    protected $addTrailingSlash;
-
-    /**
      * The part of the PHPCR path that does not belong to the url
      *
      * This field is not persisted in storage.
@@ -65,28 +59,34 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
     protected $idPrefix;
 
     /**
-     * Overwrite to be able to create route without pattern
+     * PHPCR id can not end on '/', so we need an additional option for a
+     * trailing slash.
      *
-     * @param Boolean $addFormatPattern if to add ".{_format}" to the route pattern
-     *                                  also implicitly sets a default/require on "_format" to "html"
-     * @param Boolean $addTrailingSlash whether to add a trailing slash to the route, defaults to not add one
+     * Additional supported option is:
+     *
+     * * add_trailing_slash: When set, a trailing slash is appended to the route
      */
-    public function __construct($addFormatPattern = false, $addTrailingSlash = false)
+    public function __construct(array $options= array())
     {
-        parent::__construct($addFormatPattern);
+        parent::__construct($options);
 
-        $this->children = array();
-        $this->addTrailingSlash = $addTrailingSlash;
+        $this->children = new ArrayCollection();
     }
 
+    /**
+     * @deprecated use getOption('add_trailing_slash') instead
+     */
     public function getAddTrailingSlash()
     {
-        return $this->addTrailingSlash;
+        return $this->getOption('add_trailing_slash');
     }
 
+    /**
+     * @deprecated use setOption('add_trailing_slash', $add) instead
+     */
     public function setAddTrailingSlash($addTrailingSlash)
     {
-        $this->addTrailingSlash = $addTrailingSlash;
+        $this->setOption('add_trailing_slash', $addTrailingSlash);
     }
 
     /**
@@ -142,6 +142,8 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
      * Note that this will change the URL this route matches.
      *
      * @param string $name the new name
+     *
+     * @return self
      */
     public function setName($name)
     {
@@ -217,7 +219,10 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
      */
     public function getStaticPrefix()
     {
-        return $this->generateStaticPrefix($this->getId(), $this->idPrefix);
+        $path = $this->getId();
+        $prefix = $this->getPrefix();
+
+        return $this->generateStaticPrefix($path, $prefix);
     }
 
     /**
@@ -248,11 +253,13 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
 
     /**
      * {@inheritDoc}
+     *
+     * Handle the trailing slash option.
      */
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->addTrailingSlash && '/' !== $pattern[strlen($pattern)-1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern)-1]) {
             $pattern .= '/';
         };
 
@@ -297,7 +304,7 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
     /**
      * Get all children of this route including non-routes.
      *
-     * @return array
+     * @return Collection
      */
     public function getChildren()
     {

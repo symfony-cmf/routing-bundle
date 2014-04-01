@@ -21,11 +21,16 @@ $container->loadFromExtension('cmf_routing', array(
         ),
         'persistence' => array(
             'phpcr' => array(
-                'route_basepath' => '/cms/routes',
+                'route_basepaths' => array(
+                    '/cms/routes',
+                    '/simple',
+                ),
                 'content_basepath' => '/cms/content',
                 'use_sonata_admin' => 'false',
             ),
         ),
         'locales' => array('en', 'fr'),
+        'auto_locale_pattern' => true,
+        'match_implicit_locale' => true,
     ),
 ));

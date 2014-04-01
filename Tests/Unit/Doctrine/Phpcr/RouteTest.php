@@ -10,7 +10,7 @@
  */
 
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 

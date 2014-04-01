@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Admin;
 
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -31,7 +30,7 @@ class RedirectRouteAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id', 'text')
+            ->addIdentifier('path', 'text')
         ;
     }
 
@@ -44,14 +43,15 @@ class RedirectRouteAdmin extends Admin
                 ->add('routeName', 'text', array('required' => false))
                 ->add('uri', 'text', array('required' => false))
                 ->add('routeTarget', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->routeRoot))
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('name',  'doctrine_phpcr_nodename')
-            ;
+        ;
     }
 
     public function setRouteRoot($routeRoot)
@@ -69,6 +69,6 @@ class RedirectRouteAdmin extends Admin
         return $object instanceof Route && $object->getId()
             ? $object->getId()
             : $this->trans('link_add', array(), 'SonataAdminBundle')
-            ;
+        ;
     }
 }

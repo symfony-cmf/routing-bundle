@@ -10,7 +10,6 @@
         <id name="id">
             <generator strategy="PARENT"/>
         </id>
-        <field name="addTrailingSlash" type="boolean"/>
         <nodename name="name"/>
         <parent-document name="parent"/>
         <children name="children"/>
