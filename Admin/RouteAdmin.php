@@ -83,7 +83,7 @@ class RouteAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', 'doctrine_phpcr_string');
+            ->add('name', 'doctrine_phpcr_nodename');
     }
 
     public function setRouteRoot($routeRoot)
