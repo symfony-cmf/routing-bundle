@@ -180,6 +180,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         if (null === $option && 'compiler_class' === $name) {
             return 'Symfony\\Component\\Routing\\RouteCompiler';
         }
+        if ($this->isBooleanOption($name)) {
+            return (boolean) $option;
+        }
 
         return $option;
     }
@@ -196,8 +199,23 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         if (!array_key_exists('compiler_class', $options)) {
             $options['compiler_class'] = 'Symfony\\Component\\Routing\\RouteCompiler';
         }
+        foreach ($options as $key => $value) {
+            if ($this->isBooleanOption($key)) {
+                $options[$key] = (boolean) $value;
+            }
+        }
 
         return $options;
+    }
+
+    /**
+     * Helper method to check if an option is a boolean option to allow better forms.
+     *
+     * @param string $name
+     */
+    protected function isBooleanOption($name)
+    {
+        return in_array($name, array('add_format_pattern', 'add_locale_pattern'));
     }
 
     /**

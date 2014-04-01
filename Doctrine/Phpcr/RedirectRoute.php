@@ -260,4 +260,12 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Child
 
         return $children;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function isBooleanOption($name)
+    {
+        return $name === 'add_trailing_slash' || parent::isBooleanOption($name);
+    }
 }
