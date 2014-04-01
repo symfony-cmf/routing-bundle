@@ -163,6 +163,13 @@ class RouteAdmin extends Admin
             }
         }
 
+        if ($route && $route->getOption('add_format_pattern')) {
+            $defaults['_format'] = array('_format', 'text', array('required' => true));
+        }
+        if ($route && $route->getOption('add_locale_pattern')) {
+            $defaults['_locale'] = array('_format', 'text', array('required' => false));
+        }
+
         return $defaults;
     }
 

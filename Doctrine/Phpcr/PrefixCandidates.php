@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use PHPCR\Util\PathHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
@@ -68,7 +69,9 @@ class PrefixCandidates extends Candidates
     {
         foreach ($this->getPrefixes() as $prefix) {
             // $name is the route document path
-            if ($name === $prefix || 0 === strpos($name, $prefix . '/')) {
+            if (($name === $prefix || 0 === strpos($name, $prefix . '/'))
+                && PathHelper::assertValidAbsolutePath($name, false, false)
+            ) {
                 return true;
             }
         }
@@ -110,6 +113,13 @@ class PrefixCandidates extends Candidates
             $url = substr($url, strlen($locale) + 1);
             foreach ($this->getPrefixes() as $prefix) {
                 $candidates = array_unique(array_merge($candidates, $this->getCandidatesFor($url, $prefix)));
+            }
+        }
+
+        // filter out things like double // or trailing / - this would trigger an exception on the document manager.
+        foreach ($candidates as $key => $candidate) {
+            if (! PathHelper::assertValidAbsolutePath($candidate, false, false)) {
+                unset($candidates[$key]);
             }
         }
 
