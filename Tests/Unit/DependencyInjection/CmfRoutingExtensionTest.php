@@ -115,4 +115,39 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             'Acme\Foo' => 'acme_main.controller:indexAction',
         ));
     }
+
+    public function testLoadBasePath()
+    {
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'phpcr' => array(
+                        'enabled' => true,
+                        'route_basepath' => '/cms/routes',
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepath', '/cms/routes');
+    }
+
+    public function testLoadBasePaths()
+    {
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'phpcr' => array(
+                        'enabled' => true,
+                        'route_basepaths' => array('/cms/routes', '/cms/test'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepath"', '/cms/routes');
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array('/cms/routes', '/cms/test'));
+    }
 }
