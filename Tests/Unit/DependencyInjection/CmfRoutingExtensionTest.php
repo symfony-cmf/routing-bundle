@@ -115,4 +115,56 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             'Acme\Foo' => 'acme_main.controller:indexAction',
         ));
     }
+
+    public function testLoadBasePath()
+    {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array(
+                'CmfRoutingBundle' => true,
+                'SonataDoctrinePHPCRAdminBundle' => true,
+            )
+        );
+
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'phpcr' => array(
+                        'enabled' => true,
+                        'route_basepath' => '/cms/routes',
+                    ),
+                ),
+            ),
+        ));
+
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/routes');
+    }
+
+    public function testLoadBasePaths()
+    {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array(
+                'CmfRoutingBundle' => true,
+                'SonataDoctrinePHPCRAdminBundle' => true,
+            )
+        );
+
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'phpcr' => array(
+                        'enabled' => true,
+                        'route_basepaths' => array('/cms/routes', '/cms/test'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/routes');
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array('/cms/routes', '/cms/test'));
+    }
 }
