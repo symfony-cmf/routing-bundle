@@ -59,24 +59,40 @@ class RouteAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('form.group_general')
-            ->add(
-                'parent',
-                'doctrine_phpcr_odm_tree',
-                array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
-            )
-            ->add('name', 'text')
+            ->with('form.group_general', array(
+                'translation_domain' => 'CmfRoutingBundle',
+            ))
+                ->add(
+                    'parent',
+                    'doctrine_phpcr_odm_tree',
+                    array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
+                )
+                ->add('name', 'text')
         ->end();
 
         if (null === $this->getParentFieldDescription()) {
             $formMapper
-                ->with('form.group_general')
+                ->with('form.group_general', array(
+                    'translation_domain' => 'CmfRoutingBundle',
+                ))
                     ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->end()
-                ->with('form.group_advanced')
+                ->with('form.group_advanced', array(
+                    'translation_domain' => 'CmfRoutingBundle',
+                ))
                     ->add('variablePattern', 'text', array('required' => false), array('help' => 'form.help_variable_pattern'))
-                    ->add('defaults', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForDefaults()))
-                    ->add('options', 'sonata_type_immutable_array', array('keys' => $this->configureFieldsForOptions()), array('help' => 'form.help_options'))
+                    ->add(
+                        'defaults',
+                        'sonata_type_immutable_array',
+                        array('keys' => $this->configureFieldsForDefaults($this->getSubject()->getDefaults()))
+                    )
+                    ->add(
+                        'options',
+                        'sonata_type_immutable_array',
+                        array(
+                            'keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
+                        array('help' => 'form.help_options')
+                    )
                 ->end()
             ->end();
         }
@@ -110,7 +126,14 @@ class RouteAdmin extends Admin
         return array();
     }
 
-    protected function configureFieldsForDefaults()
+    /**
+     * Provide default route defaults and extract defaults from $dynamicDefaults.
+     *
+     * @param array $dynamicDefaults
+     *
+     * @return array Value for sonata_type_immutable_array
+     */
+    protected function configureFieldsForDefaults($dynamicDefaults)
     {
         $defaults = array(
             '_controller' => array('_controller', 'text', array('required' => false)),
@@ -121,14 +144,13 @@ class RouteAdmin extends Admin
             )),
         );
 
-        $dynamicDefaults = $this->getSubject()->getDefaults();
         foreach ($dynamicDefaults as $name => $value) {
             if (!isset($defaults[$name])) {
                 $defaults[$name] = array($name, 'text', array('required' => false));
             }
         }
 
-        //parse variable pattern and add defaults for it - taken from routecompiler
+        //parse variable pattern and add defaults for tokens - taken from routecompiler
         /** @var $route Route */
         $route =  $this->subject;
         if ($route && $route->getVariablePattern()) {
@@ -141,18 +163,31 @@ class RouteAdmin extends Admin
             }
         }
 
+        if ($route && $route->getOption('add_format_pattern')) {
+            $defaults['_format'] = array('_format', 'text', array('required' => true));
+        }
+        if ($route && $route->getOption('add_locale_pattern')) {
+            $defaults['_locale'] = array('_format', 'text', array('required' => false));
+        }
+
         return $defaults;
     }
 
-    protected function configureFieldsForOptions()
+    /**
+     * Provide default options and extract options from $dynamicOptions.
+     *
+     * @param array $dynamicOptions
+     *
+     * @return array Value for sonata_type_immutable_array
+     */
+    protected function configureFieldsForOptions(array $dynamicOptions)
     {
         $options = array(
-            array('add_locale_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => $this->translationDomain)),
-            array('add_format_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => $this->translationDomain)),
-            array('add_trailing_slash', 'checkbox', array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => $this->translationDomain)),
+            'add_locale_pattern' => array('add_locale_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_format_pattern' => array('add_format_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_trailing_slash' => array('add_trailing_slash', 'checkbox', array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => 'CmfRoutingBundle')),
         );
 
-        $dynamicOptions = $this->getSubject()->getOptions();
         foreach ($dynamicOptions as $name => $value) {
             if (!isset($options[$name])) {
                 $options[$name] = array($name, 'text', array('required' => false));

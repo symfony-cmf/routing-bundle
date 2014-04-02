@@ -310,4 +310,12 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
     {
         return $this->children;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function isBooleanOption($name)
+    {
+        return $name === 'add_trailing_slash' || parent::isBooleanOption($name);
+    }
 }

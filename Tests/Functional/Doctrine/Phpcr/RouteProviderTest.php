@@ -99,11 +99,17 @@ class RouteProviderTest extends BaseTestCase
         $this->assertEquals(null, $root->getDefault('_format'));
     }
 
+    /**
+     * The root route will always be found.
+     */
     public function testGetRouteCollectionForRequestNophpcrUrl()
     {
         $collection = $this->repository->getRouteCollectionForRequest(Request::create(':///'));
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
-        $this->assertCount(0, $collection);
+        $this->assertCount(1, $collection);
+        $routes = $collection->all();
+        list ($key, $route) = each($routes);
+        $this->assertEquals(self::ROUTE_ROOT, $key);
     }
 
     public function testGetRoutesByNames()
@@ -113,6 +119,7 @@ class RouteProviderTest extends BaseTestCase
         $routeNames = array(
             self::ROUTE_ROOT . '/testroute/noroute/child',
             self::ROUTE_ROOT . '/testroute/noroute',
+            self::ROUTE_ROOT . '/testroute/', // trailing slash is invalid for phpcr
             self::ROUTE_ROOT . '/testroute'
         );
 
