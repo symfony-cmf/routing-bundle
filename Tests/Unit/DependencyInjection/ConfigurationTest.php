@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -39,6 +39,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'replace_symfony_router' => true,
             ),
             'dynamic' => array(
+                'route_collection_limit' => null,
                 'generic_controller' => 'acme_main.controller:mainAction',
                 'controllers_by_type' => array(
                     'editable' => 'acme_main.some_controller:editableAction',

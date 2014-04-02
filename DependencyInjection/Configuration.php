@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -44,7 +44,7 @@ class Configuration implements ConfigurationInterface
                             ->useAttributeAsKey('id')
                             ->prototype('scalar')->end()
                         ->end()
-                        ->scalarNode('replace_symfony_router')->defaultTrue()->end()
+                        ->booleanNode('replace_symfony_router')->defaultTrue()->end()
                     ->end()
                 ->end()
                 ->arrayNode('dynamic')
@@ -56,6 +56,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->canBeEnabled()
                     ->children()
+                        ->scalarNode('route_collection_limit')->defaultNull()->end()
                         ->scalarNode('generic_controller')->defaultNull()->end()
                         ->scalarNode('default_controller')->defaultNull()->end()
                         ->arrayNode('controllers_by_type')

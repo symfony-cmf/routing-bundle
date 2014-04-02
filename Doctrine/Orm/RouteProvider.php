@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -60,7 +60,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRouteByName($name, $parameters = array())
+    public function getRouteByName($name)
     {
         $route = $this->getRoutesRepository()->findOneBy(array('name' => $name));
         if (!$route) {
@@ -73,8 +73,20 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getRoutesByNames($names, $parameters = array())
+    public function getRoutesByNames($names = null)
     {
+        if (null === $names) {
+            $names = array();
+            if (0 === $this->routeCollectionLimit) {
+                return $names;
+            }
+            if (null !== $this->routeCollectionLimit) {
+                return $this->getRoutesRepository()->findBy(array(), null, $this->routeCollectionLimit);
+            }
+
+            return $this->getRoutesRepository()->findAll();
+        }
+
         $routes = array();
         foreach ($names as $name) {
             try {

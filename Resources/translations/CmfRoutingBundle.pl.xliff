@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="pl" datatype="plaintext" original="CmfRoutingBundle.en.xliff">
+  <file source-language="en" target-language="pl" datatype="plaintext" original="file.ext">
     <body>
       <trans-unit id="dashboard.cmf">
         <source>dashboard.cmf</source>
@@ -50,9 +50,9 @@
         <source>filter.label_name</source>
         <target>Nazwa</target>
       </trans-unit>
-      <trans-unit id="list.label_id">
-        <source>list.label_id</source>
-        <target>Ścieżka</target>
+      <trans-unit id="list.label_path">
+        <source>list.label_path</source>
+        <target>URL</target>
       </trans-unit>
       <trans-unit id="form.group_general">
         <source>form.group_general</source>

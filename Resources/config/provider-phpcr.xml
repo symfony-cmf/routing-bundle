@@ -17,6 +17,7 @@
             <argument>%cmf_routing.route_model.class%</argument>
             <call method="setManagerName"><argument>%cmf_routing.dynamic.persistence.phpcr.manager_name%</argument></call>
             <call method="setPrefix"><argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument></call>
+            <call method="setRouteCollectionLimit"><argument>%cmf_routing.route_collection_limit%</argument></call>
         </service>
 
         <service id="cmf_routing.phpcr_content_repository" class="%cmf_routing.content_repository.class%">
@@ -39,6 +40,7 @@
         </service>
 
         <service id="cmf_routing.initializer" class="Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer">
+            <argument>CmfRoutingBundle</argument>
             <argument type="collection">
                 <argument>%cmf_routing.dynamic.persistence.phpcr.route_basepath%</argument>
             </argument>

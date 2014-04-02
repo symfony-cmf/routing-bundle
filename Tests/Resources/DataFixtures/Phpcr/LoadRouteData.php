@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -37,12 +37,12 @@ class LoadRouteData implements FixtureInterface, DependentFixtureInterface
         $manager->persist($parent);
 
         $route = new Route;
-        $route->setParent($parent);
+        $route->setParentDocument($parent);
         $route->setName('route-1');
         $manager->persist($route);
 
         $redirectRoute = new RedirectRoute;
-        $redirectRoute->setParent($parent);
+        $redirectRoute->setParentDocument($parent);
         $redirectRoute->setName('redirect-route-1');
         $manager->persist($redirectRoute);
 

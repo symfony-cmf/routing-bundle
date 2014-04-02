@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,8 +12,14 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\DocumentManager;
+
+use PHPCR\Query\QueryInterface;
 use PHPCR\RepositoryException;
 
+use PHPCR\Query\RowInterface;
+
+use PHPCR\Util\UUIDHelper;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -70,7 +76,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         }
 
         try {
-            $routes = $this->getObjectManager()->findMany($this->className, $candidates);
+            /** @var $dm DocumentManager */
+            $dm = $this->getObjectManager();
+            $routes = $dm->findMany($this->className, $candidates);
             // filter for valid route objects
             foreach ($routes as $key => $route) {
                 if ($route instanceof SymfonyRoute) {
@@ -116,39 +124,89 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param string $name The absolute path or uuid of the Route document.
      */
-    public function getRouteByName($name, $parameters = array())
+    public function getRouteByName($name)
     {
-        // $name is the route document path
-        if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
+        if (UUIDHelper::isUUID($name)) {
+            $route = $this->getObjectManager()->find($this->className, $name);
+            if ($route
+                && '' !== $this->idPrefix
+                && 0 !== strpos($this->getObjectManager()->getUnitOfWork()->getDocumentId($route), $this->idPrefix)
+            ) {
+                $route = null;
+            }
+        } elseif ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
             $route = $this->getObjectManager()->find($this->className, $name);
         }
 
         if (empty($route)) {
-            throw new RouteNotFoundException(sprintf('No route found for path "%s"', $name));
+            throw new RouteNotFoundException(sprintf('No route found at "%s"', $name));
         }
 
         if (!$route instanceof SymfonyRoute) {
-            throw new RouteNotFoundException(sprintf('Document at path "%s" is no route', $name));
+            throw new RouteNotFoundException(sprintf('Document at "%s" is no route', $name));
         }
 
         return $route;
     }
 
     /**
+     * Get list of route names
+     *
+     * @return array
+     */
+    private function getRouteNames()
+    {
+        if (0 === $this->routeCollectionLimit) {
+            return array();
+        }
+
+        /** @var $dm DocumentManager */
+        $dm = $this->getObjectManager();
+        $sql2 = 'SELECT * FROM [nt:unstructured] WHERE [phpcr:classparents] = '.$dm->quote('Symfony\Component\Routing\Route');
+
+        if ('' !== $this->idPrefix) {
+            $sql2.= ' AND ISDESCENDANTNODE('.$dm->quote($this->idPrefix).')';
+        }
+
+        $query = $dm->createPhpcrQuery($sql2, QueryInterface::JCR_SQL2);
+        if (null !== $this->routeCollectionLimit) {
+            $query->setLimit($this->routeCollectionLimit);
+        }
+
+        $result = $query->execute();
+
+        $names = array();
+        foreach ($result as $row) {
+            /** @var $row RowInterface */
+            $names[] = $row->getPath();
+        }
+
+        return $names;
+    }
+
+    /**
      * {@inheritDoc}
      */
-    public function getRoutesByNames($names, $parameters = array())
+    public function getRoutesByNames($names = null)
     {
+        if (null === $names) {
+            $names = $this->getRouteNames();
+        }
+
         if ('' !== $this->idPrefix) {
             foreach ($names as $key => $name) {
-                if (0 !== strpos($name, $this->idPrefix)) {
+                if (!UUIDHelper::isUUID($name) && 0 !== strpos($name, $this->idPrefix)) {
                     unset($names[$key]);
                 }
             }
         }
 
-        $collection = $this->getObjectManager()->findMany($this->className, $names);
+        /** @var $dm DocumentManager */
+        $dm = $this->getObjectManager();
+        $collection = $dm->findMany($this->className, $names);
         foreach ($collection as $key => $document) {
             if (!$document instanceof SymfonyRoute) {
                 // we follow the logic of DocumentManager::findMany and do not throw an exception
@@ -158,5 +216,4 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         return $collection;
     }
-
 }
