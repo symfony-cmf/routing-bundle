@@ -34,10 +34,12 @@ class CmfRoutingExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('metadata.xml');
 
         if ($config['dynamic']['enabled']) {
             // load this even if no explicit enabled value but some configuration
             $this->setupDynamicRouter($config['dynamic'], $container, $loader);
+            $this->setupMetadataDrivers($config['dynamic'], $container);
         }
 
         /* set up the chain router */
@@ -51,6 +53,52 @@ class CmfRoutingExtension extends Extension
         }
 
         $this->setupFormTypes($config, $container, $loader);
+    }
+
+    public function setupMetadataDrivers($config, ContainerBuilder $container)
+    {
+        $configDriver = $container->getDefinition($this->getAlias() . '.metadata.driver.configuration');
+        $annotationDriver = $container->getDefinition($this->getAlias() . '.metadata.driver.annotation');
+
+        $mapping = array();
+
+        $controller = $container->getParameter($this->getAlias() . '.generic_controller');;
+
+        // configure annotation driver
+        $annotationDriver->addMethodCall('setGenericController', array($controller));
+
+        $mappings = array();
+
+        // configure configuration driver
+        if (!empty($config['controllers_by_class'])) {
+            foreach ($config['controllers_by_class'] as $classFqn => $controller) {
+                if (!isset($mappings[$classFqn])) {
+                    $mappings[$classFqn] = array();
+                }
+
+                $mappings[$classFqn]['controller'] = $controller;
+            }
+        }
+
+        if (!empty($config['templates_by_class'])) {
+            foreach ($config['templates_by_class'] as $classFqn => $template) {
+                if (!isset($mappings[$classFqn])) {
+                    $mappings[$classFqn] = array();
+                }
+
+                $mappings[$classFqn]['template'] = $template;
+            }
+        }
+
+        foreach ($mappings as $classFqn => &$mapping) {
+            if (!isset($mapping['controller'])) {
+                $mapping['controller'] = $container->getParameter(
+                    $this->getAlias() . '.generic_controller'
+                );
+            }
+
+            $configDriver->addMethodCall('registerMapping', array($classFqn, $mapping));
+        }
     }
 
     public function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader)
@@ -76,7 +124,7 @@ class CmfRoutingExtension extends Extension
     private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
         // strip whitespace (XML support)
-        foreach (array('controllers_by_type', 'controllers_by_class', 'templates_by_class', 'route_filters_by_id') as $option) {
+        foreach (array('controllers_by_type', 'route_filters_by_id') as $option) {
             $config[$option] = array_map(function ($value) {
                 return trim($value);
             }, $config[$option]);
@@ -86,11 +134,10 @@ class CmfRoutingExtension extends Extension
         if (null === $defaultController) {
             $defaultController = $config['generic_controller'];
         }
+
         $container->setParameter($this->getAlias() . '.default_controller', $defaultController);
         $container->setParameter($this->getAlias() . '.generic_controller', $config['generic_controller']);
         $container->setParameter($this->getAlias() . '.controllers_by_type', $config['controllers_by_type']);
-        $container->setParameter($this->getAlias() . '.controllers_by_class', $config['controllers_by_class']);
-        $container->setParameter($this->getAlias() . '.templates_by_class', $config['templates_by_class']);
         $container->setParameter($this->getAlias() . '.uri_filter_regexp', $config['uri_filter_regexp']);
         $container->setParameter($this->getAlias() . '.route_collection_limit', $config['route_collection_limit']);
 
@@ -153,55 +200,23 @@ class CmfRoutingExtension extends Extension
                 )
             );
         }
-        if (!empty($config['controllers_by_class'])) {
-            $dynamic->addMethodCall(
-                'addRouteEnhancer',
-                array(
-                    new Reference($this->getAlias() . '.enhancer.controllers_by_class'),
-                    50
-                )
-            );
-        }
-        if (!empty($config['templates_by_class'])) {
-            $dynamic->addMethodCall(
-                'addRouteEnhancer',
-                array(
-                    new Reference($this->getAlias() . '.enhancer.templates_by_class'),
-                    40
-                )
-            );
 
-            /*
-             * The CoreBundle prepends the controller from ContentBundle if the
-             * ContentBundle is present in the project.
-             * If you are sure you do not need a generic controller, set the field
-             * to false to disable this check explicitly. But you would need
-             * something else like the default_controller to set the controller,
-             * as no controller will be set here.
-             */
-            if (null === $config['generic_controller']) {
-                throw new InvalidConfigurationException('If you want to configure templates_by_class, you need to configure the generic_controller option.');
-            }
+        $dynamic->addMethodCall(
+            'addRouteEnhancer',
+            array(
+                new Reference($this->getAlias() . '.enhancer.controllers_by_class'),
+                50
+            )
+        );
 
-            if (is_string($config['generic_controller'])) {
-                // if the content class defines the template, we also need to make sure we use the generic controller for those routes
-                $controllerForTemplates = array();
-                foreach ($config['templates_by_class'] as $key => $value) {
-                    $controllerForTemplates[$key] = $config['generic_controller'];
-                }
+        $dynamic->addMethodCall(
+            'addRouteEnhancer',
+            array(
+                new Reference($this->getAlias() . '.enhancer.templates_by_class'),
+                40
+            )
+        );
 
-                $definition = $container->getDefinition($this->getAlias() . '.enhancer.controller_for_templates_by_class');
-                $definition->replaceArgument(2, $controllerForTemplates);
-
-                $dynamic->addMethodCall(
-                    'addRouteEnhancer',
-                    array(
-                        new Reference($this->getAlias() . '.enhancer.controller_for_templates_by_class'),
-                        30
-                    )
-                );
-            }
-        }
         if (!empty($config['generic_controller']) && $config['generic_controller'] !== $defaultController) {
             $dynamic->addMethodCall(
                 'addRouteEnhancer',

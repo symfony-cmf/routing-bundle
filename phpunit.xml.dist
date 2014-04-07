@@ -19,6 +19,10 @@
         <testsuite name="orm">
             <directory>./Tests/Functional/Doctrine/Orm</directory>
         </testsuite>
+
+        <testsuite name="metadata">
+            <directory>./Tests/Functional/Metadata</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
