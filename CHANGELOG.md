@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.2.0-RC1
+---------
+
 * **2014-03-29**: [Multilang] Added some options to support locale matching
   without separate routes per locale. See the new configuration options
   `match_implicit_locale` and `auto_locale_pattern`.
