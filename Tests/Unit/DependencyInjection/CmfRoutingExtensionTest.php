@@ -44,7 +44,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('cmf_routing.replace_symfony_router', true);
 
-        $this->assertContainerBuilderHasService('cmf_routing.router', '%cmf_routing.chain_router.class%');
+        $this->assertContainerBuilderHasService('cmf_routing.router', 'Symfony\Cmf\Component\Routing\ChainRouter');
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall('cmf_routing.router', 'add', array(
             new Reference('router.default'),
             100,
