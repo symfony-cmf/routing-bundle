@@ -239,6 +239,13 @@ class CmfRoutingExtension extends Extension
             $this->getAlias() . '.dynamic.persistence.phpcr.route_basepaths',
             $config['route_basepaths']
         );
+
+        $basePath = reset($config['route_basepaths']);
+        $container->setParameter(
+            $this->getAlias() . '.dynamic.persistence.phpcr.route_basepath',
+            $basePath
+        );
+
         $container->setParameter(
             $this->getAlias() . '.dynamic.persistence.phpcr.content_basepath',
             $config['content_basepath']
