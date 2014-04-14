@@ -68,7 +68,7 @@
             <argument>%cmf_routing.uri_filter_regexp%</argument>
             <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
             <argument type="service" id="cmf_routing.route_provider"/>
-            <call method="setContainer"><argument type="service" id="service_container"/></call>
+            <call method="setRequest"><argument type="service" id="request" on-invalid="null" strict="false"/></call>
             <call method="addRouteEnhancer">
                 <argument type="service" id="cmf_routing.enhancer.route_content"/>
                 <argument>100</argument>
