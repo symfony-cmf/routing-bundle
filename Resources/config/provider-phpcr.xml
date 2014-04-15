@@ -17,6 +17,7 @@
             <argument type="service" id="doctrine_phpcr"/>
             <argument type="service" id="cmf_routing.phpcr_candidates_prefix"/>
             <argument>%cmf_routing.route_model.class%</argument>
+            <argument type="service" id="logger" on-invalid="ignore" />
             <call method="setManagerName"><argument>%cmf_routing.dynamic.persistence.phpcr.manager_name%</argument></call>
             <call method="setRouteCollectionLimit"><argument>%cmf_routing.route_collection_limit%</argument></call>
         </service>
