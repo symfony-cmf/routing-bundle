@@ -4,6 +4,9 @@ Changelog
 1.2.0-RC2
 ---------
 
+* **2014-04-15**: Removed the unused ContentAwareGenerator class from the
+  bundle. Since 1.1 the one from the routing component was used.
+
 * **2014-04-14**: DynamicRouter no longer implements the ContainerAwareInterface
 * **2014-04-11**: drop Symfony 2.2 compatibility
 
