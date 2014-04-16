@@ -18,6 +18,7 @@ use PHPCR\Util\UUIDHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -31,7 +32,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 /**
  * Loads routes from Doctrine PHPCR-ODM.
  *
- * This is <strong>NOT</strong> not a doctrine repository but just the route
+ * This is <strong>NOT</strong> a doctrine repository but just the route
  * provider for the NestedMatcher. (you could of course implement this
  * interface in a repository class, if you need that)
  *
@@ -44,10 +45,20 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     private $candidatesStrategy;
 
-    public function __construct(ManagerRegistry $managerRegistry, CandidatesInterface $candidatesStrategy, $className = null)
-    {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        CandidatesInterface $candidatesStrategy,
+        $className = null,
+        LoggerInterface $logger = null
+    ) {
         parent::__construct($managerRegistry, $className);
         $this->candidatesStrategy = $candidatesStrategy;
+        $this->logger = $logger;
     }
 
     /**
@@ -79,11 +90,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                 }
             }
         } catch (RepositoryException $e) {
-            // TODO: how to determine whether this is a relevant exception or not?
-            // https://github.com/symfony-cmf/RoutingBundle/issues/143
-            // for example, getting /my//test (note the double /) is just an invalid path
-            // and means another router might handle this.
-            // but if the PHPCR backend is down for example, we want to alert the user
+            if ($this->logger) {
+                $this->logger->critical($e);
+            }
         }
 
         return $collection;
