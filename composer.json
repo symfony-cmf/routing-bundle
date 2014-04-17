@@ -33,7 +33,7 @@
         "doctrine/orm": "To enable support for the ORM entities",
 
         "symfony-cmf/content-bundle": "To optionally use the configured value for 'content_basepath' from the CoreBundle",
-        "symfony-cmf/core-bundle": "For easier configuration",
+        "symfony-cmf/core-bundle": "To use the provided Doctrine\Phpcr documents and for easier configuration",
 
         "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents"
     },
