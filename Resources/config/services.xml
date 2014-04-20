@@ -5,6 +5,7 @@
 
     <parameters>
         <parameter key="cmf_routing.twig_extension.class">Symfony\Cmf\Bundle\CoreBundle\Twig\Extension</parameter>
+        <parameter key="cmf_routing.twig_extension.route_not_found_log_level">400</parameter>
     </parameters>
 
     <services>
