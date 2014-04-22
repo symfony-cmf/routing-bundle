@@ -39,7 +39,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'replace_symfony_router' => true,
             ),
             'dynamic' => array(
-                'route_collection_limit' => null,
+                'route_collection_limit' => 0,
                 'generic_controller' => 'acme_main.controller:mainAction',
                 'controllers_by_type' => array(
                     'editable' => 'acme_main.some_controller:editableAction',
