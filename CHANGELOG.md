@@ -4,6 +4,8 @@ Changelog
 1.2.0-RC2
 ---------
 
+* **2014-04-23**: changed ``cmf_routing.dynamic.route_collection_limit`` default to ``0``
+
 * **2014-04-15**: Removed the unused ContentAwareGenerator class from the
   bundle. Since 1.1 the one from the routing component was used.
 
@@ -32,6 +34,9 @@ Changelog
 
 * **2014-03-23**: When using PHPCR-ODM, routes can now be generated with their
   uuid as route name as well, in addition to the repository path.
+
+* **2013-12-23**: add support for ChainRouter::getRouteCollection(), added new
+  config setting ``cmf_routing.dynamic.route_collection_limit``
 
 * **2013-11-28**: [BC BREAK for xml configuration] the alias attribute of the
   <template-by-class> is renamed to class in the bundle configuration.

@@ -56,7 +56,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->canBeEnabled()
                     ->children()
-                        ->scalarNode('route_collection_limit')->defaultNull()->end()
+                        ->scalarNode('route_collection_limit')->defaultValue(0)->end()
                         ->scalarNode('generic_controller')->defaultNull()->end()
                         ->scalarNode('default_controller')->defaultNull()->end()
                         ->arrayNode('controllers_by_type')
