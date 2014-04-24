@@ -156,7 +156,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         $this->candidatesStrategy->restrictQuery($qb);
 
         $query = $qb->getQuery();
-        if (null !== $this->routeCollectionLimit) {
+        if ($this->routeCollectionLimit) {
             $query->setMaxResults($this->routeCollectionLimit);
         }
 
