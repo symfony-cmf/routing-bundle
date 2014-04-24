@@ -92,7 +92,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                 return array();
             }
 
-            return $this->getRouteRepository()->findBy(array(), null, $this->routeCollectionLimit);
+            return $this->getRouteRepository()->findBy(array(), null, $this->routeCollectionLimit ?: null);
         }
 
         $routes = array();
