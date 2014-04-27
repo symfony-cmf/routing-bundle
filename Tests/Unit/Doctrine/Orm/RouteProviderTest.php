@@ -9,8 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Orm;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Orm;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;

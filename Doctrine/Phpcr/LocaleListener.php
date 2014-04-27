@@ -9,10 +9,8 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -166,14 +164,14 @@ class LocaleListener
      * Update the locale of a route if $id starts with the prefix and has a
      * valid locale right after.
      *
-     * @param Route   $doc        The route object
-     * @param string  $id         The id (in move case, this is not the current
-     *                            id of $route).
-     * @param DocumentManager $dm The document manager to get locales from if
-     *                            the setAvailableTranslations option is
-     *                            enabled.
-     * @param boolean $force      Whether to update the locale even if the
-     *                            route already has a locale.
+     * @param Route           $doc   The route object
+     * @param string          $id    The id (in move case, this is not the current
+     *                               id of $route).
+     * @param DocumentManager $dm    The document manager to get locales from if
+     *                               the setAvailableTranslations option is
+     *                               enabled.
+     * @param boolean         $force Whether to update the locale even if the
+     *                               route already has a locale.
      */
     protected function updateLocale(Route $doc, $id, DocumentManager $dm, $force = false)
     {

@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 /**
@@ -27,7 +26,7 @@ interface PrefixInterface
 
     /**
      * @param string $prefix The path in the repository to the routing root
-     *      document.
+     *                       document.
      */
     public function setPrefix($prefix);
 }

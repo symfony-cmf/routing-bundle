@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
-use Symfony\Cmf\Component\Testing\Document\Content;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 

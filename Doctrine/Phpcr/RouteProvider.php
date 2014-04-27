@@ -11,8 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
-use PHPCR\Query\QueryInterface;
-use PHPCR\Query\RowInterface;
 use PHPCR\RepositoryException;
 use PHPCR\Util\UUIDHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;

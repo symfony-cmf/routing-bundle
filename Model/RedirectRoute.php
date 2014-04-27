@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
 use LogicException;
@@ -129,7 +128,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      * and target route document.
      *
      * @param array $parameters a hashmap of key to value mapping for route
-     *      parameters
+     *                          parameters
      */
     public function setParameters(array $parameters)
     {

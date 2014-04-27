@@ -9,8 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Controller;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Controller;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 

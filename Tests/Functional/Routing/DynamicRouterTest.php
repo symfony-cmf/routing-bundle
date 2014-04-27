@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Routing;
 
 use PHPCR\Util\NodeHelper;
-use PHPCR\Util\PathHelper;
 use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Cmf\Component\Routing\ChainRouter;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
-use Symfony\Cmf\Component\Testing\Document\Content;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\Content;
 
 /**
  * The goal of these tests is to test the interoperation with DI and everything.
@@ -32,7 +32,7 @@ use Symfony\Cmf\Component\Testing\Document\Content;
 class DynamicRouterTest extends BaseTestCase
 {
     /**
-     * @var \Symfony\Cmf\Component\Routing\ChainRouter
+     * @var ChainRouter
      */
     protected $router;
     protected $routeNamePrefix;

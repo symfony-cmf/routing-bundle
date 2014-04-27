@@ -9,8 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\CmfRoutingExtension;
@@ -137,7 +136,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 ),
             ),
         ));
-
 
         $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/routes');
     }

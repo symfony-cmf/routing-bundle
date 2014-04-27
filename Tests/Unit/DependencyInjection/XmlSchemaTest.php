@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Cmf\Component\Testing\Unit\XmlSchemaTestCase;
@@ -46,4 +45,3 @@ class XmlSchemaTest extends XmlSchemaTestCase
         $this->assertSchemaRefusesXml($this->fixturesPath.'config_invalid1.xml', $this->schemaPath);
     }
 }
-

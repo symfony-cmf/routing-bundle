@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
@@ -29,7 +28,7 @@ class RedirectRouteTest extends BaseTestCase
 
     public function testRedirectDoctrine()
     {
-        $content = $this->createContent('/test/content');
+        $content = $this->createContent();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
         $route = new Route;

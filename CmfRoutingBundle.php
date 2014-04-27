@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
@@ -107,7 +106,7 @@ class CmfRoutingBundle extends Bundle
      * Otherwise use the standalone one from CmfCoreBundle.
      *
      * @return boolean|string the compiler pass to use or false if no suitable
-     *      one was found
+     *                        one was found
      */
     private function findDoctrineOrmCompiler()
     {
