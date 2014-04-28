@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;

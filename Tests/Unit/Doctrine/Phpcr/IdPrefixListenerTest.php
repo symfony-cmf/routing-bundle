@@ -9,8 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Doctrine\Phpcr;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\PHPCR\DocumentManager;

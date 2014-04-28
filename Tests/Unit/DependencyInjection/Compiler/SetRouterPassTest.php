@@ -9,8 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection\Compiler;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

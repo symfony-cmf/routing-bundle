@@ -13,7 +13,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Admin;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Admin\RouteAdmin;

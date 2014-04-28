@@ -9,10 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Controller;
-
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
@@ -63,7 +60,7 @@ class RedirectControllerTest extends BaseTestCase
 
     public function testRedirectContent()
     {
-        $content = $this->createContent('/test/content');
+        $content = $this->createContent();
 
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 

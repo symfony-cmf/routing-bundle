@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -53,7 +52,7 @@ abstract class DoctrineProvider
 
     /**
      * @param ManagerRegistry $managerRegistry
-     * @param string $className
+     * @param string          $className
      */
     public function __construct(ManagerRegistry $managerRegistry, $className = null)
     {

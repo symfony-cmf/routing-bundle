@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
@@ -141,7 +140,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * Set the object this url points to
      *
      * @param mixed $object A content object that can be persisted by the
-     *      storage layer.
+     *                      storage layer.
      */
     public function setContent($object)
     {

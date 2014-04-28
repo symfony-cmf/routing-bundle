@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
-use Symfony\Cmf\Component\Testing\Document\Content;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\Content;
 
 class BaseTestCase extends ComponentBaseTestCase
 {
@@ -53,10 +52,10 @@ class BaseTestCase extends ComponentBaseTestCase
      *
      * @return Content
      */
-    protected function createContent($path)
+    protected function createContent($path = '/test/content')
     {
-        $content = new Content;
-        $content->setId('/test/content');
+        $content = new Content();
+        $content->setId($path);
         $content->setTitle('Foo Content');
         $this->getDm()->persist($content);
         $this->getDm()->flush();
