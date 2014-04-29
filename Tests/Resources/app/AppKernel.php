@@ -12,7 +12,7 @@ class AppKernel extends TestKernel
         if ('phpcr' === $this->environment) {
             $this->requireBundleSets(array(
                 'phpcr_odm',
-                'sonata_admin',
+                'sonata_admin_phpcr',
             ));
         } elseif ('orm' === $this->environment) {
             $this->requireBundleSet('doctrine_orm');
