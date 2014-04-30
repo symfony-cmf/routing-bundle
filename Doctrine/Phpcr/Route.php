@@ -13,9 +13,9 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\PHPCR\HierarchyInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
-use Symfony\Cmf\Bundle\CoreBundle\Model\ChildInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
 
@@ -25,7 +25,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
  *
  * @author david.buchmann@liip.ch
  */
-class Route extends RouteModel implements PrefixInterface, ChildInterface
+class Route extends RouteModel implements PrefixInterface, HierarchyInterface
 {
     /**
      * parent document
@@ -128,7 +128,7 @@ class Route extends RouteModel implements PrefixInterface, ChildInterface
      * The parent document, which might be another route or some other
      * document.
      *
-     * @return Generic object
+     * @return object The parent document
      */
     public function getParentDocument()
     {

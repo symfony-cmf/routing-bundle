@@ -12,9 +12,9 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\PHPCR\HierarchyInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute as RedirectRouteModel;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-use Symfony\Cmf\Bundle\CoreBundle\Model\ChildInterface;
 
 /**
  * {@inheritDoc}
@@ -22,7 +22,7 @@ use Symfony\Cmf\Bundle\CoreBundle\Model\ChildInterface;
  * This extends the RedirectRoute Model. We need to re-implement everything
  * that the PHPCR Route document adds.
  */
-class RedirectRoute extends RedirectRouteModel implements PrefixInterface, ChildInterface
+class RedirectRoute extends RedirectRouteModel implements PrefixInterface, HierarchyInterface
 {
     /**
      * parent document
@@ -92,6 +92,8 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Child
      * Note that this will change the URL this route matches.
      *
      * @param object $parent the new parent document
+     *
+     * @return $this
      */
     public function setParentDocument($parent)
     {
@@ -100,6 +102,9 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Child
         return $this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getParentDocument()
     {
         return $this->parent;
