@@ -24,15 +24,19 @@ Changelog
   `route_basepaths` and accepts a list of base paths. See the changelog of
   the SimpleCmsBundle as the main impact is on that side.
 
+* **2014-03-29**: Route document and entity constructor changed. The options
+  are no longer mapped separately but as route options. See UPGRADE-1.2.md for
+  instructions.
+
 * **2014-03-26**: [ORM] Applied the cleanup for the PHPCR provider to the ORM
   provider now: If the route matched a pattern with a format extension, the
   format extension is no longer set as route a default.
 
-* **2014-03-25**: setParent() and getParent() are now deprecated.
+* **2014-03-25**: [PHPCR] setParent() and getParent() are now deprecated.
   Use setParentDocument() and getParentDocument() instead.
   Moreover, you should now enable the ChildExtension from the CoreBundle.
 
-* **2014-03-23**: When using PHPCR-ODM, routes can now be generated with their
+* **2014-03-23**: [PHPCR] urls can now be generated from the route
   uuid as route name as well, in addition to the repository path.
 
 * **2013-12-23**: add support for ChainRouter::getRouteCollection(), added new
