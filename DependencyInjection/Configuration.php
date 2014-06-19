@@ -108,6 +108,7 @@ class Configuration implements ConfigurationInterface
                                             ->values(array(true, false, 'auto'))
                                             ->defaultValue('auto')
                                         ->end()
+                                        ->booleanNode('enable_initializer')->defaultTrue()->end()
                                     ->end()
                                 ->end()
                                 ->arrayNode('orm')

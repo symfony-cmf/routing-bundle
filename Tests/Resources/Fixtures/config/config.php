@@ -27,6 +27,7 @@ $container->loadFromExtension('cmf_routing', array(
                 ),
                 'content_basepath' => '/cms/content',
                 'use_sonata_admin' => 'false',
+                'enable_initializer' => true,
             ),
         ),
         'locales' => array('en', 'fr'),

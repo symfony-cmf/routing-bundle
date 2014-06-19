@@ -26,6 +26,7 @@
                     route-basepath="/cms/routes"
                     content-basepath="/cms/content"
                     use-sonata-admin="false"
+                    enable-initializer="true"
                 >
                     <route-basepath>/simple</route-basepath>
                 </phpcr>
