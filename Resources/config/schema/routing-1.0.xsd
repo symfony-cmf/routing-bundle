@@ -85,6 +85,7 @@
         <xsd:attribute name="route-basepath" type="xsd:string" />
         <xsd:attribute name="content-basepath" type="xsd:string" />
         <xsd:attribute name="use-sonata-admin" type="enable_auto" />
+        <xsd:attribute name="enable-initializer" type="xsd:boolean" />
     </xsd:complexType>
 
     <xsd:complexType name="route_basepath">

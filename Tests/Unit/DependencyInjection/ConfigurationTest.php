@@ -59,6 +59,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'content_basepath' => '/cms/content',
                         'manager_name' => null,
                         'use_sonata_admin' => false,
+                        'enable_initializer' => true,
                     ),
                     'orm' => array(
                         'enabled' => false,

@@ -287,6 +287,10 @@ class CmfRoutingExtension extends Extension
         $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.admin_basepath', $basePath);
 
         $loader->load('admin-phpcr.xml');
+
+        if ($config['enable_initializer']) {
+            $loader->load('initializer-phpcr.xml');
+        }
     }
 
     public function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $matchImplicitLocale)
