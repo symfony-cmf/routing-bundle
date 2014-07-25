@@ -63,7 +63,8 @@ class CmfRoutingBundle extends Bundle
                     realpath(__DIR__.'/Resources/config/doctrine-phpcr') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr',
                 ),
                 array('cmf_routing.dynamic.persistence.phpcr.manager_name'),
-                'cmf_routing.backend_type_phpcr'
+                'cmf_routing.backend_type_phpcr',
+                array('CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr')
             )
         );
     }
@@ -95,7 +96,8 @@ class CmfRoutingBundle extends Bundle
                     realpath(__DIR__ . '/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
                 ),
                 array('cmf_routing.dynamic.persistence.orm.manager_name'),
-                'cmf_routing.backend_type_orm'
+                'cmf_routing.backend_type_orm',
+                array('CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm')
             )
         );
     }
