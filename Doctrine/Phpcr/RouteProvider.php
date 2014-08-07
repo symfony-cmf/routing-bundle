@@ -60,6 +60,20 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
+     * @param Request $request
+     *
+     * @return array a list of PHPCR-ODM ids
+     */
+    public function getCandidates(Request $request)
+    {
+        if (false !== strpos($request->getPathInfo(), ':')) {
+            return array();
+        }
+
+        return $this->candidatesStrategy->getCandidates($request);
+    }
+
+    /**
      * {@inheritDoc}
      *
      * This will return any document found at the url or up the path to the
@@ -69,7 +83,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteCollectionForRequest(Request $request)
     {
-        $candidates = $this->candidatesStrategy->getCandidates($request);
+        $candidates = $this->getCandidates($request);
 
         $collection = new RouteCollection();
 

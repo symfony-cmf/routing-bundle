@@ -101,14 +101,24 @@ class RouteProviderTest extends BaseTestCase
     /**
      * The root route will always be found.
      */
-    public function testGetRouteCollectionForRequestNophpcrUrl()
+    public function testGetRouteCollectionForRequestNonPhpcrUrl()
     {
-        $collection = $this->repository->getRouteCollectionForRequest(Request::create(':///'));
+        $collection = $this->repository->getRouteCollectionForRequest(Request::create('http:///'));
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
         $this->assertCount(1, $collection);
         $routes = $collection->all();
         list ($key, $route) = each($routes);
         $this->assertEquals(self::ROUTE_ROOT, $key);
+    }
+
+    /**
+     * The root route will always be found.
+     */
+    public function testGetRouteCollectionForRequestColonInUrl()
+    {
+        $collection = $this->repository->getRouteCollectionForRequest(Request::create('http://foo.com/jcr:content'));
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertCount(0, $collection);
     }
 
     public function testGetRoutesByNames()
