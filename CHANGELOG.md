@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.3.0-RC1
+---------
+
 * **2014-08-07**: PHPCR RouteProvider no longer allows colons in the URI as they are
   interpreted as namespaces, leading to errors.
 * **2014-06-06**: Updated to PSR-4 autoloading
