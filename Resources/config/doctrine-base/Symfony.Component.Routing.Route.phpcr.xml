@@ -8,6 +8,8 @@
 
     <mapped-superclass name="Symfony\Component\Routing\Route">
         <field name="host" type="string"/>
+        <field name="schemes" type="string" multivalue="true"/>
+        <field name="methods" type="string" multivalue="true"/>
         <field name="defaults" type="string" assoc=""/>
         <field name="requirements" type="string" assoc=""/>
         <field name="options" type="string" assoc=""/>
