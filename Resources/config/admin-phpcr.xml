@@ -10,6 +10,7 @@
         <parameter key="cmf_routing.route_document.class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route</parameter>
         <parameter key="cmf_routing.redirect_route_document.class">Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute</parameter>
         <parameter key="cmf_routing.admin_extension.route_referrers.class">Symfony\Cmf\Bundle\RoutingBundle\Admin\Extension\RouteReferrersExtension</parameter>
+        <parameter key="cmf_routing.admin_extension.frontend_link.class">Symfony\Cmf\Bundle\RoutingBundle\Admin\Extension\FrontendLinkExtension</parameter>
     </parameters>
 
     <services>
@@ -53,6 +54,11 @@
 
         <service id="cmf_routing.admin_extension.route_referrers" class="%cmf_routing.admin_extension.route_referrers.class%">
             <tag name="sonata.admin.extension"/>
+        </service>
+
+        <service id="cmf_routing.admin_extension.frontend_link" class="%cmf_routing.admin_extension.frontend_link.class%">
+            <tag name="sonata.admin.extension"/>
+            <argument type="service" id="cmf_routing.router"/>
         </service>
 
     </services>
