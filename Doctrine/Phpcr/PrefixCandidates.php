@@ -87,7 +87,7 @@ class PrefixCandidates extends Candidates
     public function restrictQuery($queryBuilder)
     {
         $prefixes = $this->getPrefixes();
-        if (array_search('', $prefixes) || !count($prefixes)) {
+        if (in_array('', $prefixes) || !count($prefixes)) {
             return;
         }
 
