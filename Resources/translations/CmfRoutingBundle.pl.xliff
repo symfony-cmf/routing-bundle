@@ -106,6 +106,14 @@
         <source>form.label_add_trailing_slash</source>
         <target>Dodaj slash kończący adres</target>
       </trans-unit>
+      <trans-unit id="admin.menu_frontend_link_caption">
+        <source>admin.menu_frontend_link_caption</source>
+        <target>Frontend</target>
+      </trans-unit>
+      <trans-unit id="admin.menu_frontend_link_title">
+        <source>admin.menu_frontend_link_title</source>
+        <target>Otwórz przednią związek końcowy w nowej karcie</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

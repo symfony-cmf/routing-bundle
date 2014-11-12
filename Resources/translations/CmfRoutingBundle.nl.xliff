@@ -106,6 +106,14 @@
         <source>form.label_add_trailing_slash</source>
         <target>Slash aan het eind toevoegen</target>
       </trans-unit>
+      <trans-unit id="admin.menu_frontend_link_caption">
+        <source>admin.menu_frontend_link_caption</source>
+        <target>Frontend</target>
+      </trans-unit>
+      <trans-unit id="admin.menu_frontend_link_title">
+        <source>admin.menu_frontend_link_title</source>
+        <target>Open de voorkant link in nieuw tabblad</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
