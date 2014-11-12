@@ -132,6 +132,14 @@
             ]]>
         </target>
       </trans-unit>
+      <trans-unit id="admin.menu_frontend_link_caption">
+        <source>admin.menu_frontend_link_caption</source>
+        <target>Frontend</target>
+      </trans-unit>
+      <trans-unit id="admin.menu_frontend_link_title">
+        <source>admin.menu_frontend_link_title</source>
+        <target>Frontend-Ansicht in neuem Tab öffnen</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

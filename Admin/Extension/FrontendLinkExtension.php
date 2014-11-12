@@ -14,9 +14,11 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Admin\Extension;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingExceptionInterface;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -33,11 +35,18 @@ class FrontendLinkExtension extends AdminExtension
     private $router;
 
     /**
-     * @param RouterInterface $router
+     * @var Translator
      */
-    public function __construct(RouterInterface $router)
+    private $translator;
+
+    /**
+     * @param RouterInterface $router
+     * @param Translator $translator
+     */
+    public function __construct(RouterInterface $router, Translator $translator)
     {
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public function configureTabMenu(
@@ -50,18 +59,32 @@ class FrontendLinkExtension extends AdminExtension
             return;
         }
 
-        if (!$subject instanceof RouteReferrersReadInterface) {
+        if (!$subject instanceof RouteReferrersReadInterface && !$subject instanceof Route) {
             throw new InvalidConfigurationException(
                 sprintf(
-                    '%s can only be used on subjects which implement Symfony\Cmf\Component\Routing\RouteReferrersReadInterface!',
+                    '%s can only be used on subjects which implement Symfony\Cmf\Component\Routing\RouteReferrersReadInterface or Symfony\Component\Routing\Route!',
                     __CLASS__
                 )
             );
         }
 
-        $uri = $this->router->generate($subject);
+        try {
+            $uri = $this->router->generate($subject);
+        } catch (RoutingExceptionInterface $e) {
+            // we have no valid route
+            return;
+        }
 
-        $menu->addChild('Open in frontend', array('uri' => $uri, 'linkAttributes' => array('target' => '_blank')));
+        $menu->addChild(
+            $this->translator->trans('admin.menu_frontend_link_caption', array(), 'CmfRoutingBundle'),
+            array(
+                'uri' => $uri,
+                'linkAttributes' => array(
+                    'target' => '_blank',
+                    'title' => $this->translator->trans('admin.menu_frontend_link_title', array(), 'CmfRoutingBundle')
+                )
+            )
+        );
     }
 
 }

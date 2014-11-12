@@ -59,6 +59,7 @@
         <service id="cmf_routing.admin_extension.frontend_link" class="%cmf_routing.admin_extension.frontend_link.class%">
             <tag name="sonata.admin.extension"/>
             <argument type="service" id="cmf_routing.router"/>
+            <argument type="service" id="translator"/>
         </service>
 
     </services>
