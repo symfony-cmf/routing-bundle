@@ -79,7 +79,13 @@ class FrontendLinkExtension extends AdminExtension
             $this->translator->trans('admin.menu_frontend_link_caption', array(), 'CmfRoutingBundle'),
             array(
                 'uri' => $uri,
+                'attributes' => array(
+                    'class' => 'sonata-admin-menu-item',
+                    'role' => 'menuitem'
+                ),
                 'linkAttributes' => array(
+                    'class' => 'sonata-admin-frontend-link',
+                    'role' => 'button',
                     'target' => '_blank',
                     'title' => $this->translator->trans('admin.menu_frontend_link_title', array(), 'CmfRoutingBundle')
                 )
