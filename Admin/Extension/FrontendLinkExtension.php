@@ -68,6 +68,11 @@ class FrontendLinkExtension extends AdminExtension
             );
         }
 
+        if($subject instanceof PrefixInterface && !is_string($subject->getId())) { 
+            // we have an unpersisted dynamic route 
+            return; 
+        }
+
         try {
             $uri = $this->router->generate($subject);
         } catch (RoutingExceptionInterface $e) {
