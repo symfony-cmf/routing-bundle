@@ -68,7 +68,7 @@ class FrontendLinkExtension extends AdminExtension
             );
         }
 
-        if($subject instanceof PrefixInterface && !is_string($subject->getId())) { 
+        if ($subject instanceof PrefixInterface && !is_string($subject->getId())) { 
             // we have an unpersisted dynamic route 
             return; 
         }
