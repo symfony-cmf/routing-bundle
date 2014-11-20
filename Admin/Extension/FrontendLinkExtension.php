@@ -15,6 +15,7 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingExceptionInterface;
@@ -66,6 +67,11 @@ class FrontendLinkExtension extends AdminExtension
                     __CLASS__
                 )
             );
+        }
+
+        if ($subject instanceof PrefixInterface && !is_string($subject->getId())) {
+            // we have an unpersisted dynamic route 
+            return; 
         }
 
         try {
