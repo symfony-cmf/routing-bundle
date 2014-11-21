@@ -12,9 +12,15 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class RedirectRouteAdminTest extends BaseTestCase
 {
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Client
+     */
+    private $client;
+
     public function setUp()
     {
         $this->db('PHPCR')->loadFixtures(array(
@@ -37,11 +43,15 @@ class RedirectRouteAdminTest extends BaseTestCase
         $res = $this->client->getResponse();
         $this->assertEquals(200, $res->getStatusCode());
         $this->assertCount(1, $crawler->filter('input[value="redirect-route-1"]'));
+
+        $this->assertFrontendLinkPresent($crawler);
     }
 
     public function testRedirectRouteShow()
     {
-        $this->markTestSkipped('Not implemented yet.');
+        $crawler = $this->client->request('GET', '/admin/cmf/routing/redirectroute/test/routing/redirect-route-1/show');
+        $res = $this->client->getResponse();
+        $this->assertEquals(200, $res->getStatusCode());
     }
 
     public function testRedirectRouteCreate()
@@ -50,19 +60,38 @@ class RedirectRouteAdminTest extends BaseTestCase
         $res = $this->client->getResponse();
         $this->assertEquals(200, $res->getStatusCode());
 
+        $this->assertFrontendLinkNotPresent($crawler);
+
         $button = $crawler->selectButton('Create');
         $form = $button->form();
         $node = $form->getFormNode();
         $actionUrl = $node->getAttribute('action');
         $uniqId = substr(strchr($actionUrl, '='), 1);
 
-        $form[$uniqId.'[parent]'] = '/test/routing';
-        $form[$uniqId.'[name]'] = 'foo-test';
+        $form[$uniqId . '[parent]'] = '/test/routing';
+        $form[$uniqId . '[name]'] = 'foo-test';
 
         $this->client->submit($form);
         $res = $this->client->getResponse();
 
         // If we have a 302 redirect, then all is well
         $this->assertEquals(302, $res->getStatusCode());
+    }
+
+    /**
+     * @param Crawler $crawler
+     */
+    private function assertFrontendLinkPresent(Crawler $crawler)
+    {
+        $this->assertCount(1, $link = $crawler->filter('a[class="sonata-admin-frontend-link"]'));
+        $this->assertEquals('/redirect-route-1', $link->attr('href'));
+    }
+
+    /**
+     * @param Crawler $crawler
+     */
+    private function assertFrontendLinkNotPresent(Crawler $crawler)
+    {
+        $this->assertCount(0, $crawler->filter('a[class="sonata-admin-frontend-link"]'));
     }
 }

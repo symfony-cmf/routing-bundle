@@ -1,0 +1,7 @@
+sonata_admin:
+    extensions:
+        cmf_routing.admin_extension.frontend_link:
+            implements:
+                - Symfony\Cmf\Component\Routing\RouteReferrersReadInterface
+            extends:
+                - Symfony\Component\Routing\Route
