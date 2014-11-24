@@ -47,4 +47,21 @@ class RouteTest extends \PHPUnit_Framework_Testcase
         $res = $this->route->getRouteChildren();
         $this->assertEquals(array(), $res);
     }
+
+    public function testRouteGetPathWithPrefix()
+    {
+        $route = new Route();
+        $route->setId('/cms/routes/my-route');
+        $route->setPrefix('/cms/routes');
+
+        $this->assertEquals('/my-route', $route->getPath());
+    }
+
+    public function testRouteGetPath()
+    {
+        $route = new Route();
+        $route->setId('/cms/routes/my-route');
+
+        $this->assertEquals('/my-route', $route->getPath());
+    }
 }
