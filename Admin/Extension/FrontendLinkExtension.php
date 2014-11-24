@@ -14,13 +14,13 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Admin\Extension;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Routing\Exception\ExceptionInterface as RoutingExceptionInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Admin extension to add a frontend link to the edit tab implementing the
@@ -36,20 +36,24 @@ class FrontendLinkExtension extends AdminExtension
     private $router;
 
     /**
-     * @var Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
     /**
      * @param RouterInterface $router
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      */
-    public function __construct(RouterInterface $router, Translator $translator)
+    public function __construct(RouterInterface $router, TranslatorInterface $translator)
     {
         $this->router = $router;
         $this->translator = $translator;
     }
 
+    /**
+     * @return void
+     * @throws InvalidConfigurationException
+     */
     public function configureTabMenu(
         AdminInterface $admin,
         MenuItemInterface $menu,
@@ -71,7 +75,7 @@ class FrontendLinkExtension extends AdminExtension
 
         if ($subject instanceof PrefixInterface && !is_string($subject->getId())) {
             // we have an unpersisted dynamic route 
-            return; 
+            return;
         }
 
         try {

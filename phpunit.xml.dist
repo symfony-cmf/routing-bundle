@@ -11,6 +11,10 @@
             <directory>./Tests/Unit</directory>
         </testsuite>
 
+        <testsuite name="web-test">
+            <directory>./Tests/WebTest</directory>
+        </testsuite>
+
         <testsuite name="phpcr">
             <directory>./Tests/Functional</directory>
             <exclude>./Tests/Functional/Doctrine/Orm</exclude>
