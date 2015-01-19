@@ -58,42 +58,60 @@ class RouteAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('form.group_general', array(
-                'translation_domain' => 'CmfRoutingBundle',
-            ))
-                ->add(
-                    'parent',
-                    'doctrine_phpcr_odm_tree',
-                    array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
-                )
-                ->add('name', 'text')
-        ->end();
+            ->tab('form.tab_general', array('translation_domain' => 'CmfRoutingBundle'))
+                ->with('form.group_location', array(
+                    'class' => 'col-md-3',
+                    'translation_domain' => 'CmfRoutingBundle'
+                ))
+                    ->add(
+                        'parent',
+                        'doctrine_phpcr_odm_tree',
+                        array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
+                    )
+                    ->add('name', 'text')
+                ->end(); // group location
 
         if (null === $this->getParentFieldDescription()) {
             $formMapper
-                ->with('form.group_general', array(
-                    'translation_domain' => 'CmfRoutingBundle',
-                ))
-                    ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
-                ->end()
-                ->with('form.group_advanced', array(
-                    'translation_domain' => 'CmfRoutingBundle',
-                ))
-                    ->add('variablePattern', 'text', array('required' => false), array('help' => 'form.help_variable_pattern'))
-                    ->add(
-                        'defaults',
-                        'sonata_type_immutable_array',
-                        array('keys' => $this->configureFieldsForDefaults($this->getSubject()->getDefaults()))
-                    )
-                    ->add(
-                        'options',
-                        'sonata_type_immutable_array',
-                        array(
-                            'keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
-                        array('help' => 'form.help_options')
-                    )
-                ->end()
-            ->end();
+                    ->with('form.group_general', array(
+                        'class' => 'col-md-9',
+                        'translation_domain' => 'CmfRoutingBundle'
+                    ))
+                        ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
+                    ->end() // group general
+                ->end() // tab general
+
+                ->tab('form.tab_routing', array('translation_domain' => 'CmfRoutingBundle'))
+                    ->with('form.group_path', array(
+                        'class' => 'col-md-6',
+                        'translation_domain' => 'CmfRoutingBundle'
+                    ))
+                        ->add(
+                            'variablePattern',
+                            'text',
+                            array('required' => false),
+                            array('help' => 'form.help_variable_pattern')
+                        )
+                        ->add(
+                            'options',
+                            'sonata_type_immutable_array',
+                            array('keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
+                            array('help' => 'form.help_options')
+                        )
+                    ->end() // group path
+
+                    ->with('form.group_data', array(
+                        'class' => 'col-md-6',
+                        'translation_domain' => 'CmfRoutingBundle'
+                    ))
+                        ->add(
+                            'defaults',
+                            'sonata_type_immutable_array',
+                            array('keys' => $this->configureFieldsForDefaults($this->getSubject()->getDefaults()))
+                        )
+                    ->end() // group data
+                ->end() // tab routing
+            ;
         }
     }
 
