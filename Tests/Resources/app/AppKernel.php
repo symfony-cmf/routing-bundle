@@ -9,7 +9,7 @@ class AppKernel extends TestKernel
     {
         $this->requireBundleSet('default');
 
-        if ('phpcr' === $this->environment) {
+        if (in_array($this->environment, array('phpcr', 'resource'))) {
             $this->requireBundleSets(array(
                 'phpcr_odm',
                 'sonata_admin_phpcr',
@@ -20,6 +20,7 @@ class AppKernel extends TestKernel
 
         $this->addBundles(array(
             new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+            new \Symfony\Cmf\Bundle\ResourceBundle\CmfResourceBundle(),
         ));
     }
 

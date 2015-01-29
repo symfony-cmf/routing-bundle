@@ -1,0 +1,13 @@
+cmf_routing:
+    dynamic:
+        persistence:
+            resource:
+                enabled: true
+                repository_name: routes_repo
+                map_phpcr: true
+
+cmf_resource:
+    repository:
+        doctrine_phpcr_odm:
+            routes_repo:
+                basepath: /test/routing

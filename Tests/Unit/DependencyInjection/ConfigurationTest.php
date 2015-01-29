@@ -65,6 +65,11 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'enabled' => false,
                         'manager_name' => null,
                     ),
+                    'resource' => array(
+                        'enabled' => false,
+                        'map_phpcr' => false,
+                        'map_orm' => false,
+                    ),
                 ),
                 'enabled' => true,
                 'default_controller' => null,

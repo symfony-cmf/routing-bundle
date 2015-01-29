@@ -123,6 +123,11 @@ class CmfRoutingExtension extends Extension
             $hasContentRepository = true;
         }
 
+        if ($config['persistence']['resource']['enabled']) {
+            $this->loadResourceProvider($config['persistence']['resource'], $loader, $container);
+            $hasProvider = true;
+        }
+
         if (isset($config['route_provider_service_id'])) {
             $container->setAlias($this->getAlias() . '.route_provider', $config['route_provider_service_id']);
             $hasProvider = true;
@@ -296,6 +301,21 @@ class CmfRoutingExtension extends Extension
         if ($config['enable_initializer']) {
             $loader->load('initializer-phpcr.xml');
         }
+    }
+
+    public function loadResourceProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        $container->setParameter($this->getAlias() . '.resource.repository_name', $config['repository_name']);
+
+        if ($config['map_phpcr']) {
+            $container->setParameter($this->getAlias() . '.backend_type_phpcr', true);
+        }
+
+        if ($config['map_orm']) {
+            $container->setParameter($this->getAlias() . '.backend_type_orm', true);
+        }
+
+        $loader->load('provider-resource.xml');
     }
 
     public function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $matchImplicitLocale)
