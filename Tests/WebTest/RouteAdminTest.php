@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Response;
 
 class RouteAdminTest extends BaseTestCase
 {
@@ -33,7 +34,7 @@ class RouteAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/list');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode());
+        $this->assertResponseOk($res);
         $this->assertCount(1, $crawler->filter('html:contains("route-1")'));
     }
 
@@ -41,7 +42,7 @@ class RouteAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/test/routing/route-1/edit');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode());
+        $this->assertResponseOk($res);
         $this->assertCount(1, $crawler->filter('input[value="route-1"]'));
 
         $this->assertFrontendLinkPresent($crawler);
@@ -51,14 +52,14 @@ class RouteAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/test/routing/route-1/show');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode());
+        $this->assertResponseOk($res);
     }
 
     public function testRouteCreate()
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/create');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode());
+        $this->assertResponseOk($res);
 
         $this->assertFrontendLinkNotPresent($crawler);
 
@@ -93,5 +94,10 @@ class RouteAdminTest extends BaseTestCase
     private function assertFrontendLinkNotPresent(Crawler $crawler)
     {
         $this->assertCount(0, $crawler->filter('a[class="sonata-admin-frontend-link"]'));
+    }
+    
+    private function assertResponseOk(Response $response)
+    {
+        $this->assertEqual(200, $response->getStatusCode(), $response->getContent());
     }
 }
