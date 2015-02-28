@@ -98,6 +98,6 @@ class RouteAdminTest extends BaseTestCase
     
     private function assertResponseOk(Response $response)
     {
-        $this->assertEqual(200, $response->getStatusCode(), $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
     }
 }
