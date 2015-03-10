@@ -14,10 +14,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
 use PHPCR\Util\PathHelper;
 
@@ -42,11 +39,6 @@ class RouteAdmin extends Admin
      * @var string
      */
     protected $contentClass;
-
-    /**
-     * @var ControllerResolverInterface
-     */
-    protected $controllerResolver;
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -115,11 +107,6 @@ class RouteAdmin extends Admin
     public function setContentRoot($contentRoot)
     {
         $this->contentRoot = $contentRoot;
-    }
-
-    public function setControllerResolver($controllerResolver)
-    {
-        $this->controllerResolver = $controllerResolver;
     }
 
     public function getExportFormats()
@@ -208,52 +195,6 @@ class RouteAdmin extends Admin
     {
         $defaults = array_filter($object->getDefaults());
         $object->setDefaults($defaults);
-    }
-
-    public function validate(ErrorElement $errorElement, $object)
-    {
-        $defaults = $object->getDefaults();
-
-        if (isset($defaults['_controller'])) {
-            $this->validateDefaultsController($errorElement, $object);
-        }
-
-        if (isset($defaults['_template'])) {
-            $this->validateDefaultsTemplate($errorElement, $object);
-        }
-    }
-
-    protected function validateDefaultsController(ErrorElement $errorElement, $object)
-    {
-        $defaults = $object->getDefaults();
-
-        $controller = $defaults['_controller'];
-
-        $request = new Request(array(), array(), array('_controller' => $controller));
-
-        try {
-            $this->controllerResolver->getController($request);
-        } catch (\LogicException $e) {
-            $errorElement
-                ->with('defaults')
-                ->addViolation($e->getMessage())
-                ->end();
-        }
-    }
-
-    protected function validateDefaultsTemplate(ErrorElement $errorElement, $object)
-    {
-        $defaults = $object->getDefaults();
-
-        $templating = $this->getConfigurationPool()->getContainer()->get('templating');
-        $template = $defaults['_template'];
-
-        if (false === $templating->exists($template)) {
-            $errorElement
-                ->with('defaults')
-                ->addViolation(sprintf('Template "%s" does not exist.', $template))
-                ->end();
-        }
     }
 
     public function toString($object)

@@ -49,6 +49,8 @@ class CmfRoutingExtension extends Extension
         }
 
         $this->setupFormTypes($config, $container, $loader);
+
+        $loader->load('validators.xml');
     }
 
     public function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader)
