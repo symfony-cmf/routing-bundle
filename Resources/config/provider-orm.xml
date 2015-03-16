@@ -12,7 +12,7 @@
 
     <services>
 
-        <service id="cmf_routing.content_repository" class="%cmf_routing.orm.content_repository.class%">
+        <service id="cmf_routing.orm_content_repository" class="%cmf_routing.orm.content_repository.class%">
             <argument type="service" id="doctrine"/>
             <call method="setManagerName"><argument>%cmf_routing.dynamic.persistence.orm.manager_name%</argument></call>
         </service>
