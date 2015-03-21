@@ -234,5 +234,4 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 
         $this->assertFalse($this->container->has('cmf_routing.initializer'));
     }
-
 }

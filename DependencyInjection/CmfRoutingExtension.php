@@ -225,6 +225,8 @@ class CmfRoutingExtension extends Extension
                 $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
             }
         }
+
+        $dynamic->replaceArgument(2, new Reference($config['url_generator']));
     }
 
     public function loadPhpcrProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $locales, $matchImplicitLocale)

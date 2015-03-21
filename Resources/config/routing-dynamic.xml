@@ -64,7 +64,7 @@
         <service id="cmf_routing.dynamic_router" class="%cmf_routing.dynamic_router.class%">
             <argument type="service" id="router.request_context"/>
             <argument type="service" id="cmf_routing.nested_matcher" />
-            <argument type="service" id="cmf_routing.generator" />
+            <argument/>
             <argument>%cmf_routing.uri_filter_regexp%</argument>
             <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
             <argument type="service" id="cmf_routing.route_provider"/>
