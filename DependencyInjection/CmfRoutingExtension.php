@@ -118,6 +118,7 @@ class CmfRoutingExtension extends Extension
         if ($config['persistence']['orm']['enabled']) {
             $this->loadOrmProvider($config['persistence']['orm'], $loader, $container, $locales, $config['match_implicit_locale']);
             $hasProvider = true;
+            $hasContentRepository = true;
         }
 
         if (isset($config['route_provider_service_id'])) {
@@ -306,6 +307,10 @@ class CmfRoutingExtension extends Extension
             $definition = $container->getDefinition($this->getAlias() . '.orm_candidates');
             $definition->setArguments(array());
         }
+        $container->setAlias(
+            $this->getAlias() . '.content_repository',
+            $this->getAlias() . '.orm_content_repository'
+        );
     }
 
     /**
