@@ -6,6 +6,9 @@
 
     <class name="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route">
         <constraint name="Doctrine\Bundle\PHPCRBundle\Validator\Constraints\ValidPhpcrOdm" />
+        <getter property="defaults">
+            <constraint name="Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaults" />
+        </getter>
     </class>
 
     <class name="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute">
