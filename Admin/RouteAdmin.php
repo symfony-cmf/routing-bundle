@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
 use PHPCR\Util\PathHelper;
 
@@ -39,6 +40,13 @@ class RouteAdmin extends Admin
      * @var string
      */
     protected $contentClass;
+
+    /**
+     * @var ControllerResolverInterface
+     *
+     * @deprecated Since 1.4, use the RouteDefaults validator on your document.
+     */
+    protected $controllerResolver;
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -107,6 +115,14 @@ class RouteAdmin extends Admin
     public function setContentRoot($contentRoot)
     {
         $this->contentRoot = $contentRoot;
+    }
+
+    /**
+     * @deprecated Since 1.4, use the RouteDefaults validator on your document.
+     */
+    public function setControllerResolver($controllerResolver)
+    {
+        $this->controllerResolver = $controllerResolver;
     }
 
     public function getExportFormats()
