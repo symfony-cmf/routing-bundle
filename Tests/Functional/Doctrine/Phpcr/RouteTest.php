@@ -40,14 +40,14 @@ class RouteTest extends BaseTestCase
 
         $this->getDm()->persist($route);
         $this->getDm()->flush();
-        $this->assertEquals('/testroute', $route->getPattern());
+        $this->assertEquals('/testroute', $route->getPath());
 
         $this->getDm()->clear();
 
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
         $this->assertNotNull($route->getContent());
-        $this->assertEquals('/testroute', $route->getPattern());
+        $this->assertEquals('/testroute', $route->getPath());
 
         $this->assertEquals('y', $route->getDefault('x'));
         $defaults = $route->getDefaults();
@@ -93,13 +93,13 @@ class RouteTest extends BaseTestCase
     public function testRootRoute()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-        $this->assertEquals('/', $root->getPattern());
+        $this->assertEquals('/', $root->getPath());
     }
 
     public function testSetPattern()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-        $root->setPattern('/{test}');
+        $root->setPath('/{test}');
         $this->assertEquals('{test}', $root->getVariablePattern());
     }
 
@@ -110,7 +110,7 @@ class RouteTest extends BaseTestCase
      */
     public function testSetPatternInvalid(Route $route)
     {
-        $route->setPattern('/impossible');
+        $route->setPath('/impossible');
     }
 
     /**
@@ -120,7 +120,7 @@ class RouteTest extends BaseTestCase
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setPrefix('/changed'); // simulate a problem with the prefix setter listener
-        $this->assertEquals('/', $root->getPattern());
+        $this->assertEquals('/', $root->getPath());
     }
 
     /**
@@ -129,7 +129,7 @@ class RouteTest extends BaseTestCase
     public function testPrefixNonpersisted()
     {
         $route = new Route();
-        $route->getPattern();
+        $route->getPath();
     }
 
     public function testDefaultFormat()
@@ -146,6 +146,6 @@ class RouteTest extends BaseTestCase
 
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
-        $this->assertEquals('/format.{_format}', $route->getPattern());
+        $this->assertEquals('/format.{_format}', $route->getPath());
     }
 }
