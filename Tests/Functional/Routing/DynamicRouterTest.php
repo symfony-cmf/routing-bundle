@@ -141,7 +141,7 @@ class DynamicRouterTest extends BaseTestCase
         // do not set a content here, or we need a valid request and so on...
         $route = new Route();
         $route->setPosition($root, 'notallowed');
-        $route->setRequirement('_method', 'GET');
+        $route->setMethods(array('GET'));
         $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, 'testController');
         $this->getDm()->persist($route);
         $this->getDm()->flush();
