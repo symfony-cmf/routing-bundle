@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RouteTypeType extends AbstractType
@@ -19,7 +20,10 @@ class RouteTypeType extends AbstractType
     protected $routeTypes = array();
     protected $translator;
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
         $choices = array();
         foreach ($this->routeTypes as $routeType) {
@@ -30,6 +34,16 @@ class RouteTypeType extends AbstractType
             'choices' => $choices,
             'translation_domain' => 'CmfRoutingBundle',
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @todo Remove when Symfony <2.7 support is dropped.
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
     }
 
     /**
