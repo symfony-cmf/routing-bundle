@@ -20,8 +20,7 @@
     },
     "require-dev": {
         "symfony-cmf/core-bundle": "~1.1",
-        "symfony-cmf/testing": "~1.2,>=1.2.4",
-        "doctrine/phpcr-odm": "~1.1,>=1.1.0-RC1",
+        "symfony-cmf/testing": "dev-lowest_versions",
         "matthiasnoback/symfony-dependency-injection-test": "~0.6",
         "matthiasnoback/symfony-config-test": "0.*",
         "sonata-project/doctrine-phpcr-admin-bundle": "~1.1",
