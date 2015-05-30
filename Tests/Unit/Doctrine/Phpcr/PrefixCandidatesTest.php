@@ -50,6 +50,28 @@ class PrefixCandidatesTest extends CmfUnitTestCase
         );
     }
 
+    public function testGetCandidatesPercentEncoded()
+    {
+        $request = Request::create('/my/path%20percent%20encoded.html');
+
+        $candidates = new PrefixCandidates(array('/routes', '/simple'));
+        $paths = $candidates->getCandidates($request);
+
+        $this->assertEquals(
+            array(
+                '/routes/my/path percent encoded.html',
+                '/routes/my/path percent encoded',
+                '/routes/my',
+                '/routes',
+                '/simple/my/path percent encoded.html',
+                '/simple/my/path percent encoded',
+                '/simple/my',
+                '/simple',
+            ),
+            $paths
+        );
+    }
+
     public function testGetCandidatesLocales()
     {
         $request = Request::create('/de/path.html');

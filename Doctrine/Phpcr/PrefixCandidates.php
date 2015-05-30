@@ -103,7 +103,7 @@ class PrefixCandidates extends Candidates
     public function getCandidates(Request $request)
     {
         $candidates = array();
-        $url = $request->getPathInfo();
+        $url = rawurldecode($request->getPathInfo());
         foreach ($this->getPrefixes() as $prefix) {
             $candidates = array_unique(array_merge($candidates, $this->getCandidatesFor($url, $prefix)));
         }
