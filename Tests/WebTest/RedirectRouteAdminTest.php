@@ -84,7 +84,7 @@ class RedirectRouteAdminTest extends BaseTestCase
      */
     private function assertFrontendLinkPresent(Crawler $crawler)
     {
-        $this->assertCount(1, $link = $crawler->filter('a[class="sonata-admin-frontend-link"]'));
+        $this->assertCount(1, $link = $crawler->filter('a[class="sonata-admin-frontend-link"]'), 'The page contains a frontend link');
         $this->assertEquals('/redirect-route-1', $link->attr('href'));
     }
 

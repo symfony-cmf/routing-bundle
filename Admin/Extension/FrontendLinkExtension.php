@@ -50,8 +50,16 @@ class FrontendLinkExtension extends AdminExtension
         $this->translator = $translator;
     }
 
+    public function configureSideMenu(
+        AdminInterface $admin,
+        MenuItemInterface $menu,
+        $action,
+        AdminInterface $childAdmin = null
+    ) {
+        $this->configureTabMenu($admin, $menu, $action, $childAdmin);
+    }
+
     /**
-     * @return void
      * @throws InvalidConfigurationException
      */
     public function configureTabMenu(
