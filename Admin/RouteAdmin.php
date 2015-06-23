@@ -168,7 +168,7 @@ class RouteAdmin extends Admin
             $defaults['_format'] = array('_format', 'text', array('required' => true));
         }
         if ($route && $route->getOption('add_locale_pattern')) {
-            $defaults['_locale'] = array('_format', 'text', array('required' => false));
+            $defaults['_locale'] = array('_locale', 'text', array('required' => false));
         }
 
         return $defaults;
