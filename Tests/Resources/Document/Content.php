@@ -34,7 +34,7 @@ class Content
     private $name;
 
     /**
-     * @PHPCRODM\String
+     * @PHPCRODM\Field(type="string")
      */
     private $title;
 
