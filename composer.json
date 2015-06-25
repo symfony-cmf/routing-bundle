@@ -20,7 +20,8 @@
     },
     "require-dev": {
         "symfony-cmf/core-bundle": "~1.1",
-        "symfony-cmf/testing": "dev-phpcr_odm_1_3 as 1.3.0",
+        "symfony-cmf/testing": "~1.2,>=1.2.7",
+        "doctrine/phpcr-odm": "~1.3",
         "matthiasnoback/symfony-dependency-injection-test": "~0.6",
         "matthiasnoback/symfony-config-test": "0.*",
         "phpunit/php-code-coverage": "@stable",
