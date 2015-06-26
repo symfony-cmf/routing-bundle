@@ -17,11 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RouteAdminTest extends BaseTestCase
 {
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Client
-     */
-    private $client;
-
     public function setUp()
     {
         $this->db('PHPCR')->loadFixtures(array(
