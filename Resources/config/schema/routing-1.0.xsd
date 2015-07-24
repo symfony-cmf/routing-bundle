@@ -41,6 +41,7 @@
         <xsd:attribute name="content-repository-service-id" type="xsd:string" />
         <xsd:attribute name="auto-locale-pattern" type="xsd:boolean" />
         <xsd:attribute name="match-implicit-locale" type="xsd:boolean" />
+        <xsd:attribute name="url-generator" type="xsd:string" />
     </xsd:complexType>
 
     <xsd:complexType name="controller_by_type">
