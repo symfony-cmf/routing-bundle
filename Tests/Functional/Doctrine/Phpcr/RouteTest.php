@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -88,6 +88,27 @@ class RouteTest extends BaseTestCase
         $this->assertTrue(1 >= count($options)); // there is a default option for the compiler
 
         return $route;
+    }
+
+    public function testConditionOption()
+    {
+        if (!property_exists('Symfony\Component\Routing\Route', 'condition')) {
+            $this->markTestSkipped('This version of symfony does not have the condition property on the Route.');
+        }
+
+        $route = new Route();
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
+
+        $route->setPosition($root, 'conditionroute');
+        $route->setCondition('foobar');
+
+        $this->getDm()->persist($route);
+        $this->getDm()->flush();
+        $this->getDm()->clear();
+
+        $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/conditionroute');
+
+        $this->assertEquals('foobar', $route->getCondition());
     }
 
     public function testRootRoute()
