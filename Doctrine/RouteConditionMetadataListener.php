@@ -57,6 +57,7 @@ class RouteConditionMetadataListener implements EventSubscriber
             /** @var $meta OrmClassMetadata */
             $meta->mapField(array(
                 'fieldName' => 'condition',
+                'columnName' => '`condition`',
                 'type' => 'string',
                 'nullable' => true,
             ));
