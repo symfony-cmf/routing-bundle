@@ -22,20 +22,43 @@ use Sonata\AdminBundle\Form\FormMapper;
  */
 class RouteReferrersExtension extends AdminExtension
 {
+    /**
+     * @var string
+     */
+    private $formGroup;
+
+    /**
+     * @var string
+     */
+    private $formTab;
+
+    public function __construct($formGroup = 'form.group_routes', $formTab = 'form.tab_routing')
+    {
+        $this->formGroup = $formGroup;
+        $this->formTab = $formTab;
+    }
+
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('form.group_routes', array(
-                'translation_domain' => 'CmfRoutingBundle',
-            ))
-            ->add(
-                'routes',
-                'sonata_type_collection',
-                array(),
-                array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                ))
+            ->with($this->formTab, 'form.tab_routing' === $this->formTab
+                ? array('translation_domain' => 'CmfRoutingBundle', 'tab' => true)
+                : array('tab' => true)
+            )
+                ->with($this->formGroup, 'form.group_routes' === $this->formGroup
+                    ? array('translation_domain' => 'CmfRoutingBundle')
+                    : array()
+                )
+                    ->add(
+                        'routes',
+                        'sonata_type_collection',
+                        array(),
+                        array(
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                        )
+                    )
+                ->end()
             ->end()
         ;
     }

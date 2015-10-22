@@ -54,8 +54,8 @@
         <source>list.label_path</source>
         <target>URL</target>
       </trans-unit>
-      <trans-unit id="form.group_general">
-        <source>form.group_general</source>
+      <trans-unit id="form.tab_general">
+        <source>form.tab_general</source>
         <target>Generale</target>
       </trans-unit>
       <trans-unit id="form.group_advanced">
