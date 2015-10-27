@@ -61,13 +61,23 @@ class RouteTypeType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice';
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @todo Remove when Symfony <2.8 support is dropped.
+     */
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'cmf_routing_route_type';
     }

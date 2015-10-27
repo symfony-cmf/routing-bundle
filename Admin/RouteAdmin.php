@@ -57,16 +57,21 @@ class RouteAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        $textType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
+        $doctrineTreeType = $isSf28 ? 'Sonata\DoctrinePHPCRAdminBundle\Form\Type\TreeModelType' : 'doctrine_phpcr_odm_tree';
+        $sonataImmutableType = $isSf28 ? 'Sonata\CoreBundle\Form\Type\ImmutableArrayType' : 'sonata_type_immutable_array';
+
         $formMapper
             ->with('form.group_general', array(
                 'translation_domain' => 'CmfRoutingBundle',
             ))
                 ->add(
                     'parent',
-                    'doctrine_phpcr_odm_tree',
+                    $doctrineTreeType,
                     array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
                 )
-                ->add('name', 'text')
+                ->add('name', $textType)
         ->end();
 
         if (null === $this->getParentFieldDescription()) {
@@ -74,22 +79,21 @@ class RouteAdmin extends Admin
                 ->with('form.group_general', array(
                     'translation_domain' => 'CmfRoutingBundle',
                 ))
-                    ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
+                    ->add('content', $doctrineTreeType, array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->end()
                 ->with('form.group_advanced', array(
                     'translation_domain' => 'CmfRoutingBundle',
                 ))
-                    ->add('variablePattern', 'text', array('required' => false), array('help' => 'form.help_variable_pattern'))
+                    ->add('variablePattern', $textType, array('required' => false), array('help' => 'form.help_variable_pattern'))
                     ->add(
                         'defaults',
-                        'sonata_type_immutable_array',
+                        $sonataImmutableType,
                         array('keys' => $this->configureFieldsForDefaults($this->getSubject()->getDefaults()))
                     )
                     ->add(
                         'options',
-                        'sonata_type_immutable_array',
-                        array(
-                            'keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
+                        $sonataImmutableType,
+                        array('keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
                         array('help' => 'form.help_options')
                     )
                 ->end()
@@ -139,10 +143,13 @@ class RouteAdmin extends Admin
      */
     protected function configureFieldsForDefaults($dynamicDefaults)
     {
+        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        $textType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
+
         $defaults = array(
-            '_controller' => array('_controller', 'text', array('required' => false)),
-            '_template' => array('_template', 'text', array('required' => false)),
-            'type' => array('type', 'cmf_routing_route_type', array(
+            '_controller' => array('_controller', $textType, array('required' => false)),
+            '_template' => array('_template', $textType, array('required' => false)),
+            'type' => array('type', $isSf28 ? 'Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType' : 'cmf_routing_route_type', array(
                 'empty_value' => '',
                 'required' => false,
             )),
@@ -150,7 +157,7 @@ class RouteAdmin extends Admin
 
         foreach ($dynamicDefaults as $name => $value) {
             if (!isset($defaults[$name])) {
-                $defaults[$name] = array($name, 'text', array('required' => false));
+                $defaults[$name] = array($name, $textType, array('required' => false));
             }
         }
 
@@ -162,16 +169,16 @@ class RouteAdmin extends Admin
             foreach ($matches as $match) {
                 $name = substr($match[0][0], 1, -1);
                 if (!isset($defaults[$name])) {
-                    $defaults[$name] = array($name, 'text', array('required' => true));
+                    $defaults[$name] = array($name, $textType, array('required' => true));
                 }
             }
         }
 
         if ($route && $route->getOption('add_format_pattern')) {
-            $defaults['_format'] = array('_format', 'text', array('required' => true));
+            $defaults['_format'] = array('_format', $textType, array('required' => true));
         }
         if ($route && $route->getOption('add_locale_pattern')) {
-            $defaults['_locale'] = array('_format', 'text', array('required' => false));
+            $defaults['_locale'] = array('_format', $textType, array('required' => false));
         }
 
         return $defaults;
@@ -186,10 +193,13 @@ class RouteAdmin extends Admin
      */
     protected function configureFieldsForOptions(array $dynamicOptions)
     {
+        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        $checkboxType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' : 'checkbox';
+
         $options = array(
-            'add_locale_pattern' => array('add_locale_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => 'CmfRoutingBundle')),
-            'add_format_pattern' => array('add_format_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => 'CmfRoutingBundle')),
-            'add_trailing_slash' => array('add_trailing_slash', 'checkbox', array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_locale_pattern' => array('add_locale_pattern', $checkboxType, array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_format_pattern' => array('add_format_pattern', $checkboxType, array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_trailing_slash' => array('add_trailing_slash', $checkboxType, array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => 'CmfRoutingBundle')),
         );
 
         foreach ($dynamicOptions as $name => $value) {
