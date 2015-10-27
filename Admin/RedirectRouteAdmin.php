@@ -36,13 +36,17 @@ class RedirectRouteAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        $textType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
+        $doctrineTreeType = $isSf28 ? 'Sonata\DoctrinePHPCRAdminBundle\Form\Type\TreeModelType' : 'doctrine_phpcr_odm_tree';
+
         $formMapper
             ->with('form.group_general')
-                ->add('parent', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
-                ->add('name', 'text')
-                ->add('routeName', 'text', array('required' => false))
-                ->add('uri', 'text', array('required' => false))
-                ->add('routeTarget', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->routeRoot))
+                ->add('parent', $doctrineTreeType, array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
+                ->add('name', $textType)
+                ->add('routeName', $textType, array('required' => false))
+                ->add('uri', $textType, array('required' => false))
+                ->add('routeTarget', $doctrineTreeType, array('choice_list' => array(), 'required' => false, 'root_node' => $this->routeRoot))
             ->end()
         ;
     }
