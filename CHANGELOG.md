@@ -1,6 +1,10 @@
 Changelog
 =========
 
+* **2015-10-28**: Deprecated `cmf_routing.dynamic.persistence.phpcr.route_basepath`
+  setting and parameter in favor of `cmf_routing.dynamic.persistence.phpcr.route_basepaths`.
+  The old names will be kept for BC reasons and removed in 2.0.
+
 1.3.0-RC1
 ---------
 
