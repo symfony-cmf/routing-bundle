@@ -240,13 +240,15 @@ class CmfRoutingExtension extends Extension
 
         $container->setParameter(
             $this->getAlias() . '.dynamic.persistence.phpcr.route_basepaths',
-            $config['route_basepaths']
+            array_values(array_unique($config['route_basepaths']))
         );
 
-        $basePath = reset($config['route_basepaths']);
+        /**
+         * @deprecated The cmf_routing.dynamic.persistence.phpcr.route_basepath parameter is deprecated as of version 1.4 and will be removed in 2.0. Use the cmf_routing.dynamic.persistence.phpcr.route_basepaths parameter instead.
+         */
         $container->setParameter(
             $this->getAlias() . '.dynamic.persistence.phpcr.route_basepath',
-            $basePath
+            reset($config['route_basepaths'])
         );
 
         $container->setParameter(
@@ -288,7 +290,7 @@ class CmfRoutingExtension extends Extension
             return;
         }
 
-        $basePath = empty($config['admin_basepath']) ? reset($config['route_basepaths']) : $config['admin_basepath'];
+        $basePath = $config['admin_basepath'] ?: reset($config['route_basepaths']);
         $container->setParameter($this->getAlias() . '.dynamic.persistence.phpcr.admin_basepath', $basePath);
 
         $loader->load('admin-phpcr.xml');

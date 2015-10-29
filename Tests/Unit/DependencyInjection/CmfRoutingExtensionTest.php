@@ -115,7 +115,10 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ));
     }
 
-    public function testLoadBasePath()
+    /**
+     * @dataProvider getBasePathsTests
+     */
+    public function testLoadBasePaths($phpcrConfig, $routeBasepathsParameter, $adminBasePathParameter)
     {
         $this->container->setParameter(
             'kernel.bundles',
@@ -125,22 +128,122 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             )
         );
 
+        if (!isset($phpcrConfig['enabled'])) {
+            $phpcrConfig['enabled'] = true;
+        }
+
         $this->load(array(
             'dynamic' => array(
                 'enabled' => true,
                 'persistence' => array(
-                    'phpcr' => array(
-                        'enabled' => true,
-                        'route_basepath' => '/cms/routes',
-                    ),
+                    'phpcr' => $phpcrConfig,
                 ),
             ),
         ));
 
-        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/routes');
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', $routeBasepathsParameter);
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $adminBasePathParameter);
     }
 
-    public function testLoadBasePaths()
+    public function getBasePathsTests()
+    {
+        return array(
+            array(
+                array(),
+                array('/cms/routes'),
+                '/cms/routes'
+            ),
+
+            array(
+                array('route_basepaths' => '/cms/test'),
+                array('/cms/test'),
+                '/cms/test'
+            ),
+
+            array(
+                array('route_basepaths' => array('/cms/routes', '/cms/test')),
+                array('/cms/routes', '/cms/test'),
+                '/cms/routes'
+            ),
+
+            array(
+                array('route_basepaths' => array('/cms/test', '/cms/routes')),
+                array('/cms/test', '/cms/routes'),
+                '/cms/test'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getBasePathsMergingTests
+     */
+    public function testRouteBasepathsMerging($phpcrConfig1, $phpcrConfig2, $routeBasepathsParameter, $adminBasePathParameter)
+    {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array(
+                'CmfRoutingBundle' => true,
+                'SonataDoctrinePHPCRAdminBundle' => true,
+            )
+        );
+
+        if (!isset($phpcrConfig1['enabled'])) {
+            $phpcrConfig1['enabled'] = true;
+        }
+        if (!isset($phpcrConfig2['enabled'])) {
+            $phpcrConfig2['enabled'] = true;
+        }
+
+        $configs = array(
+            array(
+                'dynamic' => array(
+                    'enabled' => true,
+                    'persistence' => array('phpcr' => $phpcrConfig1),
+                ),
+            ),
+            array(
+                'dynamic' => array(
+                    'enabled' => true,
+                    'persistence' => array('phpcr' => $phpcrConfig2),
+                ),
+            ),
+        );
+
+        foreach ($this->container->getExtensions() as $extension) {
+            $extension->load($configs, $this->container);
+        }
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', $routeBasepathsParameter);
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $adminBasePathParameter);
+    }
+
+    public function getBasePathsMergingTests()
+    {
+        return array(
+            array(
+                array('route_basepaths' => array('/cms/test')),
+                array('route_basepaths' => array('/cms/test2')),
+                array('/cms/test', '/cms/test2'),
+                '/cms/test'
+            ),
+
+            array(
+                array('route_basepaths' => array('/cms/test')),
+                array('route_basepaths' => array('/cms/test2', '/cms/test3')),
+                array('/cms/test', '/cms/test2', '/cms/test3'),
+                '/cms/test'
+            ),
+
+            array(
+                array(),
+                array('route_basepaths' => array('/cms/test')),
+                array('/cms/test'),
+                '/cms/test'
+            ),
+        );
+    }
+
+    public function testLegacyRouteBasepath()
     {
         $this->container->setParameter(
             'kernel.bundles',
@@ -155,15 +258,14 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 'enabled' => true,
                 'persistence' => array(
                     'phpcr' => array(
-                        'enabled' => true,
-                        'route_basepaths' => array('/cms/routes', '/cms/test'),
+                        'route_basepath' => '/cms/test'
                     ),
                 ),
             ),
         ));
 
-        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/routes');
-        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array('/cms/routes', '/cms/test'));
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array('/cms/test'));
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/test');
     }
 
     public function testInitializerEnabled()
