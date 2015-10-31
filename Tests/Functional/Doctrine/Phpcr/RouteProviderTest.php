@@ -45,7 +45,7 @@ class RouteProviderTest extends BaseTestCase
 
         // smuggle a non-route thing into the repository
         $noroute = new Generic;
-        $noroute->setParent($route);
+        $noroute->setParentDocument($route);
         $noroute->setNodename('noroute');
         $this->getDm()->persist($noroute);
 

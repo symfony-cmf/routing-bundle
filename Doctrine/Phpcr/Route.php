@@ -93,9 +93,9 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function setParent($parent)
     {
-        $this->parent = $parent;
+        @trigger_error('The Route#setParent() method is deprecated as of version 1.2 and will be removed in 2.0. Use setParentDocument() instead.', E_USER_DEPRECATED);
 
-        return $this;
+        return $this->setParentDocument($parent);
     }
 
     /**
@@ -103,7 +103,9 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function getParent()
     {
-        return $this->parent;
+        @trigger_error('The Route#getParent() method is deprecated as of version 1.2 and will be removed in 2.0. Use getParentDocument() instead.', E_USER_DEPRECATED);
+
+        return $this->getParentDocument();
     }
 
     /**
@@ -112,6 +114,8 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      * Note that this will change the URL this route matches.
      *
      * @param object $parent the new parent document
+     *
+     * @return $this
      */
     public function setParentDocument($parent)
     {
