@@ -114,13 +114,18 @@ class CmfRoutingExtension extends Extension
         if ($config['persistence']['phpcr']['enabled']) {
             $this->loadPhpcrProvider($config['persistence']['phpcr'], $loader, $container, $locales, $config['match_implicit_locale']);
             $hasProvider = true;
-            $hasContentRepository = true;
+            //$hasContentRepository = true;
         }
 
         if ($config['persistence']['orm']['enabled']) {
             $this->loadOrmProvider($config['persistence']['orm'], $loader, $container, $locales, $config['match_implicit_locale']);
             $hasProvider = true;
             $hasContentRepository = true;
+        }
+
+        if ($this->isConfigEnabled($container, $config['persistence']['resource'])) {
+            $this->loadResourceProvider($config['persistence']['resource'], $loader, $container);
+            $hasProvider = true;
         }
 
         if (isset($config['route_provider_service_id'])) {
@@ -261,10 +266,10 @@ class CmfRoutingExtension extends Extension
             $config['manager_name']
         );
 
-        $container->setAlias(
+        /*$container->setAlias(
             $this->getAlias() . '.route_provider',
             $this->getAlias() . '.phpcr_route_provider'
-        );
+        );*/
         $container->setAlias(
             $this->getAlias() . '.content_repository',
             $this->getAlias() . '.phpcr_content_repository'
@@ -314,6 +319,19 @@ class CmfRoutingExtension extends Extension
         $container->setAlias(
             $this->getAlias() . '.content_repository',
             $this->getAlias() . '.orm_content_repository'
+        );
+    }
+
+    public function loadResourceProvider($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        $loader->load('provider-resource.xml');
+
+        $definition = $container->getDefinition('cmf_routing.resource.route_provider');
+        $definition->replaceArgument(0, new Reference($config['discovery_id']));
+
+        $container->setAlias(
+            $this->getAlias() . '.route_provider',
+            $this->getAlias() . '.resource.route_provider'
         );
     }
 

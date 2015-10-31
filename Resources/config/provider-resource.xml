@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="cmf_routing.resource.paths" type="collection"/>
+    </parameters>
+
+    <services>
+
+        <service id="cmf_routing.resource.route_provider" class="Symfony\Cmf\Bundle\RoutingBundle\Provider\ResourceRouteProvider">
+            <argument /><!-- discovery -->
+            <argument>%cmf_routing.resource.paths%</argument>
+            <argument type="service" id="cmf_routing.resource.candidates" />
+        </service>
+
+        <service id="cmf_routing.resource.candidates" class="Symfony\Cmf\Component\Routing\Candidates\Candidates">
+            <argument>%cmf_routing.dynamic.locales%</argument>
+            <argument>%cmf_routing.dynamic.limit_candidates%</argument>
+        </service>
+
+        <service id="cmf_routing.resource.type" class="Puli\Discovery\Api\Type\BindingType">
+            <argument>cmf/routes</argument>
+
+            <tag name="cmf_resource.binding_type"/>
+        </service>
+
+    </services>
+
+</container>
