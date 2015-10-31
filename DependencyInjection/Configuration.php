@@ -105,7 +105,7 @@ class Configuration implements ConfigurationInterface
                                         ->thenInvalid('Found values for both "route_basepath" and "route_basepaths", use "route_basepaths" instead.')
                                     ->end()
                                     ->beforeNormalization()
-                                        ->ifTrue(function ($v) { return isset($v['route_basepath']); })
+                                        ->ifTrue(function ($v) { return isset($v['route_basepath']) && !is_array($v['route_basepath']); })
                                         ->then(function ($v) {
                                             @trigger_error('The route_basepath setting is deprecated as of version 1.4 and will be removed in 2.0. Use route_basepaths instead.', E_USER_DEPRECATED);
 

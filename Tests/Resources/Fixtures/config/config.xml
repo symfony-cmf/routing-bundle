@@ -23,11 +23,11 @@
 
             <persistence>
                 <phpcr
-                    route-basepath="/cms/routes"
                     content-basepath="/cms/content"
                     use-sonata-admin="false"
                     enable-initializer="true"
                 >
+                    <route-basepath>/cms/routes</route-basepath>
                     <route-basepath>/simple</route-basepath>
                 </phpcr>
             </persistence>
