@@ -26,7 +26,7 @@ class LoadRouteData implements FixtureInterface
 
         $root = $manager->find(null, '/test');
         $parent = new Generic;
-        $parent->setParent($root);
+        $parent->setParentDocument($root);
         $parent->setNodename('routing');
         $manager->persist($parent);
 

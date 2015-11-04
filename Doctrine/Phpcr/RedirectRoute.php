@@ -73,9 +73,9 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      */
     public function setParent($parent)
     {
-        $this->parent = $parent;
+        @trigger_error('The Route#setParent() method is deprecated as of version 1.2 and will be removed in 2.0. Use setParentDocument() instead.', E_USER_DEPRECATED);
 
-        return $this;
+        return $this->setParentDocument($parent);
     }
 
     /**
@@ -83,7 +83,9 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      */
     public function getParent()
     {
-        return $this->parent;
+        @trigger_error('The Route#getParent() method is deprecated as of version 1.2 and will be removed in 2.0. Use getParentDocument() instead.', E_USER_DEPRECATED);
+
+        return $this->getParentDocument();
     }
 
     /**
