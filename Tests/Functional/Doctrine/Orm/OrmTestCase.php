@@ -24,24 +24,20 @@ class OrmTestCase extends ComponentBaseTestCase
         );
     }
 
-    protected function clearDb($model)
+    /**
+     * @param Route[] $routes
+     */
+    protected function removeRoutes(array $routes)
     {
-        if (is_array($model)) {
-            foreach ($model as $singleModel) {
-                $this->clearDb($singleModel);
-            }
+        foreach ($routes as $route) {
+            $this->getEm()->remove($route);
         }
 
-        $items = $this->getDm()->getRepository($model)->findAll();
-
-        foreach ($items as $item) {
-            $this->getDm()->remove($item);
-        }
-
-        $this->getDm()->flush();
+        $this->getEm()->flush();
+        $this->getEm()->clear();
     }
 
-    protected function getDm()
+    protected function getEm()
     {
         return $this->db('ORM')->getOm();
     }
@@ -58,8 +54,8 @@ class OrmTestCase extends ComponentBaseTestCase
             $route->setVariablePattern($paths[2]);
         }
 
-        $this->getDm()->persist($route);
-        $this->getDm()->flush();
+        $this->getEm()->persist($route);
+        $this->getEm()->flush();
 
         return $route;
     }
