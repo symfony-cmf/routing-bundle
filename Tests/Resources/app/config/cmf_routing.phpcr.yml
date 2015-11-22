@@ -2,5 +2,7 @@ cmf_routing:
     dynamic:
         persistence:
             phpcr:
-                enabled: true
-                route_basepath: /test/routing
+                route_basepaths:
+                    - "/test/routing-web"
+                    - "/test/routing-functional"
+                enable_initializer: false

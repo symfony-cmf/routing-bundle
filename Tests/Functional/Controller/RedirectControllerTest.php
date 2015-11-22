@@ -18,21 +18,28 @@ use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RedirectControllerTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/routing';
+    const ROUTE_ROOT = '/test/routing-functional';
 
     /**
-     * @var \Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController
+     * @var RedirectController
      */
     protected $controller;
 
-    public function setUp()
+    /**
+     * Creates the route root.
+     */
+    protected function setUp()
     {
-        parent::setUp();
-        $this->db('PHPCR')->createTestNode();
+        $this->db('PHPCR')->initTestNode();
         $this->createRoute(self::ROUTE_ROOT);
 
         $router = $this->getContainer()->get('router');
         $this->controller = new RedirectController($router);
+    }
+
+    protected function tearDown()
+    {
+        $this->db('PHPCR')->removeNode(self::ROUTE_ROOT);
     }
 
     public function testRedirectUri()

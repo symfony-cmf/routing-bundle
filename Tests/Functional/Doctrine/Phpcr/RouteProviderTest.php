@@ -21,17 +21,22 @@ use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RouteProviderTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/routing';
+    const ROUTE_ROOT = '/test/routing-functional';
 
     /** @var RouteProvider */
     private $repository;
 
-    public function setUp()
+    protected function setUp()
     {
-        parent::setUp();
-        $this->db('PHPCR')->createTestNode();
+        $this->db('PHPCR')->initTestNode();
         $this->createRoute(self::ROUTE_ROOT);
+
         $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
+    }
+
+    protected function tearDown()
+    {
+        $this->db('PHPCR')->removeNode(self::ROUTE_ROOT);
     }
 
     private function buildRoutes()

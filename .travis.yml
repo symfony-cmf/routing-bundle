@@ -13,35 +13,43 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache
- 
+
 env:
-  - SYMFONY_VERSION=2.7.* SYMFONY_DEPRECATIONS_HELPER=weak
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=weak
+  matrix:
+    - SYMFONY_VERSION=2.7.*
 
 matrix:
   include:
     - php: 5.3
-      env: SYMFONY_VERSION=2.3.* COMPOSER_FLAGS="--prefer-lowest"
+      env: COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.6
-      env: SYMFONY_VERSION=2.3.* SYMFONY_DEPRECATIONS_HELPER=weak
+      env: SYMFONY_VERSION=2.3.*
     - php: 5.6
-      env: SYMFONY_VERSION=2.8.*
+      env: DEPS=dev SYMFONY_DEPRECATIONS_HELPER=strict
     - php: 5.6
-      env: SYMFONY_VERSION=3.0.*
+      env: SYMFONY_VERSION=3.0.* SYMFONY_DEPRECATIONS_HELPER=strict
   allow_failures:
-    - env: SYMFONY_VERSION=2.8.*
-    - env: SYMFONY_VERSION=3.0.*
+    - env: DEPS=dev SYMFONY_DEPRECATIONS_HELPER=strict
+    - env: SYMFONY_VERSION=3.0.* SYMFONY_DEPRECATIONS_HELPER=strict
   fast_finish: true
 
 before_install:
-  - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then phpenv config-rm xdebug.ini; fi
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
   - composer self-update
-  - composer require symfony/symfony:${SYMFONY_VERSION} --no-update
-  
-install: composer update --prefer-source $COMPOSER_FLAGS
+  - if [ "$DEPS" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
 
-before_script: vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
+install: composer update --prefer-dist $COMPOSER_FLAGS
 
-script: phpunit --coverage-text
+before_script:
+  - vendor/symfony-cmf/testing/bin/travis/doctrine_orm.sh
+  - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
+  - php vendor/symfony-cmf/testing/bin/console doctrine:phpcr:fixtures:load --fixtures=Tests/Resources/DataFixtures --no-interaction
+
+script: phpunit
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
