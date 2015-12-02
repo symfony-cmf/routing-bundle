@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Util\Sf2CompatUtil;
 use PHPCR\Util\PathHelper;
 
 class RouteAdmin extends Admin
@@ -60,21 +61,16 @@ class RouteAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-        $textType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
-        $doctrineTreeType = $isSf28 ? 'Sonata\DoctrinePHPCRAdminBundle\Form\Type\TreeModelType' : 'doctrine_phpcr_odm_tree';
-        $sonataImmutableType = $isSf28 ? 'Sonata\CoreBundle\Form\Type\ImmutableArrayType' : 'sonata_type_immutable_array';
-
         $formMapper
             ->with('form.group_general', array(
                 'translation_domain' => 'CmfRoutingBundle',
             ))
                 ->add(
                     'parent',
-                    $doctrineTreeType,
+                    Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'),
                     array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
                 )
-                ->add('name', $textType)
+                ->add('name', Sf2CompatUtil::getFormTypeName('text'))
         ->end();
 
         if (null === $this->getParentFieldDescription()) {
@@ -82,20 +78,20 @@ class RouteAdmin extends Admin
                 ->with('form.group_general', array(
                     'translation_domain' => 'CmfRoutingBundle',
                 ))
-                    ->add('content', $doctrineTreeType, array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
+                    ->add('content', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->end()
                 ->with('form.group_advanced', array(
                     'translation_domain' => 'CmfRoutingBundle',
                 ))
-                    ->add('variablePattern', $textType, array('required' => false), array('help' => 'form.help_variable_pattern'))
+                    ->add('variablePattern', Sf2CompatUtil::getFormTypeName('text'), array('required' => false), array('help' => 'form.help_variable_pattern'))
                     ->add(
                         'defaults',
-                        $sonataImmutableType,
+                        Sf2CompatUtil::getFormTypeName('sonata_type_immutable_array'),
                         array('keys' => $this->configureFieldsForDefaults($this->getSubject()->getDefaults()))
                     )
                     ->add(
                         'options',
-                        $sonataImmutableType,
+                        Sf2CompatUtil::getFormTypeName('sonata_type_immutable_array'),
                         array('keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
                         array('help' => 'form.help_options')
                     )
@@ -146,13 +142,10 @@ class RouteAdmin extends Admin
      */
     protected function configureFieldsForDefaults($dynamicDefaults)
     {
-        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-        $textType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
-
         $defaults = array(
             '_controller' => array('_controller', $textType, array('required' => false)),
             '_template' => array('_template', $textType, array('required' => false)),
-            'type' => array('type', $isSf28 ? 'Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType' : 'cmf_routing_route_type', array(
+            'type' => array('type', Sf2CompatUtil::getFormTypeName('cmf_routing_route_type'), array(
                 'empty_value' => '',
                 'required' => false,
             )),
@@ -160,7 +153,7 @@ class RouteAdmin extends Admin
 
         foreach ($dynamicDefaults as $name => $value) {
             if (!isset($defaults[$name])) {
-                $defaults[$name] = array($name, $textType, array('required' => false));
+                $defaults[$name] = array($name, Sf2CompatUtil::getFormTypeName('text'), array('required' => false));
             }
         }
 
@@ -172,16 +165,16 @@ class RouteAdmin extends Admin
             foreach ($matches as $match) {
                 $name = substr($match[0][0], 1, -1);
                 if (!isset($defaults[$name])) {
-                    $defaults[$name] = array($name, $textType, array('required' => true));
+                    $defaults[$name] = array($name, Sf2CompatUtil::getFormTypeName('text'), array('required' => true));
                 }
             }
         }
 
         if ($route && $route->getOption('add_format_pattern')) {
-            $defaults['_format'] = array('_format', $textType, array('required' => true));
+            $defaults['_format'] = array('_format', Sf2CompatUtil::getFormTypeName('text'), array('required' => true));
         }
         if ($route && $route->getOption('add_locale_pattern')) {
-            $defaults['_locale'] = array('_format', $textType, array('required' => false));
+            $defaults['_locale'] = array('_format', Sf2CompatUtil::getFormTypeName('text'), array('required' => false));
         }
 
         return $defaults;
