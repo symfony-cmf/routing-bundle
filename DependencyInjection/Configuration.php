@@ -142,8 +142,26 @@ class Configuration implements ConfigurationInterface
                                             ->end()
                                             ->values(array(true, false, 'auto'))
                                             ->defaultValue('auto')
-                                        ->end() // use_sonata_admin
-                                        ->booleanNode('enable_initializer')->defaultTrue()->end()
+                                        ->end()
+                                        ->enumNode('enable_initializer')
+                                            ->beforeNormalization()
+                                                ->ifString()
+                                                ->then(function ($v) {
+                                                    switch ($v) {
+                                                        case 'true':
+                                                            return true;
+
+                                                        case 'false':
+                                                            return false;
+
+                                                        default:
+                                                            return $v;
+                                                    }
+                                                })
+                                            ->end()
+                                            ->values(array(true, false, 'auto'))
+                                            ->defaultValue('auto')
+                                        ->end()
                                     ->end()
                                 ->end() // phpcr
                                 ->arrayNode('orm')

@@ -8,9 +8,7 @@
 
         <service id="cmf_routing.initializer" class="Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer">
             <argument>CmfRoutingBundle</argument>
-            <argument type="collection">
-                <argument>%cmf_routing.dynamic.persistence.phpcr.admin_basepath%</argument>
-            </argument>
+            <argument>%cmf_routing.dynamic.persistence.phpcr.initialized_basepaths%</argument>
             <tag name="doctrine_phpcr.initializer"/>
         </service>
 
