@@ -23,6 +23,10 @@
         <testsuite name="orm">
             <directory>./Tests/Functional/Doctrine/Orm</directory>
         </testsuite>
+
+        <testsuite name="resource">
+            <directory>./Tests/Functional/Resource</directory>
+        </testsuite>
     </testsuites>
 
     <filter>
