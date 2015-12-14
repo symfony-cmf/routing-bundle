@@ -27,7 +27,7 @@
         "phpunit/php-code-coverage": "@stable",
         "sonata-project/doctrine-phpcr-admin-bundle": "~1.1",
         "symfony/monolog-bundle": "~2.3",
-        "doctrine/orm": "~2.3",
+        "doctrine/orm": "~2.5",
         "doctrine/data-fixtures": "1.*,>=1.0.0-alpha3"
     },
     "suggest": {
