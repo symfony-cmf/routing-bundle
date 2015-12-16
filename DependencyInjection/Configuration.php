@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
@@ -32,7 +33,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('cmf_routing')
+        $root = $treeBuilder->root('cmf_routing');
+
+        $this->addChainSection($root);
+        $this->addDynamicSection($root);
+
+        return $treeBuilder;
+    }
+
+    private function addChainSection(ArrayNodeDefinition $root)
+    {
+        $root
             ->children()
                 ->arrayNode('chain')
                     ->addDefaultsIfNotSet()
@@ -42,10 +53,18 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue(array('router.default' => 100))
                             ->useAttributeAsKey('id')
                             ->prototype('scalar')->end()
-                        ->end()
+                        ->end() // routers_by_id
                         ->booleanNode('replace_symfony_router')->defaultTrue()->end()
                     ->end()
-                ->end()
+                ->end()// chain
+            ->end()
+        ;
+    }
+
+    private function addDynamicSection(ArrayNodeDefinition $root)
+    {
+        $root
+            ->children()
                 ->arrayNode('dynamic')
                     ->fixXmlConfig('controller_by_type', 'controllers_by_type')
                     ->fixXmlConfig('controller_by_class', 'controllers_by_class')
@@ -61,17 +80,21 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('controllers_by_type')
                             ->useAttributeAsKey('type')
                             ->prototype('scalar')->end()
-                        ->end()
+                        ->end() // controllers_by_type
                         ->arrayNode('controllers_by_class')
                             ->useAttributeAsKey('class')
                             ->prototype('scalar')->end()
-                        ->end()
+                        ->end() // controllers_by_class
                         ->arrayNode('templates_by_class')
                             ->useAttributeAsKey('class')
                             ->prototype('scalar')->end()
-                        ->end()
+                        ->end() // templates_by_class
                         ->arrayNode('persistence')
                             ->addDefaultsIfNotSet()
+                            ->validate()
+                                ->ifTrue(function ($v) { return count(array_filter($v, function ($persistence) { return $persistence['enabled']; })) > 1; })
+                                ->thenInvalid('Only one persistence layer can be enabled at the same time.')
+                            ->end()
                             ->children()
                                 ->arrayNode('phpcr')
                                     ->addDefaultsIfNotSet()
@@ -82,7 +105,7 @@ class Configuration implements ConfigurationInterface
                                         ->thenInvalid('Found values for both "route_basepath" and "route_basepaths", use "route_basepaths" instead.')
                                     ->end()
                                     ->beforeNormalization()
-                                        ->ifTrue(function ($v) { return isset($v['route_basepath']); })
+                                        ->ifTrue(function ($v) { return isset($v['route_basepath']) && !is_array($v['route_basepath']); })
                                         ->then(function ($v) {
                                             @trigger_error('The route_basepath setting is deprecated as of version 1.4 and will be removed in 2.0. Use route_basepaths instead.', E_USER_DEPRECATED);
 
@@ -98,7 +121,7 @@ class Configuration implements ConfigurationInterface
                                             ->end()
                                             ->prototype('scalar')->end()
                                             ->defaultValue(array('/cms/routes'))
-                                        ->end()
+                                        ->end() // route_basepaths
                                         ->scalarNode('admin_basepath')->defaultNull()->end()
                                         ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()
                                         ->enumNode('use_sonata_admin')
@@ -119,42 +142,41 @@ class Configuration implements ConfigurationInterface
                                             ->end()
                                             ->values(array(true, false, 'auto'))
                                             ->defaultValue('auto')
-                                        ->end()
+                                        ->end() // use_sonata_admin
                                         ->booleanNode('enable_initializer')->defaultTrue()->end()
                                     ->end()
-                                ->end()
+                                ->end() // phpcr
                                 ->arrayNode('orm')
                                     ->addDefaultsIfNotSet()
                                     ->canBeEnabled()
                                     ->children()
                                         ->scalarNode('manager_name')->defaultNull()->end()
                                     ->end()
-                                ->end()
+                                ->end() // orm
                             ->end()
-                        ->end()
+                        ->end() // persistence
                         ->scalarNode('uri_filter_regexp')->defaultValue('')->end()
                         ->scalarNode('route_provider_service_id')->end()
                         ->arrayNode('route_filters_by_id')
                             ->canBeUnset()
+                            ->defaultValue(array())
                             ->useAttributeAsKey('id')
                             ->prototype('scalar')->end()
-                        ->end()
+                        ->end() // route_filters_by_id
                         ->scalarNode('content_repository_service_id')->end()
                         ->arrayNode('locales')
                             ->prototype('scalar')->end()
-                        ->end()
+                        ->end() // locales
                         ->integerNode('limit_candidates')->defaultValue(20)->end()
                         ->booleanNode('match_implicit_locale')->defaultValue(true)->end()
                         ->booleanNode('auto_locale_pattern')->defaultValue(false)->end()
                         ->scalarNode('url_generator')
                             ->defaultValue('cmf_routing.generator')
                             ->info('URL generator service ID')
-                        ->end()
+                        ->end() // url_generator
                     ->end()
-                ->end()
+                ->end() // dynamic
             ->end()
         ;
-
-        return $treeBuilder;
     }
 }
