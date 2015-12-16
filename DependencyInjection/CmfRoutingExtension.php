@@ -27,7 +27,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class CmfRoutingExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -71,7 +71,7 @@ class CmfRoutingExtension extends Extension
     }
 
     /**
-     * Set up the DynamicRouter - only to be called if enabled is set to true
+     * Set up the DynamicRouter - only to be called if enabled is set to true.
      *
      * @param array            $config    the compiled configuration for the dynamic router
      * @param ContainerBuilder $container the container builder
@@ -205,7 +205,7 @@ class CmfRoutingExtension extends Extension
         $container->setParameter('cmf_routing.backend_type_phpcr', true);
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array_values(array_unique($config['route_basepaths'])));
 
-        /**
+        /*
          * @deprecated The cmf_routing.dynamic.persistence.phpcr.route_basepath parameter is deprecated as of version 1.4 and will be removed in 2.0. Use the cmf_routing.dynamic.persistence.phpcr.route_basepaths parameter instead.
          */
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.route_basepath', reset($config['route_basepaths']));
