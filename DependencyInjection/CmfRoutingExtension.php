@@ -227,12 +227,12 @@ class CmfRoutingExtension extends Extension
 
     private function loadSonataPhpcrAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
-        $loader->load('admin-phpcr.xml');
-
         $bundles = $container->getParameter('kernel.bundles');
         if ('auto' === $config['use_sonata_admin'] && !isset($bundles['SonataDoctrinePHPCRAdminBundle'])) {
             return;
         }
+
+        $loader->load('admin-phpcr.xml');
 
         $basePath = $config['admin_basepath'] ?: reset($config['route_basepaths']);
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $basePath);
