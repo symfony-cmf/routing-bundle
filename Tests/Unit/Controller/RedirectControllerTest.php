@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Controller;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
-
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
 class RedirectControllerTest extends CmfUnitTestCase

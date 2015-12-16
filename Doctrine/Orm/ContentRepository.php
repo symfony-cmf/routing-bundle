@@ -27,7 +27,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 class ContentRepository extends DoctrineProvider implements ContentRepositoryInterface
 {
     /**
-     * Determine target class and id for this content
+     * Determine target class and id for this content.
      *
      * @param mixed $identifier as produced by getContentId
      *
@@ -39,7 +39,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param string $id The ID contains both model name and id, separated by a colon.
      */
@@ -51,27 +51,27 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getContentId($content)
     {
-        if (! is_object($content)) {
-            return null;
+        if (!is_object($content)) {
+            return;
         }
 
         try {
             $meta = $this->getObjectManager()->getClassMetadata(get_class($content));
             $ids = $meta->getIdentifierValues($content);
             if (0 !== count($ids)) {
-                throw new \Exception('Multi identifier values not supported in ' . get_class($content));
+                throw new \Exception('Multi identifier values not supported in '.get_class($content));
             }
 
             return implode(':', array(
                 get_class($content),
-                reset($ids)
+                reset($ids),
             ));
         } catch (\Exception $e) {
-            return null;
+            return;
         }
     }
 }

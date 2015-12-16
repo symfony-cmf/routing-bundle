@@ -20,7 +20,6 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends CmfUnitTestCase
 {
@@ -591,7 +590,7 @@ class RouteProviderTest extends CmfUnitTestCase
 
         $objectManagers = array(
             'default' => $this->dmMock,
-            'new_manager' => $this->dm2Mock
+            'new_manager' => $this->dm2Mock,
         );
         $this->managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
         $this->managerRegistryMock

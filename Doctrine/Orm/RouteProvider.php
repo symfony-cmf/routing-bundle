@@ -16,14 +16,12 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 
 /**
- * Provider loading routes from Doctrine
+ * Provider loading routes from Doctrine.
  *
  * This is <strong>NOT</strong> not a doctrine repository but just the route
  * provider for the NestedMatcher. (you could of course implement this
@@ -45,7 +43,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRouteCollectionForRequest(Request $request)
     {
@@ -65,7 +63,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRouteByName($name)
     {
@@ -82,7 +80,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRoutesByNames($names = null)
     {

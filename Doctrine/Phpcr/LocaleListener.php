@@ -36,7 +36,7 @@ class LocaleListener
     protected $candidates;
 
     /**
-     * List of possible locales to detect on URL after idPrefix
+     * List of possible locales to detect on URL after idPrefix.
      *
      * @var array
      */
@@ -99,7 +99,7 @@ class LocaleListener
      * Whether to make the route prepend the locale pattern if it does not
      * have one of the allowed locals in its id.
      *
-     * @param boolean $addLocalePattern
+     * @param bool $addLocalePattern
      */
     public function setAddLocalePattern($addLocalePattern)
     {
@@ -119,7 +119,7 @@ class LocaleListener
     public function postLoad(LifecycleEventArgs $args)
     {
         $doc = $args->getObject();
-        if (! $doc instanceof ModelRoute) {
+        if (!$doc instanceof ModelRoute) {
             return;
         }
         $this->updateLocale($doc, $doc->getId(), $args->getObjectManager());
@@ -133,7 +133,7 @@ class LocaleListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $doc = $args->getObject();
-        if (! $doc instanceof ModelRoute) {
+        if (!$doc instanceof ModelRoute) {
             return;
         }
         $this->updateLocale($doc, $doc->getId(), $args->getObjectManager());
@@ -147,7 +147,7 @@ class LocaleListener
     public function postMove(MoveEventArgs $args)
     {
         $doc = $args->getObject();
-        if (! $doc instanceof ModelRoute) {
+        if (!$doc instanceof ModelRoute) {
             return;
         }
         $this->updateLocale($doc, $args->getTargetPath(), $args->getObjectManager(), true);
@@ -171,7 +171,7 @@ class LocaleListener
      * @param DocumentManager $dm    The document manager to get locales from if
      *                               the setAvailableTranslations option is
      *                               enabled.
-     * @param boolean         $force Whether to update the locale even if the
+     * @param bool            $force Whether to update the locale even if the
      *                               route already has a locale.
      */
     protected function updateLocale(ModelRoute $doc, $id, DocumentManager $dm, $force = false)
@@ -180,7 +180,7 @@ class LocaleListener
 
         // only update if the prefix matches, to allow for more than one
         // listener and more than one route root.
-        if (! preg_match('#(' . implode('|', $this->getPrefixes()) . ')/([^/]+)(/|$)#', $id, $matches)) {
+        if (!preg_match('#('.implode('|', $this->getPrefixes()).')/([^/]+)(/|$)#', $id, $matches)) {
             return;
         }
 

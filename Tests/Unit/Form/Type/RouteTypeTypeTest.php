@@ -18,12 +18,12 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
 {
     public function setUp()
     {
-        $this->type = new RouteTypeType;
+        $this->type = new RouteTypeType();
     }
 
     public function testSetDefaultOptions()
     {
-        $type = new RouteTypeType;
+        $type = new RouteTypeType();
         $optionsResolver = new OptionsResolver();
 
         $type->configureOptions($optionsResolver);

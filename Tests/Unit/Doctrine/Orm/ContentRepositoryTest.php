@@ -22,7 +22,7 @@ class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->document = new \stdClass;
+        $this->document = new \stdClass();
         $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
         $this->objectRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');

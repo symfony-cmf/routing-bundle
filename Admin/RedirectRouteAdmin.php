@@ -21,8 +21,9 @@ class RedirectRouteAdmin extends Admin
 {
     protected $translationDomain = 'CmfRoutingBundle';
 
-     /**
-     * Root path for the route parent selection
+    /**
+     * Root path for the route parent selection.
+     *
      * @var string
      */
     protected $routeRoot;
@@ -54,7 +55,7 @@ class RedirectRouteAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name',  'doctrine_phpcr_nodename')
+            ->add('name', 'doctrine_phpcr_nodename')
         ;
     }
 

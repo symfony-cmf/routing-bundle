@@ -14,7 +14,6 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\HierarchyInterface;
-use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
@@ -28,28 +27,28 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
 class Route extends RouteModel implements PrefixInterface, HierarchyInterface
 {
     /**
-     * parent document
+     * parent document.
      *
      * @var object
      */
     protected $parent;
 
     /**
-     * PHPCR node name
+     * PHPCR node name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Child route documents
+     * Child route documents.
      *
      * @var Collection
      */
     protected $children;
 
     /**
-     * The part of the PHPCR path that does not belong to the url
+     * The part of the PHPCR path that does not belong to the url.
      *
      * This field is not persisted in storage.
      *
@@ -65,7 +64,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * * add_trailing_slash: When set, a trailing slash is appended to the route
      */
-    public function __construct(array $options= array())
+    public function __construct(array $options = array())
     {
         parent::__construct($options);
 
@@ -120,7 +119,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     public function setParentDocument($parent)
     {
         if (!is_object($parent)) {
-            throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
+            throw new InvalidArgumentException('Parent must be an object '.gettype($parent).' given.');
         }
 
         $this->parent = $parent;
@@ -168,7 +167,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     public function setPosition($parent, $name)
     {
         if (!is_object($parent)) {
-            throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
+            throw new InvalidArgumentException('Parent must be an object '.gettype($parent).' given.');
         }
 
         $this->parent = $parent;
@@ -179,6 +178,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
 
     /**
      * PHPCR documents can be moved by setting the id to a new path.
+     *
      * @param string $id
      *
      * @return $this
@@ -191,7 +191,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Overwritten to translate into a move operation.
      */
@@ -206,7 +206,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setPrefix($idPrefix)
     {
@@ -216,7 +216,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Overwrite model method as we need to build this
      */
@@ -255,14 +255,14 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Handle the trailing slash option.
      */
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern)-1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern) - 1]) {
             $pattern .= '/';
         };
 
@@ -270,7 +270,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setPath($pattern)
     {
@@ -289,7 +289,6 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      * Filters out children that do not implement the RouteObjectInterface.
      *
      * @return RouteObjectInterface[]
-     *
      */
     public function getRouteChildren()
     {
@@ -315,7 +314,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function isBooleanOption($name)
     {

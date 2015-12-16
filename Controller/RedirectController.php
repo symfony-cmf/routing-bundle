@@ -13,7 +13,6 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Controller;
 
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
 /**
@@ -31,6 +30,7 @@ class RedirectController
      * @var RouterInterface
      */
     protected $router;
+
     /**
      * @param RouterInterface $router the router to use to build urls
      */
@@ -40,7 +40,7 @@ class RedirectController
     }
 
     /**
-     * Action to redirect based on a RedirectRouteInterface route
+     * Action to redirect based on a RedirectRouteInterface route.
      *
      * @param RedirectRouteInterface $contentDocument
      *

@@ -25,17 +25,17 @@ class LoadRouteData implements FixtureInterface
         NodeHelper::createPath($manager->getPhpcrSession(), '/test');
 
         $root = $manager->find(null, '/test');
-        $parent = new Generic;
+        $parent = new Generic();
         $parent->setParentDocument($root);
         $parent->setNodename('routing');
         $manager->persist($parent);
 
-        $route = new Route;
+        $route = new Route();
         $route->setParentDocument($parent);
         $route->setName('route-1');
         $manager->persist($route);
 
-        $redirectRoute = new RedirectRoute;
+        $redirectRoute = new RedirectRoute();
         $redirectRoute->setParentDocument($parent);
         $redirectRoute->setName('redirect-route-1');
         $manager->persist($redirectRoute);

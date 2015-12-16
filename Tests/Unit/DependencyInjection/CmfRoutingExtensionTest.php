@@ -66,9 +66,9 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             'chain' => array(
                 'routers_by_id' => array(
                     'router.custom' => 200,
-                    'router.default' => 300
-                )
-            )
+                    'router.default' => 300,
+                ),
+            ),
         ));
 
         $this->assertContainerBuilderHasAlias('cmf_routing.route_provider', 'test_route_provider_service');
@@ -93,7 +93,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 'controllers_by_type' => array(
                     'Acme\Foo' => '
                         acme_main.controller:indexAction
-                    '
+                    ',
                 ),
             ),
             'chain' => array(
@@ -107,7 +107,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall('cmf_routing.router', 'add', array(
             new Reference('acme_test.router'),
-            100
+            100,
         ));
 
         $this->assertContainerBuilderHasParameter('cmf_routing.controllers_by_type', array(
@@ -151,25 +151,25 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             array(
                 array(),
                 array('/cms/routes'),
-                '/cms/routes'
+                '/cms/routes',
             ),
 
             array(
                 array('route_basepaths' => '/cms/test'),
                 array('/cms/test'),
-                '/cms/test'
+                '/cms/test',
             ),
 
             array(
                 array('route_basepaths' => array('/cms/routes', '/cms/test')),
                 array('/cms/routes', '/cms/test'),
-                '/cms/routes'
+                '/cms/routes',
             ),
 
             array(
                 array('route_basepaths' => array('/cms/test', '/cms/routes')),
                 array('/cms/test', '/cms/routes'),
-                '/cms/test'
+                '/cms/test',
             ),
         );
     }
@@ -224,21 +224,21 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 array('route_basepaths' => array('/cms/test')),
                 array('route_basepaths' => array('/cms/test2')),
                 array('/cms/test', '/cms/test2'),
-                '/cms/test'
+                '/cms/test',
             ),
 
             array(
                 array('route_basepaths' => array('/cms/test')),
                 array('route_basepaths' => array('/cms/test2', '/cms/test3')),
                 array('/cms/test', '/cms/test2', '/cms/test3'),
-                '/cms/test'
+                '/cms/test',
             ),
 
             array(
                 array(),
                 array('route_basepaths' => array('/cms/test')),
                 array('/cms/test'),
-                '/cms/test'
+                '/cms/test',
             ),
         );
     }
@@ -258,7 +258,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 'enabled' => true,
                 'persistence' => array(
                     'phpcr' => array(
-                        'route_basepath' => '/cms/test'
+                        'route_basepath' => '/cms/test',
                     ),
                 ),
             ),

@@ -54,7 +54,7 @@ class RouteConditionMetadataListener implements EventSubscriber
         }
 
         if ($meta instanceof OrmClassMetadata) {
-            /** @var $meta OrmClassMetadata */
+            /* @var $meta OrmClassMetadata */
             $meta->mapField(array(
                 'fieldName' => 'condition',
                 'columnName' => 'condition_expr',
@@ -62,7 +62,7 @@ class RouteConditionMetadataListener implements EventSubscriber
                 'nullable' => true,
             ));
         } elseif ($meta instanceof PhpcrClassMetadata) {
-            /** @var $meta PhpcrClassMetadata */
+            /* @var $meta PhpcrClassMetadata */
             $meta->mapField(array(
                 'fieldName' => 'condition',
                 'type' => 'string',

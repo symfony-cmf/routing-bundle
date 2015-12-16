@@ -13,10 +13,8 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
-
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RouteProviderTest extends BaseTestCase
@@ -38,18 +36,18 @@ class RouteProviderTest extends BaseTestCase
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
-        $route = new Route;
+        $route = new Route();
         $route->setPosition($root, 'testroute');
         $route->setDefault('_format', 'html');
         $this->getDm()->persist($route);
 
         // smuggle a non-route thing into the repository
-        $noroute = new Generic;
+        $noroute = new Generic();
         $noroute->setParentDocument($route);
         $noroute->setNodename('noroute');
         $this->getDm()->persist($noroute);
 
-        $childroute = new Route;
+        $childroute = new Route();
         $childroute->setPosition($noroute, 'child');
         $childroute->setDefault('_format', 'json');
         $this->getDm()->persist($childroute);
@@ -68,10 +66,10 @@ class RouteProviderTest extends BaseTestCase
 
         $routes = $routes->all();
         list($key, $child) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT . '/testroute/noroute/child', $key);
+        $this->assertEquals(self::ROUTE_ROOT.'/testroute/noroute/child', $key);
         $this->assertEquals('json', $child->getDefault('_format'));
         list($key, $testroute) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT . '/testroute', $key);
+        $this->assertEquals(self::ROUTE_ROOT.'/testroute', $key);
         $this->assertEquals('html', $testroute->getDefault('_format'));
         list($key, $root) = each($routes);
         $this->assertEquals(self::ROUTE_ROOT, $key);
@@ -88,10 +86,10 @@ class RouteProviderTest extends BaseTestCase
 
         $routes = $routes->all();
         list($key, $child) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT . '/testroute/noroute/child', $key);
+        $this->assertEquals(self::ROUTE_ROOT.'/testroute/noroute/child', $key);
         $this->assertEquals('json', $child->getDefault('_format'));
         list($key, $testroute) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT . '/testroute', $key);
+        $this->assertEquals(self::ROUTE_ROOT.'/testroute', $key);
         $this->assertEquals('html', $testroute->getDefault('_format'));
         list($key, $root) = each($routes);
         $this->assertEquals(self::ROUTE_ROOT, $key);
@@ -107,7 +105,7 @@ class RouteProviderTest extends BaseTestCase
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
         $this->assertCount(1, $collection);
         $routes = $collection->all();
-        list ($key, $route) = each($routes);
+        list($key, $route) = each($routes);
         $this->assertEquals(self::ROUTE_ROOT, $key);
     }
 
@@ -126,10 +124,10 @@ class RouteProviderTest extends BaseTestCase
         $this->buildRoutes();
 
         $routeNames = array(
-            self::ROUTE_ROOT . '/testroute/noroute/child',
-            self::ROUTE_ROOT . '/testroute/noroute',
-            self::ROUTE_ROOT . '/testroute/', // trailing slash is invalid for phpcr
-            self::ROUTE_ROOT . '/testroute'
+            self::ROUTE_ROOT.'/testroute/noroute/child',
+            self::ROUTE_ROOT.'/testroute/noroute',
+            self::ROUTE_ROOT.'/testroute/', // trailing slash is invalid for phpcr
+            self::ROUTE_ROOT.'/testroute',
         );
 
         $routes = $this->repository->getRoutesByNames($routeNames);

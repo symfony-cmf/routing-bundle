@@ -24,19 +24,22 @@ class RouteAdmin extends Admin
     protected $translationDomain = 'CmfRoutingBundle';
 
     /**
-     * Root path for the route parent selection
+     * Root path for the route parent selection.
+     *
      * @var string
      */
     protected $routeRoot;
 
     /**
-     * Root path for the route content selection
+     * Root path for the route content selection.
+     *
      * @var string
      */
     protected $contentRoot;
 
     /**
-     * Full class name for content that can be referenced by a route
+     * Full class name for content that can be referenced by a route.
+     *
      * @var string
      */
     protected $contentClass;
@@ -163,7 +166,7 @@ class RouteAdmin extends Admin
 
         //parse variable pattern and add defaults for tokens - taken from routecompiler
         /** @var $route Route */
-        $route =  $this->subject;
+        $route = $this->subject;
         if ($route && $route->getVariablePattern()) {
             preg_match_all('#\{\w+\}#', $route->getVariablePattern(), $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
             foreach ($matches as $match) {

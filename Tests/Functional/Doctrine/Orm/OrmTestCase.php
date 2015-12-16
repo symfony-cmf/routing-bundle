@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
-
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 
 class OrmTestCase extends ComponentBaseTestCase

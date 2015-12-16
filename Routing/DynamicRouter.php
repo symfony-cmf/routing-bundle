@@ -12,14 +12,12 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-
 use Symfony\Cmf\Component\Routing\DynamicRouter as BaseDynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
- * Symfony framework integration of the CMF routing component DynamicRouter class
+ * Symfony framework integration of the CMF routing component DynamicRouter class.
  *
  * @author Filippo de Santis
  * @author David Buchmann
@@ -29,19 +27,19 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 class DynamicRouter extends BaseDynamicRouter
 {
     /**
-     * key for the request attribute that contains the route document
+     * key for the request attribute that contains the route document.
      */
     const ROUTE_KEY = 'routeDocument';
 
     /**
      * key for the request attribute that contains the content document if this
-     * route has one associated
+     * route has one associated.
      */
     const CONTENT_KEY = 'contentDocument';
 
     /**
      * key for the request attribute that contains the template this document
-     * wants to use
+     * wants to use.
      */
     const CONTENT_TEMPLATE = 'contentTemplate';
 
@@ -54,7 +52,7 @@ class DynamicRouter extends BaseDynamicRouter
      * Put content and template name into the request attributes instead of the
      * route defaults.
      *
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * The match should identify  a controller for symfony. This can either be
      * the fully qualified class name or the service name of a controller that
@@ -117,6 +115,7 @@ class DynamicRouter extends BaseDynamicRouter
 
     /**
      * @return Request
+     *
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function getRequest()
