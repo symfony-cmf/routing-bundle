@@ -300,6 +300,48 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             'kernel.bundles',
             array(
                 'CmfRoutingBundle' => true,
+            )
+        );
+
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'phpcr' => array(
+                        'enabled' => true,
+                        'enable_initializer' => false,
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertFalse($this->container->has('cmf_routing.initializer'));
+    }
+
+    public function testInitializerEnabledEvenWithoutSonata()
+    {
+        $this->load(array(
+                'dynamic' => array(
+                    'enabled' => true,
+                    'persistence' => array(
+                        'phpcr' => array(
+                            'enabled' => true,
+                            'use_sonata_admin' => false,
+                            'enable_initializer' => true,
+                        ),
+                    ),
+                ),
+            ));
+
+        $this->assertTrue($this->container->has('cmf_routing.initializer'));
+    }
+
+    public function testInitializerEnabledAutomaticallyIfSonataIsEnabled()
+    {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array(
+                'CmfRoutingBundle' => true,
                 'SonataDoctrinePHPCRAdminBundle' => true,
             )
         );
@@ -311,28 +353,29 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                     'phpcr' => array(
                         'enabled' => true,
                         'use_sonata_admin' => true,
-                        'enable_initializer' => false,
+                        'enable_initializer' => 'auto',
                     ),
                 ),
             ),
         ));
 
-        $this->assertFalse($this->container->has('cmf_routing.initializer'));
+        $this->assertTrue($this->container->has('cmf_routing.initializer'));
     }
 
-    public function testInitializerDisabledWithoutSonata()
+    public function testInitializerDisabledAutomaticallyIfSonataIsDisabled()
     {
         $this->load(array(
-                'dynamic' => array(
-                    'enabled' => true,
-                    'persistence' => array(
-                        'phpcr' => array(
-                            'enabled' => true,
-                            'use_sonata_admin' => false,
-                        ),
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'phpcr' => array(
+                        'enabled' => true,
+                        'use_sonata_admin' => false,
+                        'enable_initializer' => 'auto',
                     ),
                 ),
-            ));
+            ),
+        ));
 
         $this->assertFalse($this->container->has('cmf_routing.initializer'));
     }

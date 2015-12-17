@@ -223,6 +223,10 @@ class CmfRoutingExtension extends Extension
         if ($config['use_sonata_admin']) {
             $this->loadSonataPhpcrAdmin($config, $loader, $container);
         }
+
+        if ($config['enable_initializer']) {
+            $this->loadInitializer($config, $loader, $container);
+        }
     }
 
     private function loadSonataPhpcrAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
@@ -236,10 +240,36 @@ class CmfRoutingExtension extends Extension
 
         $basePath = $config['admin_basepath'] ?: reset($config['route_basepaths']);
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $basePath);
+    }
 
-        if ($config['enable_initializer']) {
-            $loader->load('initializer-phpcr.xml');
+    /**
+     * @param array            $config
+     * @param XmlFileLoader    $loader
+     * @param ContainerBuilder $container
+     */
+    private function loadInitializer($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        $adminBasepathParameter = $this->getAlias().'.dynamic.persistence.phpcr.admin_basepath';
+
+        $initializedBasepaths = array();
+        if ($container->hasParameter($adminBasepathParameter)) {
+            $initializedBasepaths = array($container->getParameter($adminBasepathParameter));
         }
+
+        if ('auto' === $config['enable_initializer'] && empty($initializedBasepaths)) {
+            return;
+        }
+
+        if (true === $config['enable_initializer'] && empty($initializedBasepaths)) {
+            $initializedBasepaths = $container->getParameter($this->getAlias().'.dynamic.persistence.phpcr.route_basepaths');
+        }
+
+        $container->setParameter(
+            $this->getAlias().'.dynamic.persistence.phpcr.initialized_basepaths',
+            $initializedBasepaths
+        );
+
+        $loader->load('initializer-phpcr.xml');
     }
 
     private function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $matchImplicitLocale)
