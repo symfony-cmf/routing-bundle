@@ -22,14 +22,14 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 class Route extends SymfonyRoute implements RouteObjectInterface
 {
     /**
-     * Unique id of this route
+     * Unique id of this route.
      *
      * @var string
      */
     protected $id;
 
     /**
-     * The referenced content object
+     * The referenced content object.
      *
      * @var object
      */
@@ -57,12 +57,12 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * State information not persisted in storage.
      *
-     * @var Boolean
+     * @var bool
      */
     protected $needRecompile = false;
 
     /**
-     * Overwrite to be able to create route without pattern
+     * Overwrite to be able to create route without pattern.
      *
      * Additional supported options are:
      *
@@ -101,7 +101,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRouteKey()
     {
@@ -109,7 +109,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * Get the repository path of this url entry
+     * Get the repository path of this url entry.
      */
     public function getId()
     {
@@ -137,7 +137,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * Set the object this url points to
+     * Set the object this url points to.
      *
      * @param mixed $object A content object that can be persisted by the
      *                      storage layer.
@@ -150,7 +150,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getContent()
     {
@@ -158,7 +158,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Prevent setting the default 'compiler_class' so that we do not persist it
      */
@@ -168,9 +168,10 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Handling the missing default 'compiler_class'
+     *
      * @see setOptions
      */
     public function getOption($name)
@@ -187,9 +188,10 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Handling the missing default 'compiler_class'
+     *
      * @see setOptions
      */
     public function getOptions()
@@ -229,7 +231,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPath()
     {
@@ -247,7 +249,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * It is recommended to use setVariablePattern to just set the part after
      * the static part. If you use this method, it will ensure that the
@@ -289,7 +291,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Overwritten to make sure the route is recompiled if the pattern was changed
      */

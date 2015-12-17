@@ -15,11 +15,8 @@ use Symfony\Cmf\Component\Routing\Event\Events;
 use Symfony\Cmf\Component\Routing\Event\RouterMatchEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
-
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
 class DynamicRouterTest extends CmfUnitTestCase
@@ -111,5 +108,4 @@ class DynamicRouterTest extends CmfUnitTestCase
 
         $this->assertRequestAttributes($this->request);
     }
-
 }

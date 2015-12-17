@@ -17,7 +17,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute as RedirectRouteModel;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
- * {@inheritDoc}
+ * {@inheritdoc}
  *
  * This extends the RedirectRoute Model. We need to re-implement everything
  * that the PHPCR Route document adds.
@@ -25,28 +25,28 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 class RedirectRoute extends RedirectRouteModel implements PrefixInterface, HierarchyInterface
 {
     /**
-     * parent document
+     * parent document.
      *
      * @var object
      */
     protected $parent;
 
     /**
-     * PHPCR node name
+     * PHPCR node name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Child route documents
+     * Child route documents.
      *
      * @var Collection
      */
     protected $children;
 
     /**
-     * The part of the PHPCR path that does not belong to the url
+     * The part of the PHPCR path that does not belong to the url.
      *
      * This field is not persisted in storage.
      *
@@ -105,7 +105,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParentDocument()
     {
@@ -146,6 +146,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
 
     /**
      * PHPCR documents can be moved by setting the id to a new path.
+     *
      * @param string $id
      *
      * @return $this
@@ -158,7 +159,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Overwritten to translate into a move operation.
      */
@@ -173,7 +174,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setPrefix($idPrefix)
     {
@@ -183,7 +184,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * Overwrite model method as we need to build this
      */
@@ -219,12 +220,12 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern)-1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern) - 1]) {
             $pattern .= '/';
         };
 
@@ -232,7 +233,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setPath($pattern)
     {
@@ -246,13 +247,12 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * Return this routes children
+     * Return this routes children.
      *
      * Filters out children that do not implement
      * the RouteObjectInterface.
      *
      * @return array - array of RouteObjectInterface's
-     *
      */
     public function getRouteChildren()
     {
@@ -268,7 +268,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function isBooleanOption($name)
     {

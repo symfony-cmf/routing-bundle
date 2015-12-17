@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
 /**
- * {@inheritDoc}
+ * {@inheritdoc}
  */
 class RedirectRoute extends Route implements RedirectRouteInterface
 {
@@ -60,7 +60,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getContent()
     {
@@ -79,7 +79,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRouteTarget()
     {
@@ -97,7 +97,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRouteName()
     {
@@ -108,7 +108,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      * Set whether this redirection should be permanent or not. Default is
      * false.
      *
-     * @param boolean $permanent if true this is a permanent redirection
+     * @param bool $permanent if true this is a permanent redirection
      */
     public function setPermanent($permanent)
     {
@@ -116,7 +116,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isPermanent()
     {
@@ -136,7 +136,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParameters()
     {
@@ -154,7 +154,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getUri()
     {

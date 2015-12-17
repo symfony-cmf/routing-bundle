@@ -39,7 +39,7 @@ class BaseTestCase extends ComponentBaseTestCase
         $parentPath = PathHelper::getParentPath($path);
         $parent = $this->getDm()->find(null, $parentPath);
         $name = PathHelper::getNodeName($path);
-        $route = new Route;
+        $route = new Route();
         $route->setPosition($parent, $name);
         $this->getDm()->persist($route);
         $this->getDm()->flush();

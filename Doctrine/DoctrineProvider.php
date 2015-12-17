@@ -44,9 +44,9 @@ abstract class DoctrineProvider
     protected $className;
 
     /**
-     * Limit to apply when calling getRoutesByNames() with null
+     * Limit to apply when calling getRoutesByNames() with null.
      *
-     * @var integer|null
+     * @var int|null
      */
     protected $routeCollectionLimit;
 
@@ -76,7 +76,7 @@ abstract class DoctrineProvider
      *
      * Setting the limit to null means no limit is applied.
      *
-     * @param integer|null $routeCollectionLimit
+     * @param int|null $routeCollectionLimit
      */
     public function setRouteCollectionLimit($routeCollectionLimit = null)
     {

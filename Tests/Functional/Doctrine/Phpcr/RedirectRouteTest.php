@@ -31,12 +31,12 @@ class RedirectRouteTest extends BaseTestCase
         $content = $this->createContent();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
-        $route = new Route;
+        $route = new Route();
         $route->setContent($content);
         $route->setPosition($root, 'testroute');
         $this->getDm()->persist($route);
 
-        $redirect = new RedirectRoute;
+        $redirect = new RedirectRoute();
         $redirect->setPosition($root, 'redirect');
         $redirect->setRouteTarget($route);
         $redirect->setDefault('test', 'toast');
@@ -63,7 +63,7 @@ class RedirectRouteTest extends BaseTestCase
     public function testSetContent()
     {
         $content = $this->getMock('Symfony\\Cmf\\Component\\Routing\\RouteReferrersReadInterface');
-        $redirect = new RedirectRoute;
+        $redirect = new RedirectRoute();
         $redirect->setContent($content);
     }
 }

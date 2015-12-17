@@ -21,7 +21,7 @@ use Symfony\Cmf\Component\Routing\DependencyInjection\Compiler\RegisterRouteEnha
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
 
 /**
- * Bundle class
+ * Bundle class.
  */
 class CmfRoutingBundle extends Bundle
 {
@@ -92,8 +92,8 @@ class CmfRoutingBundle extends Bundle
         $container->addCompilerPass(
             $doctrineOrmCompiler::createXmlMappingDriver(
                 array(
-                    realpath(__DIR__ . '/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
-                    realpath(__DIR__ . '/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
+                    realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
+                    realpath(__DIR__.'/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
                 ),
                 array('cmf_routing.dynamic.persistence.orm.manager_name'),
                 'cmf_routing.backend_type_orm',
@@ -107,8 +107,8 @@ class CmfRoutingBundle extends Bundle
      * DoctrineBundle (available only since DoctrineBundle 2.4 and Symfony 2.3)
      * Otherwise use the standalone one from CmfCoreBundle.
      *
-     * @return boolean|string the compiler pass to use or false if no suitable
-     *                        one was found
+     * @return bool|string the compiler pass to use or false if no suitable
+     *                     one was found
      */
     private function findDoctrineOrmCompiler()
     {
@@ -138,7 +138,7 @@ class CmfRoutingBundle extends Bundle
      */
     private function buildBaseCompilerPass($compilerClass, $driverClass, $type)
     {
-        $arguments = array(array(realpath(__DIR__ . '/Resources/config/doctrine-base')), sprintf('.%s.xml', $type));
+        $arguments = array(array(realpath(__DIR__.'/Resources/config/doctrine-base')), sprintf('.%s.xml', $type));
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\DefaultFileLocator', $arguments);
         $driver = new Definition($driverClass, array($locator));
 

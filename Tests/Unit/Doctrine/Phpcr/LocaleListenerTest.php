@@ -15,7 +15,6 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
@@ -241,7 +240,7 @@ class LocaleListenerTest extends CmfUnitTestCase
     }
 
     /**
-     * URL without locale, set available translations
+     * URL without locale, set available translations.
      */
     public function testAvailableTranslations()
     {

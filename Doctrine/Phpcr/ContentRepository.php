@@ -15,7 +15,7 @@ use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 
 /**
- * Implement ContentRepositoryInterface for PHPCR-ODM
+ * Implement ContentRepositoryInterface for PHPCR-ODM.
  *
  * This is <strong>NOT</strong> not a doctrine repository but just the content
  * provider for the NestedMatcher. (you could of course implement this
@@ -26,7 +26,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 class ContentRepository extends DoctrineProvider implements ContentRepositoryInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findById($id)
     {
@@ -34,17 +34,17 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getContentId($content)
     {
-        if (! is_object($content)) {
-            return null;
+        if (!is_object($content)) {
+            return;
         }
         try {
             return $this->getObjectManager()->getUnitOfWork()->getDocumentId($content);
         } catch (\Exception $e) {
-            return null;
+            return;
         }
     }
 }

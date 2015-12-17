@@ -23,8 +23,8 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
     public function setUp()
     {
-        $this->document = new \stdClass;
-        $this->document2 = new \stdClass;
+        $this->document = new \stdClass();
+        $this->document2 = new \stdClass();
         $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->objectManager2 = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
@@ -120,7 +120,7 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
         $objectManagers = array(
             'default' => $this->objectManager,
-            'new_manager' => $this->objectManager2
+            'new_manager' => $this->objectManager2,
         );
         $this->managerRegistry
             ->expects($this->any())

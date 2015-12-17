@@ -47,7 +47,7 @@ class RouteTypeType extends AbstractType
     }
 
     /**
-     * Register a route type
+     * Register a route type.
      *
      * @param string $type
      */

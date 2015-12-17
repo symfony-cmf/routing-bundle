@@ -39,7 +39,7 @@ class RedirectControllerTest extends BaseTestCase
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
-        $redirect = new RedirectRoute;
+        $redirect = new RedirectRoute();
         $redirect->setPosition($root, 'redirectUri');
         $redirect->setUri('http://example.com/test-url');
         $redirect->setParameters(array('test' => 7)); // parameters should be ignored in this case
@@ -64,12 +64,12 @@ class RedirectControllerTest extends BaseTestCase
 
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
-        $route = new Route;
+        $route = new Route();
         $route->setContent($content);
         $route->setPosition($root, 'testroute');
         $this->getDm()->persist($route);
 
-        $redirect = new RedirectRoute;
+        $redirect = new RedirectRoute();
         $redirect->setPosition($root, 'redirectContent');
         $redirect->setRouteTarget($route);
         $redirect->setParameters(array('test' => 'content'));
@@ -91,10 +91,10 @@ class RedirectControllerTest extends BaseTestCase
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
-        $redirect = new RedirectRoute;
+        $redirect = new RedirectRoute();
         $redirect->setPosition($root, 'redirectName');
         $redirect->setRouteName('symfony_route');
-        $redirect->setParameters(array('param'=>7)); // parameters should be ignored in this case
+        $redirect->setParameters(array('param' => 7)); // parameters should be ignored in this case
         $this->getDm()->persist($redirect);
 
         $this->getDm()->flush();

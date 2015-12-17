@@ -16,7 +16,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
  * Changes the Router implementation.
- *
  */
 class SetRouterPass implements CompilerPassInterface
 {
@@ -26,6 +25,5 @@ class SetRouterPass implements CompilerPassInterface
         if ($container->hasParameter('cmf_routing.replace_symfony_router') && true === $container->getParameter('cmf_routing.replace_symfony_router')) {
             $container->setAlias('router', 'cmf_routing.router');
         }
-
     }
 }
