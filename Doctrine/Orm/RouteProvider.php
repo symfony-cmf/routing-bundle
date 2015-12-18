@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -89,7 +90,11 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                 return array();
             }
 
-            return $this->getRouteRepository()->findBy(array(), null, $this->routeCollectionLimit ?: null);
+            try {
+                return $this->getRouteRepository()->findBy(array(), null, $this->routeCollectionLimit ?: null);
+            } catch (TableNotFoundException $e) {
+                return array();
+            }
         }
 
         $routes = array();
