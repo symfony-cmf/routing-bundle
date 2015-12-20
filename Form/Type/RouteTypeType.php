@@ -14,7 +14,6 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Cmf\Bundle\RoutingBundle\Util\Sf2CompatUtil;
 
 class RouteTypeType extends AbstractType
 {
