@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use PHPCR\RepositoryException;
 use PHPCR\Util\UUIDHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -156,8 +157,17 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             return array();
         }
 
-        /** @var $dm DocumentManager */
-        $dm = $this->getObjectManager();
+        try {
+            /** @var $dm DocumentManager */
+            $dm = $this->getObjectManager();
+        } catch (RepositoryException $e) {
+            // special case: there is not even a database existing. this means there are no routes.
+            if ($e->getPrevious() instanceof TableNotFoundException) {
+                return array();
+            }
+
+            throw $e;
+        }
         $qb = $dm->createQueryBuilder();
 
         $qb->from('d')->document('Symfony\Component\Routing\Route', 'd');
