@@ -143,8 +143,8 @@ class RouteAdmin extends Admin
     protected function configureFieldsForDefaults($dynamicDefaults)
     {
         $defaults = array(
-            '_controller' => array('_controller', $textType, array('required' => false)),
-            '_template' => array('_template', $textType, array('required' => false)),
+            '_controller' => array('_controller', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
+            '_template' => array('_template', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
             'type' => array('type', Sf2CompatUtil::getFormTypeName('cmf_routing_route_type'), array(
                 'empty_value' => '',
                 'required' => false,
