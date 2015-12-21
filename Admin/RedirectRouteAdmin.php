@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Util\Sf2CompatUtil;
 
 class RedirectRouteAdmin extends Admin
 {
@@ -37,17 +38,13 @@ class RedirectRouteAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-        $textType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
-        $doctrineTreeType = $isSf28 ? 'Sonata\DoctrinePHPCRAdminBundle\Form\Type\TreeModelType' : 'doctrine_phpcr_odm_tree';
-
         $formMapper
             ->with('form.group_general')
-                ->add('parent', $doctrineTreeType, array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
-                ->add('name', $textType)
-                ->add('routeName', $textType, array('required' => false))
-                ->add('uri', $textType, array('required' => false))
-                ->add('routeTarget', $doctrineTreeType, array('choice_list' => array(), 'required' => false, 'root_node' => $this->routeRoot))
+                ->add('parent', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
+                ->add('name', Sf2CompatUtil::getFormTypeName('text'))
+                ->add('routeName', Sf2CompatUtil::getFormTypeName('text'), array('required' => false))
+                ->add('uri', Sf2CompatUtil::getFormTypeName('text'), array('required' => false))
+                ->add('routeTarget', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'required' => false, 'root_node' => $this->routeRoot))
             ->end()
         ;
     }
