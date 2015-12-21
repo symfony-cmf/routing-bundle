@@ -45,7 +45,11 @@ class RouteDefaultsValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->controllerResolver = $this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface');
         $this->templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
-        $this->context = $this->getMock('Symfony\Component\Validator\Context\ExecutionContextInterface');
+        $this->context = $this->getMock(
+            class_exists('Symfony\Component\Validator\Context\ExecutionContextInterface')
+            ? 'Symfony\Component\Validator\Context\ExecutionContextInterface'
+            : 'Symfony\Component\Validator\ExecutionContextInterface'
+        );
         $this->constraint = new RouteDefaults();
         $this->validator = new RouteDefaultsValidator($this->controllerResolver, $this->templating);
         $this->validator->initialize($this->context);
