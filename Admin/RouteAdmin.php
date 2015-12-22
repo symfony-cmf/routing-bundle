@@ -150,9 +150,9 @@ class RouteAdmin extends Admin
         $textType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
 
         $defaults = array(
-            '_controller' => array('_controller', $textType, array('required' => false)),
-            '_template' => array('_template', $textType, array('required' => false)),
-            'type' => array('type', $isSf28 ? 'Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType' : 'cmf_routing_route_type', array(
+            '_controller' => array('_controller', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
+            '_template' => array('_template', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
+            'type' => array('type', Sf2CompatUtil::getFormTypeName('cmf_routing_route_type'), array(
                 'empty_value' => '',
                 'required' => false,
             )),

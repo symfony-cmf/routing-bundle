@@ -15,6 +15,7 @@ use PHPCR\Util\NodeHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Cmf\Component\Routing\ChainRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
@@ -347,7 +348,7 @@ class DynamicRouterTest extends BaseTestCase
     public function testGenerateAbsolute()
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute/child');
-        $url = $this->router->generate($route, array('test' => 'value'), true);
+        $url = $this->router->generate($route, array('test' => 'value'), UrlGeneratorInterface::ABSOLUTE_URL);
         $this->assertEquals('http://localhost/testroute/child?test=value', $url);
     }
 
