@@ -24,7 +24,7 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION=2.3.* SYMFONY_DEPRECATIONS_HELPER=weak
     - php: 5.6
-      env: SYMFONY_VERSION=2.8.*
+      env: SYMFONY_VERSION=2.8.* SYMFONY_DEPRECATIONS_HELPER=99999
     - php: 5.6
       env: SYMFONY_VERSION=3.0.*
   allow_failures:
