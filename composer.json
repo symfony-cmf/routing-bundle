@@ -11,8 +11,6 @@
             "homepage": "https://github.com/symfony-cmf/RoutingBundle/contributors"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": false,
     "require": {
         "php": "^5.3.9|^7.0",
         "symfony-cmf/routing": "~1.2",
@@ -20,7 +18,7 @@
     },
     "require-dev": {
         "symfony-cmf/core-bundle": "~1.1",
-        "symfony-cmf/testing": "~1.2,>=1.2.7",
+        "symfony-cmf/testing": "~1.3@dev",
         "doctrine/phpcr-odm": "~1.3",
         "matthiasnoback/symfony-dependency-injection-test": "~0.6",
         "matthiasnoback/symfony-config-test": "^1.3.1",
@@ -28,17 +26,17 @@
         "sonata-project/doctrine-phpcr-admin-bundle": "^1.1",
         "symfony/monolog-bundle": "~2.3",
         "doctrine/orm": "~2.3",
-        "doctrine/data-fixtures": "1.*,>=1.0.0-alpha3"
+        "doctrine/data-fixtures": "^1.0.0-alpha3"
     },
     "suggest": {
-        "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents",
+        "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.3)",
         "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents",
-        "doctrine/orm": "To enable support for the ORM entities",
+        "doctrine/orm": "To enable support for the ORM entities (^2.3)",
 
         "symfony-cmf/content-bundle": "To optionally use the configured value for 'content_basepath' from the CoreBundle",
-        "symfony-cmf/core-bundle": "To use the provided Doctrine\\Phpcr documents and for easier configuration",
+        "symfony-cmf/core-bundle": "To use the provided Doctrine\\Phpcr documents and for easier configuration (^1.1)",
 
-        "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents"
+        "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents (^1.1)"
     },
     "autoload": {
         "psr-4": {
