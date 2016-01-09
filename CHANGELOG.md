@@ -1,6 +1,17 @@
 Changelog
 =========
 
+* **2016-01-09**: [ORM] Hardcoded some column names to match what we index on to avoid
+  issues with non-default `orm.naming_strategy`. It is now safe to use a non-default
+  naming strategy. If you did a workaround to use a naming strategy, you might need to
+  look into that.
+* **2015-10-28**: Deprecated `cmf_routing.dynamic.persistence.phpcr.route_basepath`
+  setting and parameter in favor of `cmf_routing.dynamic.persistence.phpcr.route_basepaths`.
+  The old names will be kept for BC reasons and removed in 2.0.
+
+1.3.0
+-----
+
 1.3.0-RC1
 ---------
 
