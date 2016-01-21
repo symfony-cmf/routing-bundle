@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.4.0-RC1
+---------
+
 * **2016-01-09**: [ORM] Hardcoded some column names to match what we index on to avoid
   issues with non-default `orm.naming_strategy`. It is now safe to use a non-default
   naming strategy. If you did a workaround to use a naming strategy, you might need to
