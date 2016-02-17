@@ -3,4 +3,4 @@ cmf_routing:
         persistence:
             phpcr:
                 enabled: true
-                route_basepath: /test/routing
+                route_basepaths: /test/routing

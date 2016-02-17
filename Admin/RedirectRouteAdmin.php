@@ -40,7 +40,7 @@ class RedirectRouteAdmin extends Admin
     {
         $formMapper
             ->with('form.group_general')
-                ->add('parent', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
+                ->add('parentDocument', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
                 ->add('name', Sf2CompatUtil::getFormTypeName('text'))
                 ->add('routeName', Sf2CompatUtil::getFormTypeName('text'), array('required' => false))
                 ->add('uri', Sf2CompatUtil::getFormTypeName('text'), array('required' => false))
