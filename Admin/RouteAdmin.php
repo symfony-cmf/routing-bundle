@@ -66,7 +66,7 @@ class RouteAdmin extends Admin
                 'translation_domain' => 'CmfRoutingBundle',
             ))
                 ->add(
-                    'parent',
+                    'parentDocument',
                     Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'),
                     array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
                 )
@@ -146,7 +146,7 @@ class RouteAdmin extends Admin
             '_controller' => array('_controller', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
             '_template' => array('_template', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
             'type' => array('type', Sf2CompatUtil::getFormTypeName('cmf_routing_route_type'), array(
-                'empty_value' => '',
+                'placeholder' => '',
                 'required' => false,
             )),
         );

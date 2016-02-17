@@ -64,7 +64,7 @@ class RedirectRouteAdminTest extends BaseTestCase
         $actionUrl = $node->getAttribute('action');
         $uniqId = substr(strstr($actionUrl, '='), 1);
 
-        $form[$uniqId.'[parent]'] = '/test/routing';
+        $form[$uniqId.'[parentDocument]'] = '/test/routing';
         $form[$uniqId.'[name]'] = 'foo-test';
 
         $this->client->submit($form);
