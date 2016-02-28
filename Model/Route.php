@@ -181,7 +181,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
             return 'Symfony\\Component\\Routing\\RouteCompiler';
         }
         if ($this->isBooleanOption($name)) {
-            return (boolean) $option;
+            return (bool) $option;
         }
 
         return $option;
@@ -202,7 +202,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         }
         foreach ($options as $key => $value) {
             if ($this->isBooleanOption($key)) {
-                $options[$key] = (boolean) $value;
+                $options[$key] = (bool) $value;
             }
         }
 
