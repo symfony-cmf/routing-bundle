@@ -48,6 +48,11 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             new Reference('router.default'),
             100,
         ));
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+            'cmf_routing.enhancer.route_content',
+            'dynamic_router_route_enhancer',
+            array('priority' => 100)
+        );
     }
 
     public function testLoadConfigured()
@@ -113,6 +118,12 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('cmf_routing.controllers_by_type', array(
             'Acme\Foo' => 'acme_main.controller:indexAction',
         ));
+
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+            'cmf_routing.enhancer.controllers_by_type',
+            'dynamic_router_route_enhancer',
+            array('priority' => 60)
+        );
     }
 
     /**

@@ -145,15 +145,18 @@ class CmfRoutingExtension extends Extension
 
         // if any mappings are defined, set the respective route enhancer
         if (count($config['controllers_by_type']) > 0) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference('cmf_routing.enhancer.controllers_by_type'), 60));
+            $container->getDefinition('cmf_routing.enhancer.controllers_by_type')
+                ->addTag('dynamic_router_route_enhancer', array('priority' => 60));
         }
 
         if (count($config['controllers_by_class']) > 0) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference('cmf_routing.enhancer.controllers_by_class'), 50));
+            $container->getDefinition('cmf_routing.enhancer.controllers_by_class')
+                      ->addTag('dynamic_router_route_enhancer', array('priority' => 50));
         }
 
         if (count($config['templates_by_class']) > 0) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference('cmf_routing.enhancer.templates_by_class'), 40));
+            $container->getDefinition('cmf_routing.enhancer.templates_by_class')
+                      ->addTag('dynamic_router_route_enhancer', array('priority' => 40));
 
             /*
              * The CoreBundle prepends the controller from ContentBundle if the
@@ -176,15 +179,18 @@ class CmfRoutingExtension extends Extension
             $definition = $container->getDefinition('cmf_routing.enhancer.controller_for_templates_by_class');
             $definition->replaceArgument(2, $controllerForTemplates);
 
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference('cmf_routing.enhancer.controller_for_templates_by_class'), 30));
+            $container->getDefinition('cmf_routing.enhancer.controller_for_templates_by_class')
+                      ->addTag('dynamic_router_route_enhancer', array('priority' => 30));
         }
 
         if (null !== $config['generic_controller'] && $defaultController !== $config['generic_controller']) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference('cmf_routing.enhancer.explicit_template'), 10));
+            $container->getDefinition('cmf_routing.enhancer.explicit_template')
+                      ->addTag('dynamic_router_route_enhancer', array('priority' => 10));
         }
 
         if (null !== $defaultController) {
-            $dynamic->addMethodCall('addRouteEnhancer', array(new Reference('cmf_routing.enhancer.default_controller'), -100));
+            $container->getDefinition('cmf_routing.enhancer.default_controller')
+                      ->addTag('dynamic_router_route_enhancer', array('priority' => -100));
         }
 
         if (count($config['route_filters_by_id']) > 0) {
