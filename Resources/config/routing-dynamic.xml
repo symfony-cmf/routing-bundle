@@ -23,6 +23,7 @@
         <service id="cmf_routing.enhancer.route_content" class="%cmf_routing.enhancer.route_content.class%">
             <argument>_route_object</argument>
             <argument>_content</argument>
+            <tag name="dynamic_router_route_enhancer" priority="100"/>
         </service>
 
         <service id="cmf_routing.enhancer.default_controller" class="%cmf_routing.enhancer.default_controller.class%" public="false">
@@ -69,10 +70,6 @@
             <argument type="service" id="event_dispatcher" on-invalid="ignore"/>
             <argument type="service" id="cmf_routing.route_provider"/>
             <call method="setRequest"><argument type="service" id="request" on-invalid="null" strict="false"/></call>
-            <call method="addRouteEnhancer">
-                <argument type="service" id="cmf_routing.enhancer.route_content"/>
-                <argument>100</argument>
-            </call>
         </service>
 
         <service id="cmf_routing.nested_matcher" class="%cmf_routing.nested_matcher.class%">
