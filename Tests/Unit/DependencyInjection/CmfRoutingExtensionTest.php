@@ -87,6 +87,11 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             new Reference('router.default'),
             300,
         ));
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+            'cmf_routing.enhancer.content_repository',
+            'dynamic_router_route_enhancer',
+            array('priority' => 100)
+        );
     }
 
     public function testWhitespaceInPriorities()
@@ -154,6 +159,11 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', $routeBasepathsParameter);
         $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $adminBasePathParameter);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+            'cmf_routing.enhancer.content_repository',
+            'dynamic_router_route_enhancer',
+            array('priority' => 100)
+        );
     }
 
     public function getBasePathsTests()
@@ -226,6 +236,11 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', $routeBasepathsParameter);
         $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $adminBasePathParameter);
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+            'cmf_routing.enhancer.content_repository',
+            'dynamic_router_route_enhancer',
+            array('priority' => 100)
+        );
     }
 
     public function getBasePathsMergingTests()

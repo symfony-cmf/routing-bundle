@@ -139,6 +139,8 @@ class CmfRoutingExtension extends Extension
         if ($hasContentRepository) {
             $generator = $container->getDefinition('cmf_routing.generator');
             $generator->addMethodCall('setContentRepository', array(new Reference('cmf_routing.content_repository')));
+            $container->getDefinition('cmf_routing.enhancer.content_repository')
+                      ->addTag('dynamic_router_route_enhancer', array('priority' => 100));
         }
 
         $dynamic = $container->getDefinition('cmf_routing.dynamic_router');
