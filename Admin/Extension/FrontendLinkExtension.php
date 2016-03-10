@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Admin\Extension;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -75,7 +76,7 @@ class FrontendLinkExtension extends AdminExtension
         if (!$subject instanceof RouteReferrersReadInterface && !$subject instanceof Route) {
             throw new InvalidConfigurationException(
                 sprintf(
-                    '%s can only be used on subjects which implement Symfony\Cmf\Component\Routing\RouteReferrersReadInterface or Symfony\Component\Routing\Route!',
+                    '%s can only be used on subjects which implement Symfony\Cmf\Component\Routing\RouteReferrersReadInterface or Symfony\Component\Routing\Route.',
                     __CLASS__
                 )
             );
@@ -86,8 +87,15 @@ class FrontendLinkExtension extends AdminExtension
             return;
         }
 
+        $defaults = array();
+        if ($subject instanceof TranslatableInterface) {
+            if ($locale = $subject->getLocale()) {
+                $defaults['_locale'] = $locale;
+            }
+        }
+
         try {
-            $uri = $this->router->generate($subject);
+            $uri = $this->router->generate($subject, $defaults);
         } catch (RoutingExceptionInterface $e) {
             // we have no valid route
             return;
