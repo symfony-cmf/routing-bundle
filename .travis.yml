@@ -21,7 +21,7 @@ env:
 matrix:
   include:
     - php: 5.6
-      env: DEPS=dev
+      env: SYMFONY_VERSION=2.8.* DEPS=dev
     - php: 5.3
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.6
