@@ -16,6 +16,7 @@
         <parameter key="cmf_routing.enhancer.explicit_template.class">Symfony\Cmf\Component\Routing\Enhancer\FieldPresenceEnhancer</parameter>
         <parameter key="cmf_routing.enhancer.controllers_by_type.class">Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer</parameter>
         <parameter key="cmf_routing.enhancer.field_by_class.class">Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer</parameter>
+        <parameter key="cmf_routing.enhancer.content_repository.class">Symfony\Cmf\Component\Routing\Enhancer\ContentRepositoryEnhancer</parameter>
         <parameter key="cmf_routing.redirect_controller.class">Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController</parameter>
     </parameters>
 
@@ -60,6 +61,10 @@
             <argument>_content</argument>
             <argument>_template</argument>
             <argument>%cmf_routing.templates_by_class%</argument>
+        </service>
+
+        <service id="cmf_routing.enhancer.content_repository" class="%cmf_routing.enhancer.content_repository.class%" public="false">
+            <argument type="service" id="cmf_routing.content_repository"/>
         </service>
 
         <service id="cmf_routing.dynamic_router" class="%cmf_routing.dynamic_router.class%">
