@@ -1,4 +1,4 @@
-UPGRADE FROM 1.2 TO 1.3
+UPGRADE FROM 1.3 TO 1.4
 =======================
 
 Configuration
