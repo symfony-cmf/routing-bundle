@@ -1,8 +1,6 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
   - 5.5
   - 5.6
   - 7.0
@@ -20,12 +18,12 @@ env:
 
 matrix:
   include:
-    - php: 5.6
-      env: SYMFONY_VERSION=2.8.* DEPS=dev
-    - php: 5.3
+    - php: 7.0
+      env: DEPS=dev
+    - php: 5.5
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION=2.7.*
-    - php: 5.6
-      env: SYMFONY_VERSION=2.7.*
+    - php: 7.0
+      env: SYMFONY_VERSION=2.8.*
   fast_finish: true
 
 before_install:
@@ -39,7 +37,7 @@ install: composer update --prefer-dist $COMPOSER_FLAGS
 
 before_script: vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
-script: phpunit --coverage-text
+script: phpunit
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
