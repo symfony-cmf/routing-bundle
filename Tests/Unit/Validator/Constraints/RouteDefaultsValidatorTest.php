@@ -13,92 +13,55 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Admin;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaults;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsValidator;
+use Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest;
 
-class RouteDefaultsValidatorTest extends \PHPUnit_Framework_TestCase
+class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
     private $controllerResolver;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
     private $templating;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $context;
-
-    /**
-     * @var RouteDefaultsValidator
-     */
-    private $validator;
-
-    /**
-     * @var RouteDefaults
-     */
-    private $constraint;
-
-    public function setUp()
+    protected function setUp()
     {
         $this->controllerResolver = $this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface');
         $this->templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
-        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContextInterface');
-        $this->constraint = new RouteDefaults();
-        $this->validator = new RouteDefaultsValidator($this->controllerResolver, $this->templating);
-        $this->validator->initialize($this->context);
+
+        parent::setUp();
+    }
+
+    protected function createValidator()
+    {
+        return new RouteDefaultsValidator($this->controllerResolver, $this->templating);
     }
 
     public function testCorrectControllerPath()
     {
-        $this
-            ->context
-            ->expects($this->never())
-            ->method('addViolation')
-        ;
+        $this->validator->validate(array('_controller' => 'FrameworkBundle:Redirect:redirect'), new RouteDefaults());
 
-        $this->validator->validate(array('_controller' => 'FrameworkBundle:Redirect:redirect'), $this->constraint);
+        $this->assertNoViolation();
     }
 
     public function testControllerPathViolation()
     {
-        $message = 'Invalid controller';
-
-        $this
-            ->controllerResolver
-            ->expects($this->any())
+        $this->controllerResolver->expects($this->any())
             ->method('getController')
-            ->will($this->throwException(new \LogicException($message)))
+            ->will($this->throwException(new \LogicException('Invalid controller')))
         ;
 
-        $this
-            ->context
-            ->expects($this->once())
-            ->method('addViolation')
-            ->with($this->equalTo($message))
-        ;
+        $this->validator->validate(array('_controller' => 'NotExistingBundle:Foo:bar'), new RouteDefaults());
 
-        $this->validator->validate(array('_controller' => 'NotExistingBundle:Foo:bar'), $this->constraint);
+        $this->buildViolation('Invalid controller')->assertRaised();
     }
 
     public function testCorrectTemplate()
     {
-        $this
-            ->templating
-            ->expects($this->any())
+        $this->templating->expects($this->any())
             ->method('exists')
             ->will($this->returnValue(true))
         ;
 
-        $this
-            ->context
-            ->expects($this->never())
-            ->method('addViolation')
-        ;
-
         $this->validator->validate(array('_template' => 'TwigBundle::layout.html.twig'), $this->constraint);
+
+        $this->assertNoViolation();
     }
 
     public function testTemplateViolation()
@@ -110,13 +73,13 @@ class RouteDefaultsValidatorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false))
         ;
 
-        $this
-            ->context
-            ->expects($this->once())
-            ->method('addViolation')
-            ->with($this->equalTo($this->constraint->message))
-        ;
+        $this->validator->validate(
+            array('_template' => 'NotExistingBundle:Foo:bar.html.twig'),
+            new RouteDefaults(array('message' => 'my message'))
+        );
 
-        $this->validator->validate(array('_template' => 'NotExistingBundle:Foo:bar.html.twig'), $this->constraint);
+        $this->buildViolation('my message')
+            ->setParameter('%name%', 'NotExistingBundle:Foo:bar.html.twig')
+            ->assertRaised();
     }
 }
