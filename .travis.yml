@@ -23,7 +23,7 @@ matrix:
     - php: 5.5
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION=2.7.*
     - php: 7.0
-      env: SYMFONY_VERSION=2.8.*
+      env: SYMFONY_VERSION=3.0.*
   fast_finish: true
 
 before_install:
