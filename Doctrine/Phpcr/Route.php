@@ -264,7 +264,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
         $pattern = parent::getPath();
         if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern) - 1]) {
             $pattern .= '/';
-        };
+        }
 
         return $pattern;
     }

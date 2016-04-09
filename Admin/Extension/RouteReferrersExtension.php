@@ -13,7 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Admin\Extension;
 
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Cmf\Bundle\RoutingBundle\Util\Sf2CompatUtil;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 
 /**
  * Admin extension to add routes tab to content implementing the
@@ -31,12 +31,13 @@ class RouteReferrersExtension extends AdminExtension
             ))
             ->add(
                 'routes',
-                Sf2CompatUtil::getFormTypeName('sonata_type_collection'),
+                CollectionType::class,
                 array(),
                 array(
                     'edit' => 'inline',
                     'inline' => 'table',
-                ))
+                )
+            )
             ->end()
         ;
     }

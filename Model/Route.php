@@ -243,7 +243,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         $pattern .= $this->getVariablePattern();
         if ($this->getOption('add_format_pattern') && !preg_match('/(.+)\.[a-z]+$/i', $pattern, $matches)) {
             $pattern .= '.{_format}';
-        };
+        }
 
         return $pattern;
     }
