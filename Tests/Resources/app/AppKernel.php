@@ -20,6 +20,8 @@ class AppKernel extends TestKernel
 
         $this->addBundles(array(
             new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+            new \Symfony\Cmf\Bundle\ResourceBundle\CmfResourceBundle(),
+            new \Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle(),
         ));
     }
 
