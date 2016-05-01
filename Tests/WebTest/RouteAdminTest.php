@@ -13,7 +13,6 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\Response;
 
 class RouteAdminTest extends BaseTestCase
 {
