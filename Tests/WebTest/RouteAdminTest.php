@@ -29,7 +29,7 @@ class RouteAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/list');
         $res = $this->client->getResponse();
-        $this->assertResponseOk($res);
+        $this->assertResponseSuccess($res);
         $this->assertCount(1, $crawler->filter('html:contains("route-1")'));
     }
 
@@ -37,7 +37,7 @@ class RouteAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/test/routing/route-1/edit');
         $res = $this->client->getResponse();
-        $this->assertResponseOk($res);
+        $this->assertResponseSuccess($res);
         $this->assertCount(1, $crawler->filter('input[value="route-1"]'));
 
         $this->assertFrontendLinkPresent($crawler);
@@ -47,14 +47,14 @@ class RouteAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/test/routing/route-1/show');
         $res = $this->client->getResponse();
-        $this->assertResponseOk($res);
+        $this->assertResponseSuccess($res);
     }
 
     public function testRouteCreate()
     {
         $crawler = $this->client->request('GET', '/admin/cmf/routing/route/create');
         $res = $this->client->getResponse();
-        $this->assertResponseOk($res);
+        $this->assertResponseSuccess($res);
 
         $this->assertFrontendLinkNotPresent($crawler);
 
@@ -89,10 +89,5 @@ class RouteAdminTest extends BaseTestCase
     private function assertFrontendLinkNotPresent(Crawler $crawler)
     {
         $this->assertCount(0, $crawler->filter('a[class="sonata-admin-frontend-link"]'));
-    }
-
-    private function assertResponseOk(Response $response)
-    {
-        $this->assertEquals(200, $response->getStatusCode(), $response->getContent());
     }
 }

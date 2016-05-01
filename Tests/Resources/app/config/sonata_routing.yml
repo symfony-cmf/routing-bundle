@@ -14,6 +14,3 @@ admin_dashboard:
     defaults:
         _controller: FrameworkBundle:Redirect:redirect
         route: sonata_admin_dashboard
-
-_cmf_resource:
-    resource: '@CmfResourceRestBundle/Resources/config/routing.yml'
