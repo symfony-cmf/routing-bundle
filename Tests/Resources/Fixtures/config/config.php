@@ -15,6 +15,13 @@ $container->loadFromExtension('cmf_routing', array(
         ),
         'controllers_by_class' => array(
             'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => 'cmf_content.controller:indexAction',
+            'My\Class' => array(
+                array('methods' => array('put', 'post'), 'controller' => 'service:method'),
+                array('methods' => array('any'), 'controller' => 'service:readMethod'),
+            ),
+            'Other\Class' => array(
+                array('methods' => array('any'), 'controller' => 'service:method'),
+            ),
         ),
         'templates_by_class' => array(
             'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => 'CmfContentBundle:StaticContent:index.html.twig',
