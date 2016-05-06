@@ -14,10 +14,14 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
+use Sonata\DoctrinePHPCRAdminBundle\Form\Type\TreeModelType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
-use Symfony\Cmf\Bundle\RoutingBundle\Util\Sf2CompatUtil;
+use Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType;
 use PHPCR\Util\PathHelper;
 
 class RouteAdmin extends Admin
@@ -54,9 +58,7 @@ class RouteAdmin extends Admin
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper
-            ->addIdentifier('path', 'text')
-        ;
+        $listMapper->addIdentifier('path', 'text');
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -66,11 +68,11 @@ class RouteAdmin extends Admin
                 'translation_domain' => 'CmfRoutingBundle',
             ))
                 ->add(
-                    'parent',
-                    Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'),
+                    'parentDocument',
+                    TreeModelType::class,
                     array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
                 )
-                ->add('name', Sf2CompatUtil::getFormTypeName('text'))
+                ->add('name', TextType::class)
         ->end();
 
         if (null === $this->getParentFieldDescription()) {
@@ -78,20 +80,20 @@ class RouteAdmin extends Admin
                 ->with('form.group_general', array(
                     'translation_domain' => 'CmfRoutingBundle',
                 ))
-                    ->add('content', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
+                    ->add('content', TreeModelType::class, array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->end()
                 ->with('form.group_advanced', array(
                     'translation_domain' => 'CmfRoutingBundle',
                 ))
-                    ->add('variablePattern', Sf2CompatUtil::getFormTypeName('text'), array('required' => false), array('help' => 'form.help_variable_pattern'))
+                    ->add('variablePattern', TextType::class, array('required' => false), array('help' => 'form.help_variable_pattern'))
                     ->add(
                         'defaults',
-                        Sf2CompatUtil::getFormTypeName('sonata_type_immutable_array'),
+                        ImmutableArrayType::class,
                         array('keys' => $this->configureFieldsForDefaults($this->getSubject()->getDefaults()))
                     )
                     ->add(
                         'options',
-                        Sf2CompatUtil::getFormTypeName('sonata_type_immutable_array'),
+                        ImmutableArrayType::class,
                         array('keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
                         array('help' => 'form.help_options')
                     )
@@ -102,8 +104,7 @@ class RouteAdmin extends Admin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper
-            ->add('name', 'doctrine_phpcr_nodename');
+        $datagridMapper->add('name', 'doctrine_phpcr_nodename');
     }
 
     public function setRouteRoot($routeRoot)
@@ -143,17 +144,17 @@ class RouteAdmin extends Admin
     protected function configureFieldsForDefaults($dynamicDefaults)
     {
         $defaults = array(
-            '_controller' => array('_controller', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
-            '_template' => array('_template', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
-            'type' => array('type', Sf2CompatUtil::getFormTypeName('cmf_routing_route_type'), array(
-                'empty_value' => '',
+            '_controller' => array('_controller', TextType::class, array('required' => false)),
+            '_template' => array('_template', TextType::class, array('required' => false)),
+            'type' => array('type', RouteTypeType::class, array(
+                'placeholder' => '',
                 'required' => false,
             )),
         );
 
         foreach ($dynamicDefaults as $name => $value) {
             if (!isset($defaults[$name])) {
-                $defaults[$name] = array($name, Sf2CompatUtil::getFormTypeName('text'), array('required' => false));
+                $defaults[$name] = array($name, TextType::class, array('required' => false));
             }
         }
 
@@ -165,16 +166,16 @@ class RouteAdmin extends Admin
             foreach ($matches as $match) {
                 $name = substr($match[0][0], 1, -1);
                 if (!isset($defaults[$name])) {
-                    $defaults[$name] = array($name, Sf2CompatUtil::getFormTypeName('text'), array('required' => true));
+                    $defaults[$name] = array($name, TextType::class, array('required' => true));
                 }
             }
         }
 
         if ($route && $route->getOption('add_format_pattern')) {
-            $defaults['_format'] = array('_format', Sf2CompatUtil::getFormTypeName('text'), array('required' => true));
+            $defaults['_format'] = array('_format', TextType::class, array('required' => true));
         }
         if ($route && $route->getOption('add_locale_pattern')) {
-            $defaults['_locale'] = array('_locale', Sf2CompatUtil::getFormTypeName('text'), array('required' => false));
+            $defaults['_locale'] = array('_locale', TextType::class, array('required' => false));
         }
 
         return $defaults;
@@ -189,18 +190,15 @@ class RouteAdmin extends Admin
      */
     protected function configureFieldsForOptions(array $dynamicOptions)
     {
-        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-        $checkboxType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' : 'checkbox';
-
         $options = array(
-            'add_locale_pattern' => array('add_locale_pattern', $checkboxType, array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => 'CmfRoutingBundle')),
-            'add_format_pattern' => array('add_format_pattern', $checkboxType, array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => 'CmfRoutingBundle')),
-            'add_trailing_slash' => array('add_trailing_slash', $checkboxType, array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_locale_pattern' => array('add_locale_pattern', CheckboxType::class, array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_format_pattern' => array('add_format_pattern', CheckboxType::class, array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_trailing_slash' => array('add_trailing_slash', CheckboxType::class, array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => 'CmfRoutingBundle')),
         );
 
         foreach ($dynamicOptions as $name => $value) {
             if (!isset($options[$name])) {
-                $options[$name] = array($name, 'text', array('required' => false));
+                $options[$name] = array($name, TextType::class, array('required' => false));
             }
         }
 
@@ -224,6 +222,6 @@ class RouteAdmin extends Admin
         return $object instanceof Route && $object->getId()
             ? $object->getId()
             : $this->trans('link_add', array(), 'SonataAdminBundle')
-            ;
+        ;
     }
 }

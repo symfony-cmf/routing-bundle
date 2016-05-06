@@ -58,6 +58,9 @@ class DynamicRouterTest extends CmfUnitTestCase
         $this->assertEquals('template', $request->attributes->get(DynamicRouter::CONTENT_TEMPLATE));
     }
 
+    /**
+     * @group legacy
+     */
     public function testMatch()
     {
         $this->eventDispatcher->expects($this->once())
@@ -86,6 +89,8 @@ class DynamicRouterTest extends CmfUnitTestCase
 
     /**
      * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     *
+     * @group legacy
      */
     public function testMatchNoRequest()
     {

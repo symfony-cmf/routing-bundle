@@ -1,0 +1,2 @@
+_cmf_resource:
+    resource: '@CmfResourceRestBundle/Resources/config/routing.yml'
