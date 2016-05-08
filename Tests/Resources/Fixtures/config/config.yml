@@ -10,6 +10,17 @@ cmf_routing:
             editable: acme_main.some_controller:editableAction
         controllers_by_class:
             Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent: cmf_content.controller:indexAction
+            My\Class:
+              -
+                methods: [put, post]
+                controller: service:method
+              -
+                method: [any]
+                controller: service:readMethod
+            Other\Class:
+              -
+                methods: [any]
+                controller: service:method
         templates_by_class:
             Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent: CmfContentBundle:StaticContent:index.html.twig
         persistence:
