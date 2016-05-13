@@ -123,12 +123,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('cmf_routing.controllers_by_type', array(
             'Acme\Foo' => 'acme_main.controller:indexAction',
         ));
-
-        $this->assertContainerBuilderHasServiceDefinitionWithTag(
-            'cmf_routing.enhancer.controllers_by_type',
-            'dynamic_router_route_enhancer',
-            array('priority' => 60)
-        );
     }
 
     /**
@@ -404,5 +398,41 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ));
 
         $this->assertFalse($this->container->has('cmf_routing.initializer'));
+    }
+
+    public function testEnhancer()
+    {
+        $this->load([
+            'dynamic' => [
+                'enabled' => true,
+                'persistence' => ['phpcr' => true],
+                'generic_controller' => 'acme_main.controller:mainAction',
+                'controllers_by_type' => [
+                    'editable' => 'acme_main.some_controller:editableAction',
+                ],
+                'controllers_by_class' => [
+                    'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => 'cmf_content.controller:indexAction',
+                    'My\Class' => [
+                        ['methods' => ['put', 'post'], 'value' => 'service:method'],
+                        ['methods' => ['any'], 'value' => 'service:readMethod'],
+                    ],
+                    'Other\Class' => [
+                        ['methods' => ['any'], 'value' => 'service:method'],
+                    ],
+                ],
+                'templates_by_class' => [
+                    'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => 'CmfContentBundle:StaticContent:index.html.twig',
+                ],
+
+            ]
+        ]);
+
+        $this->assertContainerBuilderHasServiceDefinitionWithTag(
+            'cmf_routing.enhancer.conditional',
+            'dynamic_router_route_enhancer',
+            ['priority' => 40]
+        );
+
+        $this->assertContainerBuilderHasService('cmf_routing.enhancer.conditional', []);
     }
 }

@@ -82,17 +82,19 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end() // controllers_by_type
                         ->arrayNode('controllers_by_class')
-                            ->useAttributeAsKey('class')
                             ->prototype('array')
+                                ->ignoreExtraKeys(false)
                                 ->beforeNormalization()
                                     ->ifString()
                                     ->then(function ($v) {
-                                        return array(array('methods' => ['any'], 'controller' => $v));
+                                        return ['methods' => ['any'], 'value' => $v];
                                     })
                                 ->end()
                                 ->children()
-                                    ->arrayNode('methods')->end()
-                                    ->scalarNode('controller')->end()
+                                    ->arrayNode('methods')
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                    ->scalarNode('value')->end()
                                 ->end()
                             ->end()
                         ->end() // controllers_by_class

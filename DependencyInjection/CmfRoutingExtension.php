@@ -11,6 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 
+use Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer;
+use Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer;
+use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -83,6 +86,9 @@ class CmfRoutingExtension extends Extension
 
         // strip whitespace (XML support)
         foreach (array('controllers_by_type', 'controllers_by_class', 'templates_by_class', 'route_filters_by_id') as $option) {
+            if (is_array($config[$option])) {
+                continue;
+            }
             $config[$option] = array_map('trim', $config[$option]);
         }
 
@@ -146,44 +152,7 @@ class CmfRoutingExtension extends Extension
         $dynamic = $container->getDefinition('cmf_routing.dynamic_router');
 
         // if any mappings are defined, set the respective route enhancer
-        if (count($config['controllers_by_type']) > 0) {
-            $container->getDefinition('cmf_routing.enhancer.controllers_by_type')
-                ->addTag('dynamic_router_route_enhancer', array('priority' => 60));
-        }
-
-        if (count($config['controllers_by_class']) > 0) {
-            $container->getDefinition('cmf_routing.enhancer.controllers_by_class')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => 50));
-        }
-
-        if (count($config['templates_by_class']) > 0) {
-            $container->getDefinition('cmf_routing.enhancer.templates_by_class')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => 40));
-
-            /*
-             * The CoreBundle prepends the controller from ContentBundle if the
-             * ContentBundle is present in the project.
-             * If you are sure you do not need a generic controller, set the field
-             * to false to disable this check explicitly. But you would need
-             * something else like the default_controller to set the controller,
-             * as no controller will be set here.
-             */
-            if (null === $config['generic_controller']) {
-                throw new InvalidConfigurationException('If you want to configure templates_by_class, you need to configure the generic_controller option.');
-            }
-
-            // if the content class defines the template, we also need to make sure we use the generic controller for those routes
-            $controllerForTemplates = array();
-            foreach ($config['templates_by_class'] as $key => $value) {
-                $controllerForTemplates[$key] = $config['generic_controller'];
-            }
-
-            $definition = $container->getDefinition('cmf_routing.enhancer.controller_for_templates_by_class');
-            $definition->replaceArgument(2, $controllerForTemplates);
-
-            $container->getDefinition('cmf_routing.enhancer.controller_for_templates_by_class')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => 30));
-        }
+        $this->loadConditionalEnhancer($config, $container);
 
         if (null !== $config['generic_controller'] && $defaultController !== $config['generic_controller']) {
             $container->getDefinition('cmf_routing.enhancer.explicit_template')
@@ -318,5 +287,71 @@ class CmfRoutingExtension extends Extension
     public function getNamespace()
     {
         return 'http://cmf.symfony.com/schema/dic/routing';
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    private function loadConditionalEnhancer(array $config, ContainerBuilder $container)
+    {
+        $enhancerMap = array();
+        $configurationPriorities = [
+            'controllers_by_type' => ['class' => FieldMapEnhancer::class, 'arguments' => ['type', '_controller']],
+            'controllers_by_class' => ['class' => FieldByClassEnhancer::class, 'arguments' => ['_content', '_controller']],
+            'templates_by_class' => ['class' => FieldByClassEnhancer::class, 'arguments' => ['_content', '_controller']],
+        ];
+
+        foreach ($configurationPriorities as $key => $serviceDefinitionValues) {
+            if (count($config[$key]) === 0) {
+                continue;
+            }
+
+            foreach ($config[$key] as $mapKey => $mapping) {
+                $methods = is_array($mapping) && array_key_exists('methods', $mapping) ? $mapping['methods'] : null;
+                $value = is_array($mapping) && array_key_exists('value', $mapping) ? $mapping['value'] : $mapping;
+
+                $enhancerMap[] = [
+                    'matcher' => new RequestMatcher(null, null, $methods),
+                    'enhancer' => new $serviceDefinitionValues['class'](
+                        $serviceDefinitionValues['arguments'][0],
+                        $serviceDefinitionValues['arguments'][1],
+                        [$mapKey => trim($value)]
+                    ),
+                ];
+            }
+        }
+
+        if (0 < count($enhancerMap)) {
+            $container->getDefinition('cmf_routing.enhancer.conditional')->addArgument($enhancerMap);
+        } else {
+            $container->removeDefinition('cmf_routing.enhancer.conditional');
+        }
+
+        if (count($config['templates_by_class']) > 0) {
+            /*
+             * The CoreBundle prepends the controller from ContentBundle if the
+             * ContentBundle is present in the project.
+             * If you are sure you do not need a generic controller, set the field
+             * to false to disable this check explicitly. But you would need
+             * something else like the default_controller to set the controller,
+             * as no controller will be set here.
+             */
+            if (null === $config['generic_controller']) {
+                throw new InvalidConfigurationException('If you want to configure templates_by_class, you need to configure the generic_controller option.');
+            }
+
+            // if the content class defines the template, we also need to make sure we use the generic controller for those routes
+            $controllerForTemplates = array();
+            foreach ($config['templates_by_class'] as $key => $value) {
+                $controllerForTemplates[$key] = $config['generic_controller'];
+            }
+
+            $definition = $container->getDefinition('cmf_routing.enhancer.controller_for_templates_by_class');
+            $definition->replaceArgument(2, $controllerForTemplates);
+
+            $container->getDefinition('cmf_routing.enhancer.controller_for_templates_by_class')
+                ->addTag('dynamic_router_route_enhancer', array('priority' => 30));
+        }
     }
 }

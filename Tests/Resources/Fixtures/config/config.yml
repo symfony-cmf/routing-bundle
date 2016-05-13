@@ -13,14 +13,14 @@ cmf_routing:
             My\Class:
               -
                 methods: [put, post]
-                controller: service:method
+                value: service:method
               -
-                method: [any]
-                controller: service:readMethod
+                methods: [any]
+                value: service:readMethod
             Other\Class:
               -
                 methods: [any]
-                controller: service:method
+                value: service:method
         templates_by_class:
             Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent: CmfContentBundle:StaticContent:index.html.twig
         persistence:
