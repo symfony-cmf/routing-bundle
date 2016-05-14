@@ -299,7 +299,7 @@ class CmfRoutingExtension extends Extension
         $configurationPriorities = [
             'controllers_by_type' => ['class' => FieldMapEnhancer::class, 'arguments' => ['type', '_controller']],
             'controllers_by_class' => ['class' => FieldByClassEnhancer::class, 'arguments' => ['_content', '_controller']],
-            'templates_by_class' => ['class' => FieldByClassEnhancer::class, 'arguments' => ['_content', '_controller']],
+            'templates_by_class' => ['class' => FieldByClassEnhancer::class, 'arguments' => ['_content', '_template']],
         ];
 
         foreach ($configurationPriorities as $key => $serviceDefinitionValues) {
