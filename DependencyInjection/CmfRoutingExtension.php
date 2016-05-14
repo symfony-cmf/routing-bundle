@@ -323,7 +323,7 @@ class CmfRoutingExtension extends Extension
         }
 
         if (0 < count($enhancerMap)) {
-            $container->getDefinition('cmf_routing.enhancer.conditional')->addArgument($enhancerMap);
+            $container->getDefinition('cmf_routing.enhancer.conditional')->addArgument([]);#$enhancerMap);
         } else {
             $container->removeDefinition('cmf_routing.enhancer.conditional');
         }

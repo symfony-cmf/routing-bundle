@@ -39,10 +39,10 @@
             <argument>%cmf_routing.generic_controller%</argument>
         </service>
 
-        <service id="cmf_routing.enhancer.templates_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
+        <service id="cmf_routing.enhancer.controller_for_templates_by_class" class="%cmf_routing.enhancer.field_by_class.class%" public="false">
             <argument>_content</argument>
-            <argument>_template</argument>
-            <argument>%cmf_routing.templates_by_class%</argument>
+            <argument>_controller</argument>
+            <argument type="collection" />
         </service>
 
         <service id="cmf_routing.enhancer.content_repository" class="%cmf_routing.enhancer.content_repository.class%" public="false">

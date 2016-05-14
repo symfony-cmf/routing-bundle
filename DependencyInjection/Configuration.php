@@ -77,31 +77,9 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('route_collection_limit')->defaultValue(0)->end()
                         ->scalarNode('generic_controller')->defaultNull()->end()
                         ->scalarNode('default_controller')->defaultNull()->end()
-                        ->arrayNode('controllers_by_type')
-                            ->useAttributeAsKey('type')
-                            ->prototype('scalar')->end()
-                        ->end() // controllers_by_type
-                        ->arrayNode('controllers_by_class')
-                            ->prototype('array')
-                                ->ignoreExtraKeys(false)
-                                ->beforeNormalization()
-                                    ->ifString()
-                                    ->then(function ($v) {
-                                        return ['methods' => ['any'], 'value' => $v];
-                                    })
-                                ->end()
-                                ->children()
-                                    ->arrayNode('methods')
-                                        ->prototype('scalar')->end()
-                                    ->end()
-                                    ->scalarNode('value')->end()
-                                ->end()
-                            ->end()
-                        ->end() // controllers_by_class
-                        ->arrayNode('templates_by_class')
-                            ->useAttributeAsKey('class')
-                            ->prototype('scalar')->end()
-                        ->end() // templates_by_class
+                        ->append($this->methodAwareValues('controllers_by_type'))
+                        ->append($this->methodAwareValues('controllers_by_class'))
+                        ->append($this->methodAwareValues('templates_by_class'))
                         ->arrayNode('persistence')
                             ->addDefaultsIfNotSet()
                             ->validate()
@@ -209,5 +187,29 @@ class Configuration implements ConfigurationInterface
                 ->end() // dynamic
             ->end()
         ;
+    }
+
+    public function methodAwareValues($name)
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root($name);
+
+        return $node
+            ->prototype('array')
+                ->ignoreExtraKeys(false)
+                ->beforeNormalization()
+                    ->ifString()
+                    ->then(function ($v) {
+                        return ['methods' => ['any'], 'value' => $v];
+                    })
+                ->end()
+                ->children()
+                    ->arrayNode('methods')
+                        ->prototype('scalar')->end()
+                    ->end()
+                    ->scalarNode('value')->end()
+                ->end()
+            ->end()
+            ;
     }
 }
