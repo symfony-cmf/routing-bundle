@@ -20,7 +20,9 @@
             <template-by-class class="Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent">
                 CmfContentBundle:StaticContent:index.html.twig
             </template-by-class>
-
+            <template-by-class class="Symfony\Cmf\Bundle\ContentBundle\Document\StaticContents">
+                CmfContentBundle:StaticContents:index.html.twig
+            </template-by-class>
             <persistence>
                 <phpcr
                     content-basepath="/cms/content"

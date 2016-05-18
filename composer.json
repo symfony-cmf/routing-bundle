@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": "^5.3.9|^7.0",
-        "symfony-cmf/routing": "@dev",
+        "symfony-cmf/routing": "dev-adder_conditional_enhancer",
         "symfony/framework-bundle": "~2.3"
     },
     "require-dev": {

@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\CmfRoutingExtension;
+use Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer;
 use Symfony\Component\DependencyInjection\Reference;
 
 class CmfRoutingExtensionTest extends AbstractExtensionTestCase
@@ -121,7 +122,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ));
 
         $this->assertContainerBuilderHasParameter('cmf_routing.controllers_by_type', array(
-            'Acme\Foo' => 'acme_main.controller:indexAction',
+            'Acme\Foo' => [['methods' => ['any'], 'value' => 'acme_main.controller:indexAction']],
         ));
     }
 
@@ -402,6 +403,13 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 
     public function testEnhancer()
     {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array(
+                'CmfRoutingBundle' => true,
+            )
+        );
+
         $this->load([
             'dynamic' => [
                 'enabled' => true,
@@ -428,11 +436,22 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ]);
 
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
-            'cmf_routing.enhancer.conditional',
+            'cmf_routing.enhancer.conditional.controller_for_templates_by_class',
             'dynamic_router_route_enhancer',
-            ['priority' => 40]
+            ['priority' => 30]
         );
 
-        $this->assertContainerBuilderHasService('cmf_routing.enhancer.conditional', []);
+        $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
+            'cmf_routing.enhancer.conditional.controller_for_templates_by_class',
+            'createAndAddMapEntry',
+            array(
+                FieldByClassEnhancer::class,
+                '_content',
+                '_controller',
+                array('Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => 'acme_main.controller:mainAction'),
+                null,
+                30
+            )
+        );
     }
 }

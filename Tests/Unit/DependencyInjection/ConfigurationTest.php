@@ -41,12 +41,13 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'route_collection_limit' => 0,
                 'generic_controller' => 'acme_main.controller:mainAction',
                 'controllers_by_type' => array(
-                    'editable' => 'acme_main.some_controller:editableAction',
+                    'editable' => array(
+                        array('methods' => array('any'), 'value' => 'acme_main.some_controller:editableAction'),
+                    ),
                 ),
                 'controllers_by_class' => array(
                     'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => array(
-                        'methods' => ['any'],
-                        'value' => 'cmf_content.controller:indexAction'
+                        array('methods' => ['any'], 'value' => 'cmf_content.controller:indexAction'),
                     ),
                     'My\Class' => array(
                         array('methods' => array('put', 'post'), 'value' => 'service:method'),
@@ -57,7 +58,9 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                     ),
                 ),
                 'templates_by_class' => array(
-                    'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => 'CmfContentBundle:StaticContent:index.html.twig',
+                    'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => array(
+                        array('methods' => array('any'), 'value' => 'CmfContentBundle:StaticContent:index.html.twig'),
+                    ),
                 ),
                 'persistence' => array(
                     'phpcr' => array(
