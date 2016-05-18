@@ -200,7 +200,16 @@ class Configuration implements ConfigurationInterface
                 ->beforeNormalization()
                     ->ifString()
                     ->then(function ($v) {
-                        return ['methods' => ['any'], 'value' => $v];
+                        return [['methods' => ['any'], 'value' => $v]];
+                    })
+                ->end()
+                ->validate()
+                    ->always(function ($v) {
+                        if (empty($v['methods'])) {
+                            unset($v['methods']);
+                        }
+
+                        return $v;
                     })
                 ->end()
                 ->children()
