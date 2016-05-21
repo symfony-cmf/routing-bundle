@@ -42,24 +42,24 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'generic_controller' => 'acme_main.controller:mainAction',
                 'controllers_by_type' => array(
                     'editable' => array(
-                        array('methods' => array('any'), 'value' => 'acme_main.some_controller:editableAction'),
+                        array('value' => 'acme_main.some_controller:editableAction'),
                     ),
                 ),
                 'controllers_by_class' => array(
                     'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => array(
-                        array('methods' => ['any'], 'value' => 'cmf_content.controller:indexAction'),
+                        array('value' => 'cmf_content.controller:indexAction'),
                     ),
                     'My\Class' => array(
                         array('methods' => array('put', 'post'), 'value' => 'service:method'),
                         array('methods' => array('any'), 'value' => 'service:readMethod'),
                     ),
                     'Other\Class' => array(
-                        array('methods' => array('any'), 'value' => 'service:method'),
+                        array('value' => 'service:method'),
                     ),
                 ),
                 'templates_by_class' => array(
                     'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => array(
-                        array('methods' => array('any'), 'value' => 'CmfContentBundle:StaticContent:index.html.twig'),
+                        array('value' => 'CmfContentBundle:StaticContent:index.html.twig'),
                     ),
                 ),
                 'persistence' => array(

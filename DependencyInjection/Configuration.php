@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
@@ -77,9 +78,9 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('route_collection_limit')->defaultValue(0)->end()
                         ->scalarNode('generic_controller')->defaultNull()->end()
                         ->scalarNode('default_controller')->defaultNull()->end()
-                        ->append($this->methodAwareValues('controllers_by_type'))
-                        ->append($this->methodAwareValues('controllers_by_class'))
-                        ->append($this->methodAwareValues('templates_by_class'))
+                        ->append($this->httpMethodAwareValues('controllers_by_type'))
+                        ->append($this->httpMethodAwareValues('controllers_by_class'))
+                        ->append($this->httpMethodAwareValues('templates_by_class'))
                         ->arrayNode('persistence')
                             ->addDefaultsIfNotSet()
                             ->validate()
@@ -189,7 +190,14 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    public function methodAwareValues($name)
+    /**
+     * Build a node for a value with a possible HTTP method restriction.
+     *
+     * @param string $name
+     *
+     * @return NodeDefinition
+     */
+    private function httpMethodAwareValues($name)
     {
         $builder = new TreeBuilder();
         $node = $builder->root($name);
@@ -200,7 +208,7 @@ class Configuration implements ConfigurationInterface
                 ->beforeNormalization()
                     ->ifString()
                     ->then(function ($v) {
-                        return [['methods' => ['any'], 'value' => $v]];
+                        return array('value' => $v);
                     })
                 ->end()
                 ->validate()
@@ -219,6 +227,6 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('value')->end()
                 ->end()
             ->end()
-            ;
+        ;
     }
 }

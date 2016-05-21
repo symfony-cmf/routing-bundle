@@ -17,10 +17,7 @@ cmf_routing:
               -
                 methods: [any]
                 value: service:readMethod
-            Other\Class:
-              -
-                methods: [any]
-                value: service:method
+            Other\Class: service:method
         templates_by_class:
             Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent: CmfContentBundle:StaticContent:index.html.twig
         persistence:

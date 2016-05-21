@@ -15,7 +15,6 @@ use Symfony\Cmf\Component\Routing\Enhancer\ConditionalEnhancer;
 use Symfony\Cmf\Component\Routing\Enhancer\FieldByClassEnhancer;
 use Symfony\Cmf\Component\Routing\Enhancer\FieldMapEnhancer;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -307,13 +306,24 @@ class CmfRoutingExtension extends Extension
      */
     private function loadConditionalEnhancer(array $config, ContainerBuilder $container)
     {
-        $enhancerMap = [];
-        $definitions = [];
-        $configurationPriorities = [
-            'templates_by_class' => ['class' => FieldByClassEnhancer::class, 'arguments' => ['_content', '_template'], 'priority' => 40],
-            'controllers_by_class' => ['class' => FieldByClassEnhancer::class, 'arguments' => ['_content', '_controller'], 'priority' => 50],
-            'controllers_by_type' => ['class' => FieldMapEnhancer::class, 'arguments' => ['type', '_controller'], 'priority' => 60],
-        ];
+        $definitions = array();
+        $configurationPriorities = array(
+            'templates_by_class' => array(
+                'class' => FieldByClassEnhancer::class,
+                'arguments' => array('_content', '_template'),
+                'priority' => 40
+            ),
+            'controllers_by_class' => array(
+                'class' => FieldByClassEnhancer::class,
+                'arguments' => array('_content', '_controller'),
+                'priority' => 50
+            ),
+            'controllers_by_type' => array(
+                'class' => FieldMapEnhancer::class,
+                'arguments' => array('type', '_controller'),
+                'priority' => 60
+            ),
+        );
 
 
         if (count($config['templates_by_class']) > 0) {
@@ -330,21 +340,24 @@ class CmfRoutingExtension extends Extension
             }
 
             // if the content class defines the template, we also need to make sure we use the generic controller for those routes
-            $controllerForTemplates = [];
-            $mapping = $config['generic_controller'];
-            $methods = is_array($mapping) && array_key_exists('methods', $mapping) ? $mapping['methods'] : null;
-            foreach ($config['templates_by_class'] as $key => $value) {
-                $controllerForTemplates[$key] = is_array($mapping) && array_key_exists('value', $mapping) ? $mapping['value'] : $mapping;
-            }
+            foreach ($config['templates_by_class'] as $key => $mappings) {
+                $controllerForTemplates = array();
+                foreach ($mappings as $mapping) {
+                    $entry = array('value' => $config['generic_controller']);
+                    if (array_key_exists('methods', $mapping)) {
+                        $entry['methods'] = $mapping['methods'];
+                    }
+                    $controllerForTemplates[] = $entry;
+                }
 
-            $definitions['cmf_routing.enhancer.conditional.controller_for_templates_by_class'] = $this->buildConditionalEnhancerDefintion(
-                FieldByClassEnhancer::class,
-                '_content',
-                '_controller',
-                $controllerForTemplates,
-                $methods,
-                30
-            );
+                $definitions['cmf_routing.enhancer.conditional.controller_for_templates_by_class.'.$key] = $this->buildConditionalEnhancerDefintion(
+                    FieldByClassEnhancer::class,
+                    '_content',
+                    '_controller',
+                    $controllerForTemplates,
+                    30
+                );
+            }
         }
 
         foreach ($configurationPriorities as $key => $serviceDefinitionValues) {
@@ -371,14 +384,32 @@ class CmfRoutingExtension extends Extension
         $container->addDefinitions($definitions);
     }
 
-    private function buildConditionalEnhancerDefintion($className, $source, $target, $map, $methods, $priority)
+    private function buildConditionalEnhancerDefintion($className, $source, $target, $maps, $priority)
     {
+        var_dump($maps);throw new \Exception;
+        if (1 === count($maps) && !array_key_exists('methods', reset($maps))) {
+            $enhancer = new Definition($className);
 
-        $conditionalEnhancer = new Definition('Symfony\Cmf\Component\Routing\Enhancer\ConditionalEnhancer');
-        $conditionalEnhancer->addMethodCall(
-            'createAndAddMapEntry',
-            array($className, $source, $target, $map, $methods, $priority)
-        );
+            $enhancer->setArguments([$source, $target, reset($maps)['value']]);
+            $enhancer->addTag('dynamic_router_route_enhancer', array('priority' => $priority));
+
+            return $enhancer;
+        }
+
+        $enhancerMap = [];
+        foreach ($maps as $map) {
+            $matcher = new Definition('Symfony\Component\HttpFoundation\RequestMatcher');
+            $matcher->setArguments(array(null, null, $map['methods']));
+            $enhancer = new Definition($className);
+            $enhancer->setArguments(array($source, $target, $map['value']));
+            $enhancerMap[] = [
+                'matcher' => $matcher,
+                'enhancer' => $enhancer,
+            ];
+        }
+
+        $conditionalEnhancer = new Definition(ConditionalEnhancer::class);
+        $conditionalEnhancer->setArguments($enhancerMap);
         $conditionalEnhancer->addTag('dynamic_router_route_enhancer', array('priority' => $priority));
 
         return $conditionalEnhancer;
