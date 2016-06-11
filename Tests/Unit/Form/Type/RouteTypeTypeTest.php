@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Form\Type;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest\Form\Type;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

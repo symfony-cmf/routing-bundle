@@ -61,6 +61,7 @@ class CmfRoutingExtension extends Extension
     private function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
         $loader->load('form-type.xml');
+        $loader->load('dto-converter.xml');
 
         if (isset($config['dynamic'])) {
             $routeTypeTypeDefinition = $container->getDefinition('cmf_routing.route_type_form_type');

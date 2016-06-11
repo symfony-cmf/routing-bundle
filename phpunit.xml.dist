@@ -14,6 +14,7 @@
         <testsuite name="phpcr">
             <directory>./Tests/Functional</directory>
             <exclude>./Tests/Functional/Doctrine/Orm</exclude>
+            <directory>./Tests/WebTest</directory>
         </testsuite>
 
         <testsuite name="orm">

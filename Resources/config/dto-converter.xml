@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="cmf_routing.dto_converter.route_advanced"
+                class="Symfony\Cmf\Bundle\RoutingBundle\Form\Data\Converter\RouteAdvancedDataConverter">
+        </service>
+
+        <service
+                id="cmf_routing.dto_converter.route_general"
+                class="Symfony\Cmf\Bundle\RoutingBundle\Form\Data\Converter\RouteGeneralDataConverter">
+        </service>
+        <service
+                id="cmf_routing.dto_converter.route"
+                class="Symfony\Cmf\Bundle\RoutingBundle\Form\Data\Converter\RouteDataConverter">
+            <call method="setRouteAdvancedDataConverter">
+                <argument type="service" id="cmf_routing.dto_converter.route_advanced" />
+            </call>
+            <call method="setRouteGeneralDataConverter">
+                <argument type="service" id="cmf_routing.dto_converter.route_general" />
+            </call>
+        </service>
+    </services>
+</container>
