@@ -17,7 +17,7 @@
         "symfony/framework-bundle": "^2.8|^3.0"
     },
     "require-dev": {
-        "symfony-cmf/core-bundle": "^2.0",
+        "symfony-cmf/core-bundle": "dev-remove_sonata_admin_dto_interface",
         "symfony-cmf/testing": "^2.0",
         "doctrine/phpcr-odm": "^2.0",
         "matthiasnoback/symfony-dependency-injection-test": "~0.6",
@@ -26,7 +26,6 @@
         "sonata-project/admin-bundle": "^2.3.7|^3.0",
         "sonata-project/block-bundle": "^2.2.8|^3.0",
         "sonata-project/core-bundle": "^2.2.5|^3.0",
-        "sonata-project/doctrine-phpcr-admin-bundle": "^1.2.4|^2.0",
         "symfony/monolog-bundle": "^2.3|^3.0",
         "doctrine/orm": "^2.3",
         "doctrine/data-fixtures": "^1.0.0"
@@ -41,7 +40,7 @@
         "symfony-cmf/content-bundle": "To optionally use the configured value for 'content_basepath' from the CoreBundle",
         "symfony-cmf/core-bundle": "To use the provided Doctrine\\Phpcr documents and for easier configuration (^1.1)",
 
-        "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents (^1.1)"
+        "symfony-cmf/sonata-admin-integration": "To provide an admin interface for the PHPCR ODM documents (^1.1)"
     },
     "conflict": {
         "doctrine/phpcr-odm": "<2.0"

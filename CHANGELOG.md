@@ -1,6 +1,7 @@
 Changelog
 =========
 
+ * **2016-12-02**: [BC BREAK] Move all sonata related code
  * **2016-10-10**: [ORM] Add option to use custom Route class in ORM
  * **2016-06-18**: [BC BREAK] Removed all `*.class` parameters.
  * **2016-06-18**: [BC BREAK] Removed the `cmf_routing.dynamic.persistence.phpcr.route_basepath`
