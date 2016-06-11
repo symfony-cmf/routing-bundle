@@ -9,7 +9,6 @@ if (class_exists('Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle'))
     $treeBrowserVersion = '2.x';
 }
 
-$collection->addCollection($loader->import(__DIR__.'/sonata_routing.yml'));
 $collection->addCollection($loader->import(__DIR__.'/tree_browser_'.$treeBrowserVersion.'.yml'));
 $collection->addCollection($loader->import(__DIR__.'/test_routing.yml'));
 

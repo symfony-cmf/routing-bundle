@@ -225,26 +225,9 @@ class CmfRoutingExtension extends Extension
             $definition->setArguments(array($definition->getArgument(0)));
         }
 
-        if ($config['use_sonata_admin']) {
-            $this->loadSonataPhpcrAdmin($config, $loader, $container);
-        }
-
         if ($config['enable_initializer']) {
             $this->loadInitializer($config, $loader, $container);
         }
-    }
-
-    private function loadSonataPhpcrAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
-    {
-        $bundles = $container->getParameter('kernel.bundles');
-        if ('auto' === $config['use_sonata_admin'] && !isset($bundles['SonataDoctrinePHPCRAdminBundle'])) {
-            return;
-        }
-
-        $loader->load('admin-phpcr.xml');
-
-        $basePath = $config['admin_basepath'] ?: reset($config['route_basepaths']);
-        $container->setParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $basePath);
     }
 
     /**
@@ -254,13 +237,7 @@ class CmfRoutingExtension extends Extension
      */
     private function loadInitializer($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
-        $adminBasepathParameter = $this->getAlias().'.dynamic.persistence.phpcr.admin_basepath';
-
         $initializedBasepaths = array();
-        if ($container->hasParameter($adminBasepathParameter)) {
-            $initializedBasepaths = array($container->getParameter($adminBasepathParameter));
-        }
-
         if ('auto' === $config['enable_initializer'] && empty($initializedBasepaths)) {
             return;
         }

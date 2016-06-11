@@ -18,7 +18,6 @@ cmf_routing:
                     - /cms/routes
                     - /simple
                 content_basepath: /cms/content
-                use_sonata_admin: false
                 enable_initializer: true
         locales: [en, fr]
         auto_locale_pattern: true

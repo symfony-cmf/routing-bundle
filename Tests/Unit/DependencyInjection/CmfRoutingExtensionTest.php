@@ -32,7 +32,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 'persistence' => array(
                     'phpcr' => array(
                         'enabled' => true,
-                        'use_sonata_admin' => false,
                     ),
                 ),
             ),
@@ -63,9 +62,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 'route_provider_service_id' => 'test_route_provider_service',
                 'content_repository_service_id' => 'test_content_repository_service',
                 'persistence' => array(
-                    'phpcr' => array(
-                        'use_sonata_admin' => false,
-                    ),
+                    'phpcr' => true,
                 ),
             ),
             'chain' => array(
@@ -134,13 +131,12 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
     /**
      * @dataProvider getBasePathsTests
      */
-    public function testLoadBasePaths($phpcrConfig, $routeBasepathsParameter, $adminBasePathParameter)
+    public function testLoadBasePaths($phpcrConfig, $routeBasepathsParameter)
     {
         $this->container->setParameter(
             'kernel.bundles',
             array(
                 'CmfRoutingBundle' => true,
-                'SonataDoctrinePHPCRAdminBundle' => true,
             )
         );
 
@@ -158,7 +154,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ));
 
         $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', $routeBasepathsParameter);
-        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $adminBasePathParameter);
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
             'cmf_routing.enhancer.content_repository',
             'dynamic_router_route_enhancer',
@@ -172,25 +167,21 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             array(
                 array(),
                 array('/cms/routes'),
-                '/cms/routes',
             ),
 
             array(
                 array('route_basepaths' => '/cms/test'),
                 array('/cms/test'),
-                '/cms/test',
             ),
 
             array(
                 array('route_basepaths' => array('/cms/routes', '/cms/test')),
                 array('/cms/routes', '/cms/test'),
-                '/cms/routes',
             ),
 
             array(
                 array('route_basepaths' => array('/cms/test', '/cms/routes')),
                 array('/cms/test', '/cms/routes'),
-                '/cms/test',
             ),
         );
     }
@@ -198,14 +189,11 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
     /**
      * @dataProvider getBasePathsMergingTests
      */
-    public function testRouteBasepathsMerging($phpcrConfig1, $phpcrConfig2, $routeBasepathsParameter, $adminBasePathParameter)
+    public function testRouteBasepathsMerging($phpcrConfig1, $phpcrConfig2, $routeBasepathsParameter)
     {
         $this->container->setParameter(
             'kernel.bundles',
-            array(
-                'CmfRoutingBundle' => true,
-                'SonataDoctrinePHPCRAdminBundle' => true,
-            )
+            array('CmfRoutingBundle' => true)
         );
 
         if (!isset($phpcrConfig1['enabled'])) {
@@ -235,7 +223,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         }
 
         $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', $routeBasepathsParameter);
-        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', $adminBasePathParameter);
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
             'cmf_routing.enhancer.content_repository',
             'dynamic_router_route_enhancer',
@@ -273,10 +260,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter(
             'kernel.bundles',
-            array(
-                'CmfRoutingBundle' => true,
-                'SonataDoctrinePHPCRAdminBundle' => true,
-            )
+            array('CmfRoutingBundle' => true)
         );
 
         $this->load(array(
@@ -291,7 +275,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ));
 
         $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array('/cms/test'));
-        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/test');
     }
 
     public function testInitializerEnabled()
@@ -300,7 +283,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             'kernel.bundles',
             array(
                 'CmfRoutingBundle' => true,
-                'SonataDoctrinePHPCRAdminBundle' => true,
             )
         );
 
@@ -310,7 +292,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 'persistence' => array(
                     'phpcr' => array(
                         'enabled' => true,
-                        'use_sonata_admin' => true,
                         'enable_initializer' => true,
                     ),
                 ),
@@ -352,7 +333,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                     'persistence' => array(
                         'phpcr' => array(
                             'enabled' => true,
-                            'use_sonata_admin' => false,
                             'enable_initializer' => true,
                         ),
                     ),
@@ -426,7 +406,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
                 'persistence' => array(
                     'phpcr' => array(
                         'enabled' => true,
-                        'use_sonata_admin' => false,
                         'enable_initializer' => 'auto',
                     ),
                 ),
