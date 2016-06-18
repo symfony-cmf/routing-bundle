@@ -213,10 +213,6 @@ class CmfRoutingExtension extends Extension
         $container->setParameter('cmf_routing.backend_type_phpcr', true);
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array_values(array_unique($config['route_basepaths'])));
 
-        /*
-         * @deprecated The cmf_routing.dynamic.persistence.phpcr.route_basepath parameter is deprecated as of version 1.4 and will be removed in 2.0. Use the cmf_routing.dynamic.persistence.phpcr.route_basepaths parameter instead.
-         */
-        $container->setParameter('cmf_routing.dynamic.persistence.phpcr.route_basepath', reset($config['route_basepaths']));
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.content_basepath', $config['content_basepath']);
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.manager_name', $config['manager_name']);
 

@@ -13,8 +13,8 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\PHPCR\HierarchyInterface;
 use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
+use Doctrine\ODM\PHPCR\HierarchyInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
 
@@ -69,42 +69,6 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
         parent::__construct($options);
 
         $this->children = new ArrayCollection();
-    }
-
-    /**
-     * @deprecated use getOption('add_trailing_slash') instead
-     */
-    public function getAddTrailingSlash()
-    {
-        return $this->getOption('add_trailing_slash');
-    }
-
-    /**
-     * @deprecated use setOption('add_trailing_slash', $add) instead
-     */
-    public function setAddTrailingSlash($addTrailingSlash)
-    {
-        $this->setOption('add_trailing_slash', $addTrailingSlash);
-    }
-
-    /**
-     * @deprecated Use setParentDocument instead.
-     */
-    public function setParent($parent)
-    {
-        @trigger_error('The Route#setParent() method is deprecated as of version 1.2 and will be removed in 2.0. Use setParentDocument() instead.', E_USER_DEPRECATED);
-
-        return $this->setParentDocument($parent);
-    }
-
-    /**
-     * @deprecated Use getParentDocument instead.
-     */
-    public function getParent()
-    {
-        @trigger_error('The Route#getParent() method is deprecated as of version 1.2 and will be removed in 2.0. Use getParentDocument() instead.', E_USER_DEPRECATED);
-
-        return $this->getParentDocument();
     }
 
     /**

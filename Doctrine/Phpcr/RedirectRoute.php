@@ -69,26 +69,6 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
-     * @deprecated Use setParentDocument instead.
-     */
-    public function setParent($parent)
-    {
-        @trigger_error('The Route#setParent() method is deprecated as of version 1.2 and will be removed in 2.0. Use setParentDocument() instead.', E_USER_DEPRECATED);
-
-        return $this->setParentDocument($parent);
-    }
-
-    /**
-     * @deprecated Use getParentDocument instead.
-     */
-    public function getParent()
-    {
-        @trigger_error('The Route#getParent() method is deprecated as of version 1.2 and will be removed in 2.0. Use getParentDocument() instead.', E_USER_DEPRECATED);
-
-        return $this->getParentDocument();
-    }
-
-    /**
      * Move the route by setting a parent.
      *
      * Note that this will change the URL this route matches.
