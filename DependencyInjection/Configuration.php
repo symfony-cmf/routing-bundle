@@ -92,7 +92,11 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('persistence')
                             ->addDefaultsIfNotSet()
                             ->validate()
-                                ->ifTrue(function ($v) { return count(array_filter($v, function ($persistence) { return $persistence['enabled']; })) > 1; })
+                                ->ifTrue(function ($v) {
+                                    return count(array_filter($v, function ($persistence) {
+                                        return $persistence['enabled'];
+                                    })) > 1;
+                                })
                                 ->thenInvalid('Only one persistence layer can be enabled at the same time.')
                             ->end()
                             ->children()
@@ -101,11 +105,15 @@ class Configuration implements ConfigurationInterface
                                     ->canBeEnabled()
                                     ->fixXmlConfig('route_basepath')
                                     ->validate()
-                                        ->ifTrue(function ($v) { isset($v['route_basepath']) && isset($v['route_basepaths']); })
+                                        ->ifTrue(function ($v) {
+                                            isset($v['route_basepath']) && isset($v['route_basepaths']);
+                                        })
                                         ->thenInvalid('Found values for both "route_basepath" and "route_basepaths", use "route_basepaths" instead.')
                                     ->end()
                                     ->beforeNormalization()
-                                        ->ifTrue(function ($v) { return isset($v['route_basepath']) && !is_array($v['route_basepath']); })
+                                        ->ifTrue(function ($v) {
+                                            return isset($v['route_basepath']) && !is_array($v['route_basepath']);
+                                        })
                                         ->then(function ($v) {
                                             @trigger_error('The route_basepath setting is deprecated as of version 1.4 and will be removed in 2.0. Use route_basepaths instead.', E_USER_DEPRECATED);
 
@@ -117,7 +125,9 @@ class Configuration implements ConfigurationInterface
                                         ->arrayNode('route_basepaths')
                                             ->beforeNormalization()
                                                 ->ifString()
-                                                ->then(function ($v) { return array($v); })
+                                                ->then(function ($v) {
+                                                    return array($v);
+                                                })
                                             ->end()
                                             ->prototype('scalar')->end()
                                             ->defaultValue(array('/cms/routes'))
