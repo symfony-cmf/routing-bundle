@@ -43,6 +43,9 @@
 
         "sonata-project/doctrine-phpcr-admin-bundle": "To provide an admin interface for the PHPCR ODM documents (^1.1)"
     },
+    "conflict": {
+        "doctrine/phpcr-odm": "<2.0"
+    },
     "autoload": {
         "psr-4": {
             "Symfony\\Cmf\\Bundle\\RoutingBundle\\": ""
