@@ -13,7 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
-class RouteTest extends \PHPUnit_Framework_Testcase
+class RouteTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Route */
     private $route;
