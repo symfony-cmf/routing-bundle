@@ -13,7 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\ContentRepository;
 
-class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
+class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     private $document;
     private $document2;
