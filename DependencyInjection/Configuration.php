@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 
 /**
  * This class contains the configuration information for the bundle.
@@ -163,6 +164,7 @@ class Configuration implements ConfigurationInterface
                                     ->canBeEnabled()
                                     ->children()
                                         ->scalarNode('manager_name')->defaultNull()->end()
+                                        ->scalarNode('route_class')->defaultValue(Route::class)->end()
                                     ->end()
                                 ->end() // orm
                             ->end()

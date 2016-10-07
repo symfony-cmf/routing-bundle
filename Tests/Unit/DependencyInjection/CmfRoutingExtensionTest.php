@@ -388,6 +388,36 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         $this->assertTrue($this->container->has('cmf_routing.initializer'));
     }
 
+    public function testSettingCustomRouteClassForOrm()
+    {
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'orm' => array(
+                        'enabled' => true,
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.backend_type_orm_default', true);
+
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'orm' => array(
+                        'enabled' => true,
+                        'route_class' => 'Some\Bundle\CustomBundle\Doctrine\ORM\Route',
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.backend_type_orm_custom', true);
+    }
+
     public function testInitializerDisabledAutomaticallyIfSonataIsDisabled()
     {
         $this->load(array(

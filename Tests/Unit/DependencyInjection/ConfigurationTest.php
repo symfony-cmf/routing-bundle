@@ -65,6 +65,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                     'orm' => array(
                         'enabled' => false,
                         'manager_name' => null,
+                        'route_class' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route',
                     ),
                 ),
                 'enabled' => true,
