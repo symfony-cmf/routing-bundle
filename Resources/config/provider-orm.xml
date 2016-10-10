@@ -20,7 +20,7 @@
         <service id="cmf_routing.route_provider" class="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\RouteProvider">
             <argument type="service" id="doctrine" />
             <argument type="service" id="cmf_routing.orm_candidates" />
-            <argument>Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route</argument>
+            <argument>%cmf_routing.dynamic.persistence.orm.route_class%</argument>
             <call method="setManagerName"><argument>%cmf_routing.dynamic.persistence.orm.manager_name%</argument></call>
             <call method="setRouteCollectionLimit"><argument>%cmf_routing.route_collection_limit%</argument></call>
         </service>

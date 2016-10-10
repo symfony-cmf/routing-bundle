@@ -96,8 +96,19 @@ class CmfRoutingBundle extends Bundle
                     realpath(__DIR__.'/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
                 ),
                 array('cmf_routing.dynamic.persistence.orm.manager_name'),
-                'cmf_routing.backend_type_orm',
+                'cmf_routing.backend_type_orm_default',
                 array('CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm')
+            )
+        );
+
+        $container->addCompilerPass(
+            $doctrineOrmCompiler::createXmlMappingDriver(
+                array(
+                    realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
+                ),
+                array('cmf_routing.dynamic.persistence.orm.manager_name'),
+                'cmf_routing.backend_type_orm_custom',
+                array()
             )
         );
     }
