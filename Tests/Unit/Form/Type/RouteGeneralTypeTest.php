@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\WebTest\Form\Type;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Form\Type;
 
 use Sonata\DoctrinePHPCRAdminBundle\Model\ModelManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Form\Data\RouteGeneralData;
