@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.0 (unreleased)
+------------------
+
+* **2016-01-09**: Move admin definitions and dependencies to sonata-admin-integration bundle. Add form types for admin
+  usage.
  * **2016-10-10**: [ORM] Add option to use custom Route class in ORM
  * **2016-06-18**: [BC BREAK] Removed all `*.class` parameters.
  * **2016-06-18**: [BC BREAK] Removed the `cmf_routing.dynamic.persistence.phpcr.route_basepath`

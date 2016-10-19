@@ -7,5 +7,12 @@
         <service id="cmf_routing.route_type_form_type" class="Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType">
             <tag name="form.type" alias="cmf_routing_route_type" />
         </service>
+
+        <service
+                id="cmf_routing.route_general_form_type"
+                class="Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteGeneralType">
+            <argument type="service" id="sonata.admin.manager.doctrine_phpcr" />
+            <tag name="form.type" />
+        </service>
     </services>
 </container>

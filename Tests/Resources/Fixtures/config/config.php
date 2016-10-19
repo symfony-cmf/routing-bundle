@@ -26,7 +26,6 @@ $container->loadFromExtension('cmf_routing', array(
                     '/simple',
                 ),
                 'content_basepath' => '/cms/content',
-                'use_sonata_admin' => 'false',
                 'enable_initializer' => true,
             ),
         ),
