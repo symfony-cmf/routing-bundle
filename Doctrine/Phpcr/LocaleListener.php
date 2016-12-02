@@ -64,14 +64,14 @@ class LocaleListener
     /**
      * This listener is built to work with the prefix candidates strategy.
      *
-     * @param PrefixCandidates $candidates                  To get prefixes from.
-     * @param array            $locales                     Locales that should be detected.
+     * @param PrefixCandidates $candidates                  To get prefixes from
+     * @param array            $locales                     Locales that should be detected
      * @param bool             $addLocalePattern            Whether to enforce the add_locale_pattern
      *                                                      option if the route does not have one of
-     *                                                      the allowed locales in its id.
+     *                                                      the allowed locales in its id
      * @param bool             $updateAvailableTranslations Whether to update the route document with
      *                                                      its available translations if it does not
-     *                                                      have one of the allowed locales in its id.
+     *                                                      have one of the allowed locales in its id
      */
     public function __construct(
         PrefixCandidates $candidates,
@@ -167,12 +167,12 @@ class LocaleListener
      *
      * @param ModelRoute      $doc   The route object
      * @param string          $id    The id (in move case, this is not the current
-     *                               id of $route).
+     *                               id of $route)
      * @param DocumentManager $dm    The document manager to get locales from if
      *                               the setAvailableTranslations option is
-     *                               enabled.
+     *                               enabled
      * @param bool            $force Whether to update the locale even if the
-     *                               route already has a locale.
+     *                               route already has a locale
      */
     protected function updateLocale(ModelRoute $doc, $id, DocumentManager $dm, $force = false)
     {
