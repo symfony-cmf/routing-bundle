@@ -137,7 +137,7 @@ class PrefixCandidates extends Candidates
     }
 
     /**
-     * Append a prefix to the allowed prefixes
+     * Append a prefix to the allowed prefixes.
      *
      * @param string $prefix A prefix
      */
