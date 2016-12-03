@@ -45,13 +45,13 @@ class PrefixCandidates extends Candidates
     /**
      * @param array           $prefixes The prefixes to use. If one of them is
      *                                  an empty string, the whole repository
-     *                                  is used for routing.
-     * @param array           $locales  Allowed locales.
+     *                                  is used for routing
+     * @param array           $locales  Allowed locales
      * @param ManagerRegistry $doctrine Used when the URL matches one of the
      *                                  $locales. This must be the same
      *                                  document manager as the RouteProvider
-     *                                  is using.
-     * @param int             $limit    Limit to candidates generated per prefix.
+     *                                  is using
+     * @param int             $limit    Limit to candidates generated per prefix
      */
     public function __construct(array $prefixes, array $locales = array(), ManagerRegistry $doctrine = null, $limit = 20)
     {
@@ -129,7 +129,7 @@ class PrefixCandidates extends Candidates
     /**
      * Set the prefixes handled by this strategy.
      *
-     * @param array $prefixes List of prefixes, possibly including ''.
+     * @param array $prefixes List of prefixes, possibly including ''
      */
     public function setPrefixes(array $prefixes)
     {
@@ -149,7 +149,7 @@ class PrefixCandidates extends Candidates
     /**
      * Get all currently configured prefixes where to look for routes.
      *
-     * @return array The prefixes.
+     * @return array The prefixes
      */
     public function getPrefixes()
     {

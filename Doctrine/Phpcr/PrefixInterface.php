@@ -20,13 +20,13 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 interface PrefixInterface
 {
     /**
-     * @return string the full path of this document in the repository.
+     * @return string the full path of this document in the repository
      */
     public function getId();
 
     /**
      * @param string $prefix The path in the repository to the routing root
-     *                       document.
+     *                       document
      */
     public function setPrefix($prefix);
 }
