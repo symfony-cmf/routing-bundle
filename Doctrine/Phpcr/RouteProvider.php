@@ -111,7 +111,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritdoc}
      *
-     * @param string $name The absolute path or uuid of the Route document.
+     * @param string $name The absolute path or uuid of the Route document
      */
     public function getRouteByName($name)
     {
