@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
+use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\ValidationPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -34,6 +35,7 @@ class CmfRoutingBundle extends Bundle
         $container->addCompilerPass(new RegisterRoutersPass());
         $container->addCompilerPass(new RegisterRouteEnhancersPass());
         $container->addCompilerPass(new SetRouterPass());
+        $container->addCompilerPass(new ValidationPass());
 
         $this->buildPhpcrCompilerPass($container);
         $this->buildOrmCompilerPass($container);
