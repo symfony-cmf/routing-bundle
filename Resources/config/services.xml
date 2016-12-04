@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="cmf_routing.twig_extension.class">Symfony\Cmf\Bundle\CoreBundle\Twig\Extension</parameter>
+        <parameter key="cmf_routing.twig_extension.route_not_found_log_level">400</parameter>
+    </parameters>
+
+    <services>
+        <service id="cmf_routing.twig_extension" class="%cmf_routing.twig_extension.class%">
+            <argument type="service" id="router" />
+            <argument type="service" id="logger" on-invalid="ignore" />
+            <argument>%cmf_routing.twig_extension.route_not_found_log_level%</argument>
+            <tag name="twig.extension" />
+        </service>
+    </services>
+</container>
+

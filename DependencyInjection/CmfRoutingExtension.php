@@ -34,6 +34,7 @@ class CmfRoutingExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.xml');
 
         if ($this->isConfigEnabled($container, $config['dynamic'])) {
             $this->setupDynamicRouter($config['dynamic'], $container, $loader);
