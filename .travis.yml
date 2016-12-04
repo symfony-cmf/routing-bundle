@@ -10,24 +10,26 @@ sudo: false
 
 cache:
   directories:
+    - .phpunit
     - $HOME/.composer/cache/files
 
 env:
   matrix:
-    - SYMFONY_VERSION=2.8.*
+    - SYMFONY_VERSION=3.1.*
   global:
     - SYMFONY_DEPRECATIONS_HELPER=231
+    - SYMFONY_PHPUNIT_REMOVE="symfony/yaml" SYMFONY_PHPUNIT_DIR="./.phpunit"
 
 matrix:
   include:
     - php: 7.0
-      env: DEPS=dev SYMFONY_VERSION=3.1.*
-    - php: 7.0
-      env: DEPS=dev SYMFONY_VERSION=3.2.*
+      env: DEPS=dev SYMFONY_VERSION=3.3.*
     - php: 5.5
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak
     - php: 7.0
-      env: DEPS=dev COMPOSER_FLAGS="--prefer-stable" SYMFONY_VERSION=3.0.*
+      env: SYMFONY_VERSION=3.0.*
+    - php: 7.0
+      env: SYMFONY_VERSION=3.2.*
   fast_finish: true
 
 before_install:
@@ -41,7 +43,7 @@ install: composer update --prefer-dist $COMPOSER_FLAGS
 
 before_script: vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
-script: phpunit
+script: vendor/bin/simple-phpunit
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
