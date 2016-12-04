@@ -24,7 +24,7 @@ class ValidationPass implements CompilerPassInterface
         if ($container->hasParameter('cmf_routing.backend_type_phpcr')) {
             $container
                 ->getDefinition('validator.builder')
-                ->addMethodCall('addXmlMappings', [[__DIR__.'../../Resources/config/validation-phpcr.xml']]);
+                ->addMethodCall('addXmlMappings', [[__DIR__.'/../../Resources/config/validation-phpcr.xml']]);
         }
     }
 }
