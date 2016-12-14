@@ -8,22 +8,22 @@
 
     <testsuites>
         <testsuite name="Symfony CmfRoutingBundle Test Suite">
-            <directory>./Tests/Unit</directory>
+            <directory>./tests/Unit</directory>
         </testsuite>
 
         <testsuite name="phpcr">
-            <directory>./Tests/Functional</directory>
-            <exclude>./Tests/Functional/Doctrine/Orm</exclude>
+            <directory>./tests/Functional</directory>
+            <exclude>./tests/Functional/Doctrine/Orm</exclude>
         </testsuite>
 
         <testsuite name="orm">
-            <directory>./Tests/Functional/Doctrine/Orm</directory>
+            <directory>./tests/Functional/Doctrine/Orm</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory>.</directory>
+            <directory>src/</directory>
             <exclude>
                 <directory>Resources/</directory>
                 <directory>Admin/</directory>
@@ -34,7 +34,7 @@
     </filter>
 
     <php>
-        <server name="KERNEL_DIR" value="Tests/Resources/app" />
+        <server name="KERNEL_DIR" value="tests/Resources/app" />
     </php>
 
     <listeners>

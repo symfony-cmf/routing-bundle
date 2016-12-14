@@ -48,7 +48,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Symfony\\Cmf\\Bundle\\RoutingBundle\\": ""
+            "Symfony\\Cmf\\Bundle\\RoutingBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Symfony\\Cmf\\Bundle\\RoutingBundle\\Tests\\": "tests/"
         }
     },
     "extra": {
