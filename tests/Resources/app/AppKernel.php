@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
+use Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends TestKernel
@@ -21,7 +22,7 @@ class AppKernel extends TestKernel
             new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
         ));
 
-        if (class_exists('Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle')) {
+        if (class_exists(CmfResourceRestBundle::class)) {
             $this->addBundles(array(
                 new \Symfony\Cmf\Bundle\ResourceBundle\CmfResourceBundle(),
                 new \Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle(),

@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RouteTypeType extends AbstractType
 {
-    protected $routeTypes = array();
+    protected $routeTypes = [];
     protected $translator;
 
     /**
@@ -25,15 +25,15 @@ class RouteTypeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $choices = array();
+        $choices = [];
         foreach ($this->routeTypes as $routeType) {
             $choices[$routeType] = 'route_type.'.$routeType;
         }
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'choices' => $choices,
             'translation_domain' => 'CmfRoutingBundle',
-        ));
+        ]);
     }
 
     /**

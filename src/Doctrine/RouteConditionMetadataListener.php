@@ -15,6 +15,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata as OrmClassMetadata;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata as PhpcrClassMetadata;
+use Symfony\Component\Routing\Route;
 
 /**
  * Metadata listener to remove mapping for condition field if the field does not exist.
@@ -31,9 +32,9 @@ class RouteConditionMetadataListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'loadClassMetadata',
-        );
+        ];
     }
 
     /**
@@ -44,31 +45,31 @@ class RouteConditionMetadataListener implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
-        if (!property_exists('Symfony\Component\Routing\Route', 'condition')) {
+        if (!property_exists(Route::class, 'condition')) {
             return; // nothing to do
         }
 
         $meta = $eventArgs->getClassMetadata();
         $refl = $meta->getReflectionClass();
-        if (null === $refl || 'Symfony\Component\Routing\Route' !== $refl->getName()) {
+        if (null === $refl || Route::class !== $refl->getName()) {
             return;
         }
 
         if ($meta instanceof OrmClassMetadata) {
             /* @var $meta OrmClassMetadata */
-            $meta->mapField(array(
+            $meta->mapField([
                 'fieldName' => 'condition',
                 'columnName' => 'condition_expr',
                 'type' => 'string',
                 'nullable' => true,
-            ));
+            ]);
         } elseif ($meta instanceof PhpcrClassMetadata) {
             /* @var $meta PhpcrClassMetadata */
-            $meta->mapField(array(
+            $meta->mapField([
                 'fieldName' => 'condition',
                 'type' => 'string',
                 'nullable' => true,
-            ));
+            ]);
         } else {
             throw new \LogicException(sprintf('Class metadata was neither PHPCR nor ORM but %s', get_class($meta)));
         }

@@ -74,7 +74,7 @@ class IdPrefixListener
         // for more than one listener and more than one route root
         if ($doc instanceof PrefixInterface) {
             foreach ($this->getPrefixes() as $prefix) {
-                if (!strncmp($prefix, $doc->getId(), strlen($prefix))) {
+                if (0 === strpos($doc->getId(), $prefix)) {
                     $doc->setPrefix($prefix);
                     break;
                 }

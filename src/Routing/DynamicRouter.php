@@ -87,17 +87,17 @@ class DynamicRouter extends BaseDynamicRouter
             $request = $this->getRequest();
         }
 
-        if (isset($defaults[RouteObjectInterface::ROUTE_OBJECT])) {
+        if (array_key_exists(RouteObjectInterface::ROUTE_OBJECT, $defaults)) {
             $request->attributes->set(self::ROUTE_KEY, $defaults[RouteObjectInterface::ROUTE_OBJECT]);
             unset($defaults[RouteObjectInterface::ROUTE_OBJECT]);
         }
 
-        if (isset($defaults[RouteObjectInterface::CONTENT_OBJECT])) {
+        if (array_key_exists(RouteObjectInterface::CONTENT_OBJECT, $defaults)) {
             $request->attributes->set(self::CONTENT_KEY, $defaults[RouteObjectInterface::CONTENT_OBJECT]);
             unset($defaults[RouteObjectInterface::CONTENT_OBJECT]);
         }
 
-        if (isset($defaults[RouteObjectInterface::TEMPLATE_NAME])) {
+        if (array_key_exists(RouteObjectInterface::TEMPLATE_NAME, $defaults)) {
             $request->attributes->set(self::CONTENT_TEMPLATE, $defaults[RouteObjectInterface::TEMPLATE_NAME]);
             unset($defaults[RouteObjectInterface::TEMPLATE_NAME]);
         }

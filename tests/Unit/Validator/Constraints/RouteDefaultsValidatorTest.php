@@ -13,7 +13,9 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Admin;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaults;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsValidator;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
 {
@@ -22,8 +24,8 @@ class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
 
     protected function setUp()
     {
-        $this->controllerResolver = $this->getMock('Symfony\Component\HttpKernel\Controller\ControllerResolverInterface');
-        $this->templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+        $this->controllerResolver = $this->createMock(ControllerResolverInterface::class);
+        $this->templating = $this->createMock(EngineInterface::class);
 
         parent::setUp();
     }

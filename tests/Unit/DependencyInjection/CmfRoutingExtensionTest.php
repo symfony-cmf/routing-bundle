@@ -11,8 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
 
+use Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\CmfRoutingExtension;
+use Symfony\Cmf\Component\Routing\ChainRouter;
 use Symfony\Component\DependencyInjection\Reference;
 
 class CmfRoutingExtensionTest extends AbstractExtensionTestCase
@@ -42,7 +44,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('cmf_routing.replace_symfony_router', true);
 
-        $this->assertContainerBuilderHasService('cmf_routing.router', 'Symfony\Cmf\Component\Routing\ChainRouter');
+        $this->assertContainerBuilderHasService('cmf_routing.router', ChainRouter::class);
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall('cmf_routing.router', 'add', array(
             new Reference('router.default'),
             100,
@@ -165,7 +167,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
     {
         return array(
             array(
-                array(),
+                [],
                 array('/cms/routes'),
             ),
 
@@ -248,7 +250,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             ),
 
             array(
-                array(),
+                [],
                 array('route_basepaths' => array('/cms/test')),
                 array('/cms/test'),
                 '/cms/test',
@@ -298,7 +300,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
             ),
         ));
 
-        $this->assertContainerBuilderHasService('cmf_routing.initializer', 'Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer');
+        $this->assertContainerBuilderHasService('cmf_routing.initializer', GenericInitializer::class);
     }
 
     public function testInitializerDisabled()
@@ -323,23 +325,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ));
 
         $this->assertFalse($this->container->has('cmf_routing.initializer'));
-    }
-
-    public function testInitializerEnabledEvenWithoutSonata()
-    {
-        $this->load(array(
-                'dynamic' => array(
-                    'enabled' => true,
-                    'persistence' => array(
-                        'phpcr' => array(
-                            'enabled' => true,
-                            'enable_initializer' => true,
-                        ),
-                    ),
-                ),
-            ));
-
-        $this->assertTrue($this->container->has('cmf_routing.initializer'));
     }
 
     public function testSettingCustomRouteClassForOrm()
@@ -370,22 +355,5 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ));
 
         $this->assertContainerBuilderHasParameter('cmf_routing.backend_type_orm_custom', true);
-    }
-
-    public function testInitializerDisabledAutomaticallyIfSonataIsDisabled()
-    {
-        $this->load(array(
-            'dynamic' => array(
-                'enabled' => true,
-                'persistence' => array(
-                    'phpcr' => array(
-                        'enabled' => true,
-                        'enable_initializer' => 'auto',
-                    ),
-                ),
-            ),
-        ));
-
-        $this->assertFalse($this->container->has('cmf_routing.initializer'));
     }
 }

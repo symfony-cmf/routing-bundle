@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class RouteProviderTest extends OrmTestCase
@@ -20,7 +21,7 @@ class RouteProviderTest extends OrmTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->clearDb('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route');
+        $this->clearDb(Route::class);
 
         $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
     }
@@ -35,6 +36,6 @@ class RouteProviderTest extends OrmTestCase
 
         $routes = $this->repository->getRouteCollectionForRequest(Request::create('/test/child/testroutechild'));
         $this->assertCount(3, $routes);
-        $this->assertContainsOnlyInstancesOf('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route', $routes);
+        $this->assertContainsOnlyInstancesOf(Route::class, $routes);
     }
 }

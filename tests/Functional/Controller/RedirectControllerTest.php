@@ -15,6 +15,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RedirectControllerTest extends BaseTestCase
 {
@@ -53,7 +54,7 @@ class RedirectControllerTest extends BaseTestCase
         $redirect = $this->getDm()->find(null, self::ROUTE_ROOT.'/redirectUri');
         $response = $this->controller->redirectAction($redirect);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(301, $response->getStatusCode());
         $this->assertSame('http://example.com/test-url', $response->getTargetUrl());
     }
@@ -82,7 +83,7 @@ class RedirectControllerTest extends BaseTestCase
         $redirect = $this->getDm()->find(null, self::ROUTE_ROOT.'/redirectContent');
         $response = $this->controller->redirectAction($redirect);
 
-        $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://localhost/testroute?test=content', $response->getTargetUrl());
     }
@@ -103,7 +104,7 @@ class RedirectControllerTest extends BaseTestCase
 
         $redirect = $this->getDm()->find(null, self::ROUTE_ROOT.'/redirectName');
         $response = $this->controller->redirectAction($redirect);
-        $this->assertInstanceOf('Symfony\\Component\\HttpFoundation\\RedirectResponse', $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(302, $response->getStatusCode());
         $this->assertSame('http://localhost/symfony_route_test?param=7', $response->getTargetUrl());
     }

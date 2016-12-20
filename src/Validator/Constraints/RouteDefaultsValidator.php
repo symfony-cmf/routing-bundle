@@ -33,7 +33,7 @@ class RouteDefaultsValidator extends ConstraintValidator
         if (isset($defaults['_controller']) && null !== $defaults['_controller']) {
             $controller = $defaults['_controller'];
 
-            $request = new Request(array(), array(), array('_controller' => $controller));
+            $request = new Request([], [], ['_controller' => $controller]);
 
             try {
                 $this->controllerResolver->getController($request);
@@ -46,7 +46,7 @@ class RouteDefaultsValidator extends ConstraintValidator
             $template = $defaults['_template'];
 
             if (false === $this->templating->exists($template)) {
-                $this->context->addViolation($constraint->message, array('%name%' => $template));
+                $this->context->addViolation($constraint->message, ['%name%' => $template]);
             }
         }
     }

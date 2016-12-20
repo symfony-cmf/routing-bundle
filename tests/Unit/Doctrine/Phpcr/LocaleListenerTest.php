@@ -41,15 +41,15 @@ class LocaleListenerTest extends CmfUnitTestCase
 
     public function setUp()
     {
-        $this->candidatesMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates');
+        $this->candidatesMock = $this->createMock(PrefixCandidates::class);
 
         $this->candidatesMock->expects($this->any())
             ->method('getPrefixes')
             ->will($this->returnValue(array('/cms/routes', '/cms/simple')))
         ;
         $this->listener = new LocaleListener($this->candidatesMock, array('en', 'de'));
-        $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route');
-        $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
+        $this->routeMock = $this->createMock(Route::class);
+        $this->dmMock = $this->createMock(DocumentManager::class);
     }
 
     public function testNoRoute()

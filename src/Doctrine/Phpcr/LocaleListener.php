@@ -176,7 +176,7 @@ class LocaleListener
      */
     protected function updateLocale(ModelRoute $doc, $id, DocumentManager $dm, $force = false)
     {
-        $matches = array();
+        $matches = [];
 
         // only update if the prefix matches, to allow for more than one
         // listener and more than one route root.

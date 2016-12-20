@@ -65,7 +65,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     public function getCandidates(Request $request)
     {
         if (false !== strpos($request->getPathInfo(), ':')) {
-            return array();
+            return [];
         }
 
         return $this->candidatesStrategy->getCandidates($request);
@@ -85,7 +85,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         $collection = new RouteCollection();
 
-        if (empty($candidates)) {
+        if (0 === count($candidates)) {
             return $collection;
         }
 
@@ -154,7 +154,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     private function getAllRoutes()
     {
         if (0 === $this->routeCollectionLimit) {
-            return array();
+            return [];
         }
 
         try {
@@ -163,14 +163,14 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         } catch (RepositoryException $e) {
             // special case: there is not even a database existing. this means there are no routes.
             if ($e->getPrevious() instanceof TableNotFoundException) {
-                return array();
+                return [];
             }
 
             throw $e;
         }
         $qb = $dm->createQueryBuilder();
 
-        $qb->from('d')->document('Symfony\Component\Routing\Route', 'd');
+        $qb->from('d')->document(SymfonyRoute::class, 'd');
 
         $this->candidatesStrategy->restrictQuery($qb);
 
@@ -191,7 +191,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             return $this->getAllRoutes();
         }
 
-        $candidates = array();
+        $candidates = [];
         foreach ($names as $key => $name) {
             if (UUIDHelper::isUUID($name) || $this->candidatesStrategy->isCandidate($name)) {
                 $candidates[$key] = $name;
@@ -199,7 +199,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         }
 
         if (!$candidates) {
-            return array();
+            return [];
         }
 
         /** @var $dm DocumentManager */

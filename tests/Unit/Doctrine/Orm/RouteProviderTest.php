@@ -19,6 +19,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\RouteProvider;
 use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends CmfUnitTestCase
 {
@@ -54,15 +55,15 @@ class RouteProviderTest extends CmfUnitTestCase
 
     public function setUp()
     {
-        $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route');
-        $this->route2Mock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route');
-        $this->objectManagerMock = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $this->managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->objectRepositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->setMethods(array('findByStaticPrefix', 'findOneBy', 'findBy'))
+        $this->routeMock = $this->createMock(Route::class);
+        $this->route2Mock = $this->createMock(Route::class);
+        $this->objectManagerMock = $this->createMock(ObjectManager::class);
+        $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
+        $this->objectRepositoryMock = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
+            ->setMethods(array('findByStaticPrefix', 'findOneBy', 'findBy'))
             ->getMock();
-        $this->candidatesMock = $this->getMock('Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface');
+        $this->candidatesMock = $this->createMock(CandidatesInterface::class);
         $this->candidatesMock
             ->expects($this->any())
             ->method('isCandidate')
@@ -118,7 +119,7 @@ class RouteProviderTest extends CmfUnitTestCase
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock, 'Route');
         $collection = $routeProvider->getRouteCollectionForRequest($request);
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(2, $collection);
     }
 
@@ -130,7 +131,7 @@ class RouteProviderTest extends CmfUnitTestCase
             ->expects($this->once())
             ->method('getCandidates')
             ->with($request)
-            ->will($this->returnValue(array()))
+            ->will($this->returnValue([]))
         ;
 
         $this->objectRepositoryMock
@@ -140,7 +141,7 @@ class RouteProviderTest extends CmfUnitTestCase
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock, 'Route');
         $collection = $routeProvider->getRouteCollectionForRequest($request);
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(0, $collection);
     }
 
@@ -188,7 +189,7 @@ class RouteProviderTest extends CmfUnitTestCase
             ->expects($this->never())
             ->method('findOneBy')
         ;
-        $candidatesMock = $this->getMock('Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface');
+        $candidatesMock = $this->createMock(CandidatesInterface::class);
         $candidatesMock
             ->expects($this->once())
             ->method('isCandidate')
@@ -224,7 +225,7 @@ class RouteProviderTest extends CmfUnitTestCase
 
         $paths[] = '/no-candidate';
 
-        $candidatesMock = $this->getMock('Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface');
+        $candidatesMock = $this->createMock(CandidatesInterface::class);
         $candidatesMock
             ->expects($this->at(0))
             ->method('isCandidate')
@@ -271,7 +272,7 @@ class RouteProviderTest extends CmfUnitTestCase
         $this->objectRepositoryMock
             ->expects($this->once())
             ->method('findBy')
-            ->with(array(), null, 42)
+            ->with([], null, 42)
             ->will($this->returnValue(array($this->routeMock)))
         ;
 

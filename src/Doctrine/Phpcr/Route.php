@@ -63,8 +63,10 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      * Additional supported option is:
      *
      * * add_trailing_slash: When set, a trailing slash is appended to the route
+     *
+     * @param array $options Options
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         parent::__construct($options);
 
@@ -127,6 +129,11 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      * Convenience method to set parent and name at the same time.
      *
      * The url will be the url of the parent plus the supplied name.
+     *
+     * @param object $parent The parent document
+     * @param string $name   The local name of this route
+     *
+     * @return self
      */
     public function setPosition($parent, $name)
     {
@@ -202,16 +209,16 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function generateStaticPrefix($id, $idPrefix)
     {
-        if (0 == strlen($idPrefix)) {
+        if ('' === $idPrefix) {
             throw new \LogicException('Can not determine the prefix. Either this is a new, unpersisted document or the listener that calls setPrefix is not set up correctly.');
         }
 
-        if (strncmp($id, $idPrefix, strlen($idPrefix))) {
+        if (0 !== strpos($id, $idPrefix)) {
             throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$id'");
         }
 
         $url = substr($id, strlen($idPrefix));
-        if (empty($url)) {
+        if (!$url) {
             $url = '/';
         }
 
@@ -234,20 +241,6 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setPath($pattern)
-    {
-        $len = strlen($this->getStaticPrefix());
-
-        if (strncmp($this->getStaticPrefix(), $pattern, $len)) {
-            throw new \InvalidArgumentException('You can not set a pattern for the route document that does not match its repository path. First move it to the correct path.');
-        }
-
-        return $this->setVariablePattern(substr($pattern, $len));
-    }
-
-    /**
      * Get all route children of this route.
      *
      * Filters out children that do not implement the RouteObjectInterface.
@@ -256,7 +249,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function getRouteChildren()
     {
-        $children = array();
+        $children = [];
 
         foreach ($this->children as $child) {
             if ($child instanceof RouteObjectInterface) {

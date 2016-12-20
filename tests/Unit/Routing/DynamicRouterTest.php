@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
+use Symfony\Component\Routing\RequestContext;
 
 class DynamicRouterTest extends CmfUnitTestCase
 {
@@ -34,18 +37,18 @@ class DynamicRouterTest extends CmfUnitTestCase
 
     public function setUp()
     {
-        $this->matcher = $this->buildMock('Symfony\\Component\\Routing\\Matcher\\UrlMatcherInterface');
+        $this->matcher = $this->createMock(UrlMatcherInterface::class);
         $this->matcher->expects($this->once())
             ->method('match')
             ->with('/foo')
             ->will($this->returnValue(array('foo' => 'bar', RouteObjectInterface::CONTENT_OBJECT => 'bla', RouteObjectInterface::TEMPLATE_NAME => 'template')))
         ;
 
-        $this->generator = $this->buildMock('Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface');
+        $this->generator = $this->createMock(UrlGeneratorInterface::class);
 
         $this->request = Request::create('/foo');
-        $this->context = $this->buildMock('Symfony\\Component\\Routing\\RequestContext');
-        $this->eventDispatcher = $this->buildMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->context = $this->createMock(RequestContext::class);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->router = new DynamicRouter($this->context, $this->matcher, $this->generator, '', $this->eventDispatcher);
         $this->router->setRequest($this->request);
     }

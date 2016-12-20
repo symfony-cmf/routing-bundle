@@ -11,6 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
+use Doctrine\ODM\PHPCR\Query\Builder\SourceFactory;
+use Doctrine\ODM\PHPCR\Query\Query;
+use Doctrine\ODM\PHPCR\UnitOfWork;
 use PHPCR\Util\UUIDHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -20,6 +24,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends CmfUnitTestCase
 {
@@ -53,11 +58,11 @@ class RouteProviderTest extends CmfUnitTestCase
 
     public function setUp()
     {
-        $this->routeMock = $this->buildMock('Symfony\Component\Routing\Route');
-        $this->route2Mock = $this->buildMock('Symfony\Component\Routing\Route');
-        $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
-        $this->dm2Mock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
-        $this->managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->routeMock = $this->createMock(Route::class);
+        $this->route2Mock = $this->createMock(Route::class);
+        $this->dmMock = $this->createMock(DocumentManager::class);
+        $this->dm2Mock = $this->createMock(DocumentManager::class);
+        $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
 
         $this->managerRegistryMock
             ->expects($this->any())
@@ -65,7 +70,7 @@ class RouteProviderTest extends CmfUnitTestCase
             ->will($this->returnValue($this->dmMock))
         ;
 
-        $this->candidatesMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates');
+        $this->candidatesMock = $this->createMock(PrefixCandidates::class);
     }
 
     public function testGetRouteCollectionForRequest()
@@ -94,7 +99,7 @@ class RouteProviderTest extends CmfUnitTestCase
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $collection = $routeProvider->getRouteCollectionForRequest($request);
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(1, $collection);
     }
 
@@ -106,12 +111,12 @@ class RouteProviderTest extends CmfUnitTestCase
            ->expects($this->once())
            ->method('getCandidates')
            ->with($request)
-           ->will($this->returnValue(array()))
+           ->will($this->returnValue([]))
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $collection = $routeProvider->getRouteCollectionForRequest($request);
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(0, $collection);
     }
 
@@ -142,7 +147,7 @@ class RouteProviderTest extends CmfUnitTestCase
 
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
 
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
+        $this->assertInstanceOf(Route::class, $foundRoute);
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
     }
 
@@ -155,7 +160,7 @@ class RouteProviderTest extends CmfUnitTestCase
             ->will($this->returnValue('/cms/routes/test-route'))
         ;
 
-        $uow = $this->buildMock('Doctrine\ODM\PHPCR\UnitOfWork');
+        $uow = $this->createMock(UnitOfWork::class);
         $this->dmMock
             ->expects($this->any())
             ->method('find')
@@ -186,7 +191,7 @@ class RouteProviderTest extends CmfUnitTestCase
 
         $foundRoute = $routeProvider->getRouteByName($uuid);
 
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
+        $this->assertInstanceOf(Route::class, $foundRoute);
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
     }
 
@@ -222,7 +227,7 @@ class RouteProviderTest extends CmfUnitTestCase
             ->will($this->returnValue('/cms/routes/test-route'))
         ;
 
-        $uow = $this->buildMock('Doctrine\ODM\PHPCR\UnitOfWork');
+        $uow = $this->createMock(UnitOfWork::class);
         $this->dmMock
             ->expects($this->any())
             ->method('find')
@@ -438,7 +443,7 @@ class RouteProviderTest extends CmfUnitTestCase
             ->will($this->returnValue($routes))
         ;
 
-        $uow = $this->buildMock('Doctrine\ODM\PHPCR\UnitOfWork');
+        $uow = $this->createMock(UnitOfWork::class);
 
         $this->dmMock
             ->expects($this->any())
@@ -480,13 +485,13 @@ class RouteProviderTest extends CmfUnitTestCase
 
     private function doRouteDump($limit)
     {
-        $from = $this->getMock('Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder', array('document'));
+        $from = $this->createMock(SourceFactory::class);
         $from->expects($this->once())
             ->method('document')
-            ->with('Symfony\Component\Routing\Route', 'd')
+            ->with(Route::class, 'd')
         ;
 
-        $query = $this->buildMock('Doctrine\ODM\PHPCR\Query\Query');
+        $query = $this->createMock(Query::class);
         $query->expects($this->once())->method('getResult');
         if ($limit) {
             $query
@@ -501,7 +506,7 @@ class RouteProviderTest extends CmfUnitTestCase
             ;
         }
 
-        $queryBuilder = $this->getMock('Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder', array('from', 'getQuery'));
+        $queryBuilder = $this->createMock(QueryBuilder::class);
         $queryBuilder->expects($this->once())
             ->method('from')
             ->with('d')
@@ -555,7 +560,7 @@ class RouteProviderTest extends CmfUnitTestCase
         $routeProvider->setManagerName('default');
         $routeProvider->setRouteCollectionLimit(0);
 
-        $this->assertEquals(array(), $routeProvider->getRoutesByNames());
+        $this->assertEquals([], $routeProvider->getRoutesByNames());
     }
 
     /**
@@ -592,7 +597,7 @@ class RouteProviderTest extends CmfUnitTestCase
             'default' => $this->dmMock,
             'new_manager' => $this->dm2Mock,
         );
-        $this->managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $this->managerRegistryMock
             ->expects($this->any())
             ->method('getManager')
@@ -615,12 +620,12 @@ class RouteProviderTest extends CmfUnitTestCase
         $routeProvider->setManagerName('default');
 
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $foundRoute);
+        $this->assertInstanceOf(Route::class, $foundRoute);
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
 
         $routeProvider->setManagerName('new_manager');
         $newFoundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $newFoundRoute);
+        $this->assertInstanceOf(Route::class, $newFoundRoute);
         $this->assertEquals('/cms/routes/new-route', $newFoundRoute->getPath());
     }
 }

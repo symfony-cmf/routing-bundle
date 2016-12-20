@@ -30,7 +30,7 @@ class PrefixCandidates extends Candidates
      *
      * @var array
      */
-    protected $idPrefixes = array();
+    protected $idPrefixes = [];
 
     /**
      * @var string
@@ -53,7 +53,7 @@ class PrefixCandidates extends Candidates
      *                                  is using
      * @param int             $limit    Limit to candidates generated per prefix
      */
-    public function __construct(array $prefixes, array $locales = array(), ManagerRegistry $doctrine = null, $limit = 20)
+    public function __construct(array $prefixes, array $locales = [], ManagerRegistry $doctrine = null, $limit = 20)
     {
         parent::__construct($locales, $limit);
         $this->setPrefixes($prefixes);
@@ -102,7 +102,7 @@ class PrefixCandidates extends Candidates
      */
     public function getCandidates(Request $request)
     {
-        $candidates = array();
+        $candidates = [];
         $url = rawurldecode($request->getPathInfo());
         foreach ($this->getPrefixes() as $prefix) {
             $candidates = array_unique(array_merge($candidates, $this->getCandidatesFor($url, $prefix)));
