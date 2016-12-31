@@ -1,5 +1,73 @@
 # Upgrade from 1.4 to 2.0
 
+### SonataAdmin Support
+
+ * The Admin extensions where moved into `symfony-cmf/sonata-admin-integration-bundle`.
+   With the move, the admin extension service names also changed. If you are using one of the routing extensions,
+   you need to adjust your configuration.
+   
+   Before:
+   
+   ```yaml
+        # app/config/config.yml
+     
+        sonata_admin:
+            extensions:
+                cmf_routing.admin_extension.route_referrers:
+                     implements:
+                         - Symfony\Cmf\Component\Routing\RouteReferrersInterface
+                cmf_core.admin_extension.publish_workflow.time_period:
+                     implements:
+                         - Symfony\Cmf\Component\Routing\RouteReferrersReadInterface
+   ```
+
+    After:
+       
+   ```yaml
+        # app/config/config.yml
+                
+        sonata_admin:
+            extensions:
+                 cmf_sonata_admin_integration.routing.extension.route_referrers:
+                     implements:
+                         - Symfony\Cmf\Component\Routing\RouteReferrersInterface
+                 cmf_sonata_admin_integration.routing.extension.frontend_link:
+                     implements:
+                         - Symfony\Cmf\Component\Routing\RouteReferrersReadInterface
+   ```
+   Admin service names also changed. If you are using the admin, you need to adjust your configuration,
+   i.e. in the sonata dashboard:
+   
+   Before:
+   
+   ```yaml
+        # app/config/config.yml
+        sonata_admin:
+            dashboard:
+               groups:
+                   content:
+                       label: URLs
+                       icon: '<i class="fa fa-file-text-o"></i>'
+                       items:
+                           - cmf_routing.route_admin
+                           - cmf_routing.redirect_route_admin
+   ```
+
+    After:
+       
+   ```yaml
+        # app/config/config.yml
+        sonata_admin:
+           dashboard:
+               groups:
+                   content:
+                       label: URLs
+                       icon: '<i class="fa fa-file-text-o"></i>'
+                       items:
+                           - cmf_sonata_admin_integration.routing.route_admin
+                           - cmf_sonata_admin_integration.routing.redirect_route_admin
+   ```
+
 ## Route Model
 
  * Removed `getAddFormatPattern()`/`setAddFormatPattern()` from the model
