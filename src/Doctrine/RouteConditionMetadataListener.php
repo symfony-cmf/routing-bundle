@@ -50,7 +50,7 @@ class RouteConditionMetadataListener implements EventSubscriber
 
         $meta = $eventArgs->getClassMetadata();
         $refl = $meta->getReflectionClass();
-        if (null !== $refl && 'Symfony\Component\Routing\Route' !== $refl->getName()) {
+        if (null === $refl || 'Symfony\Component\Routing\Route' !== $refl->getName()) {
             return;
         }
 
