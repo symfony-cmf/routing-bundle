@@ -67,7 +67,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
                 throw new \Exception(sprintf('Class "%s" must use only one identifier', $class));
             }
 
-            return implode(':', array($class, reset($ids)));
+            return implode(':', [$class, reset($ids)]);
         } catch (\Exception $e) {
             return;
         }

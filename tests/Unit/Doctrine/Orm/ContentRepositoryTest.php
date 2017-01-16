@@ -11,6 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Orm;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\ContentRepository;
 
 class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
@@ -23,9 +26,9 @@ class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->document = new \stdClass();
-        $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->objectRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $this->objectManager = $this->createMock(ObjectManager::class);
+        $this->managerRegistry = $this->createMock(ManagerRegistry::class);
+        $this->objectRepository = $this->createMock(ObjectRepository::class);
     }
 
     public function testFindById()

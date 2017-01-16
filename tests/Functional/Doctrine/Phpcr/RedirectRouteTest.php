@@ -14,6 +14,8 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
+use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
 class RedirectRouteTest extends BaseTestCase
 {
@@ -49,7 +51,7 @@ class RedirectRouteTest extends BaseTestCase
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
         $redirect = $this->getDm()->find(null, self::ROUTE_ROOT.'/redirect');
 
-        $this->assertInstanceOf('Symfony\\Cmf\\Component\\Routing\\RedirectRouteInterface', $redirect);
+        $this->assertInstanceOf(RedirectRouteInterface::class, $redirect);
         $this->assertSame($redirect, $redirect->getContent());
         $params = $redirect->getParameters();
         $this->assertSame($route, $redirect->getRouteTarget());
@@ -62,7 +64,7 @@ class RedirectRouteTest extends BaseTestCase
      */
     public function testSetContent()
     {
-        $content = $this->getMock('Symfony\\Cmf\\Component\\Routing\\RouteReferrersReadInterface');
+        $content = $this->createMock(RouteReferrersReadInterface::class);
         $redirect = new RedirectRoute();
         $redirect->setContent($content);
     }

@@ -51,10 +51,10 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         $collection = new RouteCollection();
 
         $candidates = $this->candidatesStrategy->getCandidates($request);
-        if (empty($candidates)) {
+        if (0 === count($candidates)) {
             return $collection;
         }
-        $routes = $this->getRouteRepository()->findByStaticPrefix($candidates, array('position' => 'ASC'));
+        $routes = $this->getRouteRepository()->findByStaticPrefix($candidates, ['position' => 'ASC']);
         /** @var $route Route */
         foreach ($routes as $route) {
             $collection->add($route->getName(), $route);
@@ -72,7 +72,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             throw new RouteNotFoundException(sprintf('Route "%s" is not handled by this route provider', $name));
         }
 
-        $route = $this->getRouteRepository()->findOneBy(array('name' => $name));
+        $route = $this->getRouteRepository()->findOneBy(['name' => $name]);
         if (!$route) {
             throw new RouteNotFoundException("No route found for name '$name'");
         }
@@ -87,17 +87,17 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     {
         if (null === $names) {
             if (0 === $this->routeCollectionLimit) {
-                return array();
+                return [];
             }
 
             try {
-                return $this->getRouteRepository()->findBy(array(), null, $this->routeCollectionLimit ?: null);
+                return $this->getRouteRepository()->findBy([], null, $this->routeCollectionLimit ?: null);
             } catch (TableNotFoundException $e) {
-                return array();
+                return [];
             }
         }
 
-        $routes = array();
+        $routes = [];
         foreach ($names as $name) {
             // TODO: if we do findByName with multivalue, we need to filter with isCandidate afterwards
             try {

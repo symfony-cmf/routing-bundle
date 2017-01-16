@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Component\Routing\RouteCompiler;
 
 /**
  * Default model for routing table entries that work with the DynamicRouter.
@@ -72,10 +73,10 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @param array $options
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
-        $this->setDefaults(array());
-        $this->setRequirements(array());
+        $this->setDefaults([]);
+        $this->setRequirements([]);
         $this->setOptions($options);
 
         if ($this->getOption('add_format_pattern')) {
@@ -125,6 +126,8 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @param mixed $object A content object that can be persisted by the
      *                      storage layer
+     *
+     * @return self
      */
     public function setContent($object)
     {
@@ -162,7 +165,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     {
         $option = parent::getOption($name);
         if (null === $option && 'compiler_class' === $name) {
-            return 'Symfony\\Component\\Routing\\RouteCompiler';
+            return RouteCompiler::class;
         }
         if ($this->isBooleanOption($name)) {
             return (bool) $option;
@@ -182,11 +185,11 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     {
         $options = parent::getOptions();
         if (!array_key_exists('compiler_class', $options)) {
-            $options['compiler_class'] = 'Symfony\\Component\\Routing\\RouteCompiler';
+            $options['compiler_class'] = RouteCompiler::class;
         }
-        foreach ($options as $key => $value) {
+        foreach ($options as $key => &$value) {
             if ($this->isBooleanOption($key)) {
-                $options[$key] = (bool) $value;
+                $value = (bool) $value;
             }
         }
 
@@ -197,10 +200,12 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * Helper method to check if an option is a boolean option to allow better forms.
      *
      * @param string $name
+     *
+     * @return bool whether $name is a boolean option
      */
     protected function isBooleanOption($name)
     {
-        return in_array($name, array('add_format_pattern', 'add_locale_pattern'));
+        return in_array($name, ['add_format_pattern', 'add_locale_pattern']);
     }
 
     /**
@@ -233,13 +238,15 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function setPath($pattern)
     {
-        $len = strlen($this->getStaticPrefix());
-
-        if (strncmp($this->getStaticPrefix(), $pattern, $len)) {
-            throw new \InvalidArgumentException('You can not set a pattern for the route that does not start with its current static prefix. First update the static prefix or directly use setVariablePattern.');
+        if (0 !== strpos($pattern, $this->getStaticPrefix())) {
+            throw new \InvalidArgumentException(sprintf(
+                'You can not set pattern "%s" for this route with a static prefix of "%s". First update the static prefix or directly use setVariablePattern.',
+                $pattern,
+                $this->getStaticPrefix()
+            ));
         }
 
-        return $this->setVariablePattern(substr($pattern, $len));
+        return $this->setVariablePattern(substr($pattern, strlen($this->getStaticPrefix())));
     }
 
     /**

@@ -91,10 +91,6 @@ class RouteTest extends BaseTestCase
 
     public function testConditionOption()
     {
-        if (!property_exists('Symfony\Component\Routing\Route', 'condition')) {
-            $this->markTestSkipped('This version of symfony does not have the condition property on the Route.');
-        }
-
         $route = new Route();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
@@ -116,10 +112,19 @@ class RouteTest extends BaseTestCase
         $this->assertEquals('/', $root->getPath());
     }
 
+    public function testSetPath()
+    {
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
+        $this->assertEquals('/', $root->getStaticPrefix());
+        $root->setPath('/{test}');
+        $this->assertEquals('{test}', $root->getVariablePattern());
+    }
+
     public function testSetPattern()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-        $root->setPath('/{test}');
+        $root->setVariablePattern('{test}');
+        $this->assertEquals('/{test}', $root->getPath());
         $this->assertEquals('{test}', $root->getVariablePattern());
     }
 

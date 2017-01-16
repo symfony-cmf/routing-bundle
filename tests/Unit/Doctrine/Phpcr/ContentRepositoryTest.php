@@ -11,6 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\UnitOfWork;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\ContentRepository;
 
 class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
@@ -25,9 +29,9 @@ class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->document = new \stdClass();
         $this->document2 = new \stdClass();
-        $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $this->objectManager2 = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->objectManager = $this->createMock(ObjectManager::class);
+        $this->objectManager2 = $this->createMock(ObjectManager::class);
+        $this->managerRegistry = $this->createMock(ManagerRegistry::class);
     }
 
     public function testFindById()
@@ -53,14 +57,14 @@ class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContentId()
     {
-        $uow = $this->getMockBuilder('Doctrine\ODM\PHPCR\UnitOfWork')->disableOriginalConstructor()->getMock();
+        $uow = $this->createMock(UnitOfWork::class);
         $uow->expects($this->once())
             ->method('getDocumentId')
             ->with($this->document)
             ->will($this->returnValue('id-123'))
         ;
 
-        $dm = $this->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')->disableOriginalConstructor()->getMock();
+        $dm = $this->createMock(DocumentManager::class);
         $dm
             ->expects($this->once())
             ->method('getUnitOfWork')

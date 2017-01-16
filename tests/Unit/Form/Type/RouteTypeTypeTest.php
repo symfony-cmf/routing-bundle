@@ -16,6 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RouteTypeTypeTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var RouteTypeType
+     */
+    private $type;
+
     public function setUp()
     {
         $this->type = new RouteTypeType();
@@ -38,7 +43,7 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_TestCase
         $this->type->addRouteType('foobar');
         $this->type->addRouteType('barfoo');
 
-        $optionsResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolver');
+        $optionsResolver = $this->createMock(OptionsResolver::class);
         $optionsResolver->expects($this->once())
             ->method('setDefaults')
             ->with(array(

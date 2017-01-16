@@ -43,7 +43,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * Never call this, it makes no sense. The redirect route will return $this

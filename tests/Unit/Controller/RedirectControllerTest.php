@@ -13,12 +13,13 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Controller;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
+use Symfony\Component\Routing\RouterInterface;
 
 class RedirectControllerTest extends CmfUnitTestCase
 {
     public function testConstructor()
     {
-        new RedirectController($this->buildMock('Symfony\Component\Routing\RouterInterface'));
+        new RedirectController($this->createMock(RouterInterface::class));
     }
 
     // the rest is covered by functional test

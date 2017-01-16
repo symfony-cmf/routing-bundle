@@ -11,10 +11,14 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\Query\Builder\ConstraintFactory;
+use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
+use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooserInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Route;
 
 class PrefixCandidatesTest extends CmfUnitTestCase
 {
@@ -102,14 +106,14 @@ class PrefixCandidatesTest extends CmfUnitTestCase
     {
         $request = Request::create('/de/path.html');
 
-        $dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $dmMock = $this->createMock(DocumentManager::class);
+        $managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $managerRegistryMock
             ->expects($this->any())
             ->method('getManager')
             ->will($this->returnValue($dmMock))
         ;
-        $localeMock = $this->buildMock('Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooserInterface');
+        $localeMock = $this->createMock(LocaleChooserInterface::class);
         $localeMock
             ->expects($this->once())
             ->method('setLocale')
@@ -128,7 +132,7 @@ class PrefixCandidatesTest extends CmfUnitTestCase
     public function testGetCandidatesLocalesDmNoLocale()
     {
         $request = Request::create('/it/path.html');
-        $managerRegistryMock = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $managerRegistryMock
             ->expects($this->never())
             ->method('getManager')
@@ -150,17 +154,17 @@ class PrefixCandidatesTest extends CmfUnitTestCase
 
     public function testRestrictQuery()
     {
-        $orX = $this->getMock('Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder', array('descendant'));
+        $orX = $this->createMock(ConstraintFactory::class);
         $orX->expects($this->once())
             ->method('descendant')
             ->with('/routes', 'd')
         ;
-        $andWhere = $this->getMock('Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder', array('orX'));
+        $andWhere = $this->createMock(ConstraintFactory::class);
         $andWhere->expects($this->once())
             ->method('orX')
             ->will($this->returnValue($orX))
         ;
-        $qb = $this->getMock('Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder', array('andWhere', 'getPrimaryAlias'));
+        $qb = $this->createMock(QueryBuilder::class);
         $qb->expects($this->once())
             ->method('andWhere')
             ->will($this->returnValue($andWhere))
@@ -176,7 +180,7 @@ class PrefixCandidatesTest extends CmfUnitTestCase
 
     public function testRestrictQueryGlobal()
     {
-        $qb = $this->getMock('Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder', array('andWhere'));
+        $qb = $this->createMock(QueryBuilder::class);
         $qb->expects($this->never())
             ->method('andWhere')
         ;

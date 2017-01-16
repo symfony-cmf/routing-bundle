@@ -12,10 +12,12 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends BaseTestCase
 {
@@ -62,7 +64,7 @@ class RouteProviderTest extends BaseTestCase
 
         $routes = $this->repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child'));
         $this->assertCount(3, $routes);
-        $this->assertContainsOnlyInstancesOf('Symfony\Cmf\Component\Routing\RouteObjectInterface', $routes);
+        $this->assertContainsOnlyInstancesOf(RouteObjectInterface::class, $routes);
 
         $routes = $routes->all();
         list($key, $child) = each($routes);
@@ -82,7 +84,7 @@ class RouteProviderTest extends BaseTestCase
 
         $routes = $this->repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child.html'));
         $this->assertCount(3, $routes);
-        $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
+        $this->assertContainsOnlyInstancesOf(RouteObjectInterface::class, $routes);
 
         $routes = $routes->all();
         list($key, $child) = each($routes);
@@ -102,7 +104,7 @@ class RouteProviderTest extends BaseTestCase
     public function testGetRouteCollectionForRequestNonPhpcrUrl()
     {
         $collection = $this->repository->getRouteCollectionForRequest(Request::create('http:///'));
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(1, $collection);
         $routes = $collection->all();
         list($key, $route) = each($routes);
@@ -115,7 +117,7 @@ class RouteProviderTest extends BaseTestCase
     public function testGetRouteCollectionForRequestColonInUrl()
     {
         $collection = $this->repository->getRouteCollectionForRequest(Request::create('http://foo.com/jcr:content'));
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(0, $collection);
     }
 
@@ -132,6 +134,6 @@ class RouteProviderTest extends BaseTestCase
 
         $routes = $this->repository->getRoutesByNames($routeNames);
         $this->assertCount(2, $routes);
-        $this->assertContainsOnlyInstancesOf('Symfony\Cmf\Component\Routing\RouteObjectInterface', $routes);
+        $this->assertContainsOnlyInstancesOf(RouteObjectInterface::class, $routes);
     }
 }

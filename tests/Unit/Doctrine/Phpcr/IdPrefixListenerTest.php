@@ -42,14 +42,14 @@ class IdPrefixListenerTest extends CmfUnitTestCase
 
     public function setUp()
     {
-        $this->candidatesMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates');
+        $this->candidatesMock = $this->createMock(PrefixCandidates::class);
         $this->candidatesMock
             ->expects($this->any())
             ->method('getPrefixes')
             ->will($this->returnValue(array('/cms/routes', '/cms/simple')))
         ;
-        $this->dmMock = $this->buildMock('Doctrine\ODM\PHPCR\DocumentManager');
-        $this->routeMock = $this->buildMock('Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route');
+        $this->dmMock = $this->createMock(DocumentManager::class);
+        $this->routeMock = $this->createMock(Route::class);
 
         $this->listener = new IdPrefixListener($this->candidatesMock);
     }

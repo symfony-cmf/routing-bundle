@@ -11,7 +11,14 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
+use Doctrine\Common\Persistence\Mapping\Driver\DefaultFileLocator;
+use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver as PHPCRXmlDriver;
+use Doctrine\ODM\PHPCR\Version as PHPCRVersion;
+use Doctrine\ORM\Mapping\Driver\XmlDriver as ORMXmlDriver;
+use Doctrine\ORM\Version as ORMVersion;
+use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\ValidationPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Definition;
@@ -20,6 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Cmf\Component\Routing\DependencyInjection\Compiler\RegisterRoutersPass;
 use Symfony\Cmf\Component\Routing\DependencyInjection\Compiler\RegisterRouteEnhancersPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
+use Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass as CmfDoctrineOrmMappingsPass;
 
 /**
  * Bundle class.
@@ -49,24 +57,24 @@ class CmfRoutingBundle extends Bundle
      */
     private function buildPhpcrCompilerPass(ContainerBuilder $container)
     {
-        if (!class_exists('Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass')
-            || !class_exists('Doctrine\ODM\PHPCR\Version')
+        if (!class_exists(DoctrinePhpcrMappingsPass::class)
+            || !class_exists(PHPCRVersion::class)
         ) {
             return;
         }
 
         $container->addCompilerPass(
-            $this->buildBaseCompilerPass('Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass', 'Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver', 'phpcr')
+            $this->buildBaseCompilerPass(DoctrinePhpcrMappingsPass::class, PHPCRXmlDriver::class, 'phpcr')
         );
         $container->addCompilerPass(
             DoctrinePhpcrMappingsPass::createXmlMappingDriver(
-                array(
+                [
                     realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
                     realpath(__DIR__.'/Resources/config/doctrine-phpcr') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr',
-                ),
-                array('cmf_routing.dynamic.persistence.phpcr.manager_name'),
+                ],
+                ['cmf_routing.dynamic.persistence.phpcr.manager_name'],
                 'cmf_routing.backend_type_phpcr',
-                array('CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr')
+                ['CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr']
             )
         );
     }
@@ -79,7 +87,7 @@ class CmfRoutingBundle extends Bundle
      */
     private function buildOrmCompilerPass(ContainerBuilder $container)
     {
-        if (!class_exists('Doctrine\ORM\Version')) {
+        if (!class_exists(ORMVersion::class)) {
             return;
         }
 
@@ -89,28 +97,28 @@ class CmfRoutingBundle extends Bundle
         }
 
         $container->addCompilerPass(
-            $this->buildBaseCompilerPass($doctrineOrmCompiler, 'Doctrine\ORM\Mapping\Driver\XmlDriver', 'orm')
+            $this->buildBaseCompilerPass($doctrineOrmCompiler, ORMXmlDriver::class, 'orm')
         );
         $container->addCompilerPass(
             $doctrineOrmCompiler::createXmlMappingDriver(
-                array(
+                [
                     realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
                     realpath(__DIR__.'/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
-                ),
-                array('cmf_routing.dynamic.persistence.orm.manager_name'),
+                ],
+                ['cmf_routing.dynamic.persistence.orm.manager_name'],
                 'cmf_routing.backend_type_orm_default',
-                array('CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm')
+                ['CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm']
             )
         );
 
         $container->addCompilerPass(
             $doctrineOrmCompiler::createXmlMappingDriver(
-                array(
+                [
                     realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
-                ),
-                array('cmf_routing.dynamic.persistence.orm.manager_name'),
+                ],
+                ['cmf_routing.dynamic.persistence.orm.manager_name'],
                 'cmf_routing.backend_type_orm_custom',
-                array()
+                []
             )
         );
     }
@@ -125,14 +133,14 @@ class CmfRoutingBundle extends Bundle
      */
     private function findDoctrineOrmCompiler()
     {
-        if (class_exists('Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass')
-            && class_exists('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')
+        if (class_exists(RegisterMappingsPass::class)
+            && class_exists(DoctrineOrmMappingsPass::class)
         ) {
-            return 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
+            return DoctrineOrmMappingsPass::class;
         }
 
-        if (class_exists('Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass')) {
-            return 'Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
+        if (class_exists(CmfDoctrineOrmMappingsPass::class)) {
+            return CmfDoctrineOrmMappingsPass::class;
         }
 
         return false;
@@ -151,14 +159,14 @@ class CmfRoutingBundle extends Bundle
      */
     private function buildBaseCompilerPass($compilerClass, $driverClass, $type)
     {
-        $arguments = array(array(realpath(__DIR__.'/Resources/config/doctrine-base')), sprintf('.%s.xml', $type));
-        $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\DefaultFileLocator', $arguments);
-        $driver = new Definition($driverClass, array($locator));
+        $arguments = [[realpath(__DIR__.'/Resources/config/doctrine-base')], sprintf('.%s.xml', $type)];
+        $locator = new Definition(DefaultFileLocator::class, $arguments);
+        $driver = new Definition($driverClass, [$locator]);
 
         return new $compilerClass(
             $driver,
-            array('Symfony\Component\Routing'),
-            array(sprintf('cmf_routing.dynamic.persistence.%s.manager_name', $type)),
+            ['Symfony\Component\Routing'],
+            [sprintf('cmf_routing.dynamic.persistence.%s.manager_name', $type)],
             sprintf('cmf_routing.backend_type_%s', $type)
         );
     }

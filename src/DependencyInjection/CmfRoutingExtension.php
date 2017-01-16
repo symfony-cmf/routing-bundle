@@ -54,7 +54,7 @@ class CmfRoutingExtension extends Extension
         // add the routers defined in the configuration mapping
         $router = $container->getDefinition('cmf_routing.router');
         foreach ($config['chain']['routers_by_id'] as $id => $priority) {
-            $router->addMethodCall('add', array(new Reference($id), trim($priority)));
+            $router->addMethodCall('add', [new Reference($id), trim($priority)]);
         }
     }
 
@@ -62,11 +62,11 @@ class CmfRoutingExtension extends Extension
     {
         $loader->load('form-type.xml');
 
-        if (isset($config['dynamic'])) {
+        if (array_key_exists('dynamic', $config)) {
             $routeTypeTypeDefinition = $container->getDefinition('cmf_routing.route_type_form_type');
 
             foreach (array_keys($config['dynamic']['controllers_by_type']) as $routeType) {
-                $routeTypeTypeDefinition->addMethodCall('addRouteType', array($routeType));
+                $routeTypeTypeDefinition->addMethodCall('addRouteType', [$routeType]);
             }
         }
     }
@@ -83,7 +83,7 @@ class CmfRoutingExtension extends Extension
         $loader->load('routing-dynamic.xml');
 
         // strip whitespace (XML support)
-        foreach (array('controllers_by_type', 'controllers_by_class', 'templates_by_class', 'route_filters_by_id') as $option) {
+        foreach (['controllers_by_type', 'controllers_by_class', 'templates_by_class', 'route_filters_by_id'] as $option) {
             $config[$option] = array_map('trim', $config[$option]);
         }
 
@@ -98,7 +98,7 @@ class CmfRoutingExtension extends Extension
             throw new InvalidConfigurationException('It makes no sense to activate auto_locale_pattern when no locales are configured.');
         }
 
-        $this->configureParameters($container, $config, array(
+        $this->configureParameters($container, $config, [
             'generic_controller' => 'generic_controller',
             'controllers_by_type' => 'controllers_by_type',
             'controllers_by_class' => 'controllers_by_class',
@@ -108,7 +108,7 @@ class CmfRoutingExtension extends Extension
             'limit_candidates' => 'dynamic.limit_candidates',
             'locales' => 'dynamic.locales',
             'auto_locale_pattern' => 'dynamic.auto_locale_pattern',
-        ));
+        ]);
 
         $hasProvider = false;
         $hasContentRepository = false;
@@ -118,7 +118,7 @@ class CmfRoutingExtension extends Extension
         }
 
         if ($config['persistence']['orm']['enabled']) {
-            $this->loadOrmProvider($config['persistence']['orm'], $loader, $container, $locales, $config['match_implicit_locale']);
+            $this->loadOrmProvider($config['persistence']['orm'], $loader, $container, $config['match_implicit_locale']);
             $hasProvider = $hasContentRepository = true;
         }
 
@@ -139,9 +139,9 @@ class CmfRoutingExtension extends Extension
         // content repository is optional
         if ($hasContentRepository) {
             $generator = $container->getDefinition('cmf_routing.generator');
-            $generator->addMethodCall('setContentRepository', array(new Reference('cmf_routing.content_repository')));
+            $generator->addMethodCall('setContentRepository', [new Reference('cmf_routing.content_repository')]);
             $container->getDefinition('cmf_routing.enhancer.content_repository')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => 100));
+                      ->addTag('dynamic_router_route_enhancer', ['priority' => 100]);
         }
 
         $dynamic = $container->getDefinition('cmf_routing.dynamic_router');
@@ -149,17 +149,17 @@ class CmfRoutingExtension extends Extension
         // if any mappings are defined, set the respective route enhancer
         if (count($config['controllers_by_type']) > 0) {
             $container->getDefinition('cmf_routing.enhancer.controllers_by_type')
-                ->addTag('dynamic_router_route_enhancer', array('priority' => 60));
+                ->addTag('dynamic_router_route_enhancer', ['priority' => 60]);
         }
 
         if (count($config['controllers_by_class']) > 0) {
             $container->getDefinition('cmf_routing.enhancer.controllers_by_class')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => 50));
+                      ->addTag('dynamic_router_route_enhancer', ['priority' => 50]);
         }
 
         if (count($config['templates_by_class']) > 0) {
             $container->getDefinition('cmf_routing.enhancer.templates_by_class')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => 40));
+                      ->addTag('dynamic_router_route_enhancer', ['priority' => 40]);
 
             /*
              * The CoreBundle prepends the controller from ContentBundle if the
@@ -174,7 +174,7 @@ class CmfRoutingExtension extends Extension
             }
 
             // if the content class defines the template, we also need to make sure we use the generic controller for those routes
-            $controllerForTemplates = array();
+            $controllerForTemplates = [];
             foreach ($config['templates_by_class'] as $key => $value) {
                 $controllerForTemplates[$key] = $config['generic_controller'];
             }
@@ -183,31 +183,31 @@ class CmfRoutingExtension extends Extension
             $definition->replaceArgument(2, $controllerForTemplates);
 
             $container->getDefinition('cmf_routing.enhancer.controller_for_templates_by_class')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => 30));
+                      ->addTag('dynamic_router_route_enhancer', ['priority' => 30]);
         }
 
         if (null !== $config['generic_controller'] && $defaultController !== $config['generic_controller']) {
             $container->getDefinition('cmf_routing.enhancer.explicit_template')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => 10));
+                      ->addTag('dynamic_router_route_enhancer', ['priority' => 10]);
         }
 
         if (null !== $defaultController) {
             $container->getDefinition('cmf_routing.enhancer.default_controller')
-                      ->addTag('dynamic_router_route_enhancer', array('priority' => -100));
+                      ->addTag('dynamic_router_route_enhancer', ['priority' => -100]);
         }
 
         if (count($config['route_filters_by_id']) > 0) {
             $matcher = $container->getDefinition('cmf_routing.nested_matcher');
 
             foreach ($config['route_filters_by_id'] as $id => $priority) {
-                $matcher->addMethodCall('addRouteFilter', array(new Reference($id), $priority));
+                $matcher->addMethodCall('addRouteFilter', [new Reference($id), $priority]);
             }
         }
 
         $dynamic->replaceArgument(2, new Reference($config['url_generator']));
     }
 
-    private function loadPhpcrProvider($config, XmlFileLoader $loader, ContainerBuilder $container, array $locales, $matchImplicitLocale)
+    private function loadPhpcrProvider(array $config, LoaderInterface $loader, ContainerBuilder $container, array $locales, $matchImplicitLocale)
     {
         $loader->load('provider-phpcr.xml');
 
@@ -222,29 +222,17 @@ class CmfRoutingExtension extends Extension
         } elseif (!$matchImplicitLocale) {
             // remove all but the prefixes configuration from the service definition.
             $definition = $container->getDefinition('cmf_routing.phpcr_candidates_prefix');
-            $definition->setArguments(array($definition->getArgument(0)));
+            $definition->setArguments([$definition->getArgument(0)]);
         }
 
-        if ($config['enable_initializer']) {
-            $this->loadInitializer($config, $loader, $container);
+        if (true === $config['enable_initializer']) {
+            $this->loadInitializer($loader, $container);
         }
     }
 
-    /**
-     * @param array            $config
-     * @param XmlFileLoader    $loader
-     * @param ContainerBuilder $container
-     */
-    private function loadInitializer($config, XmlFileLoader $loader, ContainerBuilder $container)
+    private function loadInitializer(LoaderInterface $loader, ContainerBuilder $container)
     {
-        $initializedBasepaths = array();
-        if ('auto' === $config['enable_initializer'] && empty($initializedBasepaths)) {
-            return;
-        }
-
-        if (true === $config['enable_initializer'] && empty($initializedBasepaths)) {
-            $initializedBasepaths = $container->getParameter($this->getAlias().'.dynamic.persistence.phpcr.route_basepaths');
-        }
+        $initializedBasepaths = $container->getParameter($this->getAlias().'.dynamic.persistence.phpcr.route_basepaths');
 
         $container->setParameter(
             $this->getAlias().'.dynamic.persistence.phpcr.initialized_basepaths',
@@ -254,7 +242,7 @@ class CmfRoutingExtension extends Extension
         $loader->load('initializer-phpcr.xml');
     }
 
-    private function loadOrmProvider($config, XmlFileLoader $loader, ContainerBuilder $container, $matchImplicitLocale)
+    private function loadOrmProvider(array $config, LoaderInterface $loader, ContainerBuilder $container, $matchImplicitLocale)
     {
         $loader->load('provider-orm.xml');
 
@@ -269,7 +257,7 @@ class CmfRoutingExtension extends Extension
 
         if (!$matchImplicitLocale) {
             // remove the locales argument from the candidates
-            $container->getDefinition('cmf_routing.orm_candidates')->setArguments(array());
+            $container->getDefinition('cmf_routing.orm_candidates')->setArguments([]);
         }
     }
 

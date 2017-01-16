@@ -51,7 +51,7 @@ class Configuration implements ConfigurationInterface
                     ->fixXmlConfig('router_by_id', 'routers_by_id')
                     ->children()
                         ->arrayNode('routers_by_id')
-                            ->defaultValue(array('router.default' => 100))
+                            ->defaultValue(['router.default' => 100])
                             ->useAttributeAsKey('id')
                             ->prototype('scalar')->end()
                         ->end() // routers_by_id
@@ -111,31 +111,15 @@ class Configuration implements ConfigurationInterface
                                             ->beforeNormalization()
                                                 ->ifString()
                                                 ->then(function ($v) {
-                                                    return array($v);
+                                                    return [$v];
                                                 })
                                             ->end()
                                             ->prototype('scalar')->end()
-                                            ->defaultValue(array('/cms/routes'))
+                                            ->defaultValue(['/cms/routes'])
                                         ->end() // route_basepaths
                                         ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()
-                                        ->enumNode('enable_initializer')
-                                            ->beforeNormalization()
-                                                ->ifString()
-                                                ->then(function ($v) {
-                                                    switch ($v) {
-                                                        case 'true':
-                                                            return true;
-
-                                                        case 'false':
-                                                            return false;
-
-                                                        default:
-                                                            return $v;
-                                                    }
-                                                })
-                                            ->end()
-                                            ->values(array(true, false, 'auto'))
-                                            ->defaultValue('auto')
+                                        ->booleanNode('enable_initializer')
+                                            ->defaultValue(true)
                                         ->end()
                                     ->end()
                                 ->end() // phpcr
@@ -153,7 +137,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('route_provider_service_id')->end()
                         ->arrayNode('route_filters_by_id')
                             ->canBeUnset()
-                            ->defaultValue(array())
+                            ->defaultValue([])
                             ->useAttributeAsKey('id')
                             ->prototype('scalar')->end()
                         ->end() // route_filters_by_id
