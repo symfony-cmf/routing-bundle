@@ -18,7 +18,6 @@ use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver as PHPCRXmlDriver;
 use Doctrine\ODM\PHPCR\Version as PHPCRVersion;
 use Doctrine\ORM\Mapping\Driver\XmlDriver as ORMXmlDriver;
 use Doctrine\ORM\Version as ORMVersion;
-use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\ValidationPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Definition;
@@ -27,7 +26,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Cmf\Component\Routing\DependencyInjection\Compiler\RegisterRoutersPass;
 use Symfony\Cmf\Component\Routing\DependencyInjection\Compiler\RegisterRouteEnhancersPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
-use Symfony\Cmf\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass as CmfDoctrineOrmMappingsPass;
 
 /**
  * Bundle class.
@@ -57,9 +55,7 @@ class CmfRoutingBundle extends Bundle
      */
     private function buildPhpcrCompilerPass(ContainerBuilder $container)
     {
-        if (!class_exists(DoctrinePhpcrMappingsPass::class)
-            || !class_exists(PHPCRVersion::class)
-        ) {
+        if (!class_exists(PHPCRVersion::class)) {
             return;
         }
 
@@ -91,16 +87,11 @@ class CmfRoutingBundle extends Bundle
             return;
         }
 
-        $doctrineOrmCompiler = $this->findDoctrineOrmCompiler();
-        if (!$doctrineOrmCompiler) {
-            return;
-        }
-
         $container->addCompilerPass(
-            $this->buildBaseCompilerPass($doctrineOrmCompiler, ORMXmlDriver::class, 'orm')
+            $this->buildBaseCompilerPass(DoctrineOrmMappingsPass::class, ORMXmlDriver::class, 'orm')
         );
         $container->addCompilerPass(
-            $doctrineOrmCompiler::createXmlMappingDriver(
+            DoctrineOrmMappingsPass::createXmlMappingDriver(
                 [
                     realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
                     realpath(__DIR__.'/Resources/config/doctrine-orm') => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm',
@@ -112,7 +103,7 @@ class CmfRoutingBundle extends Bundle
         );
 
         $container->addCompilerPass(
-            $doctrineOrmCompiler::createXmlMappingDriver(
+            DoctrineOrmMappingsPass::createXmlMappingDriver(
                 [
                     realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',
                 ],
@@ -121,29 +112,6 @@ class CmfRoutingBundle extends Bundle
                 []
             )
         );
-    }
-
-    /**
-     * Looks for a mapping compiler pass. If available, use the one from
-     * DoctrineBundle (available only since DoctrineBundle 2.4 and Symfony 2.3)
-     * Otherwise use the standalone one from CmfCoreBundle.
-     *
-     * @return bool|string the compiler pass to use or false if no suitable
-     *                     one was found
-     */
-    private function findDoctrineOrmCompiler()
-    {
-        if (class_exists(RegisterMappingsPass::class)
-            && class_exists(DoctrineOrmMappingsPass::class)
-        ) {
-            return DoctrineOrmMappingsPass::class;
-        }
-
-        if (class_exists(CmfDoctrineOrmMappingsPass::class)) {
-            return CmfDoctrineOrmMappingsPass::class;
-        }
-
-        return false;
     }
 
     /**
