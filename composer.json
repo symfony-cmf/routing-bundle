@@ -36,7 +36,7 @@
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.3)",
         "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents",
-        "doctrine/orm": "To enable support for the ORM entities (^2.3)",
+        "doctrine/orm": "To enable support for the ORM entities (^2.5)",
 
         "symfony-cmf/content-bundle": "To optionally use the configured value for 'content_basepath' from the CoreBundle",
         "symfony-cmf/core-bundle": "To use the provided Doctrine\\Phpcr documents and for easier configuration (^1.1)",
