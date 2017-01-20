@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": "^5.5.9|^7.0",
-        "symfony-cmf/routing": "^1.4.0",
+        "symfony-cmf/routing": "^1.4.0|^2.0",
         "symfony/framework-bundle": "^2.8|^3.0"
     },
     "require-dev": {
@@ -28,7 +28,7 @@
         "doctrine/orm": "^2.5",
         "doctrine/data-fixtures": "^1.0.0"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "rc",
     "prefer-stable": true,
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.4)",
