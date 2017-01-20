@@ -105,6 +105,28 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     }
 
     /**
+     * @deprecated For BC with the PHPCR-ODM 1.4 HierarchyInterface
+     * @see setParentDocument
+     */
+    public function setParent($parent)
+    {
+        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 3.0. Use setParentDocument() instead.', E_USER_DEPRECATED);
+
+        return $this->setParentDocument($parent);
+    }
+
+    /**
+     * @deprecated For BC with the PHPCR-ODM 1.4 HierarchyInterface
+     * @see getParentDocument
+     */
+    public function getParent()
+    {
+        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 3.0. Use getParentDocument() instead.', E_USER_DEPRECATED);
+
+        return $this->getParentDocument();
+    }
+
+    /**
      * Rename a route by setting its new name.
      *
      * Note that this will change the URL this route matches.
