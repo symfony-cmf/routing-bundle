@@ -95,6 +95,24 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     }
 
     /**
+     * @deprecated For BC with the PHPCR-ODM 1.4 HierarchyInterface
+     * @see setParentDocument
+     */
+    public function setParent($parent)
+    {
+        return $this->setParentDocument($parent);
+    }
+
+    /**
+     * @deprecated For BC with the PHPCR-ODM 1.4 HierarchyInterface
+     * @see getParentDocument
+     */
+    public function getParent()
+    {
+        return $this->getParentDocument();
+    }
+
+    /**
      * Rename a route by setting its new name.
      *
      * Note that this will change the URL this route matches.
