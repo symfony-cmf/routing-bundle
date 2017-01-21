@@ -17,7 +17,6 @@
         "symfony/framework-bundle": "^2.8|^3.0"
     },
     "require-dev": {
-        "symfony-cmf/core-bundle": "^2.0",
         "symfony-cmf/testing": "^2.0",
         "doctrine/phpcr-odm": "^1.4|^2.0",
         "symfony/phpunit-bridge": "^3.2",
@@ -34,8 +33,7 @@
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.4)",
         "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents",
         "doctrine/orm": "To enable support for the ORM entities (^2.5)",
-        "symfony-cmf/content-bundle": "To optionally use the configured value for 'content_basepath' from the CoreBundle",
-        "symfony-cmf/core-bundle": "To use the RouteTypeType form type and for easier configuration (^2.0)"
+        "symfony-cmf/content-bundle": "To optionally use the configured value for 'content_basepath' from the CoreBundle"
     },
     "conflict": {
         "doctrine/phpcr-odm": "<1.4"
