@@ -11,8 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
-use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCompiler;
 
 /**

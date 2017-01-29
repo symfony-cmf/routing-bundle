@@ -24,23 +24,23 @@ class PrefixCandidatesTest extends CmfUnitTestCase
 {
     public function testAddPrefix()
     {
-        $candidates = new PrefixCandidates(array('/routes'));
-        $this->assertEquals(array('/routes'), $candidates->getPrefixes());
+        $candidates = new PrefixCandidates(['/routes']);
+        $this->assertEquals(['/routes'], $candidates->getPrefixes());
         $candidates->addPrefix('/simple');
-        $this->assertEquals(array('/routes', '/simple'), $candidates->getPrefixes());
-        $candidates->setPrefixes(array('/other'));
-        $this->assertEquals(array('/other'), $candidates->getPrefixes());
+        $this->assertEquals(['/routes', '/simple'], $candidates->getPrefixes());
+        $candidates->setPrefixes(['/other']);
+        $this->assertEquals(['/other'], $candidates->getPrefixes());
     }
 
     public function testGetCandidates()
     {
         $request = Request::create('/my/path.html');
 
-        $candidates = new PrefixCandidates(array('/routes', '/simple'));
+        $candidates = new PrefixCandidates(['/routes', '/simple']);
         $paths = $candidates->getCandidates($request);
 
         $this->assertEquals(
-            array(
+            [
                 '/routes/my/path.html',
                 '/routes/my/path',
                 '/routes/my',
@@ -49,7 +49,7 @@ class PrefixCandidatesTest extends CmfUnitTestCase
                 '/simple/my/path',
                 '/simple/my',
                 '/simple',
-            ),
+            ],
             $paths
         );
     }
@@ -58,11 +58,11 @@ class PrefixCandidatesTest extends CmfUnitTestCase
     {
         $request = Request::create('/my/path%20percent%20encoded.html');
 
-        $candidates = new PrefixCandidates(array('/routes', '/simple'));
+        $candidates = new PrefixCandidates(['/routes', '/simple']);
         $paths = $candidates->getCandidates($request);
 
         $this->assertEquals(
-            array(
+            [
                 '/routes/my/path percent encoded.html',
                 '/routes/my/path percent encoded',
                 '/routes/my',
@@ -71,7 +71,7 @@ class PrefixCandidatesTest extends CmfUnitTestCase
                 '/simple/my/path percent encoded',
                 '/simple/my',
                 '/simple',
-            ),
+            ],
             $paths
         );
     }
@@ -80,11 +80,11 @@ class PrefixCandidatesTest extends CmfUnitTestCase
     {
         $request = Request::create('/de/path.html');
 
-        $candidates = new PrefixCandidates(array('/routes', '/simple'), array('de', 'fr'));
+        $candidates = new PrefixCandidates(['/routes', '/simple'], ['de', 'fr']);
         $paths = $candidates->getCandidates($request);
 
         $this->assertEquals(
-            array(
+            [
                 '/routes/de/path.html',
                 '/routes/de/path',
                 '/routes/de',
@@ -97,7 +97,7 @@ class PrefixCandidatesTest extends CmfUnitTestCase
                 '/routes/path',
                 '/simple/path.html',
                 '/simple/path',
-            ),
+            ],
             $paths
         );
     }
@@ -125,7 +125,7 @@ class PrefixCandidatesTest extends CmfUnitTestCase
             ->will($this->returnValue($localeMock))
         ;
 
-        $candidates = new PrefixCandidates(array('/simple'), array('de', 'fr'), $managerRegistryMock);
+        $candidates = new PrefixCandidates(['/simple'], ['de', 'fr'], $managerRegistryMock);
         $candidates->getCandidates($request);
     }
 
@@ -138,13 +138,13 @@ class PrefixCandidatesTest extends CmfUnitTestCase
             ->method('getManager')
         ;
 
-        $candidates = new PrefixCandidates(array('/simple'), array('de', 'fr'), $managerRegistryMock);
+        $candidates = new PrefixCandidates(['/simple'], ['de', 'fr'], $managerRegistryMock);
         $candidates->getCandidates($request);
     }
 
     public function testIsCandidate()
     {
-        $candidates = new PrefixCandidates(array('/routes'));
+        $candidates = new PrefixCandidates(['/routes']);
         $this->assertTrue($candidates->isCandidate('/routes'));
         $this->assertTrue($candidates->isCandidate('/routes/my/path'));
         $this->assertFalse($candidates->isCandidate('/other/my/path'));
@@ -174,7 +174,7 @@ class PrefixCandidatesTest extends CmfUnitTestCase
             ->will($this->returnValue('d'))
         ;
 
-        $candidates = new PrefixCandidates(array('/routes'));
+        $candidates = new PrefixCandidates(['/routes']);
         $candidates->restrictQuery($qb);
     }
 
@@ -185,7 +185,7 @@ class PrefixCandidatesTest extends CmfUnitTestCase
             ->method('andWhere')
         ;
 
-        $candidates = new PrefixCandidates(array('/routes', '', '/other'));
+        $candidates = new PrefixCandidates(['/routes', '', '/other']);
         $candidates->restrictQuery($qb);
     }
 }

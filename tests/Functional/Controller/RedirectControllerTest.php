@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Controller;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -43,7 +43,7 @@ class RedirectControllerTest extends BaseTestCase
         $redirect = new RedirectRoute();
         $redirect->setPosition($root, 'redirectUri');
         $redirect->setUri('http://example.com/test-url');
-        $redirect->setParameters(array('test' => 7)); // parameters should be ignored in this case
+        $redirect->setParameters(['test' => 7]); // parameters should be ignored in this case
         $redirect->setPermanent(true);
         $this->getDm()->persist($redirect);
 
@@ -73,7 +73,7 @@ class RedirectControllerTest extends BaseTestCase
         $redirect = new RedirectRoute();
         $redirect->setPosition($root, 'redirectContent');
         $redirect->setRouteTarget($route);
-        $redirect->setParameters(array('test' => 'content'));
+        $redirect->setParameters(['test' => 'content']);
         $this->getDm()->persist($redirect);
 
         $this->getDm()->flush();
@@ -95,7 +95,7 @@ class RedirectControllerTest extends BaseTestCase
         $redirect = new RedirectRoute();
         $redirect->setPosition($root, 'redirectName');
         $redirect->setRouteName('symfony_route');
-        $redirect->setParameters(array('param' => 7)); // parameters should be ignored in this case
+        $redirect->setParameters(['param' => 7]); // parameters should be ignored in this case
         $this->getDm()->persist($redirect);
 
         $this->getDm()->flush();

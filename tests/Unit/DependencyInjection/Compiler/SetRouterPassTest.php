@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection\Compiler;
 
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 
 class SetRouterPassTest extends AbstractCompilerPassTestCase
 {

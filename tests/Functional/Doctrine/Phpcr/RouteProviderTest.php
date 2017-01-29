@@ -12,11 +12,11 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends BaseTestCase
@@ -125,12 +125,12 @@ class RouteProviderTest extends BaseTestCase
     {
         $this->buildRoutes();
 
-        $routeNames = array(
+        $routeNames = [
             self::ROUTE_ROOT.'/testroute/noroute/child',
             self::ROUTE_ROOT.'/testroute/noroute',
             self::ROUTE_ROOT.'/testroute/', // trailing slash is invalid for phpcr
             self::ROUTE_ROOT.'/testroute',
-        );
+        ];
 
         $routes = $this->repository->getRoutesByNames($routeNames);
         $this->assertCount(2, $routes);

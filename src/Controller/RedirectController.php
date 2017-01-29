@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Controller;
 
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Default router that handles redirection route objects.

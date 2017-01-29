@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
-use PHPCR\Util\PathHelper;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
+use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Component\Routing\Candidates\Candidates;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -11,8 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
-use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
+use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 
 /**
  * Implement ContentRepositoryInterface for PHPCR-ODM.

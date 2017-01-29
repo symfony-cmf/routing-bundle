@@ -61,7 +61,7 @@ class RouteProviderTest extends CmfUnitTestCase
         $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $this->objectRepositoryMock = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(array('findByStaticPrefix', 'findOneBy', 'findBy'))
+            ->setMethods(['findByStaticPrefix', 'findOneBy', 'findBy'])
             ->getMock();
         $this->candidatesMock = $this->createMock(CandidatesInterface::class);
         $this->candidatesMock
@@ -86,7 +86,7 @@ class RouteProviderTest extends CmfUnitTestCase
     public function testGetRouteCollectionForRequest()
     {
         $request = Request::create('/my/path');
-        $candidates = array('/my/path', '/my', '/');
+        $candidates = ['/my/path', '/my', '/'];
 
         $this->candidatesMock
             ->expects($this->once())
@@ -105,15 +105,15 @@ class RouteProviderTest extends CmfUnitTestCase
             ->method('getName')
             ->will($this->returnValue('/my'))
         ;
-        $objects = array(
+        $objects = [
             $this->routeMock,
             $this->route2Mock,
-        );
+        ];
 
         $this->objectRepositoryMock
             ->expects($this->once())
             ->method('findByStaticPrefix')
-            ->with($candidates, array('position' => 'ASC'))
+            ->with($candidates, ['position' => 'ASC'])
             ->will($this->returnValue($objects))
         ;
 
@@ -150,7 +150,7 @@ class RouteProviderTest extends CmfUnitTestCase
         $this->objectRepositoryMock
             ->expects($this->any())
             ->method('findOneBy')
-            ->with(array('name' => '/test-route'))
+            ->with(['name' => '/test-route'])
             ->will($this->returnValue($this->routeMock))
         ;
 
@@ -170,7 +170,7 @@ class RouteProviderTest extends CmfUnitTestCase
         $this->objectRepositoryMock
             ->expects($this->any())
             ->method('findOneBy')
-            ->with(array('name' => '/test-route'))
+            ->with(['name' => '/test-route'])
             ->will($this->returnValue(null))
         ;
 
@@ -205,21 +205,21 @@ class RouteProviderTest extends CmfUnitTestCase
 
     public function testGetRoutesByNames()
     {
-        $paths = array(
+        $paths = [
             '/test-route',
             '/other-route',
-        );
+        ];
 
         $this->objectRepositoryMock
             ->expects($this->at(0))
             ->method('findOneBy')
-            ->with(array('name' => $paths[0]))
+            ->with(['name' => $paths[0]])
             ->will($this->returnValue($this->routeMock))
         ;
         $this->objectRepositoryMock
             ->expects($this->at(1))
             ->method('findOneBy')
-            ->with(array('name' => $paths[1]))
+            ->with(['name' => $paths[1]])
             ->will($this->returnValue($this->routeMock))
         ;
 
@@ -273,7 +273,7 @@ class RouteProviderTest extends CmfUnitTestCase
             ->expects($this->once())
             ->method('findBy')
             ->with([], null, 42)
-            ->will($this->returnValue(array($this->routeMock)))
+            ->will($this->returnValue([$this->routeMock]))
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock, 'Route');

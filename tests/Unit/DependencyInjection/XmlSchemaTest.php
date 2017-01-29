@@ -29,13 +29,13 @@ class XmlSchemaTest extends XmlSchemaTestCase
         $fixturesPath = $this->fixturesPath;
         $xmlFiles = array_map(function ($file) use ($fixturesPath) {
             return $fixturesPath.$file;
-        }, array(
+        }, [
             'config.xml',
             'config1.xml',
             'config2.xml',
             'config3.xml',
             'config4.xml',
-        ));
+        ]);
 
         $this->assertSchemaAcceptsXml($xmlFiles, $this->schemaPath);
     }

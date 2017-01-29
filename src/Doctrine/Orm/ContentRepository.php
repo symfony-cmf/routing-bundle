@@ -11,8 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm;
 
-use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
+use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 
 /**
  * Abstract content repository for ORM.

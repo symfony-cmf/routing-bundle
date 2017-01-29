@@ -122,10 +122,10 @@ class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->document2))
         ;
 
-        $objectManagers = array(
+        $objectManagers = [
             'default' => $this->objectManager,
             'new_manager' => $this->objectManager2,
-        );
+        ];
         $this->managerRegistry
             ->expects($this->any())
             ->method('getManager')

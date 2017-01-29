@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as ModelRoute;
 
 /**

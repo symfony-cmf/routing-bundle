@@ -11,16 +11,16 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
+use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
 
 class OrmTestCase extends ComponentBaseTestCase
 {
     protected function getKernelConfiguration()
     {
-        return array(
+        return [
             'environment' => 'orm',
-        );
+        ];
     }
 
     protected function clearDb($model)

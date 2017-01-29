@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * This class contains the configuration information for the bundle.

@@ -15,8 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
 use Doctrine\ODM\PHPCR\HierarchyInterface;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
 /**
  * PHPCR-ODM routes use their path for the url. They need to have set the

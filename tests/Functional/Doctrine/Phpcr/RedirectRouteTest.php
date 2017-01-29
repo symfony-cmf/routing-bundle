@@ -11,8 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
@@ -56,7 +56,7 @@ class RedirectRouteTest extends BaseTestCase
         $params = $redirect->getParameters();
         $this->assertSame($route, $redirect->getRouteTarget());
         $defaults = $redirect->getDefaults();
-        $this->assertEquals(array('test' => 'toast'), $defaults);
+        $this->assertEquals(['test' => 'toast'], $defaults);
     }
 
     /**

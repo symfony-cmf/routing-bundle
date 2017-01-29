@@ -11,12 +11,12 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
-use Doctrine\ODM\PHPCR\DocumentManager;
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener;
-use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
 class LocaleListenerTest extends CmfUnitTestCase
@@ -45,9 +45,9 @@ class LocaleListenerTest extends CmfUnitTestCase
 
         $this->candidatesMock->expects($this->any())
             ->method('getPrefixes')
-            ->will($this->returnValue(array('/cms/routes', '/cms/simple')))
+            ->will($this->returnValue(['/cms/routes', '/cms/simple']))
         ;
-        $this->listener = new LocaleListener($this->candidatesMock, array('en', 'de'));
+        $this->listener = new LocaleListener($this->candidatesMock, ['en', 'de']);
         $this->routeMock = $this->createMock(Route::class);
         $this->dmMock = $this->createMock(DocumentManager::class);
     }
@@ -162,8 +162,8 @@ class LocaleListenerTest extends CmfUnitTestCase
 
     public function testSetLocales()
     {
-        $this->listener->setLocales(array('xx'));
-        $this->assertAttributeEquals(array('xx'), 'locales', $this->listener);
+        $this->listener->setLocales(['xx']);
+        $this->assertAttributeEquals(['xx'], 'locales', $this->listener);
     }
 
     public function testHaslocale()
@@ -257,7 +257,7 @@ class LocaleListenerTest extends CmfUnitTestCase
         $this->dmMock->expects($this->once())
             ->method('getLocalesFor')
             ->with($this->routeMock, true)
-            ->will($this->returnValue(array('en', 'de', 'fr')))
+            ->will($this->returnValue(['en', 'de', 'fr']))
         ;
         $this->routeMock->expects($this->once())
             ->method('setRequirement')
