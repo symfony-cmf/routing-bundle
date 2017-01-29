@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Routing;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Cmf\Component\Routing\DynamicRouter as BaseDynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
  * Symfony framework integration of the CMF routing component DynamicRouter class.

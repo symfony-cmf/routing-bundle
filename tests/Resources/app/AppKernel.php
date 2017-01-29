@@ -1,7 +1,16 @@
 <?php
 
-use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
+/*
+ * This file is part of the Symfony CMF package.
+ *
+ * (c) 2011-2017 Symfony CMF
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle;
+use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends TestKernel
@@ -11,22 +20,22 @@ class AppKernel extends TestKernel
         $this->requireBundleSet('default');
 
         if ('phpcr' === $this->environment) {
-            $this->requireBundleSets(array(
+            $this->requireBundleSets([
                 'phpcr_odm',
-            ));
+            ]);
         } elseif ('orm' === $this->environment) {
             $this->requireBundleSet('doctrine_orm');
         }
 
-        $this->addBundles(array(
+        $this->addBundles([
             new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
-        ));
+        ]);
 
         if (class_exists(CmfResourceRestBundle::class)) {
-            $this->addBundles(array(
+            $this->addBundles([
                 new \Symfony\Cmf\Bundle\ResourceBundle\CmfResourceBundle(),
                 new \Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle(),
-            ));
+            ]);
         }
     }
 

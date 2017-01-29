@@ -34,7 +34,7 @@ class RouteTest extends BaseTestCase
         $route->setPosition($root, 'testroute');
         $route->setDefault('x', 'y');
         $route->setRequirement('testreq', 'testregex');
-        $route->setOptions(array('test' => 'value'));
+        $route->setOptions(['test' => 'value']);
         $route->setOption('another', 'value2');
 
         $this->getDm()->persist($route);
@@ -159,7 +159,7 @@ class RouteTest extends BaseTestCase
 
     public function testDefaultFormat()
     {
-        $route = new Route(array('add_format_pattern' => true));
+        $route = new Route(['add_format_pattern' => true]);
 
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 

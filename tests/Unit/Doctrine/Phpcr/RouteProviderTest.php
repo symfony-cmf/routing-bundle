@@ -11,16 +11,16 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Doctrine\ODM\PHPCR\Query\Builder\SourceFactory;
 use Doctrine\ODM\PHPCR\Query\Query;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use PHPCR\Util\UUIDHelper;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\PHPCR\DocumentManager;
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
@@ -76,7 +76,7 @@ class RouteProviderTest extends CmfUnitTestCase
     public function testGetRouteCollectionForRequest()
     {
         $request = Request::create('/my/path');
-        $candidates = array('/prefix/my/path', '/prefix/my');
+        $candidates = ['/prefix/my/path', '/prefix/my'];
 
         $this->candidatesMock
             ->expects($this->once())
@@ -85,10 +85,10 @@ class RouteProviderTest extends CmfUnitTestCase
             ->will($this->returnValue($candidates))
         ;
 
-        $objects = array(
+        $objects = [
             new Route('/my'),
             $this,
-        );
+        ];
 
         $this->dmMock
             ->expects($this->once())
@@ -329,11 +329,11 @@ class RouteProviderTest extends CmfUnitTestCase
 
     public function testGetRoutesByNames()
     {
-        $paths = array(
+        $paths = [
             '/cms/routes/test-route',
             '/cms/simple/other-route',
             '/cms/routes/not-a-route',
-        );
+        ];
 
         $routes = new ArrayCollection();
         $routes->set('/cms/routes/test-route', new Route('/test-route'));
@@ -383,11 +383,11 @@ class RouteProviderTest extends CmfUnitTestCase
 
     public function testGetRoutesByNamesNotCandidates()
     {
-        $paths = array(
+        $paths = [
             '/cms/routes/test-route',
             '/cms/simple/other-route',
             '/cms/routes/not-a-route',
-        );
+        ];
 
         $this->dmMock
             ->expects($this->never())
@@ -424,10 +424,10 @@ class RouteProviderTest extends CmfUnitTestCase
     {
         $uuid1 = UUIDHelper::generateUUID();
         $uuid2 = UUIDHelper::generateUUID();
-        $paths = array(
+        $paths = [
             $uuid1,
             $uuid2,
-        );
+        ];
 
         $route1 = new Route('/test-route');
         $route2 = new Route('/other-route');
@@ -593,10 +593,10 @@ class RouteProviderTest extends CmfUnitTestCase
             ->will($this->returnValue($this->route2Mock))
         ;
 
-        $objectManagers = array(
+        $objectManagers = [
             'default' => $this->dmMock,
             'new_manager' => $this->dm2Mock,
-        );
+        ];
         $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $this->managerRegistryMock
             ->expects($this->any())

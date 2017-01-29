@@ -46,13 +46,13 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_TestCase
         $optionsResolver = $this->createMock(OptionsResolver::class);
         $optionsResolver->expects($this->once())
             ->method('setDefaults')
-            ->with(array(
-                'choices' => array(
+            ->with([
+                'choices' => [
                     'foobar' => 'route_type.foobar',
                     'barfoo' => 'route_type.barfoo',
-                ),
+                ],
                 'translation_domain' => 'CmfRoutingBundle',
-            ));
+            ]);
 
         $this->type->configureOptions($optionsResolver);
     }

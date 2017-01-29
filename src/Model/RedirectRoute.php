@@ -12,8 +12,8 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
 use LogicException;
-use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
+use Symfony\Component\Routing\Route as SymfonyRoute;
 
 /**
  * {@inheritdoc}

@@ -93,10 +93,10 @@ class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function getFindCorrectModelAndIdData()
     {
-        return array(
-            array('Acme\ContentBundle\Entity\Content:12', 'Acme\ContentBundle\Entity\Content', 12),
-            array('Id\Contains\Colon:12:1', 'Id\Contains\Colon', '12:1'),
-            array('Class\EndsWith\Number12:20', 'Class\EndsWith\Number12', 20),
-        );
+        return [
+            ['Acme\ContentBundle\Entity\Content:12', 'Acme\ContentBundle\Entity\Content', 12],
+            ['Id\Contains\Colon:12:1', 'Id\Contains\Colon', '12:1'],
+            ['Class\EndsWith\Number12:20', 'Class\EndsWith\Number12', 20],
+        ];
     }
 }

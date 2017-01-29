@@ -11,19 +11,19 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\RepositoryException;
 use PHPCR\Util\UUIDHelper;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\PHPCR\DocumentManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
+use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
+use Symfony\Cmf\Component\Routing\RouteProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Cmf\Component\Routing\RouteProviderInterface;
-use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 
 /**
  * Loads routes from Doctrine PHPCR-ODM.

@@ -32,10 +32,10 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $refl = new \ReflectionClass($this->route);
         $prop = $refl->getProperty('children');
         $prop->setAccessible(true);
-        $prop->setValue($this->route, array(
+        $prop->setValue($this->route, [
             new \stdClass(),
             $this->childRoute1,
-        ));
+        ]);
 
         $res = $this->route->getRouteChildren();
         $this->assertCount(1, $res);

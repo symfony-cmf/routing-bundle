@@ -14,12 +14,12 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Exception\TableNotFoundException;
-use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
+use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
+use Symfony\Cmf\Component\Routing\RouteProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Provider loading routes from Doctrine.

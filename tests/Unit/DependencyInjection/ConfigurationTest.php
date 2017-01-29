@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
 
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\CmfRoutingExtension;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Configuration;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 
 class ConfigurationTest extends AbstractExtensionConfigurationTestCase
 {
@@ -29,65 +29,65 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
 
     public function testSupportsAllConfigFormats()
     {
-        $expectedConfiguration = array(
-            'chain' => array(
-                'routers_by_id' => array(
+        $expectedConfiguration = [
+            'chain' => [
+                'routers_by_id' => [
                     'cmf_routing.router' => 300,
                     'router.default' => 100,
-                ),
+                ],
                 'replace_symfony_router' => true,
-            ),
-            'dynamic' => array(
+            ],
+            'dynamic' => [
                 'route_collection_limit' => 0,
                 'generic_controller' => 'acme_main.controller:mainAction',
-                'controllers_by_type' => array(
+                'controllers_by_type' => [
                     'editable' => 'acme_main.some_controller:editableAction',
-                ),
-                'controllers_by_class' => array(
+                ],
+                'controllers_by_class' => [
                     'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => 'cmf_content.controller:indexAction',
-                ),
-                'templates_by_class' => array(
+                ],
+                'templates_by_class' => [
                     'Symfony\Cmf\Bundle\ContentBundle\Document\StaticContent' => 'CmfContentBundle:StaticContent:index.html.twig',
-                ),
-                'persistence' => array(
-                    'phpcr' => array(
+                ],
+                'persistence' => [
+                    'phpcr' => [
                         'enabled' => true,
-                        'route_basepaths' => array(
+                        'route_basepaths' => [
                             '/cms/routes',
                             '/simple',
-                        ),
+                        ],
                         'content_basepath' => '/cms/content',
                         'manager_name' => null,
                         'enable_initializer' => true,
-                    ),
-                    'orm' => array(
+                    ],
+                    'orm' => [
                         'enabled' => false,
                         'manager_name' => null,
                         'route_class' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route',
-                    ),
-                ),
+                    ],
+                ],
                 'enabled' => true,
                 'default_controller' => null,
                 'uri_filter_regexp' => '',
                 'route_filters_by_id' => [],
-                'locales' => array('en', 'fr'),
+                'locales' => ['en', 'fr'],
                 'limit_candidates' => 20,
                 'auto_locale_pattern' => true,
                 'match_implicit_locale' => true,
                 'url_generator' => 'cmf_routing.generator',
-            ),
-        );
+            ],
+        ];
 
         $formats = array_map(function ($path) {
             return __DIR__.'/../../Resources/Fixtures/'.$path;
-        }, array(
+        }, [
             'config/config.yml',
             'config/config.xml',
             'config/config.php',
-        ));
+        ]);
 
         foreach ($formats as $format) {
-            $this->assertProcessedConfigurationEquals($expectedConfiguration, array($format));
+            $this->assertProcessedConfigurationEquals($expectedConfiguration, [$format]);
         }
     }
 }
