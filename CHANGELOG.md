@@ -1,6 +1,8 @@
 Changelog
 =========
 
+ * **2017-02-03**: [BC BREAK] Removed unused `cmf_routing.dynamic.persistence.phpcr.content_basepath`
+
 2.0.0-RC1
 ---------
 

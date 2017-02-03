@@ -117,7 +117,6 @@ class Configuration implements ConfigurationInterface
                                             ->prototype('scalar')->end()
                                             ->defaultValue(['/cms/routes'])
                                         ->end() // route_basepaths
-                                        ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()
                                         ->booleanNode('enable_initializer')
                                             ->defaultValue(true)
                                         ->end()

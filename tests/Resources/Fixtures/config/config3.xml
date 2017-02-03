@@ -3,7 +3,6 @@
         <persistence>
             <phpcr
                 manager-name="default"
-                content-basepath="/cms/content"
                 enable-initializer="true"
             >
                 <route-basepath>/cms/routes</route-basepath>

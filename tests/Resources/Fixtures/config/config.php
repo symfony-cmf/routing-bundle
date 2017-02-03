@@ -34,7 +34,6 @@ $container->loadFromExtension('cmf_routing', [
                     '/cms/routes',
                     '/simple',
                 ],
-                'content_basepath' => '/cms/content',
                 'enable_initializer' => true,
             ],
         ],

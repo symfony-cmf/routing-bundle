@@ -82,7 +82,6 @@
 
         <xsd:attribute name="enabled" type="xsd:boolean" />
         <xsd:attribute name="manager-name" type="xsd:string" />
-        <xsd:attribute name="content-basepath" type="xsd:string" />
         <xsd:attribute name="enable-initializer" type="xsd:boolean" />
     </xsd:complexType>
 
