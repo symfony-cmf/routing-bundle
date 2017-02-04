@@ -23,7 +23,6 @@
 
             <persistence>
                 <phpcr
-                    content-basepath="/cms/content"
                     enable-initializer="true"
                 >
                     <route-basepath>/cms/routes</route-basepath>

@@ -56,7 +56,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             '/cms/routes',
                             '/simple',
                         ],
-                        'content_basepath' => '/cms/content',
                         'manager_name' => null,
                         'enable_initializer' => true,
                     ],

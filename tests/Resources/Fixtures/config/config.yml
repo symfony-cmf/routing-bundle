@@ -17,7 +17,6 @@ cmf_routing:
                 route_basepaths:
                     - /cms/routes
                     - /simple
-                content_basepath: /cms/content
                 enable_initializer: true
         locales: [en, fr]
         auto_locale_pattern: true

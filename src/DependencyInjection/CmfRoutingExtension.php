@@ -214,7 +214,6 @@ class CmfRoutingExtension extends Extension
         $container->setParameter('cmf_routing.backend_type_phpcr', true);
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array_values(array_unique($config['route_basepaths'])));
 
-        $container->setParameter('cmf_routing.dynamic.persistence.phpcr.content_basepath', $config['content_basepath']);
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.manager_name', $config['manager_name']);
 
         if (0 === count($locales)) {

@@ -68,6 +68,51 @@
                            - cmf_sonata_admin_integration.routing.redirect_route_admin
    ```
 
+ * The settings `admin_basepath` and `content_basepath` are only relevant for the admin and thus have been moved as well.
+
+   **Before**
+   ```yaml
+   cmf_routing:
+       # ...
+       dynamic:
+           persistence:
+               phpcr:
+                   admin_basepath: '/cms/routes'
+                   content_basepath: '/cms/content'
+   ```
+   ```xml
+   <config xmlns="http://cmf.symfony.com/schema/dic/routing">
+       <dynamic>
+           <persistence>
+               <phpcr
+                   admin-basepath="/cms/routes"
+                   content-basepath="/cms/content"
+                />
+           </persistence>
+       </dynamic>
+   </config>
+   ```
+
+   **After**
+   ```yaml
+   cmf_sonata_phpcr_admin_integration:
+       # ...
+       bundles:
+           routing:
+               basepath: '/cms/routes'
+               content_basepath: '/cms/content'
+   ```
+   ```xml
+   <config xmlns="http://cmf.symfony.com/schema/dic/sonata-phpcr-admin-integration">
+       <bundles>
+           <routing
+               basepath="/cms/routes"
+               content-basepath="/cms/content"
+            />
+       </bundles>
+   </config>
+   ```
+
 ## Route Model
 
  * Removed `getAddFormatPattern()`/`setAddFormatPattern()` from the model
