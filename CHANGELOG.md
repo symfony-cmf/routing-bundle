@@ -1,6 +1,9 @@
 Changelog
 =========
 
+ * **2017-02-06**: [BC BREAK] The `_template` request parameter will be renamed
+   to the `template` attribute instead of the `contentTemplate` attribute. The
+   old attribute will still be available for backwards compatibility.
  * **2017-02-03**: [BC BREAK] Removed unused `cmf_routing.dynamic.persistence.phpcr.content_basepath`
 
 2.0.0-RC1
