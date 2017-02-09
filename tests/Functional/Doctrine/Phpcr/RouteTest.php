@@ -11,6 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\Document\Generic;
+use Doctrine\ODM\PHPCR\Exception\OutOfBoundsException;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
@@ -18,7 +20,7 @@ class RouteTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();
@@ -87,6 +89,21 @@ class RouteTest extends BaseTestCase
         $this->assertTrue(1 >= count($options)); // there is a default option for the compiler
 
         return $route;
+    }
+
+    /**
+     * @expectedException \Doctrine\ODM\PHPCR\Exception\OutOfBoundsException
+     */
+    public function testPersistInvalidChild()
+    {
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
+
+        $document = new Generic();
+        $document->setParentDocument($root);
+        $document->setNodeName('foo');
+
+        $this->getDm()->persist($document);
+        $this->getDm()->flush();
     }
 
     public function testConditionOption()

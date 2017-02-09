@@ -5,7 +5,7 @@
     https://github.com/doctrine/phpcr-odm/raw/master/doctrine-phpcr-odm-mapping.xsd"
 >
 
-    <document name="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute">
+    <document name="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute" is-leaf="true">
         <id name="id">
             <generator strategy="PARENT"/>
         </id>

@@ -155,6 +155,16 @@
    $route->setParentDocument($routeRoot);
    ```
 
+## Doctrine PHPCR ODM
+
+ * It is no longer possible to add a child to the `RedirectRoute` document.
+   This behaviour can be changed by overriding the `child-class` setting of the
+   PHPCR ODM mapping.
+
+ * Only instances of `RouteObjectInterface` are allowed as children of the
+   `Route` document. This behaviour can be changed by overriding the
+   `child-class` setting of the PHPCR ODM mapping.
+
 ## Configuration
 
  * Removed the `route_basepath` setting, use `route_basepaths` instead.
