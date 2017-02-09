@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
@@ -21,7 +22,7 @@ class RedirectRouteTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/redirectroute';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();
@@ -57,6 +58,27 @@ class RedirectRouteTest extends BaseTestCase
         $this->assertSame($route, $redirect->getRouteTarget());
         $defaults = $redirect->getDefaults();
         $this->assertEquals(['test' => 'toast'], $defaults);
+    }
+
+    /**
+     * @expectedException \Doctrine\ODM\PHPCR\Exception\OutOfBoundsException
+     * @expectedExceptionMessage It cannot have children
+     */
+    public function testPersistChild()
+    {
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
+
+        $redirect = new RedirectRoute();
+        $redirect->setPosition($root, 'redirect');
+        $redirect->setDefault('test', 'toast');
+        $this->getDm()->persist($redirect);
+
+        $child = new Generic();
+        $child->setParentDocument($redirect);
+        $child->setNodename('foo');
+        $this->getDm()->persist($child);
+
+        $this->getDm()->flush();
     }
 
     /**

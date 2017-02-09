@@ -26,7 +26,7 @@ class RouteProviderTest extends BaseTestCase
     /** @var RouteProvider */
     private $repository;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();

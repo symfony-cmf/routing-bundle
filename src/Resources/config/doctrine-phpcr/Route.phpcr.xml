@@ -13,6 +13,7 @@
         <nodename name="name"/>
         <parent-document name="parent"/>
         <children name="children"/>
+        <child-class name="Symfony\Cmf\Component\Routing\RouteObjectInterface"/>
     </document>
 
 </doctrine-mapping>
