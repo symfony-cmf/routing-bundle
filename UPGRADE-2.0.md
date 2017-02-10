@@ -68,7 +68,8 @@
                            - cmf_sonata_admin_integration.routing.redirect_route_admin
    ```
 
- * The settings `admin_basepath` and `content_basepath` are only relevant for the admin and thus have been moved as well.
+ * The settings `admin_basepath` and `content_basepath` are only relevant for
+   the admin and thus have been moved as well.
 
    Before:
 
