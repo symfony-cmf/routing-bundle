@@ -41,7 +41,7 @@ class DynamicRouter extends BaseDynamicRouter
      * key for the request attribute that contains the template this document
      * wants to use.
      */
-    const CONTENT_TEMPLATE = 'contentTemplate';
+    const CONTENT_TEMPLATE = 'template';
 
     /**
      * @var Request
@@ -99,6 +99,10 @@ class DynamicRouter extends BaseDynamicRouter
 
         if (array_key_exists(RouteObjectInterface::TEMPLATE_NAME, $defaults)) {
             $request->attributes->set(self::CONTENT_TEMPLATE, $defaults[RouteObjectInterface::TEMPLATE_NAME]);
+
+            // contentTemplate is deprecated as of version 2.0, to be removed in 3.0
+            $request->attributes->set('contentTemplate', $defaults[RouteObjectInterface::TEMPLATE_NAME]);
+
             unset($defaults[RouteObjectInterface::TEMPLATE_NAME]);
         }
 

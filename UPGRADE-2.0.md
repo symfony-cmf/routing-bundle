@@ -21,7 +21,7 @@
                          - Symfony\Cmf\Component\Routing\RouteReferrersReadInterface
    ```
 
-    After:
+   After:
        
    ```yaml
         # app/config/config.yml
@@ -53,7 +53,7 @@
                            - cmf_routing.redirect_route_admin
    ```
 
-    After:
+   After:
        
    ```yaml
         # app/config/config.yml
@@ -70,7 +70,8 @@
 
  * The settings `admin_basepath` and `content_basepath` are only relevant for the admin and thus have been moved as well.
 
-   **Before**
+   Before:
+
    ```yaml
    cmf_routing:
        # ...
@@ -93,7 +94,8 @@
    </config>
    ```
 
-   **After**
+   After:
+
    ```yaml
    cmf_sonata_phpcr_admin_integration:
        # ...
@@ -113,14 +115,15 @@
    </config>
    ```
 
-## Route Model
+### Route Model
 
  * Removed `getAddFormatPattern()`/`setAddFormatPattern()` from the model
    `Route` and `getAddTrailingSlash()`/`setAddTrailingSlash()` from the PHPCR
    `Route`. Use `getOption()`/`setOption()` with `'add_format_pattern'` or
    `'add_trailing_slash'` instead.
 
-   **Before**
+   Before:
+
    ```php
    $route->setAddFormatPattern(true);
    $route->setAddTrailingSlash(true);
@@ -130,7 +133,8 @@
    }
    ```
 
-   **After**
+   After:
+
    ```php
    $route->setOption('add_format_pattern', true);
    $route->setOption('add_trailing_slash', true);
@@ -143,23 +147,26 @@
  * Removed `getParent()`/`setParent()` from PHPCR `Route` and `RedirectRoute`.
    Use `getParentDocument()`/`setParentDocument()` instead.
 
-   **Before**
+   Before:
+
    ```php
    $route = new Route();
    $route->setParent($routeRoot);
    ```
 
-   **After**
+   After:
+
    ```php
    $route = new Route();
    $route->setParentDocument($routeRoot);
    ```
 
-## Configuration
+### Configuration
 
  * Removed the `route_basepath` setting, use `route_basepaths` instead.
 
-   **Before**
+   Before:
+
    ```yaml
    cmf_routing:
        # ...
@@ -178,7 +185,8 @@
    </config>
    ```
 
-   **After**
+   After:
+
    ```yaml
    cmf_routing:
        # ...
@@ -198,3 +206,29 @@
        </dynamic>
    </config>
    ```
+
+### Route Template
+
+ * The `contentTemplate` request attribute is deprecated in favor of
+   `template`. The CmfContentBundle has been adjusted accordingly.
+
+   Before:
+
+   ```php
+   public function documentAction($contentDocument, $contentTemplate)
+   {
+       // ...
+   }
+   ```
+
+   After:
+
+   ```php
+   public function documentAction($contentDocument, $template)
+   {
+       // ...
+   }
+   ```
+   
+   The deprecated `contentTemplate` will be kept for backwards compatibility
+   and will be removed in version 3.0.
