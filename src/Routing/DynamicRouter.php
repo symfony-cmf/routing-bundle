@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Routing;
 use Symfony\Cmf\Component\Routing\DynamicRouter as BaseDynamicRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
@@ -44,9 +45,9 @@ class DynamicRouter extends BaseDynamicRouter
     const CONTENT_TEMPLATE = 'template';
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    protected $request;
+    private $requestStack;
 
     /**
      * Put content and template name into the request attributes instead of the
@@ -110,24 +111,29 @@ class DynamicRouter extends BaseDynamicRouter
     }
 
     /**
-     * @param Request $request
+     * Set the request stack so that we can find the current request.
+     *
+     * @param RequestStack $requestStack
      */
-    public function setRequest(Request $request = null)
+    public function setRequestStack(RequestStack $requestStack)
     {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
 
     /**
+     * Get the current request from the request stack.
+     *
      * @return Request
      *
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function getRequest()
     {
-        if (null === $this->request) {
-            throw new ResourceNotFoundException('Request object not available from container');
+        $currentRequest = $this->requestStack->getCurrentRequest();
+        if (!$currentRequest) {
+            throw new ResourceNotFoundException('There is no request in the request stack');
         }
 
-        return $this->request;
+        return $currentRequest;
     }
 }

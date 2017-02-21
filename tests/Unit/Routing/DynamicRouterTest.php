@@ -18,6 +18,8 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
@@ -31,6 +33,10 @@ class DynamicRouterTest extends CmfUnitTestCase
     protected $context;
     /** @var Request */
     protected $request;
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
     protected $container;
@@ -47,10 +53,12 @@ class DynamicRouterTest extends CmfUnitTestCase
         $this->generator = $this->createMock(UrlGeneratorInterface::class);
 
         $this->request = Request::create('/foo');
+        $this->requestStack = new RequestStack();
+        $this->requestStack->push($this->request);
         $this->context = $this->createMock(RequestContext::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->router = new DynamicRouter($this->context, $this->matcher, $this->generator, '', $this->eventDispatcher);
-        $this->router->setRequest($this->request);
+        $this->router->setRequestStack($this->requestStack);
     }
 
     private function assertRequestAttributes($request)
@@ -91,18 +99,18 @@ class DynamicRouterTest extends CmfUnitTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
-     *
      * @group legacy
      */
     public function testMatchNoRequest()
     {
-        $this->router->setRequest(null);
+        $this->router->setRequestStack(new RequestStack());
 
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
             ->with(Events::PRE_DYNAMIC_MATCH, $this->equalTo(new RouterMatchEvent()))
         ;
+
+        $this->expectException(ResourceNotFoundException::class);
 
         $this->router->match('/foo');
     }
