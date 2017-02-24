@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.0.0
+-----
+
+Released
+
+2.0.0-RC3
+---------
+
  * **2017-02-17**: [BC BREAK] DynamicRouter::setRequest has been replaced with DynamicRouter::setRequestStack.
 
 2.0.0-RC2
