@@ -22,6 +22,10 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
 class Route extends RouteModel
 {
     protected $name;
+
+    /**
+     * @var int sort order of this route when it is returned by the route provider
+     */
     protected $position = 0;
 
     /**
@@ -49,7 +53,7 @@ class Route extends RouteModel
     }
 
     /**
-     * Sets the position.
+     * Set the sort order of this route.
      *
      * @param int $position
      *
@@ -63,7 +67,7 @@ class Route extends RouteModel
     }
 
     /**
-     * Gets the position.
+     * Get the sort order of this route.
      *
      * @return int
      */
