@@ -17,10 +17,9 @@ use Doctrine\ODM\PHPCR\Query\Builder\ConstraintFactory;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooserInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
-use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class PrefixCandidatesTest extends CmfUnitTestCase
+class PrefixCandidatesTest extends \PHPUnit_Framework_TestCase
 {
     public function testAddPrefix()
     {
