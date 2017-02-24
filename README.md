@@ -10,7 +10,7 @@ and licensed under the [MIT License](LICENSE).
 
 The RoutingBundle enables the
 [CMF Routing component](https://github.com/symfony-cmf/Routing)
-as a Symfony2 bundle. It provides route documents for Doctrine PHPCR-ODM and a
+as a Symfony bundle. It provides route documents for Doctrine PHPCR-ODM and a
 controller for redirection routes.
 
 
