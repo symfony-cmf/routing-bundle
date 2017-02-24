@@ -17,9 +17,8 @@ use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
-use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
-class LocaleListenerTest extends CmfUnitTestCase
+class LocaleListenerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var LocaleListener */
     protected $listener;

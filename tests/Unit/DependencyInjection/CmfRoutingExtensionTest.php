@@ -258,27 +258,6 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    public function testLegacyRouteBasepath()
-    {
-        $this->container->setParameter(
-            'kernel.bundles',
-            ['CmfRoutingBundle' => true]
-        );
-
-        $this->load([
-            'dynamic' => [
-                'enabled' => true,
-                'persistence' => [
-                    'phpcr' => [
-                        'route_basepath' => '/cms/test',
-                    ],
-                ],
-            ],
-        ]);
-
-        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', ['/cms/test']);
-    }
-
     public function testInitializerEnabled()
     {
         $this->container->setParameter(

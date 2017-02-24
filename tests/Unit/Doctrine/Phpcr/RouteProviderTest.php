@@ -21,12 +21,11 @@ use Doctrine\ODM\PHPCR\UnitOfWork;
 use PHPCR\Util\UUIDHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
-use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteProviderTest extends CmfUnitTestCase
+class RouteProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject

@@ -16,9 +16,8 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\IdPrefixListener;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
-use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
-class IdPrefixListenerTest extends CmfUnitTestCase
+class IdPrefixListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var IdPrefixListener

@@ -17,11 +17,10 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\RouteProvider;
 use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
-use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteProviderTest extends CmfUnitTestCase
+class RouteProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Route|\PHPUnit_Framework_MockObject_MockObject
