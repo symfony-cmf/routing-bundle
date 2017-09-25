@@ -1,5 +1,2 @@
 framework:
     serializer: ~
-
-twig:
-    paths: ['%kernel.project_dir%/templates']
