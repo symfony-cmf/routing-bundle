@@ -10,7 +10,7 @@
  */
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Admin;
-;
+
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaults;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsValidator;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
