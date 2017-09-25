@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\Validator\Constraint;
