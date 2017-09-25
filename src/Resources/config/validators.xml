@@ -5,9 +5,12 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="cmf_routing.validator.route_defaults" class="Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsValidator">
+        <service
+                id="cmf_routing.validator.route_defaults"
+                class="Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsTwigValidator"
+        >
             <argument id="controller_resolver" type="service"/>
-            <argument id="templating" type="service"/>
+            <argument id="twig.loader" type="service"/>
             <tag name="validator.constraint_validator" alias="cmf_routing.validator.route_defaults" />
         </service>
     </services>

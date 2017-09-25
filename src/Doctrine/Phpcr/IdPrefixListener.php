@@ -76,6 +76,7 @@ class IdPrefixListener
             foreach ($this->getPrefixes() as $prefix) {
                 if (0 === strpos($doc->getId(), $prefix)) {
                     $doc->setPrefix($prefix);
+
                     break;
                 }
             }

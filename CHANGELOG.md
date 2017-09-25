@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0.1
+-----
+
+* **2017-09-25**: This bundle can now also directly use the Twig loader instead of the deprecated templating
+  component. Symfony FrameworkBundle no longer requires symfony/templating since 3.2. If the templating component
+  is available in your application, it is however still used for BC.
+
 2.0.0
 -----
 
