@@ -16,23 +16,24 @@ use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaults;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsValidator;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest;
+use Twig\Loader\LoaderInterface;
 
 class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
 {
     private $controllerResolver;
-    private $templating;
+    private $twig;
 
     protected function setUp()
     {
         $this->controllerResolver = $this->createMock(ControllerResolverInterface::class);
-        $this->templating = $this->createMock(EngineInterface::class);
+        $this->twig = $this->createMock(LoaderInterface::class);
 
         parent::setUp();
     }
 
     protected function createValidator()
     {
-        return new RouteDefaultsValidator($this->controllerResolver, $this->templating);
+        return new RouteDefaultsValidator($this->controllerResolver, $this->twig);
     }
 
     public function testCorrectControllerPath()
@@ -56,7 +57,7 @@ class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
 
     public function testCorrectTemplate()
     {
-        $this->templating->expects($this->any())
+        $this->twig->expects($this->any())
             ->method('exists')
             ->will($this->returnValue(true))
         ;
@@ -69,7 +70,7 @@ class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
     public function testTemplateViolation()
     {
         $this
-            ->templating
+            ->twig
             ->expects($this->any())
             ->method('exists')
             ->will($this->returnValue(false))

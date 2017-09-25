@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2017-02-17**: Remove usage of `templating` component to validate template existence,
+  use twig loader instead.
+
 2.0.0
 -----
 

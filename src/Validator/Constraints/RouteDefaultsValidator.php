@@ -16,16 +16,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Twig\Loader\LoaderInterface;
 
 class RouteDefaultsValidator extends ConstraintValidator
 {
     private $controllerResolver;
-    private $templating;
 
-    public function __construct(ControllerResolverInterface $controllerResolver, EngineInterface $templating)
+    /**
+     * @var LoaderInterface
+     */
+    private $twig;
+
+    public function __construct(ControllerResolverInterface $controllerResolver, LoaderInterface $twig)
     {
         $this->controllerResolver = $controllerResolver;
-        $this->templating = $templating;
+        $this->twig = $twig;
     }
 
     public function validate($defaults, Constraint $constraint)
@@ -45,7 +50,7 @@ class RouteDefaultsValidator extends ConstraintValidator
         if (isset($defaults['_template']) && null !== $defaults['_template']) {
             $template = $defaults['_template'];
 
-            if (false === $this->templating->exists($template)) {
+            if (false === $this->twig->exists($template)) {
                 $this->context->addViolation($constraint->message, ['%name%' => $template]);
             }
         }
