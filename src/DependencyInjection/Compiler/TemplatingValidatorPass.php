@@ -28,7 +28,7 @@ class TemplatingValidatorPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (interface_exists('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface') && $container->has('templating')) {
+        if ($container->has('templating')) {
             $templatingDefinition = $container->findDefinition('templating');
             $validatorDefinition = $container->getDefinition('cmf_routing.validator.route_defaults');
             $validatorDefinition->setClass(RouteDefaultsTemplatingValidator::class);
