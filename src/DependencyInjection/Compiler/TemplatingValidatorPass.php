@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsTemplatingValidator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,7 +28,7 @@ class TemplatingValidatorPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (interface_exists(EngineInterface::class) && $container->has('templating')) {
+        if (interface_exists('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface') && $container->has('templating')) {
             $templatingDefinition = $container->findDefinition('templating');
             $validatorDefinition = $container->getDefinition('cmf_routing.validator.route_defaults');
             $validatorDefinition->setClass(RouteDefaultsTemplatingValidator::class);
