@@ -9,31 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Admin;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Validator\Constraints;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaults;
-use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsValidator;
-use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest;
 
-class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
+abstract class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
 {
-    private $controllerResolver;
-    private $templating;
-
-    protected function setUp()
-    {
-        $this->controllerResolver = $this->createMock(ControllerResolverInterface::class);
-        $this->templating = $this->createMock(EngineInterface::class);
-
-        parent::setUp();
-    }
-
-    protected function createValidator()
-    {
-        return new RouteDefaultsValidator($this->controllerResolver, $this->templating);
-    }
+    protected $controllerResolver;
+    protected $engine;
 
     public function testCorrectControllerPath()
     {
@@ -56,7 +40,7 @@ class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
 
     public function testCorrectTemplate()
     {
-        $this->templating->expects($this->any())
+        $this->engine->expects($this->any())
             ->method('exists')
             ->will($this->returnValue(true))
         ;
@@ -69,7 +53,7 @@ class RouteDefaultsValidatorTest extends AbstractConstraintValidatorTest
     public function testTemplateViolation()
     {
         $this
-            ->templating
+            ->engine
             ->expects($this->any())
             ->method('exists')
             ->will($this->returnValue(false))
