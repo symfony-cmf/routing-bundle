@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Document;
 
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
 

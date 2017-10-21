@@ -20,7 +20,7 @@ class XmlSchemaTest extends XmlSchemaTestCase
 
     public function setUp()
     {
-        $this->fixturesPath = __DIR__.'/../../Resources/Fixtures/config/';
+        $this->fixturesPath = __DIR__ . '/../../Fixtures/fixtures/config/';
         $this->schemaPath = __DIR__.'/../../../src/Resources/config/schema/routing-1.0.xsd';
     }
 

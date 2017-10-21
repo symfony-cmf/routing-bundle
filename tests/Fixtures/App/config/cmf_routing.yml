@@ -11,7 +11,7 @@ cmf_routing:
         controllers_by_class:
             Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute:  cmf_routing.redirect_controller:redirectAction
         templates_by_class:
-            Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\Content: TestBundle:Content:index.html.twig
+            Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Document\Content: TestBundle:Content:index.html.twig
         locales:
             - en
             - de

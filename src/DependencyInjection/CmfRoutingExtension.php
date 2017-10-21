@@ -123,7 +123,9 @@ class CmfRoutingExtension extends Extension
         }
 
         if (isset($config['route_provider_service_id'])) {
-            $container->setAlias('cmf_routing.route_provider', $config['route_provider_service_id']);
+            $container
+                ->setAlias('cmf_routing.route_provider', $config['route_provider_service_id'])
+                ->setPublic(true);
             $hasProvider = true;
         }
 

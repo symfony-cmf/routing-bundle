@@ -16,7 +16,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
-use Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\Content;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Document\Content;
 use Symfony\Cmf\Component\Routing\ChainRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\HttpFoundation\Request;

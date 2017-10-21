@@ -12,7 +12,7 @@ Branch | Travis | Coveralls |
 ------ | ------ | --------- |
 master | [![Build Status][travis_unstable_badge]][travis_unstable_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] |
 
-This package is part of the [Symfony Content Management Framework (CMF)](http://cmf.symfony.com/) and licensed
+This bundle is part of the [Symfony Content Management Framework (CMF)](http://cmf.symfony.com/) and licensed
 under the [MIT License](LICENSE).
 
 The RoutingBundle enables the
@@ -23,8 +23,8 @@ controller for redirection routes.
 
 ## Requirements
 
-* PHP 5.6 / 7.0 / 7.1
-* Symfony 2.8 / 3.1 / 3.2 / 3.3
+* PHP 7.1
+* Symfony 2.8 / 3.3 / ^3.4@dev
 * See also the `require` section of [composer.json](composer.json)
 
 ## Documentation
@@ -48,7 +48,7 @@ Pull requests are welcome. Please see our
 [CONTRIBUTING](https://github.com/symfony-cmf/symfony-cmf/blob/master/CONTRIBUTING.md)
 guide.
 
-Unit and/or functional tests exist for this package. See the
+Unit and/or functional tests exist for this bundle. See the
 [Testing documentation](http://symfony.com/doc/master/cmf/components/testing.html)
 for a guide to running the tests.
 
