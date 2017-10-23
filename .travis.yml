@@ -44,13 +44,13 @@ matrix:
       env: SYMFONY_VERSION=3.1.*
     - php: 7.0
       env: SYMFONY_VERSION=3.2.*
-
     - env: TEST_INSTALLATION=true
+
   fast_finish: true
   allow_failures:
     - php: 7.1
       env: SYMFONY_VERSION=3.4.*
-- env: TEST_INSTALLATION=true
+    - env: TEST_INSTALLATION=true
 
 
 before_install:
