@@ -32,4 +32,5 @@ include ${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk
 include ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk
 include ${TESTING_SCRIPTS_DIR}/make/test_installation.mk
 
+.PHONY: test
 test: unit_tests functional_tests_phpcr functional_tests_orm
