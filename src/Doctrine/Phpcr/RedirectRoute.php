@@ -269,6 +269,6 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      */
     protected function isBooleanOption($name)
     {
-        return $name === 'add_trailing_slash' || parent::isBooleanOption($name);
+        return 'add_trailing_slash' === $name || parent::isBooleanOption($name);
     }
 }
