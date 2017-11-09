@@ -248,7 +248,7 @@ class CmfRoutingExtension extends Extension
         $container->setParameter('cmf_routing.backend_type_orm', true);
         $container->setParameter('cmf_routing.dynamic.persistence.orm.manager_name', $config['manager_name']);
         $container->setParameter('cmf_routing.dynamic.persistence.orm.route_class', $config['route_class']);
-        if ($config['route_class'] === Route::class) {
+        if (Route::class === $config['route_class']) {
             $container->setParameter('cmf_routing.backend_type_orm_default', true);
         } else {
             $container->setParameter('cmf_routing.backend_type_orm_custom', true);
