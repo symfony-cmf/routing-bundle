@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App;
+
 use Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle;
 use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-class AppKernel extends TestKernel
+class Kernel extends TestKernel
 {
     public function configure()
     {
@@ -27,9 +29,7 @@ class AppKernel extends TestKernel
             $this->requireBundleSet('doctrine_orm');
         }
 
-        $this->addBundles([
-            new \Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
-        ]);
+        $this->registerConfiguredBundles();
 
         if (class_exists(CmfResourceRestBundle::class)) {
             $this->addBundles([
