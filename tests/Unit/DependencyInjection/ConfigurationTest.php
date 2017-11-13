@@ -78,7 +78,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
         ];
 
         $formats = array_map(function ($path) {
-            return __DIR__ . '/../../Fixtures/fixtures/' .$path;
+            return __DIR__.'/../../Fixtures/fixtures/'.$path;
         }, [
             'config/config.yml',
             'config/config.xml',

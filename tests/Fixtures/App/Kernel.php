@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App;
 
 use Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle;
-use Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle;
 use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
