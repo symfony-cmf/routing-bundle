@@ -297,6 +297,6 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     protected function isBooleanOption($name)
     {
-        return $name === 'add_trailing_slash' || parent::isBooleanOption($name);
+        return 'add_trailing_slash' === $name || parent::isBooleanOption($name);
     }
 }
