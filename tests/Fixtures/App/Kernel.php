@@ -30,9 +30,7 @@ class Kernel extends TestKernel
             $this->requireBundleSet('doctrine_orm');
         }
 
-        $this->addBundles([
-            new CmfRoutingBundle(),
-        ]);
+        $this->registerConfiguredBundles();
 
         if (class_exists(CmfResourceRestBundle::class)) {
             $this->addBundles([
