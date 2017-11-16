@@ -14,8 +14,13 @@
     "require": {
         "php": "^7.1",
         "symfony-cmf/routing": "^2.0",
+<<<<<<< HEAD
         "symfony/framework-bundle": "^2.8|^3.3",
         "symfony/twig-bundle": "^2.8|^3.3"
+=======
+        "symfony/framework-bundle": "^2.8|^3.0",
+        "symfony/twig-bundle": "^2.8|^3.0"
+>>>>>>> 4937239c06b51be0618eb1e2d1edb2bd715b7d82
     },
     "require-dev": {
         "doctrine/phpcr-odm": "^1.4|^2.0",
