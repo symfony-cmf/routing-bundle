@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* **2017-11-11**: Removed php 5.6 and 7.0 support, removed Symfony 3.0.* and 3.1.* support
+
 2.0.1
 -----
 

@@ -14,7 +14,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
-use Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\Document\Content;
+use Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Document\Content;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
 
 class BaseTestCase extends ComponentBaseTestCase

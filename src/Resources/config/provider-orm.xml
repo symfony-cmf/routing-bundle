@@ -17,7 +17,10 @@
             <argument>%cmf_routing.dynamic.limit_candidates%</argument>
         </service>
 
-        <service id="cmf_routing.route_provider" class="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\RouteProvider">
+        <service
+                id="cmf_routing.route_provider"
+                class="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\RouteProvider"
+                public="true">
             <argument type="service" id="doctrine" />
             <argument type="service" id="cmf_routing.orm_candidates" />
             <argument>%cmf_routing.dynamic.persistence.orm.route_class%</argument>
