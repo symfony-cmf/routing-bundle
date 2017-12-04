@@ -16,18 +16,19 @@
     ],
     "require": {
         "php": "^7.1",
+        "doctrine/phpcr-bundle": "^2.0@dev",
         "symfony-cmf/routing": "^2.0",
         "symfony/framework-bundle": "^2.8 || ^3.3 || ^4.0",
         "symfony/twig-bundle": "^2.8 || ^3.3 || ^4.0"
     },
     "require-dev": {
-        "doctrine/phpcr-odm": "^1.4|^2.0",
-        "symfony/phpunit-bridge": "^3.3 || ^4.0",
-        "matthiasnoback/symfony-dependency-injection-test": "^1.0",
-        "matthiasnoback/symfony-config-test": "^2.2",
-        "doctrine/orm": "^2.5",
-        "symfony-cmf/testing": "^2.1@dev",
         "doctrine/data-fixtures": "^1.0.0",
+        "doctrine/orm": "^2.5",
+        "doctrine/phpcr-odm": "^1.4|^2.0",
+        "matthiasnoback/symfony-config-test": "^2.2",
+        "matthiasnoback/symfony-dependency-injection-test": "^1.0",
+        "symfony-cmf/testing": "^2.1@dev",
+        "symfony/phpunit-bridge": "^3.3 || ^4.0",
         "symfony/validator": "^2.8 || ^3.3 || ^4.0"
     },
     "suggest": {
