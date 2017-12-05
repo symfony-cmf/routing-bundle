@@ -24,7 +24,7 @@ controller for redirection routes.
 ## Requirements
 
 * PHP 7.1
-* Symfony 2.8 / 3.3 / ^3.4@dev
+* Symfony 2.8 / 3.3 / 3.4 / 4.0
 * See also the `require` section of [composer.json](composer.json)
 
 ## Documentation
@@ -45,7 +45,7 @@ For general support and questions, please use [StackOverflow](http://stackoverfl
 ## Contributing
 
 Pull requests are welcome. Please see our
-[CONTRIBUTING](https://github.com/symfony-cmf/symfony-cmf/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/symfony-cmf/blob/master/CONTRIBUTING.md)
 guide.
 
 Unit and/or functional tests exist for this package. See the
