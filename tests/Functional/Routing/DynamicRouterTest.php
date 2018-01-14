@@ -33,6 +33,7 @@ class DynamicRouterTest extends BaseTestCase
      * @var ChainRouter
      */
     protected $router;
+
     protected $routeNamePrefix;
 
     const ROUTE_ROOT = '/test/routing';

@@ -31,6 +31,7 @@ if (!class_exists(ConstraintValidatorTestCase::class)) {
 abstract class RouteDefaultsValidatorTest extends HackBaseClass
 {
     protected $controllerResolver;
+
     protected $engine;
 
     public function testCorrectControllerPath()
