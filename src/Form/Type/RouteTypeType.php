@@ -18,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class RouteTypeType extends AbstractType
 {
     protected $routeTypes = [];
+
     protected $translator;
 
     /**

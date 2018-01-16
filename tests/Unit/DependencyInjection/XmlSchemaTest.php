@@ -16,6 +16,7 @@ use Symfony\Cmf\Component\Testing\Unit\XmlSchemaTestCase;
 class XmlSchemaTest extends XmlSchemaTestCase
 {
     protected $fixturesPath;
+
     protected $schemaPath;
 
     public function setUp()
