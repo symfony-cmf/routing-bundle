@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.2
+-----
+
+* **2018-01-18**: Do not fail when the validator is not enabled.
+
 2.0.1
 -----
 
