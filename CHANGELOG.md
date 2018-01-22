@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.3
+-----
+
+* **2018-01-22**: Fixed syntax error in ValidationPass.
+
 2.0.2
 -----
 
