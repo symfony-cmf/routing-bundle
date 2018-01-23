@@ -66,16 +66,21 @@ class RouteProviderTest extends BaseTestCase
         $this->assertCount(3, $routes);
         $this->assertContainsOnlyInstancesOf(RouteObjectInterface::class, $routes);
 
-        $routes = $routes->all();
-        list($key, $child) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT.'/testroute/noroute/child', $key);
-        $this->assertEquals('json', $child->getDefault('_format'));
-        list($key, $testroute) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT.'/testroute', $key);
-        $this->assertEquals('html', $testroute->getDefault('_format'));
-        list($key, $root) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT, $key);
-        $this->assertNull($root->getDefault('_format'));
+        $iterator = $routes->getIterator();
+
+        $this->assertTrue($iterator->valid());
+        $this->assertEquals(self::ROUTE_ROOT.'/testroute/noroute/child', $iterator->key());
+        $this->assertEquals('json', $iterator->current()->getDefault('_format'));
+
+        $iterator->next();
+        $this->assertTrue($iterator->valid());
+        $this->assertEquals(self::ROUTE_ROOT.'/testroute', $iterator->key());
+        $this->assertEquals('html', $iterator->current()->getDefault('_format'));
+
+        $iterator->next();
+        $this->assertTrue($iterator->valid());
+        $this->assertEquals(self::ROUTE_ROOT, $iterator->key());
+        $this->assertNull($iterator->current()->getDefault('_format'));
     }
 
     public function testGetRouteCollectionForRequestFormat()
@@ -86,16 +91,21 @@ class RouteProviderTest extends BaseTestCase
         $this->assertCount(3, $routes);
         $this->assertContainsOnlyInstancesOf(RouteObjectInterface::class, $routes);
 
-        $routes = $routes->all();
-        list($key, $child) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT.'/testroute/noroute/child', $key);
-        $this->assertEquals('json', $child->getDefault('_format'));
-        list($key, $testroute) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT.'/testroute', $key);
-        $this->assertEquals('html', $testroute->getDefault('_format'));
-        list($key, $root) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT, $key);
-        $this->assertEquals(null, $root->getDefault('_format'));
+        $iterator = $routes->getIterator();
+
+        $this->assertTrue($iterator->valid());
+        $this->assertEquals(self::ROUTE_ROOT.'/testroute/noroute/child', $iterator->key());
+        $this->assertEquals('json', $iterator->current()->getDefault('_format'));
+
+        $iterator->next();
+        $this->assertTrue($iterator->valid());
+        $this->assertEquals(self::ROUTE_ROOT.'/testroute', $iterator->key());
+        $this->assertEquals('html', $iterator->current()->getDefault('_format'));
+
+        $iterator->next();
+        $this->assertTrue($iterator->valid());
+        $this->assertEquals(self::ROUTE_ROOT, $iterator->key());
+        $this->assertNull($iterator->current()->getDefault('_format'));
     }
 
     /**
@@ -103,12 +113,14 @@ class RouteProviderTest extends BaseTestCase
      */
     public function testGetRouteCollectionForRequestNonPhpcrUrl()
     {
-        $collection = $this->repository->getRouteCollectionForRequest(Request::create('http:///'));
-        $this->assertInstanceOf(RouteCollection::class, $collection);
-        $this->assertCount(1, $collection);
-        $routes = $collection->all();
-        list($key, $route) = each($routes);
-        $this->assertEquals(self::ROUTE_ROOT, $key);
+        $routes = $this->repository->getRouteCollectionForRequest(Request::create('http:///'));
+        $this->assertInstanceOf(RouteCollection::class, $routes);
+        $this->assertCount(1, $routes);
+
+        $iterator = $routes->getIterator();
+
+        $this->assertTrue($iterator->valid());
+        $this->assertEquals(self::ROUTE_ROOT, $iterator->key());
     }
 
     /**

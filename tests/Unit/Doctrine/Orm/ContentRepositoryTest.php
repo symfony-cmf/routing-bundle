@@ -19,8 +19,11 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\ContentRepository;
 class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     private $document;
+
     private $managerRegistry;
+
     private $objectManager;
+
     private $objectRepository;
 
     public function setUp()

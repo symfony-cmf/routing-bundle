@@ -14,7 +14,10 @@
             <call method="setRouteCollectionLimit"><argument>%cmf_routing.route_collection_limit%</argument></call>
         </service>
 
-        <service id="cmf_routing.route_provider" alias="cmf_routing.phpcr_route_provider"/>
+        <service
+                id="cmf_routing.route_provider"
+                alias="cmf_routing.phpcr_route_provider"
+                public="true"/>
 
         <service id="cmf_routing.phpcr_candidates_prefix" class="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates">
             <argument>%cmf_routing.dynamic.persistence.phpcr.route_basepaths%</argument>

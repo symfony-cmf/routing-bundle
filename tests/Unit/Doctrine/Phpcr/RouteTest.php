@@ -17,6 +17,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Route */
     private $route;
+
     private $childRoute1;
 
     public function setUp()

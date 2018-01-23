@@ -41,6 +41,7 @@ class RouteProviderTest extends \PHPUnit_Framework_TestCase
      * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $dmMock;
+
     /**
      * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -50,6 +51,7 @@ class RouteProviderTest extends \PHPUnit_Framework_TestCase
      * @var Route|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $routeMock;
+
     /**
      * @var Route|\PHPUnit_Framework_MockObject_MockObject
      */

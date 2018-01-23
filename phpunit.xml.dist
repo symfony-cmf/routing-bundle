@@ -7,16 +7,16 @@
 >
 
     <testsuites>
-        <testsuite name="Symfony CmfRoutingBundle Test Suite">
+        <testsuite name="unit tests">
             <directory>./tests/Unit</directory>
         </testsuite>
 
-        <testsuite name="phpcr">
+        <testsuite name="functional tests with phpcr">
             <directory>./tests/Functional</directory>
             <exclude>./tests/Functional/Doctrine/Orm</exclude>
         </testsuite>
 
-        <testsuite name="orm">
+        <testsuite name="functional tests with orm">
             <directory>./tests/Functional/Doctrine/Orm</directory>
         </testsuite>
     </testsuites>
@@ -29,13 +29,4 @@
             </exclude>
         </whitelist>
     </filter>
-
-    <php>
-        <server name="KERNEL_DIR" value="tests/Resources/app" />
-    </php>
-
-    <listeners>
-        <listener class="Symfony\Cmf\Component\Testing\Phpunit\DatabaseTestListener" />
-    </listeners>
-
 </phpunit>

@@ -26,18 +26,25 @@ use Symfony\Component\Routing\RequestContext;
 class DynamicRouterTest extends \PHPUnit_Framework_TestCase
 {
     protected $matcher;
+
     protected $generator;
+
     /** @var DynamicRouter */
     protected $router;
+
     protected $context;
+
     /** @var Request */
     protected $request;
+
     /**
      * @var RequestStack
      */
     private $requestStack;
+
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
+
     protected $container;
 
     public function setUp()
