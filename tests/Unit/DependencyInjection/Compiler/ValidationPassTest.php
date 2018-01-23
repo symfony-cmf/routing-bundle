@@ -50,12 +50,10 @@ class ValidationPassTest extends AbstractCompilerPassTestCase
                 'addXmlMappings',
                 [["{$dir}/../../Resources/config/validation-phpcr.xml"]]
             );
-        } else {
-            if ($hasValidator) {
-                $definition = $this->container->findDefinition('validator.builder');
+        } elseif ($hasValidator) {
+            $definition = $this->container->findDefinition('validator.builder');
 
-                $this->assertFalse($definition->hasMethodCall('addXmlMappings'));
-            }
+            $this->assertFalse($definition->hasMethodCall('addXmlMappings'));
         }
     }
 
