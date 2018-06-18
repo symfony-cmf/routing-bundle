@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^7.1",
-        "symfony-cmf/routing": "^2.1.0-RC1",
+        "symfony-cmf/routing": "^2.1.0",
         "symfony/framework-bundle": "^2.8 || ^3.3 || ^4.0",
         "twig/twig": "^1.35 || ^2.4.4"
     },
@@ -26,7 +26,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "^1.0",
         "matthiasnoback/symfony-config-test": "^2.2",
         "doctrine/orm": "^2.5",
-        "symfony-cmf/testing": "^2.1.0-RC1",
+        "symfony-cmf/testing": "^2.1.0",
         "doctrine/data-fixtures": "^1.0.0",
         "symfony/validator": "^2.8 || ^3.3 || ^4.0"
     },
