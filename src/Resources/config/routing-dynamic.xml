@@ -83,7 +83,7 @@
             <argument type="service" id="logger" on-invalid="ignore" />
         </service>
 
-        <service id="cmf_routing.redirect_controller" class="Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController">
+        <service id="cmf_routing.redirect_controller" class="Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController" public="true">
             <argument type="service" id="router" />
         </service>
 
