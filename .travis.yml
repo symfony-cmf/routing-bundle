@@ -44,10 +44,8 @@ matrix:
       env: SYMFONY_VERSION=3.3.*
     - php: 7.2
       env: SYMFONY_VERSION=3.4.*
-    - env: TEST_INSTALLATION=true
   fast_finish: true
   allow_failures:
-    - env: TEST_INSTALLATION=true
 
 before_install:
   - phpenv config-rm xdebug.ini || true
