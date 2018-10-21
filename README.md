@@ -60,13 +60,11 @@ Thanks to
 
 This package is available under the [MIT license](src/Resources/meta/LICENSE).
 
-[travis_legacy_badge]: https://travis-ci.org/symfony-cmf/routing-bundle.svg?branch=2.x
 [travis_stable_badge]: https://travis-ci.org/symfony-cmf/routing-bundle.svg?branch=2.x
 [travis_unstable_badge]: https://travis-ci.org/symfony-cmf/routing-bundle.svg?branch=master
+
 [travis_link]: https://travis-ci.org/symfony-cmf/routing-bundle
 
-[coveralls_legacy_badge]: https://coveralls.io/repos/github/symfony-cmf/routing-bundle/badge.svg?branch=2.x
-[coveralls_legacy_link]: https://coveralls.io/github/symfony-cmf/routing-bundle?branch=2.x
 [coveralls_stable_badge]: https://coveralls.io/repos/github/symfony-cmf/routing-bundle/badge.svg?branch=2.x
 [coveralls_stable_link]: https://coveralls.io/github/symfony-cmf/routing-bundle?branch=2.x
 [coveralls_unstable_badge]: https://coveralls.io/repos/github/symfony-cmf/routing-bundle/badge.svg?branch=master
