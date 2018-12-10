@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
 
@@ -40,6 +41,9 @@ class OrmTestCase extends ComponentBaseTestCase
         $this->getDm()->flush();
     }
 
+    /**
+     * @return ObjectManager
+     */
     protected function getDm()
     {
         return $this->db('ORM')->getOm();
