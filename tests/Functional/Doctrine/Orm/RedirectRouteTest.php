@@ -23,6 +23,7 @@ class RedirectRouteTest extends OrmTestCase
     {
         parent::setUp();
         $this->clearDb(Route::class);
+        $this->clearDb(RedirectRoute::class);
 
         $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
     }
