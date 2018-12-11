@@ -20,7 +20,7 @@ class RouteTest extends OrmTestCase
     public function testPersist()
     {
         $route = $this->createRoute('test', '/test/testroute', [], false);
-        $linkedRoute = $this->getDm()->find(Route::class, '/test/');
+        $linkedRoute = $this->getDm()->getRepository(Route::class)->findByPath('/test/');
 
         $route->setContent($linkedRoute); // this happens to be a referenceable node
         $route->setPosition(87);
@@ -37,7 +37,7 @@ class RouteTest extends OrmTestCase
 
         $this->getDm()->clear();
 
-        $route = $this->getDm()->find(Route::class, '/test/testroute');
+        $route = $this->getDm()->getRepository(Route::class)->findByPath('/test/testroute');
 
         $this->assertNotNull($route->getContent());
         $this->assertEquals('/test/testroute', $route->getPath());
@@ -62,7 +62,7 @@ class RouteTest extends OrmTestCase
     {
         $this->createRoute('testroute', '/test/empty');
 
-        $route = $this->getDm()->find(Route::class, '/test/empty');
+        $route = $this->getDm()->getRepository(Route::class)->findByPath('/test/empty');
 
         $defaults = $route->getDefaults();
         $this->assertCount(0, $defaults);
@@ -86,20 +86,20 @@ class RouteTest extends OrmTestCase
         $this->getDm()->flush();
         $this->getDm()->clear();
 
-        $route = $this->getDm()->find(Route::class, '/test/conditionroute');
+        $route = $this->getDm()->getRepository(Route::class)->findByPath('/test/conditionroute');
 
         $this->assertEquals('foobar', $route->getCondition());
     }
 
     public function testRootRoute()
     {
-        $root = $this->getDm()->find(Route::class, '/test/');
+        $root = $this->getDm()->getRepository(Route::class)->findByPath('/test/');
         $this->assertEquals('/test/', $root->getPath());
     }
 
     public function testSetPath()
     {
-        $root = $this->getDm()->find(Route::class, '/test/');
+        $root = $this->getDm()->getRepository(Route::class)->findByPath('/test/');
         $this->assertEquals('/test/', $root->getStaticPrefix());
         $root->setPath('/test/{test}');
         $this->assertEquals('{test}', $root->getVariablePattern());
@@ -107,7 +107,7 @@ class RouteTest extends OrmTestCase
 
     public function testSetPattern()
     {
-        $root = $this->getDm()->find(Route::class, '/test');
+        $root = $this->getDm()->getRepository(Route::class)->findByPath('/test');
         $root->setVariablePattern('{test}');
         $this->assertEquals('/test/{test}', $root->getPath());
         $this->assertEquals('{test}', $root->getVariablePattern());
@@ -117,7 +117,7 @@ class RouteTest extends OrmTestCase
     {
         $this->createRoute('test', '/test/{test}');
 
-        $route = $this->getDm()->find(Route::class, '/test/{test}');
+        $route = $this->getDm()->getRepository(Route::class)->findByPath('/test/{test}');
         $this->assertEquals('/test/{test}', $route->getPath());
         $this->assertEquals('{test}', $route->getVariablePattern());
     }
@@ -137,7 +137,7 @@ class RouteTest extends OrmTestCase
      */
     public function testInvalidIdPrefix()
     {
-        $root = $this->getDm()->find(Route::class, '/test/');
+        $root = $this->getDm()->getRepository(Route::class)->findByPath('/test/');
         $root->setPrefix('/test/changed'); // simulate a problem with the prefix setter listener
         $this->assertEquals('/test/', $root->getPath());
     }
@@ -156,7 +156,7 @@ class RouteTest extends OrmTestCase
         # $route = new Route(['add_format_pattern' => true]);
         $this->createRoute('test', '/test/format');
 
-        $route = $this->getDm()->find(Route::class, '/test/format');
+        $route = $this->getDm()->getRepository(Route::class)->findByPath('/test/format');
 
         $this->assertEquals('/test/format.{_format}', $route->getPath());
     }
