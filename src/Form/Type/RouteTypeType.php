@@ -28,7 +28,7 @@ class RouteTypeType extends AbstractType
     {
         $choices = [];
         foreach ($this->routeTypes as $routeType) {
-            $choices[$routeType] = 'route_type.'.$routeType;
+            $choices['route_type.'.$routeType] = $routeType;
         }
 
         $resolver->setDefaults([
