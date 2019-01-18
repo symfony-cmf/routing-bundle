@@ -48,8 +48,8 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_TestCase
             ->method('setDefaults')
             ->with([
                 'choices' => [
-                    'foobar' => 'route_type.foobar',
-                    'barfoo' => 'route_type.barfoo',
+                    'route_type.foobar' => 'foobar',
+                    'route_type.barfoo' => 'barfoo',
                 ],
                 'translation_domain' => 'CmfRoutingBundle',
             ]);
