@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
 
@@ -40,25 +41,41 @@ class OrmTestCase extends ComponentBaseTestCase
         $this->getDm()->flush();
     }
 
+    /**
+     * @return ObjectManager
+     */
     protected function getDm()
     {
         return $this->db('ORM')->getOm();
     }
 
-    protected function createRoute($name, $path)
+    /**
+     * @param string $name
+     * @param string $path
+     *
+     * @param array $options
+     * @param bool $persist
+     *
+     * @return Route
+     */
+    protected function createRoute($name, $path, $options = [], $persist = true)
     {
         // split path in static and variable part
         preg_match('{^(.*?)(/[^/]*\{.*)?$}', $path, $paths);
 
-        $route = new Route();
+        $route = new Route($options);
         $route->setName($name);
         $route->setStaticPrefix($paths[1]);
         if (isset($paths[2])) {
             $route->setVariablePattern($paths[2]);
         }
 
-        $this->getDm()->persist($route);
-        $this->getDm()->flush();
+        if ($persist) {
+            echo "\n + + + Persist the route + + + \n";
+            $this->getDm()->persist($route);
+            $this->getDm()->flush();
+            $this->getDm()->clear();
+        }
 
         return $route;
     }
