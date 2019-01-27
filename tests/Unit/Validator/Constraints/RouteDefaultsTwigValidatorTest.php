@@ -12,17 +12,13 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Validator\Constraints;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsTwigValidator;
-use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Twig\Loader\LoaderInterface;
 
 class RouteDefaultsTwigValidatorTest extends RouteDefaultsValidatorTest
 {
-    protected function setUp()
+    protected function mockEngine()
     {
-        $this->controllerResolver = $this->createMock(ControllerResolverInterface::class);
-        $this->engine = $this->createMock(LoaderInterface::class);
-
-        parent::setUp();
+        return $this->createMock(LoaderInterface::class);
     }
 
     protected function createValidator()

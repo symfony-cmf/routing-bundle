@@ -11,10 +11,11 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Form\Type;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Form\Type\RouteTypeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RouteTypeTypeTest extends \PHPUnit_Framework_TestCase
+class RouteTypeTypeTest extends TestCase
 {
     /**
      * @var RouteTypeType

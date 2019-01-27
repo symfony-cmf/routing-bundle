@@ -59,13 +59,11 @@ class RedirectRouteTest extends BaseTestCase
         $this->assertEquals(['test' => 'toast'], $defaults);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testSetContent()
     {
         $content = $this->createMock(RouteReferrersReadInterface::class);
         $redirect = new RedirectRoute();
+        $this->expectException(\LogicException::class);
         $redirect->setContent($content);
     }
 }

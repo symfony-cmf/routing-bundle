@@ -130,30 +130,25 @@ class RouteTest extends BaseTestCase
 
     /**
      * @depends testPersistEmptyOptions
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testSetPatternInvalid(Route $route)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $route->setPath('/impossible');
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testInvalidIdPrefix()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setPrefix('/changed'); // simulate a problem with the prefix setter listener
+        $this->expectException(\LogicException::class);
         $this->assertEquals('/', $root->getPath());
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testPrefixNonpersisted()
     {
         $route = new Route();
+        $this->expectException(\LogicException::class);
         $route->getPath();
     }
 

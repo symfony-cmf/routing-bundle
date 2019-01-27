@@ -14,9 +14,10 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Orm;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\ContentRepository;
 
-class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
+class ContentRepositoryTest extends TestCase
 {
     private $document;
 
@@ -80,6 +81,7 @@ class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('find')
             ->with($id)
+            ->will($this->returnValue($this))
         ;
 
         $this->managerRegistry
@@ -92,6 +94,7 @@ class ContentRepositoryTest extends \PHPUnit_Framework_TestCase
         $contentRepository->setManagerName('default');
 
         $foundDocument = $contentRepository->findById($input);
+        $this->assertSame($this, $foundDocument);
     }
 
     public function getFindCorrectModelAndIdData()

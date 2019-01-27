@@ -54,6 +54,8 @@ class ValidationPassTest extends AbstractCompilerPassTestCase
             $definition = $this->container->findDefinition('validator.builder');
 
             $this->assertFalse($definition->hasMethodCall('addXmlMappings'));
+        } else {
+            $this->assertContainerBuilderNotHasService('validator.builder');
         }
     }
 

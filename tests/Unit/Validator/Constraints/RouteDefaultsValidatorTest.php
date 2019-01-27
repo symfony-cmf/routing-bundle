@@ -11,9 +11,13 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Validator\Constraints;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaults;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 use Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest;
+use Twig\Loader\LoaderInterface;
 
 /*
  * @Todo: Remove this when we drop Symfony 2.x support
@@ -30,9 +34,28 @@ if (!class_exists(ConstraintValidatorTestCase::class)) {
 
 abstract class RouteDefaultsValidatorTest extends HackBaseClass
 {
+    /**
+     * @var MockObject|ControllerResolverInterface
+     */
     protected $controllerResolver;
 
+    /**
+     * @var MockObject|EngineInterface|LoaderInterface
+     */
     protected $engine;
+
+    protected function setUp()
+    {
+        $this->controllerResolver = $this->createMock(ControllerResolverInterface::class);
+        $this->engine = $this->mockEngine();
+
+        parent::setUp();
+    }
+
+    /**
+     * @return MockObject|EngineInterface|LoaderInterface
+     */
+    abstract protected function mockEngine();
 
     public function testCorrectControllerPath()
     {
