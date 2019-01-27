@@ -11,10 +11,11 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Controller;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 use Symfony\Component\Routing\RouterInterface;
 
-class RedirectControllerTest extends \PHPUnit_Framework_TestCase
+class RedirectControllerTest extends TestCase
 {
     public function testConstructor()
     {

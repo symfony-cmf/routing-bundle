@@ -11,6 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Routing;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 use Symfony\Cmf\Component\Routing\Event\Events;
 use Symfony\Cmf\Component\Routing\Event\RouterMatchEvent;
@@ -23,29 +25,42 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
 
-class DynamicRouterTest extends \PHPUnit_Framework_TestCase
+class DynamicRouterTest extends TestCase
 {
-    protected $matcher;
+    /**
+     * @var DynamicRouter
+     */
+    private $router;
 
-    protected $generator;
+    /**
+     * @var UrlMatcherInterface|MockObject
+     */
+    private $matcher;
 
-    /** @var DynamicRouter */
-    protected $router;
+    /**
+     * @var UrlGeneratorInterface|MockObject
+     */
+    private $generator;
 
-    protected $context;
+    /**
+     * @var RequestContext|MockObject
+     */
+    private $context;
 
-    /** @var Request */
-    protected $request;
+    /**
+     * @var Request
+     */
+    private $request;
 
     /**
      * @var RequestStack
      */
     private $requestStack;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    protected $container;
+    /**
+     * @var EventDispatcherInterface|MockObject
+     */
+    private $eventDispatcher;
 
     public function setUp()
     {
