@@ -56,8 +56,10 @@ class LocaleListenerTest extends TestCase
     public function testNoRoute()
     {
         $args = new LifecycleEventArgs($this, $this->dmMock);
+        $originalArgs = clone $args;
         $this->listener->postLoad($args);
         $this->listener->postPersist($args);
+        $this->assertEquals($originalArgs, $args);
     }
 
     public function testNoPrefixMatch()
@@ -136,8 +138,10 @@ class LocaleListenerTest extends TestCase
             '/cms/routes/de/my/route',
             '/cms/routes/en/my/route'
         );
+        $originalArgs = clone $moveArgs;
 
         $this->listener->postMove($moveArgs);
+        $this->assertEquals($originalArgs, $moveArgs);
     }
 
     public function testMoved()

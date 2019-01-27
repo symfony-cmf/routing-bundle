@@ -58,8 +58,10 @@ class IdPrefixListenerTest extends TestCase
     public function testNoRoute()
     {
         $args = new LifecycleEventArgs($this, $this->dmMock);
+        $originalArgs = clone $args;
 
         $this->listener->postLoad($args);
+        $this->assertEquals($originalArgs, $args);
     }
 
     private function prepareMatch()

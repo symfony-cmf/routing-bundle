@@ -81,6 +81,7 @@ class ContentRepositoryTest extends TestCase
             ->expects($this->any())
             ->method('find')
             ->with($id)
+            ->will($this->returnValue($this))
         ;
 
         $this->managerRegistry
@@ -93,6 +94,7 @@ class ContentRepositoryTest extends TestCase
         $contentRepository->setManagerName('default');
 
         $foundDocument = $contentRepository->findById($input);
+        $this->assertSame($this, $foundDocument);
     }
 
     public function getFindCorrectModelAndIdData()
