@@ -15,20 +15,20 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "symfony-cmf/routing": "^2.1.0",
-        "symfony/framework-bundle": "^2.8 || ^3.3 || ^4.0",
+        "symfony/framework-bundle": "^3.4 || ^4.0",
         "twig/twig": "^1.35 || ^2.4.4"
     },
     "require-dev": {
         "doctrine/phpcr-odm": "^1.4|^2.0",
-        "symfony/phpunit-bridge": "^4.2.2",
+        "symfony/phpunit-bridge": "^3.4 || ^4.0",
         "matthiasnoback/symfony-dependency-injection-test": "^2.3.1",
         "matthiasnoback/symfony-config-test": "^3.1.1",
         "doctrine/orm": "^2.5",
         "symfony-cmf/testing": "^2.1.11",
         "doctrine/data-fixtures": "^1.0.0",
-        "symfony/validator": "^2.8 || ^3.3 || ^4.0"
+        "symfony/validator": "^3.4 || ^4.0"
     },
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.4)",
