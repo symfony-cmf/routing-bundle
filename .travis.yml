@@ -26,23 +26,23 @@ cache:
     - $HOME/.composer/cache/files
 
 env:
-  matrix: SYMFONY_VERSION=4.0.*
+  matrix: SYMFONY_VERSION=4.2.*
   global:
-    - SYMFONY_DEPRECATIONS_HELPER="/.*each.*/"
+    - SYMFONY_DEPRECATIONS_HELPER="weak"
     - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
-    - SYMFONY_PHPUNIT_VERSION=6
-    - TEST_INSTALLATION=false
+    - KERNEL_CLASS=Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
+    - SYMFONY_PHPUNIT_VERSION=5.7.26
 
 matrix:
   include:
-    - php: 7.2
-      env: SYMFONY_VERSION=4.0.*
-    - php: 7.1
-      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION=2.8.* SYMFONY_DEPRECATIONS_HELPER=weak
-    - php: 7.2
-      env: SYMFONY_VERSION=3.3.*
-    - php: 7.2
-      env: SYMFONY_VERSION=3.4.*
+    - php: "7.3"
+      env: SYMFONY_VERSION="4.2.*"
+    - php: "7.2"
+      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION="3.4.*" SYMFONY_DEPRECATIONS_HELPER="weak"
+    - php: "7.3"
+      env: SYMFONY_VERSION="4.0.*"
+    - php: "7.3"
+      env: SYMFONY_VERSION="4.1.*"
   fast_finish: true
   allow_failures:
 
