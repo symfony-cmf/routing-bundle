@@ -14,7 +14,7 @@ Branch | Travis | Coveralls | Scrutinizer |
 3.0-dev | [![Build Status][travis_unstable_badge]][travis_unstable_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] | [![Scrutinizer Status][scrutinizer_unstable_badge]][scrutinizer_unstable_link] |
 
 
-This package is part of the [Symfony Content Management Framework (CMF)](http://cmf.symfony.com/) and licensed
+This package is part of the [Symfony Content Management Framework (CMF)](https://cmf.symfony.com/) and licensed
 under the [MIT License](LICENSE).
 
 The RoutingBundle enables the
@@ -42,7 +42,7 @@ See also:
 
 ## Support
 
-For general support and questions, please use [StackOverflow](http://stackoverflow.com/questions/tagged/symfony-cmf).
+For general support and questions, please use [StackOverflow](https://stackoverflow.com/questions/tagged/symfony-cmf).
 
 ## Contributing
 
@@ -51,7 +51,7 @@ Pull requests are welcome. Please see our
 guide.
 
 Unit and/or functional tests exist for this package. See the
-[Testing documentation](http://symfony.com/doc/master/cmf/components/testing.html)
+[Testing documentation](https://symfony.com/doc/master/cmf/components/testing.html)
 for a guide to running the tests.
 
 Thanks to
