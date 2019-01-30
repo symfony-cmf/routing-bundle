@@ -53,7 +53,10 @@ before_install:
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
 
-install: travis_wait composer update --prefer-dist $COMPOSER_FLAGS
+install:
+  - phpenv config-add travis.php.ini
+  - php -ini | grep memory_limit
+  - travis_wait composer update --prefer-dist $COMPOSER_FLAGS
 script:
   - if [ "${TEST_INSTALLATION}" == true ]; then make test_installation; else make test; fi
 
