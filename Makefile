@@ -14,7 +14,12 @@
 ############################################################################
 
 TESTING_SCRIPTS_DIR=vendor/symfony-cmf/testing/bin
+
+SYMFONY_PHPUNIT_VERSION=6
+SYMFONY_DEPRECATIONS_HELPER==weak
 CONSOLE=${TESTING_SCRIPTS_DIR}/console
+SYMFONY_PHPUNIT_DIR=.phpunit
+SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
 VERSION=dev-master
 ifdef BRANCH
 	VERSION=dev-${BRANCH}
