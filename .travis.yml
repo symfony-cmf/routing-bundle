@@ -30,20 +30,24 @@ env:
   global:
     - SYMFONY_DEPRECATIONS_HELPER="weak"
     - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
-    - KERNEL_CLASS="Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel"
     - SYMFONY_PHPUNIT_VERSION="6"
 
 matrix:
   include:
     - php: "7.3"
-      env: STABILITY="dev" SYMFONY_VERSION="4.2.*"
+      env: STABILITY="dev" SYMFONY_VERSION="4.3.*"
+    - php: "7.3"
+      env: SYMFONY_VERSION="4.2.*"
     - php: "7.1"
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION="3.4.*" SYMFONY_DEPRECATIONS_HELPER="weak"
     - php: "7.2"
-      env: STABILITY="dev" SYMFONY_VERSION="4.0.*"
+      env: SYMFONY_VERSION="4.0.*"
     - php: "7.2"
-      env: STABILITY="dev" SYMFONY_VERSION="4.1.*"
+      env: SYMFONY_VERSION="4.1.*"
   fast_finish: true
+  allow_failures:
+    - php: "7.3"
+      env: STABILITY=dev SYMFONY_VERSION="4.3.*"
 
 before_install:
   - phpenv config-rm xdebug.ini || true
