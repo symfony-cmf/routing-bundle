@@ -23,8 +23,8 @@
     "require-dev": {
         "doctrine/phpcr-odm": "^1.4|^2.0",
         "symfony/phpunit-bridge": "^4.2.2",
-        "matthiasnoback/symfony-dependency-injection-test": "^2.3.1",
-        "matthiasnoback/symfony-config-test": "^3.1.1",
+        "matthiasnoback/symfony-dependency-injection-test": "^1.1",
+        "matthiasnoback/symfony-config-test": "^2.1",
         "doctrine/orm": "^2.5",
         "symfony-cmf/testing": "^2.1.11",
         "doctrine/data-fixtures": "^1.0.0",
