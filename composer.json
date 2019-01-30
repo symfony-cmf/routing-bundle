@@ -19,11 +19,11 @@
         "symfony-cmf/routing": "^2.1.0",
         "symfony/framework-bundle": "^3.4 || ^4.0",
         "twig/twig": "^1.35 || ^2.4.4",
-        "symfony/phpunit-bridge": "4.2.2"
+        "symfony/phpunit-bridge": "^3.4 || ^4.0"
     },
     "require-dev": {
         "doctrine/phpcr-odm": "^1.4|^2.0",
-        "symfony/phpunit-bridge": "^3.4 || ^4.0",
+        "symfony/phpunit-bridge": "4.2.2",
         "matthiasnoback/symfony-dependency-injection-test": "^2.3.1",
         "matthiasnoback/symfony-config-test": "^3.1.1",
         "doctrine/orm": "^2.5",
