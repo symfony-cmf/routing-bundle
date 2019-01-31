@@ -33,8 +33,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $root = $treeBuilder->root('cmf_routing');
+        $treeBuilder = new TreeBuilder('cmf_routing');
+        $root = $treeBuilder->getRootNode();
 
         $this->addChainSection($root);
         $this->addDynamicSection($root);
