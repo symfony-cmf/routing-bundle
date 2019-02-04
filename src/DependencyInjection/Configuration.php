@@ -34,10 +34,16 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('cmf_routing');
-        $root = $treeBuilder->getRootNode();
+        // Keep compatibility with symfony/config < 4.2
+        if (!method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->root('cmf_routing');
+        } else {
+            $rootNode = $treeBuilder->getRootNode();
+        }
 
-        $this->addChainSection($root);
-        $this->addDynamicSection($root);
+
+        $this->addChainSection($rootNode);
+        $this->addDynamicSection($rootNode);
 
         return $treeBuilder;
     }
