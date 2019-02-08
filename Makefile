@@ -14,17 +14,13 @@
 ############################################################################
 
 TESTING_SCRIPTS_DIR=vendor/symfony-cmf/testing/bin
-
-SYMFONY_PHPUNIT_VERSION=6
-SYMFONY_DEPRECATIONS_HELPER==/.*each.*/
 CONSOLE=${TESTING_SCRIPTS_DIR}/console
-SYMFONY_PHPUNIT_DIR=.phpunit
-SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
 VERSION=dev-master
 ifdef BRANCH
 	VERSION=dev-${BRANCH}
 endif
 PACKAGE=symfony-cmf/routing-bundle
+HAS_XDEBUG=$(shell php --modules|grep --quiet xdebug;echo $$?)
 
 list:
 	@echo 'test:                    will run all tests'
@@ -38,4 +34,19 @@ include ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk
 include ${TESTING_SCRIPTS_DIR}/make/test_installation.mk
 
 .PHONY: test
-test: unit_tests functional_tests_phpcr functional_tests_orm
+test: build/xdebug-filter.php  unit_tests functional_tests_phpcr functional_tests_orm
+lint-php:
+	php-cs-fixer fix --ansi --verbose --diff --dry-run
+.PHONY: lint-php
+
+cs-fix: cs-fix-php cs-fix-xml
+.PHONY: cs-fix
+
+cs-fix-php:
+	php-cs-fixer fix --verbose
+.PHONY: cs-fix-php
+
+build/xdebug-filter.php: phpunit.xml.dist build
+ifeq ($(HAS_XDEBUG), 0)
+	phpunit --dump-xdebug-filter $@
+endif
