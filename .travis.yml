@@ -32,6 +32,7 @@ env:
     - SYMFONY_DEPRECATIONS_HELPER="/.*each.*/"
     - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
     - SYMFONY_PHPUNIT_VERSION=6
+    - PHPUNIT_VERSION=6
     - TARGET=test
 
 matrix:
