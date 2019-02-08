@@ -32,22 +32,18 @@ ifneq ($(strip $(${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)),)
   contents :=  $(shell echo including extra rules $(${TESTING_SCRIPTS_DIR}/make/unit_tests.mk))
   include $(${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)
 endif
-include ${TESTING_SCRIPTS_DIR}/make/unit_tests.mk
 ifneq ($(strip $(${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)),)
   contents :=  $(shell echo including extra rules $(${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk))
   include $(${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)
 endif
-include ${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk
 ifneq ($(strip $(${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)),)
   contents :=  $(shell echo including extra rules $(${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk))
   include $(${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)
 endif
-include ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk
 ifneq ($(strip $(${TESTING_SCRIPTS_DIR}/make/test_installation.mk)),)
   contents :=  $(shell echo including extra rules $(${TESTING_SCRIPTS_DIR}/make/test_installation.mk))
   include $(${TESTING_SCRIPTS_DIR}/make/test_installation.mk)
 endif
-include ${TESTING_SCRIPTS_DIR}/make/test_installation.mk
 
 .PHONY: test
 test: build/xdebug-filter.php  unit_tests functional_tests_phpcr functional_tests_orm
