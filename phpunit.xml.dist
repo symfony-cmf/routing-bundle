@@ -7,23 +7,22 @@
 >
 
 	<testsuites>
+
 		
 		<testsuite name="unit tests">
             <directory>./tests/Unit</directory>
         </testsuite>
-
                 
         <testsuite name="functional tests with phpcr">
             <directory>./tests/Functional</directory>
             <exclude>./tests/Functional/Doctrine/Orm</exclude>
         </testsuite>
-
                 
         <testsuite name="functional tests with orm">
             <directory>./tests/Functional/Doctrine/Orm</directory>
         </testsuite>
-
-        	</testsuites>
+        
+	</testsuites>
 
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="true">
