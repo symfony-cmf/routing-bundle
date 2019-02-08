@@ -39,7 +39,14 @@ lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
-cs-fix: cs-fix-php cs-fix-xml
+int: lint-composer lint-php
+.PHONY: lint
+
+lint-composer:
+	composer validate
+.PHONY: lint-composer
+
+cs-fix: cs-fix-php
 .PHONY: cs-fix
 
 cs-fix-php:
