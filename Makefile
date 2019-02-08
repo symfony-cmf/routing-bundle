@@ -27,30 +27,49 @@ list:
 	@echo 'unit_tests:               will run unit tests only'
 	@echo 'functional_tests_phpcr:  will run functional tests with PHPCR'
 	@echo 'functional_tests_orm:    will run functional tests with ORM'
-	@echo 'test_installation:    will run installation test'
+	@echo 'test_installation:    will run installation test'TEST_DEPENDENCIES := ""
 EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)
 ifneq ($(strip $(EXTRA_INCLUDES)),)
   contents :=  $(shell echo including extra rules $(EXTRA_INCLUDES))
   include $(EXTRA_INCLUDES)
-endif
+    TEST_DEPENDENCIES := $(TEST_DEPENDENCIES)" unit_tests"
+  endif
 EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)
 ifneq ($(strip $(EXTRA_INCLUDES)),)
   contents :=  $(shell echo including extra rules $(EXTRA_INCLUDES))
   include $(EXTRA_INCLUDES)
-endif
+    TEST_DEPENDENCIES := $(TEST_DEPENDENCIES)" functional_tests_phpcr"
+  endif
 EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)
 ifneq ($(strip $(EXTRA_INCLUDES)),)
   contents :=  $(shell echo including extra rules $(EXTRA_INCLUDES))
   include $(EXTRA_INCLUDES)
-endif
+    TEST_DEPENDENCIES := $(TEST_DEPENDENCIES)" functional_tests_orm"
+  endif
 EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/test_installation.mk)
 ifneq ($(strip $(EXTRA_INCLUDES)),)
   contents :=  $(shell echo including extra rules $(EXTRA_INCLUDES))
   include $(EXTRA_INCLUDES)
-endif
+  endif
 
 .PHONY: test
-test: build/xdebug-filter.php  unit_tests functional_tests_phpcr functional_tests_orm
+test: build/xdebug-filter.php$
+EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)
+ifneq ($(strip $(EXTRA_INCLUDES)),)
+    - unit_tests
+  endif
+EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)
+ifneq ($(strip $(EXTRA_INCLUDES)),)
+    - functional_tests_phpcr
+  endif
+EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)
+ifneq ($(strip $(EXTRA_INCLUDES)),)
+    - functional_tests_orm
+  endif
+EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/test_installation.mk)
+ifneq ($(strip $(EXTRA_INCLUDES)),)
+  endif
+
 lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
