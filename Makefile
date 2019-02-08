@@ -68,7 +68,7 @@ lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
-int: lint-composer lint-php
+lint: lint-composer lint-php
 .PHONY: lint
 
 lint-composer:
