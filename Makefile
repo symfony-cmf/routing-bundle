@@ -55,13 +55,13 @@ ifneq ($(strip $(EXTRA_INCLUDES)),)
 .PHONY: test
 test: build/xdebug-filter.php$
 ifneq ($(strip $(wildcard ${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)),)
-  @make unit_tests
+	@make unit_tests
 endif
 ifneq ($(strip $(wildcard ${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)),)
-  @make functional_tests_phpcr
+	@make functional_tests_phpcr
 endif
 ifneq ($(strip $(wildcard ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)),)
-  @make functional_tests_orm
+	@make functional_tests_orm
 endif
 
 lint-php:
