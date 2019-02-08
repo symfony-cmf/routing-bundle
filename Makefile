@@ -56,19 +56,16 @@ ifneq ($(strip $(EXTRA_INCLUDES)),)
 test: build/xdebug-filter.php$
 EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)
 ifneq ($(strip $(EXTRA_INCLUDES)),)
-    make unit_tests
-  endif
+  make unit_tests
+endif
 EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)
 ifneq ($(strip $(EXTRA_INCLUDES)),)
-    make functional_tests_phpcr
-  endif
+  make functional_tests_phpcr
+endif
 EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)
 ifneq ($(strip $(EXTRA_INCLUDES)),)
-    make functional_tests_orm
-  endif
-EXTRA_INCLUDES:=$(wildcard ${TESTING_SCRIPTS_DIR}/make/test_installation.mk)
-ifneq ($(strip $(EXTRA_INCLUDES)),)
-  endif
+  make functional_tests_orm
+endif
 
 lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
