@@ -53,6 +53,9 @@ cs-fix-php:
 	php-cs-fixer fix --verbose
 .PHONY: cs-fix-php
 
+build:
+	mkdir $@
+
 build/xdebug-filter.php: phpunit.xml.dist build
 ifeq ($(HAS_XDEBUG), 0)
 	phpunit --dump-xdebug-filter $@
