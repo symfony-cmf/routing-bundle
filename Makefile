@@ -28,22 +28,10 @@ list:
 	@echo 'functional_tests_phpcr:  will run functional tests with PHPCR'
 	@echo 'functional_tests_orm:    will run functional tests with ORM'
 	@echo 'test_installation:    will run installation test'
-ifneq ($(strip $(${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)),)
-  contents :=  $(shell echo including extra rules $(${TESTING_SCRIPTS_DIR}/make/unit_tests.mk))
-  include $(${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)
-endif
-ifneq ($(strip $(${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)),)
-  contents :=  $(shell echo including extra rules $(${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk))
-  include $(${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)
-endif
-ifneq ($(strip $(${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)),)
-  contents :=  $(shell echo including extra rules $(${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk))
-  include $(${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)
-endif
-ifneq ($(strip $(${TESTING_SCRIPTS_DIR}/make/test_installation.mk)),)
-  contents :=  $(shell echo including extra rules $(${TESTING_SCRIPTS_DIR}/make/test_installation.mk))
-  include $(${TESTING_SCRIPTS_DIR}/make/test_installation.mk)
-endif
+include $(${TESTING_SCRIPTS_DIR}/make/unit_tests.mk)
+include $(${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk)
+include $(${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk)
+include $(${TESTING_SCRIPTS_DIR}/make/test_installation.mk)
 
 .PHONY: test
 test: build/xdebug-filter.php  unit_tests functional_tests_phpcr functional_tests_orm
