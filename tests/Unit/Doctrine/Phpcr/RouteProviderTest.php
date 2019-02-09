@@ -56,6 +56,7 @@ class RouteProviderTest extends TestCase
      * @var Route|MockObject
      */
     protected $route2Mock;
+
     /**
      * @var ManagerRegistry|MockObject
      */
