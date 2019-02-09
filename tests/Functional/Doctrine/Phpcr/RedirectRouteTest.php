@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -19,7 +21,7 @@ use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
 class RedirectRouteTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/redirectroute';
+    public const ROUTE_ROOT = '/test/redirectroute';
 
     public function setUp()
     {
@@ -56,7 +58,7 @@ class RedirectRouteTest extends BaseTestCase
         $params = $redirect->getParameters();
         $this->assertSame($route, $redirect->getRouteTarget());
         $defaults = $redirect->getDefaults();
-        $this->assertEquals(['test' => 'toast'], $defaults);
+        $this->assertSame(['test' => 'toast'], $defaults);
     }
 
     public function testSetContent()

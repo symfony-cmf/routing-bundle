@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -84,7 +86,7 @@ class ContentRepositoryTest extends TestCase
         $contentRepository = new ContentRepository($this->managerRegistry);
         $contentRepository->setManagerName('default');
 
-        $this->assertEquals('id-123', $contentRepository->getContentId($this->document));
+        $this->assertSame('id-123', $contentRepository->getContentId($this->document));
     }
 
     public function testGetContentIdNoObject()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -19,13 +21,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtensions()
-    {
-        return [
-            new CmfRoutingExtension(),
-        ];
-    }
-
     public function testLoadDefault()
     {
         $this->load([
@@ -334,5 +329,12 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ]);
 
         $this->assertContainerBuilderHasParameter('cmf_routing.backend_type_orm_custom', true);
+    }
+
+    protected function getContainerExtensions()
+    {
+        return [
+            new CmfRoutingExtension(),
+        ];
     }
 }

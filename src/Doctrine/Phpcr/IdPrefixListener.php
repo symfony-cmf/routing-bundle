@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -43,14 +45,6 @@ class IdPrefixListener
         $this->candidates = $candidates;
     }
 
-    /**
-     * @return array
-     */
-    protected function getPrefixes()
-    {
-        return $this->candidates->getPrefixes();
-    }
-
     public function postLoad(LifecycleEventArgs $args)
     {
         $this->updateId($args);
@@ -64,6 +58,14 @@ class IdPrefixListener
     public function postMove(LifecycleEventArgs $args)
     {
         $this->updateId($args);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getPrefixes()
+    {
+        return $this->candidates->getPrefixes();
     }
 
     protected function updateId(LifecycleEventArgs $args)

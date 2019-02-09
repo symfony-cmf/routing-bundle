@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -184,7 +186,7 @@ class LocaleListener
             return;
         }
 
-        if (in_array($locale = $matches[2], $this->locales)) {
+        if (\in_array($locale = $matches[2], $this->locales, true)) {
             if ($force || !$doc->getDefault('_locale')) {
                 $doc->setDefault('_locale', $locale);
             }

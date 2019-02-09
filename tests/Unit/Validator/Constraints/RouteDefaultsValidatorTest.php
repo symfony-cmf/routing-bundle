@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -52,11 +54,6 @@ abstract class RouteDefaultsValidatorTest extends HackBaseClass
         parent::setUp();
     }
 
-    /**
-     * @return MockObject|EngineInterface|LoaderInterface
-     */
-    abstract protected function mockEngine();
-
     public function testCorrectControllerPath()
     {
         $this->validator->validate(['_controller' => 'FrameworkBundle:Redirect:redirect'], new RouteDefaults());
@@ -106,4 +103,9 @@ abstract class RouteDefaultsValidatorTest extends HackBaseClass
             ->setParameter('%name%', 'NotExistingBundle:Foo:bar.html.twig')
             ->assertRaised();
     }
+
+    /**
+     * @return MockObject|EngineInterface|LoaderInterface
+     */
+    abstract protected function mockEngine();
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -59,7 +61,7 @@ class LocaleListenerTest extends TestCase
         $originalArgs = clone $args;
         $this->listener->postLoad($args);
         $this->listener->postPersist($args);
-        $this->assertEquals($originalArgs, $args);
+        $this->assertSame($originalArgs, $args);
     }
 
     public function testNoPrefixMatch()
@@ -79,25 +81,6 @@ class LocaleListenerTest extends TestCase
         $args = new LifecycleEventArgs($this->routeMock, $this->dmMock);
 
         $this->listener->postLoad($args);
-    }
-
-    private function prepareMatch()
-    {
-        $this->routeMock->expects($this->once())
-            ->method('getId')
-            ->will($this->returnValue('/cms/routes/de/my/route'))
-        ;
-
-        $this->routeMock->expects($this->once())
-            ->method('setDefault')
-            ->with('_locale', 'de')
-        ;
-        $this->routeMock->expects($this->once())
-            ->method('setRequirement')
-            ->with('_locale', 'de')
-        ;
-
-        return new LifecycleEventArgs($this->routeMock, $this->dmMock);
     }
 
     public function testLoad()
@@ -141,7 +124,7 @@ class LocaleListenerTest extends TestCase
         $originalArgs = clone $moveArgs;
 
         $this->listener->postMove($moveArgs);
-        $this->assertEquals($originalArgs, $moveArgs);
+        $this->assertSame($originalArgs, $moveArgs);
     }
 
     public function testMoved()
@@ -168,7 +151,7 @@ class LocaleListenerTest extends TestCase
     public function testSetLocales()
     {
         $this->listener->setLocales(['xx']);
-        $this->assertAttributeEquals(['xx'], 'locales', $this->listener);
+        $this->assertAttributeSame(['xx'], 'locales', $this->listener);
     }
 
     public function testHaslocale()
@@ -272,5 +255,24 @@ class LocaleListenerTest extends TestCase
         $this->listener->setUpdateAvailableTranslations(true);
         $args = new LifecycleEventArgs($this->routeMock, $this->dmMock);
         $this->listener->postLoad($args);
+    }
+
+    private function prepareMatch()
+    {
+        $this->routeMock->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue('/cms/routes/de/my/route'))
+        ;
+
+        $this->routeMock->expects($this->once())
+            ->method('setDefault')
+            ->with('_locale', 'de')
+        ;
+        $this->routeMock->expects($this->once())
+            ->method('setRequirement')
+            ->with('_locale', 'de')
+        ;
+
+        return new LifecycleEventArgs($this->routeMock, $this->dmMock);
     }
 }

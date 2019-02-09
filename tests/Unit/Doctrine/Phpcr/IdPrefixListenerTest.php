@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -61,23 +63,7 @@ class IdPrefixListenerTest extends TestCase
         $originalArgs = clone $args;
 
         $this->listener->postLoad($args);
-        $this->assertEquals($originalArgs, $args);
-    }
-
-    private function prepareMatch()
-    {
-        $this->routeMock
-            ->expects($this->once())
-            ->method('getId')
-            ->will($this->returnValue('/cms/routes'))
-        ;
-        $this->routeMock
-            ->expects($this->once())
-            ->method('setPrefix')
-            ->with('/cms/routes')
-        ;
-
-        return new LifecycleEventArgs($this->routeMock, $this->dmMock);
+        $this->assertSame($originalArgs, $args);
     }
 
     public function testPostLoad()
@@ -128,5 +114,21 @@ class IdPrefixListenerTest extends TestCase
         $args = new LifecycleEventArgs($this->routeMock, $this->dmMock);
 
         $this->listener->postLoad($args);
+    }
+
+    private function prepareMatch()
+    {
+        $this->routeMock
+            ->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue('/cms/routes'))
+        ;
+        $this->routeMock
+            ->expects($this->once())
+            ->method('setPrefix')
+            ->with('/cms/routes')
+        ;
+
+        return new LifecycleEventArgs($this->routeMock, $this->dmMock);
     }
 }

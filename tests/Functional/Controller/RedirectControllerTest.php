@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -19,7 +21,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RedirectControllerTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/routing';
+    public const ROUTE_ROOT = '/test/routing';
 
     /**
      * @var \Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -25,11 +27,11 @@ class PrefixCandidatesTest extends TestCase
     public function testAddPrefix()
     {
         $candidates = new PrefixCandidates(['/routes']);
-        $this->assertEquals(['/routes'], $candidates->getPrefixes());
+        $this->assertSame(['/routes'], $candidates->getPrefixes());
         $candidates->addPrefix('/simple');
-        $this->assertEquals(['/routes', '/simple'], $candidates->getPrefixes());
+        $this->assertSame(['/routes', '/simple'], $candidates->getPrefixes());
         $candidates->setPrefixes(['/other']);
-        $this->assertEquals(['/other'], $candidates->getPrefixes());
+        $this->assertSame(['/other'], $candidates->getPrefixes());
     }
 
     public function testGetCandidates()
@@ -39,7 +41,7 @@ class PrefixCandidatesTest extends TestCase
         $candidates = new PrefixCandidates(['/routes', '/simple']);
         $paths = $candidates->getCandidates($request);
 
-        $this->assertEquals(
+        $this->assertSame(
             [
                 '/routes/my/path.html',
                 '/routes/my/path',
@@ -61,7 +63,7 @@ class PrefixCandidatesTest extends TestCase
         $candidates = new PrefixCandidates(['/routes', '/simple']);
         $paths = $candidates->getCandidates($request);
 
-        $this->assertEquals(
+        $this->assertSame(
             [
                 '/routes/my/path percent encoded.html',
                 '/routes/my/path percent encoded',
@@ -83,7 +85,7 @@ class PrefixCandidatesTest extends TestCase
         $candidates = new PrefixCandidates(['/routes', '/simple'], ['de', 'fr']);
         $paths = $candidates->getCandidates($request);
 
-        $this->assertEquals(
+        $this->assertSame(
             [
                 '/routes/de/path.html',
                 '/routes/de/path',

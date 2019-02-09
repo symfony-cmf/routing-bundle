@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -31,11 +33,6 @@ use Symfony\Component\Routing\RouteCollection;
 class RouteProviderTest extends TestCase
 {
     /**
-     * @var ManagerRegistry|MockObject
-     */
-    private $managerRegistryMock;
-
-    /**
      * @var PrefixCandidates|MockObject
      */
     protected $candidatesMock;
@@ -59,6 +56,10 @@ class RouteProviderTest extends TestCase
      * @var Route|MockObject
      */
     protected $route2Mock;
+    /**
+     * @var ManagerRegistry|MockObject
+     */
+    private $managerRegistryMock;
 
     public function setUp()
     {
@@ -152,7 +153,7 @@ class RouteProviderTest extends TestCase
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
 
         $this->assertInstanceOf(Route::class, $foundRoute);
-        $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
+        $this->assertSame('/cms/routes/test-route', $foundRoute->getPath());
     }
 
     public function testGetRouteByNameUuid()
@@ -196,7 +197,7 @@ class RouteProviderTest extends TestCase
         $foundRoute = $routeProvider->getRouteByName($uuid);
 
         $this->assertInstanceOf(Route::class, $foundRoute);
-        $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
+        $this->assertSame('/cms/routes/test-route', $foundRoute->getPath());
     }
 
     public function testGetRouteByNameUuidNotFound()
@@ -480,59 +481,6 @@ class RouteProviderTest extends TestCase
         $this->assertCount(1, $routes);
     }
 
-    private function doRouteDump($limit)
-    {
-        $from = $this->createMock(SourceFactory::class);
-        $from->expects($this->once())
-            ->method('document')
-            ->with(Route::class, 'd')
-        ;
-
-        $query = $this->createMock(Query::class);
-        $query->expects($this->once())->method('getResult');
-        if ($limit) {
-            $query
-                ->expects($this->once())
-                ->method('setMaxResults')
-                ->with($limit)
-            ;
-        } else {
-            $query
-                ->expects($this->never())
-                ->method('setMaxResults')
-            ;
-        }
-
-        $queryBuilder = $this->createMock(QueryBuilder::class);
-        $queryBuilder->expects($this->once())
-            ->method('from')
-            ->with('d')
-            ->will($this->returnValue($from))
-        ;
-        $queryBuilder->expects($this->once())
-            ->method('getQuery')
-            ->will($this->returnValue($query))
-        ;
-
-        $this->dmMock
-            ->expects($this->once())
-            ->method('createQueryBuilder')
-            ->will($this->returnValue($queryBuilder))
-        ;
-
-        $this->candidatesMock
-            ->expects($this->once())
-            ->method('restrictQuery')
-            ->with($queryBuilder)
-        ;
-
-        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
-        $routeProvider->setManagerName('default');
-        $routeProvider->setRouteCollectionLimit($limit);
-
-        $routeProvider->getRoutesByNames();
-    }
-
     public function testDumpRoutesNoLimit()
     {
         $this->doRouteDump(null);
@@ -557,7 +505,7 @@ class RouteProviderTest extends TestCase
         $routeProvider->setManagerName('default');
         $routeProvider->setRouteCollectionLimit(0);
 
-        $this->assertEquals([], $routeProvider->getRoutesByNames());
+        $this->assertSame([], $routeProvider->getRoutesByNames());
     }
 
     /**
@@ -618,11 +566,64 @@ class RouteProviderTest extends TestCase
 
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
         $this->assertInstanceOf(Route::class, $foundRoute);
-        $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
+        $this->assertSame('/cms/routes/test-route', $foundRoute->getPath());
 
         $routeProvider->setManagerName('new_manager');
         $newFoundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
         $this->assertInstanceOf(Route::class, $newFoundRoute);
-        $this->assertEquals('/cms/routes/new-route', $newFoundRoute->getPath());
+        $this->assertSame('/cms/routes/new-route', $newFoundRoute->getPath());
+    }
+
+    private function doRouteDump($limit)
+    {
+        $from = $this->createMock(SourceFactory::class);
+        $from->expects($this->once())
+            ->method('document')
+            ->with(Route::class, 'd')
+        ;
+
+        $query = $this->createMock(Query::class);
+        $query->expects($this->once())->method('getResult');
+        if ($limit) {
+            $query
+                ->expects($this->once())
+                ->method('setMaxResults')
+                ->with($limit)
+            ;
+        } else {
+            $query
+                ->expects($this->never())
+                ->method('setMaxResults')
+            ;
+        }
+
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder->expects($this->once())
+            ->method('from')
+            ->with('d')
+            ->will($this->returnValue($from))
+        ;
+        $queryBuilder->expects($this->once())
+            ->method('getQuery')
+            ->will($this->returnValue($query))
+        ;
+
+        $this->dmMock
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->will($this->returnValue($queryBuilder))
+        ;
+
+        $this->candidatesMock
+            ->expects($this->once())
+            ->method('restrictQuery')
+            ->with($queryBuilder)
+        ;
+
+        $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
+        $routeProvider->setManagerName('default');
+        $routeProvider->setRouteCollectionLimit($limit);
+
+        $routeProvider->getRoutesByNames();
     }
 }

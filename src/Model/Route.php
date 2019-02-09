@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -197,18 +199,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     }
 
     /**
-     * Helper method to check if an option is a boolean option to allow better forms.
-     *
-     * @param string $name
-     *
-     * @return bool whether $name is a boolean option
-     */
-    protected function isBooleanOption($name)
-    {
-        return in_array($name, ['add_format_pattern', 'add_locale_pattern']);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getPath()
@@ -246,7 +236,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
             ));
         }
 
-        return $this->setVariablePattern(substr($pattern, strlen($this->getStaticPrefix())));
+        return $this->setVariablePattern(substr($pattern, \strlen($this->getStaticPrefix())));
     }
 
     /**
@@ -283,5 +273,17 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         }
 
         return parent::compile();
+    }
+
+    /**
+     * Helper method to check if an option is a boolean option to allow better forms.
+     *
+     * @param string $name
+     *
+     * @return bool whether $name is a boolean option
+     */
+    protected function isBooleanOption($name)
+    {
+        return \in_array($name, ['add_format_pattern', 'add_locale_pattern'], true);
     }
 }

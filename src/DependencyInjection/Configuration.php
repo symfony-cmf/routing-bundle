@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -40,7 +42,6 @@ class Configuration implements ConfigurationInterface
         } else {
             $rootNode = $treeBuilder->getRootNode();
         }
-
 
         $this->addChainSection($rootNode);
         $this->addDynamicSection($rootNode);
@@ -100,7 +101,7 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->validate()
                                 ->ifTrue(function ($v) {
-                                    return count(array_filter($v, function ($persistence) {
+                                    return \count(array_filter($v, function ($persistence) {
                                         return $persistence['enabled'];
                                     })) > 1;
                                 })
