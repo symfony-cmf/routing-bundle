@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -85,7 +87,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         $collection = new RouteCollection();
 
-        if (0 === count($candidates)) {
+        if (0 === \count($candidates)) {
             return $collection;
         }
 
@@ -146,43 +148,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * Get all the routes in the repository that are under one of the
-     * configured prefixes. This respects the limit.
-     *
-     * @return array
-     */
-    private function getAllRoutes()
-    {
-        if (0 === $this->routeCollectionLimit) {
-            return [];
-        }
-
-        try {
-            /** @var $dm DocumentManager */
-            $dm = $this->getObjectManager();
-        } catch (RepositoryException $e) {
-            // special case: there is not even a database existing. this means there are no routes.
-            if ($e->getPrevious() instanceof TableNotFoundException) {
-                return [];
-            }
-
-            throw $e;
-        }
-        $qb = $dm->createQueryBuilder();
-
-        $qb->from('d')->document(SymfonyRoute::class, 'd');
-
-        $this->candidatesStrategy->restrictQuery($qb);
-
-        $query = $qb->getQuery();
-        if ($this->routeCollectionLimit) {
-            $query->setMaxResults($this->routeCollectionLimit);
-        }
-
-        return $query->getResult();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getRoutesByNames($names = null)
@@ -219,5 +184,42 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         }
 
         return $documents;
+    }
+
+    /**
+     * Get all the routes in the repository that are under one of the
+     * configured prefixes. This respects the limit.
+     *
+     * @return array
+     */
+    private function getAllRoutes()
+    {
+        if (0 === $this->routeCollectionLimit) {
+            return [];
+        }
+
+        try {
+            /** @var $dm DocumentManager */
+            $dm = $this->getObjectManager();
+        } catch (RepositoryException $e) {
+            // special case: there is not even a database existing. this means there are no routes.
+            if ($e->getPrevious() instanceof TableNotFoundException) {
+                return [];
+            }
+
+            throw $e;
+        }
+        $qb = $dm->createQueryBuilder();
+
+        $qb->from('d')->document(SymfonyRoute::class, 'd');
+
+        $this->candidatesStrategy->restrictQuery($qb);
+
+        $query = $qb->getQuery();
+        if ($this->routeCollectionLimit) {
+            $query->setMaxResults($this->routeCollectionLimit);
+        }
+
+        return $query->getResult();
     }
 }

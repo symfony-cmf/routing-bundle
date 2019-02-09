@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -32,14 +34,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class DynamicRouterTest extends BaseTestCase
 {
+    public const ROUTE_ROOT = '/test/routing';
     /**
      * @var ChainRouter
      */
     protected $router;
 
     protected $routeNamePrefix;
-
-    const ROUTE_ROOT = '/test/routing';
 
     public function setUp()
     {
@@ -103,8 +104,8 @@ class DynamicRouterTest extends BaseTestCase
         ksort($matches);
 
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
-        $this->assertEquals($expected, array_keys($matches));
-        $this->assertEquals('/test/routing/testroute/child', $matches[RouteObjectInterface::ROUTE_NAME]);
+        $this->assertSame($expected, array_keys($matches));
+        $this->assertSame('/test/routing/testroute/child', $matches[RouteObjectInterface::ROUTE_NAME]);
     }
 
     public function testMatchParameters()
@@ -122,7 +123,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         ksort($matches);
 
-        $this->assertEquals($expected, $matches);
+        $this->assertSame($expected, $matches);
     }
 
     public function testNoMatch()
@@ -160,7 +161,7 @@ class DynamicRouterTest extends BaseTestCase
         ksort($matches);
 
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
-        $this->assertEquals($expected, $matches);
+        $this->assertSame($expected, $matches);
     }
 
     public function testMatchFormat()
@@ -176,7 +177,7 @@ class DynamicRouterTest extends BaseTestCase
         ksort($matches);
 
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
-        $this->assertEquals($expected, $matches);
+        $this->assertSame($expected, $matches);
 
         $expected = [
             '_controller' => 'testController',
@@ -188,7 +189,7 @@ class DynamicRouterTest extends BaseTestCase
         ksort($matches);
 
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
-        $this->assertEquals($expected, $matches);
+        $this->assertSame($expected, $matches);
 
         $expected = [
             '_controller' => 'testJsonController',
@@ -200,7 +201,7 @@ class DynamicRouterTest extends BaseTestCase
         ksort($matches);
 
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
-        $this->assertEquals($expected, $matches);
+        $this->assertSame($expected, $matches);
     }
 
     public function testNoMatchingFormat()
@@ -230,7 +231,7 @@ class DynamicRouterTest extends BaseTestCase
             '_locale' => 'de',
             '_route' => self::ROUTE_ROOT.'/de',
         ];
-        $this->assertEquals(
+        $this->assertSame(
             $expected,
             $this->router->match('/de')
         );
@@ -239,7 +240,7 @@ class DynamicRouterTest extends BaseTestCase
             '_locale' => 'de',
             '_route' => self::ROUTE_ROOT.'/de/testroute',
         ];
-        $this->assertEquals(
+        $this->assertSame(
             $expected,
             $this->router->match('/de/testroute')
         );
@@ -248,7 +249,7 @@ class DynamicRouterTest extends BaseTestCase
             '_controller' => 'testController',
             '_route' => self::ROUTE_ROOT.'/es',
         ];
-        $this->assertEquals(
+        $this->assertSame(
             $expected,
             $this->router->match('/es')
         );
@@ -275,7 +276,7 @@ class DynamicRouterTest extends BaseTestCase
         ksort($matches);
 
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
-        $this->assertEquals($expected, $matches);
+        $this->assertSame($expected, $matches);
     }
 
     public function testEnhanceControllerByClass()
@@ -298,7 +299,7 @@ class DynamicRouterTest extends BaseTestCase
         ksort($matches);
 
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
-        $this->assertEquals($expected, $matches);
+        $this->assertSame($expected, $matches);
     }
 
     public function testEnhanceTemplateByClass()
@@ -329,10 +330,10 @@ class DynamicRouterTest extends BaseTestCase
         $matches = $this->router->matchRequest($request);
         ksort($matches);
 
-        $this->assertEquals($expected, $matches);
+        $this->assertSame($expected, $matches);
         $this->assertTrue($request->attributes->has(DynamicRouter::ROUTE_KEY));
         $this->assertTrue($request->attributes->has(DynamicRouter::CONTENT_TEMPLATE));
-        $this->assertEquals('TestBundle:Content:index.html.twig', $request->attributes->get(DynamicRouter::CONTENT_TEMPLATE));
+        $this->assertSame('TestBundle:Content:index.html.twig', $request->attributes->get(DynamicRouter::CONTENT_TEMPLATE));
     }
 
     public function testGenerate()
@@ -340,14 +341,14 @@ class DynamicRouterTest extends BaseTestCase
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute/child');
 
         $url = $this->router->generate($route, ['test' => 'value']);
-        $this->assertEquals('/testroute/child?test=value', $url);
+        $this->assertSame('/testroute/child?test=value', $url);
     }
 
     public function testGenerateAbsolute()
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute/child');
         $url = $this->router->generate($route, ['test' => 'value'], UrlGeneratorInterface::ABSOLUTE_URL);
-        $this->assertEquals('http://localhost/testroute/child?test=value', $url);
+        $this->assertSame('http://localhost/testroute/child?test=value', $url);
     }
 
     public function testGenerateParameters()
@@ -355,7 +356,7 @@ class DynamicRouterTest extends BaseTestCase
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
         $url = $this->router->generate($route, ['slug' => 'gen-slug', 'test' => 'value']);
-        $this->assertEquals('/testroute/gen-slug?test=value', $url);
+        $this->assertSame('/testroute/gen-slug?test=value', $url);
     }
 
     public function testGenerateParametersInvalid()
@@ -371,7 +372,7 @@ class DynamicRouterTest extends BaseTestCase
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
         $url = $this->router->generate($route, ['id' => 37]);
-        $this->assertEquals('/format/37', $url);
+        $this->assertSame('/format/37', $url);
     }
 
     public function testGenerateFormat()
@@ -379,7 +380,7 @@ class DynamicRouterTest extends BaseTestCase
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
         $url = $this->router->generate($route, ['id' => 37, '_format' => 'json']);
-        $this->assertEquals('/format/37.json', $url);
+        $this->assertSame('/format/37.json', $url);
     }
 
     public function testGenerateNoMatchingFormat()

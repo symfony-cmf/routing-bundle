@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -16,7 +18,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RouteTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/routing';
+    public const ROUTE_ROOT = '/test/routing';
 
     public function setUp()
     {
@@ -39,29 +41,29 @@ class RouteTest extends BaseTestCase
 
         $this->getDm()->persist($route);
         $this->getDm()->flush();
-        $this->assertEquals('/testroute', $route->getPath());
+        $this->assertSame('/testroute', $route->getPath());
 
         $this->getDm()->clear();
 
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
         $this->assertNotNull($route->getContent());
-        $this->assertEquals('/testroute', $route->getPath());
+        $this->assertSame('/testroute', $route->getPath());
 
-        $this->assertEquals('y', $route->getDefault('x'));
+        $this->assertSame('y', $route->getDefault('x'));
         $defaults = $route->getDefaults();
         $this->assertArrayHasKey('x', $defaults);
-        $this->assertEquals('y', $defaults['x']);
+        $this->assertSame('y', $defaults['x']);
 
         $requirements = $route->getRequirements();
         $this->assertArrayHasKey('testreq', $requirements);
-        $this->assertEquals('testregex', $requirements['testreq']);
+        $this->assertSame('testregex', $requirements['testreq']);
 
         $options = $route->getOptions();
         $this->assertArrayHasKey('test', $options);
-        $this->assertEquals('value', $options['test']);
+        $this->assertSame('value', $options['test']);
         $this->assertArrayHasKey('another', $options);
-        $this->assertEquals('value2', $options['another']);
+        $this->assertSame('value2', $options['another']);
     }
 
     public function testPersistEmptyOptions()
@@ -84,7 +86,7 @@ class RouteTest extends BaseTestCase
         $this->assertCount(0, $requirements);
 
         $options = $route->getOptions();
-        $this->assertTrue(1 >= count($options)); // there is a default option for the compiler
+        $this->assertTrue(1 >= \count($options)); // there is a default option for the compiler
 
         return $route;
     }
@@ -103,29 +105,29 @@ class RouteTest extends BaseTestCase
 
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/conditionroute');
 
-        $this->assertEquals('foobar', $route->getCondition());
+        $this->assertSame('foobar', $route->getCondition());
     }
 
     public function testRootRoute()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-        $this->assertEquals('/', $root->getPath());
+        $this->assertSame('/', $root->getPath());
     }
 
     public function testSetPath()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-        $this->assertEquals('/', $root->getStaticPrefix());
+        $this->assertSame('/', $root->getStaticPrefix());
         $root->setPath('/{test}');
-        $this->assertEquals('{test}', $root->getVariablePattern());
+        $this->assertSame('{test}', $root->getVariablePattern());
     }
 
     public function testSetPattern()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setVariablePattern('{test}');
-        $this->assertEquals('/{test}', $root->getPath());
-        $this->assertEquals('{test}', $root->getVariablePattern());
+        $this->assertSame('/{test}', $root->getPath());
+        $this->assertSame('{test}', $root->getVariablePattern());
     }
 
     /**
@@ -142,7 +144,7 @@ class RouteTest extends BaseTestCase
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setPrefix('/changed'); // simulate a problem with the prefix setter listener
         $this->expectException(\LogicException::class);
-        $this->assertEquals('/', $root->getPath());
+        $this->assertSame('/', $root->getPath());
     }
 
     public function testPrefixNonpersisted()
@@ -166,6 +168,6 @@ class RouteTest extends BaseTestCase
 
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
-        $this->assertEquals('/format.{_format}', $route->getPath());
+        $this->assertSame('/format.{_format}', $route->getPath());
     }
 }

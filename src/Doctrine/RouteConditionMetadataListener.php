@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -71,7 +73,7 @@ class RouteConditionMetadataListener implements EventSubscriber
                 'nullable' => true,
             ]);
         } else {
-            throw new \LogicException(sprintf('Class metadata was neither PHPCR nor ORM but %s', get_class($meta)));
+            throw new \LogicException(sprintf('Class metadata was neither PHPCR nor ORM but %s', \get_class($meta)));
         }
     }
 }

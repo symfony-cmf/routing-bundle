@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -26,11 +28,6 @@ class TemplatingValidatorPassTest extends AbstractCompilerPassTestCase
         $this->registerValidatorService();
     }
 
-    protected function registerCompilerPass(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(new TemplatingValidatorPass());
-    }
-
     /**
      * It should replace the validator class with the templating one and
      * provide the _templating_ service as second argument.
@@ -43,8 +40,8 @@ class TemplatingValidatorPassTest extends AbstractCompilerPassTestCase
 
         $definition = $this->container->getDefinition('cmf_routing.validator.route_defaults');
 
-        $this->assertEquals(RouteDefaultsTemplatingValidator::class, $definition->getClass());
-        $this->assertEquals(['foo', new Reference('templating')], $definition->getArguments());
+        $this->assertSame(RouteDefaultsTemplatingValidator::class, $definition->getClass());
+        $this->assertSame(['foo', new Reference('templating')], $definition->getArguments());
     }
 
     /**
@@ -57,8 +54,13 @@ class TemplatingValidatorPassTest extends AbstractCompilerPassTestCase
 
         $definition = $this->container->getDefinition('cmf_routing.validator.route_defaults');
 
-        $this->assertEquals(\stdClass::class, $definition->getClass());
-        $this->assertEquals(['foo', 'bar'], $definition->getArguments());
+        $this->assertSame(\stdClass::class, $definition->getClass());
+        $this->assertSame(['foo', 'bar'], $definition->getArguments());
+    }
+
+    protected function registerCompilerPass(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new TemplatingValidatorPass());
     }
 
     private function registerValidatorService()

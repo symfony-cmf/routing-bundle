@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -17,11 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class SetRouterPassTest extends AbstractCompilerPassTestCase
 {
-    protected function registerCompilerPass(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(new SetRouterPass());
-    }
-
     public function testMapperPassReplacesRouterAlias()
     {
         $this->container->setParameter('cmf_routing.replace_symfony_router', true);
@@ -38,5 +35,10 @@ class SetRouterPassTest extends AbstractCompilerPassTestCase
         $this->compile();
 
         $this->assertFalse($this->container->hasAlias('router'));
+    }
+
+    protected function registerCompilerPass(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new SetRouterPass());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -82,14 +84,6 @@ class DynamicRouterTest extends TestCase
         $this->router->setRequestStack($this->requestStack);
     }
 
-    private function assertRequestAttributes($request)
-    {
-        $this->assertTrue($request->attributes->has(DynamicRouter::CONTENT_KEY));
-        $this->assertEquals('bla', $request->attributes->get(DynamicRouter::CONTENT_KEY));
-        $this->assertTrue($request->attributes->has(DynamicRouter::CONTENT_TEMPLATE));
-        $this->assertEquals('template', $request->attributes->get(DynamicRouter::CONTENT_TEMPLATE));
-    }
-
     /**
      * @group legacy
      */
@@ -101,7 +95,7 @@ class DynamicRouterTest extends TestCase
         ;
 
         $parameters = $this->router->match('/foo');
-        $this->assertEquals(['foo' => 'bar'], $parameters);
+        $this->assertSame(['foo' => 'bar'], $parameters);
 
         $this->assertRequestAttributes($this->request);
     }
@@ -114,7 +108,7 @@ class DynamicRouterTest extends TestCase
         ;
 
         $parameters = $this->router->matchRequest($this->request);
-        $this->assertEquals(['foo' => 'bar'], $parameters);
+        $this->assertSame(['foo' => 'bar'], $parameters);
 
         $this->assertRequestAttributes($this->request);
     }
@@ -141,8 +135,16 @@ class DynamicRouterTest extends TestCase
         $router = new DynamicRouter($this->context, $this->matcher, $this->generator);
 
         $parameters = $router->matchRequest($this->request);
-        $this->assertEquals(['foo' => 'bar'], $parameters);
+        $this->assertSame(['foo' => 'bar'], $parameters);
 
         $this->assertRequestAttributes($this->request);
+    }
+
+    private function assertRequestAttributes($request)
+    {
+        $this->assertTrue($request->attributes->has(DynamicRouter::CONTENT_KEY));
+        $this->assertSame('bla', $request->attributes->get(DynamicRouter::CONTENT_KEY));
+        $this->assertTrue($request->attributes->has(DynamicRouter::CONTENT_TEMPLATE));
+        $this->assertSame('template', $request->attributes->get(DynamicRouter::CONTENT_TEMPLATE));
     }
 }

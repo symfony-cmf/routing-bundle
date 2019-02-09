@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -87,7 +89,7 @@ class PrefixCandidates extends Candidates
     public function restrictQuery($queryBuilder)
     {
         $prefixes = $this->getPrefixes();
-        if (in_array('', $prefixes) || !count($prefixes)) {
+        if (\in_array('', $prefixes, true) || !\count($prefixes)) {
             return;
         }
 
@@ -110,7 +112,7 @@ class PrefixCandidates extends Candidates
 
         $locale = $this->determineLocale($url);
         if ($locale) {
-            $url = substr($url, strlen($locale) + 1);
+            $url = substr($url, \strlen($locale) + 1);
             foreach ($this->getPrefixes() as $prefix) {
                 $candidates = array_unique(array_merge($candidates, $this->getCandidatesFor($url, $prefix)));
             }

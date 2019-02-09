@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -21,7 +23,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/routing';
+    public const ROUTE_ROOT = '/test/routing';
 
     /** @var RouteProvider */
     private $repository;
@@ -32,30 +34,6 @@ class RouteProviderTest extends BaseTestCase
         $this->db('PHPCR')->createTestNode();
         $this->createRoute(self::ROUTE_ROOT);
         $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
-    }
-
-    private function buildRoutes()
-    {
-        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-
-        $route = new Route();
-        $route->setPosition($root, 'testroute');
-        $route->setDefault('_format', 'html');
-        $this->getDm()->persist($route);
-
-        // smuggle a non-route thing into the repository
-        $noroute = new Generic();
-        $noroute->setParentDocument($route);
-        $noroute->setNodename('noroute');
-        $this->getDm()->persist($noroute);
-
-        $childroute = new Route();
-        $childroute->setPosition($noroute, 'child');
-        $childroute->setDefault('_format', 'json');
-        $this->getDm()->persist($childroute);
-
-        $this->getDm()->flush();
-        $this->getDm()->clear();
     }
 
     public function testGetRouteCollectionForRequest()
@@ -69,17 +47,17 @@ class RouteProviderTest extends BaseTestCase
         $iterator = $routes->getIterator();
 
         $this->assertTrue($iterator->valid());
-        $this->assertEquals(self::ROUTE_ROOT.'/testroute/noroute/child', $iterator->key());
-        $this->assertEquals('json', $iterator->current()->getDefault('_format'));
+        $this->assertSame(self::ROUTE_ROOT.'/testroute/noroute/child', $iterator->key());
+        $this->assertSame('json', $iterator->current()->getDefault('_format'));
 
         $iterator->next();
         $this->assertTrue($iterator->valid());
-        $this->assertEquals(self::ROUTE_ROOT.'/testroute', $iterator->key());
-        $this->assertEquals('html', $iterator->current()->getDefault('_format'));
+        $this->assertSame(self::ROUTE_ROOT.'/testroute', $iterator->key());
+        $this->assertSame('html', $iterator->current()->getDefault('_format'));
 
         $iterator->next();
         $this->assertTrue($iterator->valid());
-        $this->assertEquals(self::ROUTE_ROOT, $iterator->key());
+        $this->assertSame(self::ROUTE_ROOT, $iterator->key());
         $this->assertNull($iterator->current()->getDefault('_format'));
     }
 
@@ -94,17 +72,17 @@ class RouteProviderTest extends BaseTestCase
         $iterator = $routes->getIterator();
 
         $this->assertTrue($iterator->valid());
-        $this->assertEquals(self::ROUTE_ROOT.'/testroute/noroute/child', $iterator->key());
-        $this->assertEquals('json', $iterator->current()->getDefault('_format'));
+        $this->assertSame(self::ROUTE_ROOT.'/testroute/noroute/child', $iterator->key());
+        $this->assertSame('json', $iterator->current()->getDefault('_format'));
 
         $iterator->next();
         $this->assertTrue($iterator->valid());
-        $this->assertEquals(self::ROUTE_ROOT.'/testroute', $iterator->key());
-        $this->assertEquals('html', $iterator->current()->getDefault('_format'));
+        $this->assertSame(self::ROUTE_ROOT.'/testroute', $iterator->key());
+        $this->assertSame('html', $iterator->current()->getDefault('_format'));
 
         $iterator->next();
         $this->assertTrue($iterator->valid());
-        $this->assertEquals(self::ROUTE_ROOT, $iterator->key());
+        $this->assertSame(self::ROUTE_ROOT, $iterator->key());
         $this->assertNull($iterator->current()->getDefault('_format'));
     }
 
@@ -120,7 +98,7 @@ class RouteProviderTest extends BaseTestCase
         $iterator = $routes->getIterator();
 
         $this->assertTrue($iterator->valid());
-        $this->assertEquals(self::ROUTE_ROOT, $iterator->key());
+        $this->assertSame(self::ROUTE_ROOT, $iterator->key());
     }
 
     /**
@@ -147,5 +125,29 @@ class RouteProviderTest extends BaseTestCase
         $routes = $this->repository->getRoutesByNames($routeNames);
         $this->assertCount(2, $routes);
         $this->assertContainsOnlyInstancesOf(RouteObjectInterface::class, $routes);
+    }
+
+    private function buildRoutes()
+    {
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
+
+        $route = new Route();
+        $route->setPosition($root, 'testroute');
+        $route->setDefault('_format', 'html');
+        $this->getDm()->persist($route);
+
+        // smuggle a non-route thing into the repository
+        $noroute = new Generic();
+        $noroute->setParentDocument($route);
+        $noroute->setNodename('noroute');
+        $this->getDm()->persist($noroute);
+
+        $childroute = new Route();
+        $childroute->setPosition($noroute, 'child');
+        $childroute->setDefault('_format', 'json');
+        $this->getDm()->persist($childroute);
+
+        $this->getDm()->flush();
+        $this->getDm()->clear();
     }
 }

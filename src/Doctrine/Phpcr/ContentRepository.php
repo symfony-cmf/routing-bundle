@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -38,7 +40,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
      */
     public function getContentId($content)
     {
-        if (!is_object($content)) {
+        if (!\is_object($content)) {
             return;
         }
 

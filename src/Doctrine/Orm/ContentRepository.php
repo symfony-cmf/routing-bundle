@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -27,18 +29,6 @@ use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 class ContentRepository extends DoctrineProvider implements ContentRepositoryInterface
 {
     /**
-     * Determine target class and id for this content.
-     *
-     * @param mixed $identifier as produced by getContentId
-     *
-     * @return array with model first element, id second
-     */
-    protected function getModelAndId($identifier)
-    {
-        return explode(':', $identifier, 2);
-    }
-
-    /**
      * {@inheritdoc}
      *
      * @param string $id The ID contains both model name and id, separated by a colon
@@ -55,15 +45,15 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
      */
     public function getContentId($content)
     {
-        if (!is_object($content)) {
+        if (!\is_object($content)) {
             return;
         }
 
         try {
-            $class = get_class($content);
+            $class = \get_class($content);
             $meta = $this->getObjectManager()->getClassMetadata($class);
             $ids = $meta->getIdentifierValues($content);
-            if (1 !== count($ids)) {
+            if (1 !== \count($ids)) {
                 throw new \Exception(sprintf('Class "%s" must use only one identifier', $class));
             }
 
@@ -71,5 +61,17 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
         } catch (\Exception $e) {
             return;
         }
+    }
+
+    /**
+     * Determine target class and id for this content.
+     *
+     * @param mixed $identifier as produced by getContentId
+     *
+     * @return array with model first element, id second
+     */
+    protected function getModelAndId($identifier)
+    {
+        return explode(':', $identifier, 2);
     }
 }

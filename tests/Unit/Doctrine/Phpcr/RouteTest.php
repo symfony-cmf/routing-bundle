@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -41,12 +43,12 @@ class RouteTest extends TestCase
 
         $res = $this->route->getRouteChildren();
         $this->assertCount(1, $res);
-        $this->assertEquals('child route1', $res[0]->getName());
+        $this->assertSame('child route1', $res[0]->getName());
     }
 
     public function testGetRouteChildrenNull()
     {
         $res = $this->route->getRouteChildren();
-        $this->assertEquals([], $res);
+        $this->assertSame([], $res);
     }
 }

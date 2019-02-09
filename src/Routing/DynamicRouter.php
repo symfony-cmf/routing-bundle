@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -30,19 +32,19 @@ class DynamicRouter extends BaseDynamicRouter
     /**
      * key for the request attribute that contains the route document.
      */
-    const ROUTE_KEY = 'routeDocument';
+    public const ROUTE_KEY = 'routeDocument';
 
     /**
      * key for the request attribute that contains the content document if this
      * route has one associated.
      */
-    const CONTENT_KEY = 'contentDocument';
+    public const CONTENT_KEY = 'contentDocument';
 
     /**
      * key for the request attribute that contains the template this document
      * wants to use.
      */
-    const CONTENT_TEMPLATE = 'template';
+    public const CONTENT_TEMPLATE = 'template';
 
     /**
      * @var RequestStack
@@ -72,6 +74,33 @@ class DynamicRouter extends BaseDynamicRouter
         $defaults = parent::matchRequest($request);
 
         return $this->cleanDefaults($defaults, $request);
+    }
+
+    /**
+     * Set the request stack so that we can find the current request.
+     *
+     * @param RequestStack $requestStack
+     */
+    public function setRequestStack(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+
+    /**
+     * Get the current request from the request stack.
+     *
+     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     *
+     * @return Request
+     */
+    public function getRequest()
+    {
+        $currentRequest = $this->requestStack->getCurrentRequest();
+        if (!$currentRequest) {
+            throw new ResourceNotFoundException('There is no request in the request stack');
+        }
+
+        return $currentRequest;
     }
 
     /**
@@ -108,32 +137,5 @@ class DynamicRouter extends BaseDynamicRouter
         }
 
         return $defaults;
-    }
-
-    /**
-     * Set the request stack so that we can find the current request.
-     *
-     * @param RequestStack $requestStack
-     */
-    public function setRequestStack(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-    }
-
-    /**
-     * Get the current request from the request stack.
-     *
-     * @return Request
-     *
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
-     */
-    public function getRequest()
-    {
-        $currentRequest = $this->requestStack->getCurrentRequest();
-        if (!$currentRequest) {
-            throw new ResourceNotFoundException('There is no request in the request stack');
-        }
-
-        return $currentRequest;
     }
 }

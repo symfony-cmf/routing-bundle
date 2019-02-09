@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Symfony CMF package.
  *
@@ -17,11 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ValidationPassTest extends AbstractCompilerPassTestCase
 {
-    protected function registerCompilerPass(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(new ValidationPass());
-    }
-
     /**
      * It should register the PHPCR documents for validation only when:
      *  - the PHP backend is enabled AND
@@ -79,5 +76,10 @@ class ValidationPassTest extends AbstractCompilerPassTestCase
             [false, true, false],
             [false, false, false],
         ];
+    }
+
+    protected function registerCompilerPass(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new ValidationPass());
     }
 }
