@@ -35,6 +35,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class DynamicRouterTest extends BaseTestCase
 {
     public const ROUTE_ROOT = '/test/routing';
+
     /**
      * @var ChainRouter
      */
