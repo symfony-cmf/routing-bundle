@@ -5,3 +5,4 @@ tests/Fixtures/App/var/
 .phpunit/
 build/
 .roles/
+/.php_cs
