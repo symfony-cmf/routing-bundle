@@ -2,3 +2,6 @@ phpunit.xml
 composer.lock
 vendor
 tests/Fixtures/App/var/
+.phpunit/
+build/
+.roles/
