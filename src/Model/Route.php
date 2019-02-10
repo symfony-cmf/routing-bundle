@@ -228,7 +228,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function setPath($pattern)
     {
-        if (0 !== strpos($pattern, $this->getStaticPrefix())) {
+        if (null === $pattern || 0 !== strpos($pattern, $this->getStaticPrefix())) {
             throw new \InvalidArgumentException(sprintf(
                 'You can not set pattern "%s" for this route with a static prefix of "%s". First update the static prefix or directly use setVariablePattern.',
                 $pattern,
