@@ -124,7 +124,7 @@ class LocaleListenerTest extends TestCase
         $originalArgs = clone $moveArgs;
 
         $this->listener->postMove($moveArgs);
-        $this->assertSame($originalArgs, $moveArgs);
+        $this->assertEquals($originalArgs, $moveArgs);
     }
 
     public function testMoved()
