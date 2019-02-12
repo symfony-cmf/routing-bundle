@@ -64,8 +64,11 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getCandidates(Request $request)
     {
-        if (false !== strpos($request->getPathInfo(), ':')) {
-            return [];
+        $invalidCharacters = [':', '[', ']'];
+        foreach ($invalidCharacters as $invalidCharacter) {
+            if (false !== strpos($request->getPathInfo(), $invalidCharacter)) {
+                return [];
+            }
         }
 
         return $this->candidatesStrategy->getCandidates($request);
