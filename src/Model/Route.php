@@ -226,9 +226,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * When using PHPCR-ODM, make sure to persist the route before calling this
      * to have the id field initialized.
      */
-    public function setPath(string $pattern)
+    public function setPath($pattern)
     {
-        if (0 !== strpos($pattern, $this->getStaticPrefix())) {
+        if (!is_string($pattern) || 0 !== strpos($pattern, $this->getStaticPrefix())) {
             throw new \InvalidArgumentException(sprintf(
                 'You can not set pattern "%s" for this route with a static prefix of "%s". First update the static prefix or directly use setVariablePattern.',
                 $pattern,

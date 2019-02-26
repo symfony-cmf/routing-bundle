@@ -4,7 +4,12 @@ Changelog
 2.2.0(ureleased)
 ---------------
 
-* **YYYY-MM-DD**:
+
+* introduce PHPCS for style checks again
+* Symfony 4.2 combustibility verified through tests, Symfony 4.3 allowed to break but on watch in tests
+* drop Symfony 2.8 support
+* make use of PHPUnit 6
+* **2015-02-26**:
 
 2.1.1
 -----
