@@ -186,7 +186,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function getOptions()
     {
         $options = parent::getOptions();
-        if (!array_key_exists('compiler_class', $options)) {
+        if (!\array_key_exists('compiler_class', $options)) {
             $options['compiler_class'] = RouteCompiler::class;
         }
         foreach ($options as $key => &$value) {
@@ -228,7 +228,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     public function setPath($pattern)
     {
-        if (!is_string($pattern) || 0 !== strpos($pattern, $this->getStaticPrefix())) {
+        if (!\is_string($pattern) || 0 !== strpos($pattern, $this->getStaticPrefix())) {
             throw new \InvalidArgumentException(sprintf(
                 'You can not set pattern "%s" for this route with a static prefix of "%s". First update the static prefix or directly use setVariablePattern.',
                 $pattern,

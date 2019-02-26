@@ -79,7 +79,7 @@ class CmfRoutingExtension extends Extension
     {
         $loader->load('form-type.xml');
 
-        if (array_key_exists('dynamic', $config)) {
+        if (\array_key_exists('dynamic', $config)) {
             $routeTypeTypeDefinition = $container->getDefinition('cmf_routing.route_type_form_type');
 
             foreach (array_keys($config['dynamic']['controllers_by_type']) as $routeType) {
