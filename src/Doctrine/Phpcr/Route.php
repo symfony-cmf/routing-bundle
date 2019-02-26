@@ -233,7 +233,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function generateStaticPrefix($id, $idPrefix)
     {
-        if ('' === $idPrefix) {
+        if (null === $idPrefix || '' === $idPrefix) {
             throw new \LogicException('Can not determine the prefix. Either this is a new, unpersisted document or the listener that calls setPrefix is not set up correctly.');
         }
 
