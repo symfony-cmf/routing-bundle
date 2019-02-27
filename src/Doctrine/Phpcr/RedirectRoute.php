@@ -224,7 +224,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
             throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$id'");
         }
 
-        $url = strpos($id, \strlen($idPrefix));
+        $url = substr($id, \strlen($idPrefix));
         if ('' === $url) {
             $url = '/';
         }
