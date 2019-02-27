@@ -241,7 +241,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
             throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$id'");
         }
 
-        $url = substr($id, \strlen($idPrefix));
+        $url = strpos($id, \strlen($idPrefix));
         if (!$url) {
             $url = '/';
         }

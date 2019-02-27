@@ -236,7 +236,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
             ));
         }
 
-        return $this->setVariablePattern(substr($pattern, \strlen($this->getStaticPrefix())));
+        return $this->setVariablePattern(strpos($pattern, \strlen($this->getStaticPrefix())));
     }
 
     /**

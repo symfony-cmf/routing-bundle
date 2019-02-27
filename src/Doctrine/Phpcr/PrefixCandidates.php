@@ -112,7 +112,7 @@ class PrefixCandidates extends Candidates
 
         $locale = $this->determineLocale($url);
         if ($locale) {
-            $url = substr($url, \strlen($locale) + 1);
+            $url = strpos($url, \strlen($locale) + 1);
             foreach ($this->getPrefixes() as $prefix) {
                 $candidates = array_unique(array_merge($candidates, $this->getCandidatesFor($url, $prefix)));
             }
