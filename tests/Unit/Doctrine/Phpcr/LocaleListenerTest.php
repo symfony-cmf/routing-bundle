@@ -61,7 +61,7 @@ class LocaleListenerTest extends TestCase
         $originalArgs = clone $args;
         $this->listener->postLoad($args);
         $this->listener->postPersist($args);
-        $this->assertSame($originalArgs, $args);
+        $this->assertEquals($originalArgs, $args);
     }
 
     public function testNoPrefixMatch()

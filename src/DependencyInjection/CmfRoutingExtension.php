@@ -71,7 +71,7 @@ class CmfRoutingExtension extends Extension
         // add the routers defined in the configuration mapping
         $router = $container->getDefinition('cmf_routing.router');
         foreach ($config['chain']['routers_by_id'] as $id => $priority) {
-            $router->addMethodCall('add', [new Reference($id), trim($priority)]);
+            $router->addMethodCall('add', [new Reference($id), trim((string) $priority)]);
         }
     }
 

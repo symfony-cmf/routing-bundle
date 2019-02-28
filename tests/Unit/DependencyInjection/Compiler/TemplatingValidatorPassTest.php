@@ -40,8 +40,8 @@ class TemplatingValidatorPassTest extends AbstractCompilerPassTestCase
 
         $definition = $this->container->getDefinition('cmf_routing.validator.route_defaults');
 
-        $this->assertSame(RouteDefaultsTemplatingValidator::class, $definition->getClass());
-        $this->assertSame(['foo', new Reference('templating')], $definition->getArguments());
+        $this->assertEquals(RouteDefaultsTemplatingValidator::class, $definition->getClass());
+        $this->assertEquals(['foo', new Reference('templating')], $definition->getArguments());
     }
 
     /**
