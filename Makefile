@@ -26,11 +26,10 @@ list:
 	@echo 'unit_tests:               will run unit tests only'
 	@echo 'functional_tests_phpcr:  will run functional tests with PHPCR'
 	@echo 'functional_tests_orm:    will run functional tests with ORM'
-	@echo 'test_installation:    will run installation test'
+
 include ${TESTING_SCRIPTS_DIR}/make/unit_tests.mk
 include ${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk
 include ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk
-include ${TESTING_SCRIPTS_DIR}/make/test_installation.mk
 
 .PHONY: test
 test: unit_tests functional_tests_phpcr functional_tests_orm

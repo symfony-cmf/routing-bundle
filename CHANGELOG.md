@@ -1,6 +1,16 @@
 Changelog
 =========
 
+2.2.0(ureleased)
+---------------
+
+* **YYYY-MM-DD**:
+
+2.1.1
+-----
+
+* Make redirect controller service public to avoid errors while handling redirects.
+
 2.1.0
 -----
 

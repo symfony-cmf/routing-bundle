@@ -22,11 +22,11 @@
     },
     "require-dev": {
         "doctrine/phpcr-odm": "^1.4|^2.0",
-        "symfony/phpunit-bridge": "^3.3 || ^4.0",
-        "matthiasnoback/symfony-dependency-injection-test": "^1.0",
-        "matthiasnoback/symfony-config-test": "^2.2",
+        "symfony/phpunit-bridge": "^4.2.2",
+        "matthiasnoback/symfony-dependency-injection-test": "^2.3.1",
+        "matthiasnoback/symfony-config-test": "^3.1.1",
         "doctrine/orm": "^2.5",
-        "symfony-cmf/testing": "^2.1.0",
+        "symfony-cmf/testing": "^2.1.11",
         "doctrine/data-fixtures": "^1.0.0",
         "symfony/validator": "^2.8 || ^3.3 || ^4.0"
     },
@@ -37,7 +37,8 @@
     },
     "conflict": {
         "doctrine/phpcr-odm": "<1.4",
-        "phpunit/phpunit": "<5.7"
+        "twig/twig": "<2",
+        "phpunit/phpunit": "<6"
     },
     "autoload": {
         "psr-4": {
@@ -51,7 +52,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1-dev"
+            "dev-master": "2.x-dev"
         }
     }
 }

@@ -118,7 +118,7 @@ class PrefixCandidates extends Candidates
 
         // filter out things like double // or trailing / - this would trigger an exception on the document manager.
         foreach ($candidates as $key => $candidate) {
-            if (!PathHelper::assertValidAbsolutePath($candidate, false, false)) {
+            if (!$this->isCandidateValid($candidate)) {
                 unset($candidates[$key]);
             }
         }
@@ -164,6 +164,30 @@ class PrefixCandidates extends Candidates
     public function setManagerName($manager)
     {
         $this->managerName = $manager;
+    }
+
+    /**
+     * @param string $candidate The candidate path to check
+     *
+     * @return bool
+     */
+    protected function isCandidateValid($candidate)
+    {
+        // Candidates cannot start or end with a space in Jackrabbit.
+        if (' ' === \substr($candidate, 0, 1) || ' ' === \substr($candidate, -1)) {
+            return false;
+        }
+
+        // Jackrabbit does not allow spaces before or after the path separator.
+        if (false !== \strpos($candidate, ' /') || false !== \strpos($candidate, '/ ')) {
+            return false;
+        }
+
+        if (!PathHelper::assertValidAbsolutePath($candidate, false, false)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

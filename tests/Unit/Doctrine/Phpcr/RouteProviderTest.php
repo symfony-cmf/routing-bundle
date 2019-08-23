@@ -19,41 +19,44 @@ use Doctrine\ODM\PHPCR\Query\Builder\SourceFactory;
 use Doctrine\ODM\PHPCR\Query\Query;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use PHPCR\Util\UUIDHelper;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteProviderTest extends \PHPUnit_Framework_TestCase
+class RouteProviderTest extends TestCase
 {
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var ManagerRegistry|MockObject
      */
     private $managerRegistryMock;
 
     /**
-     * @var PrefixCandidates|\PHPUnit_Framework_MockObject_MockObject
+     * @var PrefixCandidates|MockObject
      */
     protected $candidatesMock;
 
     /**
-     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentManager|MockObject
      */
     protected $dmMock;
 
     /**
-     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentManager|MockObject
      */
     protected $dm2Mock;
 
     /**
-     * @var Route|\PHPUnit_Framework_MockObject_MockObject
+     * @var Route|MockObject
      */
     protected $routeMock;
 
     /**
-     * @var Route|\PHPUnit_Framework_MockObject_MockObject
+     * @var Route|MockObject
      */
     protected $route2Mock;
 
@@ -196,9 +199,6 @@ class RouteProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
-     */
     public function testGetRouteByNameUuidNotFound()
     {
         $uuid = UUIDHelper::generateUUID();
@@ -213,12 +213,10 @@ class RouteProviderTest extends \PHPUnit_Framework_TestCase
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
 
+        $this->expectException(RouteNotFoundException::class);
         $routeProvider->getRouteByName($uuid);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
-     */
     public function testGetRouteByNameUuidNotCandidate()
     {
         $uuid = UUIDHelper::generateUUID();
@@ -256,12 +254,10 @@ class RouteProviderTest extends \PHPUnit_Framework_TestCase
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
 
+        $this->expectException(RouteNotFoundException::class);
         $routeProvider->getRouteByName($uuid);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
-     */
     public function testGetRouteByNameNotCandidate()
     {
         $this->dmMock
@@ -278,12 +274,11 @@ class RouteProviderTest extends \PHPUnit_Framework_TestCase
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
+
+        $this->expectException(RouteNotFoundException::class);
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
-     */
     public function testGetRouteByNameNotFound()
     {
         $this->dmMock
@@ -302,12 +297,11 @@ class RouteProviderTest extends \PHPUnit_Framework_TestCase
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
+
+        $this->expectException(RouteNotFoundException::class);
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\RouteNotFoundException
-     */
     public function testGetRouteByNameNoRoute()
     {
         $this->dmMock
@@ -325,6 +319,8 @@ class RouteProviderTest extends \PHPUnit_Framework_TestCase
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $routeProvider->setManagerName('default');
+
+        $this->expectException(RouteNotFoundException::class);
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 

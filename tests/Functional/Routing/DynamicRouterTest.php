@@ -20,6 +20,9 @@ use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 use Symfony\Cmf\Component\Routing\ChainRouter;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -122,17 +125,12 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals($expected, $matches);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
-     */
     public function testNoMatch()
     {
+        $this->expectException(ResourceNotFoundException::class);
         $this->router->matchRequest(Request::create('/testroute/child/123a'));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\MethodNotAllowedException
-     */
     public function testNotAllowed()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
@@ -145,6 +143,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->getDm()->persist($route);
         $this->getDm()->flush();
 
+        $this->expectException(MethodNotAllowedException::class);
         $this->router->matchRequest(Request::create('/notallowed', 'POST'));
     }
 
@@ -204,11 +203,9 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals($expected, $matches);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\ResourceNotFoundException
-     */
     public function testNoMatchingFormat()
     {
+        $this->expectException(ResourceNotFoundException::class);
         $this->router->matchRequest(Request::create('/format/48.xml'));
     }
 
@@ -361,13 +358,11 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals('/testroute/gen-slug?test=value', $url);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
-     */
     public function testGenerateParametersInvalid()
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
+        $this->expectException(InvalidParameterException::class);
         $this->router->generate($route, ['slug' => 'gen-slug', 'id' => 'nonumber']);
     }
 
@@ -387,13 +382,11 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals('/format/37.json', $url);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
-     */
     public function testGenerateNoMatchingFormat()
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
+        $this->expectException(InvalidParameterException::class);
         $this->router->generate($route, ['id' => 37, '_format' => 'xyz']);
     }
 }
