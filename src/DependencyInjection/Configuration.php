@@ -33,8 +33,13 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $root = $treeBuilder->root('cmf_routing');
+        $treeBuilder = new TreeBuilder('cmf_routing');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $root = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $root = $treeBuilder->root('cmf_routing');
+        }
 
         $this->addChainSection($root);
         $this->addDynamicSection($root);
