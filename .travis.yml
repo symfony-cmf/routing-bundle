@@ -32,6 +32,7 @@ env:
     - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
     - SYMFONY_PHPUNIT_VERSION=6
     - TEST_INSTALLATION=false
+    - COMPOSER_MEMORY_LIMIT=-1
 
 matrix:
   include:
