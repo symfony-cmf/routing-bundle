@@ -7,7 +7,7 @@
 ############################################################################
 # This file is part of the Symfony CMF package.                            #
 #                                                                          #
-# (c) 2011-2017 Symfony CMF                                                #
+# (c) Symfony CMF                                                          #
 #                                                                          #
 # For the full copyright and license information, please view the LICENSE  #
 # file that was distributed with this source code.                         #
@@ -23,7 +23,7 @@ PACKAGE=symfony-cmf/routing-bundle
 export KERNEL_CLASS=Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
 list:
 	@echo 'test:                    will run all tests'
-	@echo 'unit_tests:               will run unit tests only'
+	@echo 'unit_tests:              will run unit tests only'
 	@echo 'functional_tests_phpcr:  will run functional tests with PHPCR'
 	@echo 'functional_tests_orm:    will run functional tests with ORM'
 

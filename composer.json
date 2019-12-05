@@ -17,7 +17,7 @@
     "require": {
         "php": "^7.1",
         "symfony-cmf/routing": "^2.1.0",
-        "symfony/framework-bundle": "^2.8 || ^3.3 || ^4.0",
+        "symfony/framework-bundle": "^3.4 || ^4.3",
         "twig/twig": "^1.35 || ^2.4.4"
     },
     "require-dev": {
@@ -26,9 +26,11 @@
         "matthiasnoback/symfony-dependency-injection-test": "^2.3.1",
         "matthiasnoback/symfony-config-test": "^3.1.1",
         "doctrine/orm": "^2.5",
-        "symfony-cmf/testing": "^2.1.11",
+        "symfony-cmf/testing": "^3@dev",
         "doctrine/data-fixtures": "^1.0.0",
-        "symfony/validator": "^2.8 || ^3.3 || ^4.0"
+        "symfony/form": "^3.4 || ^4.3",
+        "symfony/translation": "^3.4 || ^4.3",
+        "symfony/validator": "^3.4 || ^4.3"
     },
     "suggest": {
         "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents (^1.4)",

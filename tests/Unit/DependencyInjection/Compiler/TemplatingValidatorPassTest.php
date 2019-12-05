@@ -16,11 +16,16 @@ use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\TemplatingVali
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsTemplatingValidator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Templating\EngineInterface;
 
 class TemplatingValidatorPassTest extends AbstractCompilerPassTestCase
 {
     public function setUp()
     {
+        if (!\class_exists(EngineInterface::class)) {
+            $this->markTestSkipped();
+        }
+
         parent::setUp();
 
         $this->registerValidatorService();
