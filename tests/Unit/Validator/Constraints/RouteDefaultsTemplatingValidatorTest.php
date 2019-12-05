@@ -11,14 +11,23 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Validator\Constraints;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsTemplatingValidator;
+use Symfony\Component\Templating\EngineInterface;
 
 class RouteDefaultsTemplatingValidatorTest extends RouteDefaultsValidatorTest
 {
     protected function mockEngine()
     {
         return $this->createMock(EngineInterface::class);
+    }
+
+    protected function setUp()
+    {
+        if (!\class_exists(EngineInterface::class)) {
+            $this->markTestSkipped();
+        }
+
+        parent::setUp();
     }
 
     protected function createValidator()
