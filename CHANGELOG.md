@@ -6,6 +6,7 @@ Changelog
 
 * Autowiring support for ChainRouterInterface
 * Fix Symfony deprecations and raise lowest versions to 3.4 || 4.3
+* Allow installation with Twig 3
 * Fix PHPCR route candidates handling for PHPCR node name edge cases
 
 2.1.1
