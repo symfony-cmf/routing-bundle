@@ -11,5 +11,6 @@
                 <argument type="service" id="router.request_context" />
             </call>
         </service>
+        <service id="Symfony\Cmf\Component\Routing\ChainRouterInterface" alias='cmf_routing.router'/>
     </services>
 </container>
