@@ -52,7 +52,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * This field is not persisted in storage.
      *
-     * @var string
+     * @var string|null
      */
     protected $idPrefix;
 
@@ -231,7 +231,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function generateStaticPrefix($id, $idPrefix)
     {
-        if ('' === $idPrefix) {
+        if ('' === $idPrefix || null === $idPrefix) {
             throw new \LogicException('Can not determine the prefix. Either this is a new, unpersisted document or the listener that calls setPrefix is not set up correctly.');
         }
 
