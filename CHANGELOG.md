@@ -8,6 +8,8 @@ Changelog
 * Fix Symfony deprecations and raise lowest versions to 3.4 || 4.3
 * Allow installation with Twig 3
 * Fix PHPCR route candidates handling for PHPCR node name edge cases
+* Implemented redirect route feature for the Doctrine ORM model
+* Removed the name for staticPrefix index on the Route model due to name colision when the model is inherited by RediretRoute model
 
 2.1.1
 -----

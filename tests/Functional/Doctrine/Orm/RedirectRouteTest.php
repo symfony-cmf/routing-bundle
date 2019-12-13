@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2017 Symfony CMF
+ * (c) Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,13 +11,16 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
-use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
-use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
-use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\RedirectRoute;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RedirectRouteTest extends OrmTestCase
 {
     private $repository;
+
+    private $controller;
 
     public function setUp()
     {
@@ -26,6 +29,7 @@ class RedirectRouteTest extends OrmTestCase
         $this->clearDb(RedirectRoute::class);
 
         $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
+        $this->controller = new RedirectController($this->getContainer()->get('router'));
     }
 
     public function testRedirectDoctrine()
@@ -33,26 +37,23 @@ class RedirectRouteTest extends OrmTestCase
         $route = $this->createRoute('route1', '/test');
 
         $redirectRouteDoc = new RedirectRoute();
-        $redirectRouteDoc->setRouteName("redirect1");
+        $redirectRouteDoc->setRouteName('redirect1');
         $redirectRouteDoc->setRouteTarget($route);
         $redirectRouteDoc->setPermanent(true);
 
+        $this->getDm()->persist($redirectRouteDoc);
         $this->getDm()->flush();
 
-        $redirectRoute = new Route();
-        $redirectRoute->setName("redirect1");
-        $redirectRoute->setStaticPrefix('/redirect');
+        $redirectRoute = $this->createRoute('redirect1', '/redirect');
         $redirectRoute->setContent($redirectRouteDoc);
 
         $this->getDm()->flush();
         $this->getDm()->clear();
 
-        $route1 = $this->repository->getRouteByName('route1');
-        $redirect1 = $this->repository->getRouteByName('redirect1');
-        $this->assertInstanceOf(Route::class, $route1);
-        $this->assertInstanceOf(RedirectRouteInterface::class, $redirect1);
+        $response = $this->controller->redirectAction($redirectRoute->getContent());
 
-        $this->assertSame($route1, $redirect1->getContent()->getRouteTarget());
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame(301, $response->getStatusCode());
+        $this->assertSame('http://localhost/test', $response->getTargetUrl());
     }
-
 }
