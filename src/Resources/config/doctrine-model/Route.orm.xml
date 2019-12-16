@@ -8,7 +8,7 @@
         <field name="staticPrefix" type="string" nullable="true" column="staticPrefix"/>
 
         <indexes>
-            <index name="prefix_idx" columns="staticPrefix"/>
+            <index columns="staticPrefix"/>
         </indexes>
     </mapped-superclass>
 

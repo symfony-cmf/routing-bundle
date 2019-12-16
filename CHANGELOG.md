@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.3.0 (unreleased)
+------------------
+
+* Implemented redirect route feature for the Doctrine ORM model
+* Removed the name for staticPrefix index on the Route model due to name colision when the model is inherited by RediretRoute model
+
 2.2.0
 -----
 
