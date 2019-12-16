@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.2.0 (unreleased)
----------------
+2.2.0
+-----
 
 * Autowiring support for ChainRouterInterface
 * Fix Symfony deprecations and raise lowest versions to 3.4 || 4.3
