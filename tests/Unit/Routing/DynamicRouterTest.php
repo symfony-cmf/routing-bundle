@@ -62,7 +62,7 @@ class DynamicRouterTest extends TestCase
      */
     private $eventDispatcher;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->matcher = $this->createMock(UrlMatcherInterface::class);
         $this->matcher->expects($this->once())

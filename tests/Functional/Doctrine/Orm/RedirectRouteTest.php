@@ -22,7 +22,7 @@ class RedirectRouteTest extends OrmTestCase
 
     private $controller;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->clearDb(Route::class);

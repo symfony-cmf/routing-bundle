@@ -26,7 +26,7 @@ class RedirectControllerTest extends BaseTestCase
      */
     protected $controller;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();
