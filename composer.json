@@ -27,7 +27,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "^4.1.0",
         "matthiasnoback/symfony-config-test": "^4.1.0",
         "doctrine/orm": "^2.5",
-        "symfony-cmf/testing": "^3@dev",
+        "symfony-cmf/testing": "dev-sf5-fixes",
         "doctrine/data-fixtures": "^1.0.0",
         "symfony/form": "^4.4 || ^5.0",
         "symfony/translation": "^4.4 || ^5.0",
@@ -62,5 +62,11 @@
         "branch-alias": {
             "dev-master": "2.x-dev"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:acrobat/Testing.git"
+        }
+    ]
 }
