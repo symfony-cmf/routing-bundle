@@ -30,7 +30,7 @@ class ContentRepositoryTest extends TestCase
 
     private $managerRegistry;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->document = new \stdClass();
         $this->document2 = new \stdClass();

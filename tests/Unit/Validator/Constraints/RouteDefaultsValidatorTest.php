@@ -16,23 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaults;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
-use Symfony\Component\Validator\Tests\Constraints\AbstractConstraintValidatorTest;
 use Twig\Loader\LoaderInterface;
 
-/*
- * @Todo: Remove this when we drop Symfony 2.x support
- */
-if (!class_exists(ConstraintValidatorTestCase::class)) {
-    abstract class HackBaseClass extends AbstractConstraintValidatorTest
-    {
-    }
-} else {
-    abstract class HackBaseClass extends ConstraintValidatorTestCase
-    {
-    }
-}
-
-abstract class RouteDefaultsValidatorTest extends HackBaseClass
+abstract class RouteDefaultsValidatorTest extends ConstraintValidatorTestCase
 {
     /**
      * @var MockObject|ControllerResolverInterface
@@ -44,7 +30,7 @@ abstract class RouteDefaultsValidatorTest extends HackBaseClass
      */
     protected $engine;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->controllerResolver = $this->createMock(ControllerResolverInterface::class);
         $this->engine = $this->mockEngine();

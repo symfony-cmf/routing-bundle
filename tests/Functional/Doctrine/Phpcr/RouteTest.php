@@ -18,7 +18,7 @@ class RouteTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();

@@ -22,7 +22,7 @@ class RouteTypeTypeTest extends TestCase
      */
     private $type;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->type = new RouteTypeType();
     }

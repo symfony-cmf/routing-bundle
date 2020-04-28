@@ -21,7 +21,7 @@ class RouteTest extends TestCase
 
     private $childRoute1;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->route = new Route();
 
