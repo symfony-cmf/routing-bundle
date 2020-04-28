@@ -21,7 +21,7 @@ class RouteDefaultsTemplatingValidatorTest extends RouteDefaultsValidatorTest
         return $this->createMock(EngineInterface::class);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!\class_exists(EngineInterface::class)) {
             $this->markTestSkipped();

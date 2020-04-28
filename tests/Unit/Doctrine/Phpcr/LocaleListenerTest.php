@@ -40,7 +40,7 @@ class LocaleListenerTest extends TestCase
      */
     protected $routeMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->candidatesMock = $this->createMock(PrefixCandidates::class);
 

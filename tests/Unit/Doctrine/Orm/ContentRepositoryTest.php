@@ -27,7 +27,7 @@ class ContentRepositoryTest extends TestCase
 
     private $objectRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->document = new \stdClass();
         $this->objectManager = $this->createMock(ObjectManager::class);

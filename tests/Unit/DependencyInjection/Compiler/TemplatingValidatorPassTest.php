@@ -20,7 +20,7 @@ use Symfony\Component\Templating\EngineInterface;
 
 class TemplatingValidatorPassTest extends AbstractCompilerPassTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!\class_exists(EngineInterface::class)) {
             $this->markTestSkipped();
@@ -31,7 +31,7 @@ class TemplatingValidatorPassTest extends AbstractCompilerPassTestCase
         $this->registerValidatorService();
     }
 
-    protected function registerCompilerPass(ContainerBuilder $container)
+    protected function registerCompilerPass(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new TemplatingValidatorPass());
     }

@@ -55,7 +55,7 @@ class RouteProviderTest extends TestCase
      */
     private $candidatesMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->routeMock = $this->createMock(Route::class);
         $this->route2Mock = $this->createMock(Route::class);

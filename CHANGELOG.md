@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.4.0
+-----
+
+* Minimum PHP version is now 7.2
+* Support Symfony 5. Minimum Symfony version is now 4.4.
+* If you generate routes with the CMF route generator, see the CHANGELOG of the routing component as well!
+
 2.3.0
 -----
 

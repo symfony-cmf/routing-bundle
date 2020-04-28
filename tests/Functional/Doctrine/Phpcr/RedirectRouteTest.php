@@ -21,7 +21,7 @@ class RedirectRouteTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/redirectroute';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();
