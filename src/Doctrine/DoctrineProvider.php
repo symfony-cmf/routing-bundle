@@ -51,8 +51,7 @@ abstract class DoctrineProvider
     protected $routeCollectionLimit;
 
     /**
-     * @param ManagerRegistry $managerRegistry
-     * @param string          $className
+     * @param string $className
      */
     public function __construct(ManagerRegistry $managerRegistry, $className = null)
     {

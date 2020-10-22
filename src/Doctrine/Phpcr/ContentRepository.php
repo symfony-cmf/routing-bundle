@@ -38,7 +38,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
      */
     public function getContentId($content)
     {
-        if (!is_object($content)) {
+        if (!\is_object($content)) {
             return;
         }
 

@@ -84,8 +84,8 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function setParentDocument($parent)
     {
-        if (!is_object($parent)) {
-            throw new InvalidArgumentException('Parent must be an object '.gettype($parent).' given.');
+        if (!\is_object($parent)) {
+            throw new InvalidArgumentException('Parent must be an object '.\gettype($parent).' given.');
         }
 
         $this->parent = $parent;
@@ -159,8 +159,8 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function setPosition($parent, $name)
     {
-        if (!is_object($parent)) {
-            throw new InvalidArgumentException('Parent must be an object '.gettype($parent).' given.');
+        if (!\is_object($parent)) {
+            throw new InvalidArgumentException('Parent must be an object '.\gettype($parent).' given.');
         }
 
         $this->parent = $parent;
@@ -239,7 +239,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
             throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$id'");
         }
 
-        $url = substr($id, strlen($idPrefix));
+        $url = substr($id, \strlen($idPrefix));
         if (!$url) {
             $url = '/';
         }
@@ -255,7 +255,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern) - 1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[\strlen($pattern) - 1]) {
             $pattern .= '/';
         }
 

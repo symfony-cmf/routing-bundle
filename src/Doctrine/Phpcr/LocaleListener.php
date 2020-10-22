@@ -87,8 +87,6 @@ class LocaleListener
 
     /**
      * Specify the list of allowed locales.
-     *
-     * @param array $locales
      */
     public function setLocales(array $locales)
     {
@@ -113,8 +111,6 @@ class LocaleListener
 
     /**
      * Update locale after loading a route.
-     *
-     * @param LifecycleEventArgs $args
      */
     public function postLoad(LifecycleEventArgs $args)
     {
@@ -127,8 +123,6 @@ class LocaleListener
 
     /**
      * Update locale after persisting a route.
-     *
-     * @param LifecycleEventArgs $args
      */
     public function postPersist(LifecycleEventArgs $args)
     {
@@ -141,8 +135,6 @@ class LocaleListener
 
     /**
      * Update a locale after the route has been moved.
-     *
-     * @param MoveEventArgs $args
      */
     public function postMove(MoveEventArgs $args)
     {
@@ -184,7 +176,7 @@ class LocaleListener
             return;
         }
 
-        if (in_array($locale = $matches[2], $this->locales)) {
+        if (\in_array($locale = $matches[2], $this->locales)) {
             if ($force || !$doc->getDefault('_locale')) {
                 $doc->setDefault('_locale', $locale);
             }

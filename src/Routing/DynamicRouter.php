@@ -88,17 +88,17 @@ class DynamicRouter extends BaseDynamicRouter
             $request = $this->getRequest();
         }
 
-        if (array_key_exists(RouteObjectInterface::ROUTE_OBJECT, $defaults)) {
+        if (\array_key_exists(RouteObjectInterface::ROUTE_OBJECT, $defaults)) {
             $request->attributes->set(self::ROUTE_KEY, $defaults[RouteObjectInterface::ROUTE_OBJECT]);
             unset($defaults[RouteObjectInterface::ROUTE_OBJECT]);
         }
 
-        if (array_key_exists(RouteObjectInterface::CONTENT_OBJECT, $defaults)) {
+        if (\array_key_exists(RouteObjectInterface::CONTENT_OBJECT, $defaults)) {
             $request->attributes->set(self::CONTENT_KEY, $defaults[RouteObjectInterface::CONTENT_OBJECT]);
             unset($defaults[RouteObjectInterface::CONTENT_OBJECT]);
         }
 
-        if (array_key_exists(RouteObjectInterface::TEMPLATE_NAME, $defaults)) {
+        if (\array_key_exists(RouteObjectInterface::TEMPLATE_NAME, $defaults)) {
             $request->attributes->set(self::CONTENT_TEMPLATE, $defaults[RouteObjectInterface::TEMPLATE_NAME]);
 
             // contentTemplate is deprecated as of version 2.0, to be removed in 3.0
@@ -112,8 +112,6 @@ class DynamicRouter extends BaseDynamicRouter
 
     /**
      * Set the request stack so that we can find the current request.
-     *
-     * @param RequestStack $requestStack
      */
     public function setRequestStack(RequestStack $requestStack)
     {

@@ -38,8 +38,6 @@ class RedirectRoute extends RedirectRouteModel
      * Additional options:
      *
      * * add_trailing_slash: When set, a trailing slash is appended to the route
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {
@@ -74,7 +72,7 @@ class RedirectRoute extends RedirectRouteModel
     {
         $params = json_decode($this->serialisedParameters);
 
-        return is_array($params) ? $params : [];
+        return \is_array($params) ? $params : [];
     }
 
     /**
@@ -83,7 +81,7 @@ class RedirectRoute extends RedirectRouteModel
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern) - 1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[\strlen($pattern) - 1]) {
             $pattern .= '/';
         }
 

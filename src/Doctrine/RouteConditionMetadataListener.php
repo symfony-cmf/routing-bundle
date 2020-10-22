@@ -40,8 +40,6 @@ class RouteConditionMetadataListener implements EventSubscriber
     /**
      * Handle the load class metadata event: remove translated attribute from
      * fields and remove the locale mapping if present.
-     *
-     * @param LoadClassMetadataEventArgs $eventArgs
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
@@ -71,7 +69,7 @@ class RouteConditionMetadataListener implements EventSubscriber
                 'nullable' => true,
             ]);
         } else {
-            throw new \LogicException(sprintf('Class metadata was neither PHPCR nor ORM but %s', get_class($meta)));
+            throw new \LogicException(sprintf('Class metadata was neither PHPCR nor ORM but %s', \get_class($meta)));
         }
     }
 }

@@ -51,7 +51,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         $collection = new RouteCollection();
 
         $candidates = $this->candidatesStrategy->getCandidates($request);
-        if (0 === count($candidates)) {
+        if (0 === \count($candidates)) {
             return $collection;
         }
         $routes = $this->getRouteRepository()->findByStaticPrefix($candidates, ['position' => 'ASC']);

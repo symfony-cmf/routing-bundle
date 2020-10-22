@@ -43,8 +43,6 @@ class RedirectController
     /**
      * Action to redirect based on a RedirectRouteInterface route.
      *
-     * @param RedirectRouteInterface $contentDocument
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse the response
      */
     public function redirectAction(RedirectRouteInterface $contentDocument)
