@@ -87,7 +87,7 @@ class PrefixCandidates extends Candidates
     public function restrictQuery($queryBuilder)
     {
         $prefixes = $this->getPrefixes();
-        if (in_array('', $prefixes) || !count($prefixes)) {
+        if (\in_array('', $prefixes) || !\count($prefixes)) {
             return;
         }
 
@@ -110,7 +110,7 @@ class PrefixCandidates extends Candidates
 
         $locale = $this->determineLocale($url);
         if ($locale) {
-            $url = substr($url, strlen($locale) + 1);
+            $url = substr($url, \strlen($locale) + 1);
             foreach ($this->getPrefixes() as $prefix) {
                 $candidates = array_unique(array_merge($candidates, $this->getCandidatesFor($url, $prefix)));
             }
@@ -174,12 +174,12 @@ class PrefixCandidates extends Candidates
     protected function isCandidateValid($candidate)
     {
         // Candidates cannot start or end with a space in Jackrabbit.
-        if (' ' === \substr($candidate, 0, 1) || ' ' === \substr($candidate, -1)) {
+        if (' ' === substr($candidate, 0, 1) || ' ' === substr($candidate, -1)) {
             return false;
         }
 
         // Jackrabbit does not allow spaces before or after the path separator.
-        if (false !== \strpos($candidate, ' /') || false !== \strpos($candidate, '/ ')) {
+        if (false !== strpos($candidate, ' /') || false !== strpos($candidate, '/ ')) {
             return false;
         }
 

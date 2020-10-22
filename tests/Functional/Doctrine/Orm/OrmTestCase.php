@@ -25,7 +25,7 @@ class OrmTestCase extends ComponentBaseTestCase
 
     protected function clearDb($model)
     {
-        if (is_array($model)) {
+        if (\is_array($model)) {
             foreach ($model as $singleModel) {
                 $this->clearDb($singleModel);
             }

@@ -22,7 +22,7 @@ class TemplatingValidatorPassTest extends AbstractCompilerPassTestCase
 {
     public function setUp(): void
     {
-        if (!\class_exists(EngineInterface::class)) {
+        if (!class_exists(EngineInterface::class)) {
             $this->markTestSkipped();
         }
 

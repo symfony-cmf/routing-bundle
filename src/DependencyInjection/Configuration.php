@@ -99,7 +99,7 @@ class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->validate()
                                 ->ifTrue(function ($v) {
-                                    return count(array_filter($v, function ($persistence) {
+                                    return \count(array_filter($v, function ($persistence) {
                                         return $persistence['enabled'];
                                     })) > 1;
                                 })

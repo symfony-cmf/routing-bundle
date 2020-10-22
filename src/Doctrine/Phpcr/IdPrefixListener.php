@@ -35,8 +35,6 @@ class IdPrefixListener
     /**
      * This listener only makes sense together with the PrefixCandidates
      * strategy.
-     *
-     * @param PrefixCandidates $candidates
      */
     public function __construct(PrefixCandidates $candidates)
     {
