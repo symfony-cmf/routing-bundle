@@ -36,7 +36,7 @@ class RouteTypeTypeTest extends TestCase
 
         $options = $optionsResolver->resolve();
 
-        $this->assertInternalType('array', $options['choices']);
+        $this->assertIsArray($options['choices']);
     }
 
     public function testDefaultsSet()

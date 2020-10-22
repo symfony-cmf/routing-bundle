@@ -12,9 +12,9 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata as PhpcrClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadata as OrmClassMetadata;
+use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Symfony\Component\Routing\Route;
 
 /**
