@@ -84,7 +84,7 @@ class RouteTest extends BaseTestCase
         $this->assertCount(0, $requirements);
 
         $options = $route->getOptions();
-        $this->assertTrue(1 >= count($options)); // there is a default option for the compiler
+        $this->assertTrue(1 >= \count($options)); // there is a default option for the compiler
 
         return $route;
     }

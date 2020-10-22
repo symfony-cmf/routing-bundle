@@ -60,8 +60,6 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      * Additional options:
      *
      * * add_trailing_slash: When set, a trailing slash is appended to the route
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {
@@ -222,7 +220,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
             throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$id'");
         }
 
-        $url = substr($id, strlen($idPrefix));
+        $url = substr($id, \strlen($idPrefix));
         if ('' === $url) {
             $url = '/';
         }
@@ -236,7 +234,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern) - 1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[\strlen($pattern) - 1]) {
             $pattern .= '/';
         }
 

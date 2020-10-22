@@ -58,8 +58,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * @param Request $request
-     *
      * @return array a list of PHPCR-ODM ids
      */
     public function getCandidates(Request $request)
@@ -88,7 +86,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
         $collection = new RouteCollection();
 
-        if (0 === count($candidates)) {
+        if (0 === \count($candidates)) {
             return $collection;
         }
 

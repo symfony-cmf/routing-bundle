@@ -62,7 +62,7 @@ class CmfRoutingExtension extends Extension
     {
         $loader->load('form-type.xml');
 
-        if (array_key_exists('dynamic', $config)) {
+        if (\array_key_exists('dynamic', $config)) {
             $routeTypeTypeDefinition = $container->getDefinition('cmf_routing.route_type_form_type');
 
             foreach (array_keys($config['dynamic']['controllers_by_type']) as $routeType) {
@@ -94,7 +94,7 @@ class CmfRoutingExtension extends Extension
         $container->setParameter('cmf_routing.default_controller', $defaultController);
 
         $locales = $config['locales'];
-        if (0 === count($locales) && $config['auto_locale_pattern']) {
+        if (0 === \count($locales) && $config['auto_locale_pattern']) {
             throw new InvalidConfigurationException('It makes no sense to activate auto_locale_pattern when no locales are configured.');
         }
 
@@ -148,17 +148,17 @@ class CmfRoutingExtension extends Extension
         $dynamic = $container->getDefinition('cmf_routing.dynamic_router');
 
         // if any mappings are defined, set the respective route enhancer
-        if (count($config['controllers_by_type']) > 0) {
+        if (\count($config['controllers_by_type']) > 0) {
             $container->getDefinition('cmf_routing.enhancer.controllers_by_type')
                 ->addTag('dynamic_router_route_enhancer', ['priority' => 60]);
         }
 
-        if (count($config['controllers_by_class']) > 0) {
+        if (\count($config['controllers_by_class']) > 0) {
             $container->getDefinition('cmf_routing.enhancer.controllers_by_class')
                       ->addTag('dynamic_router_route_enhancer', ['priority' => 50]);
         }
 
-        if (count($config['templates_by_class']) > 0) {
+        if (\count($config['templates_by_class']) > 0) {
             $container->getDefinition('cmf_routing.enhancer.templates_by_class')
                       ->addTag('dynamic_router_route_enhancer', ['priority' => 40]);
 
@@ -197,7 +197,7 @@ class CmfRoutingExtension extends Extension
                       ->addTag('dynamic_router_route_enhancer', ['priority' => -100]);
         }
 
-        if (count($config['route_filters_by_id']) > 0) {
+        if (\count($config['route_filters_by_id']) > 0) {
             $matcher = $container->getDefinition('cmf_routing.nested_matcher');
 
             foreach ($config['route_filters_by_id'] as $id => $priority) {
@@ -217,7 +217,7 @@ class CmfRoutingExtension extends Extension
 
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.manager_name', $config['manager_name']);
 
-        if (0 === count($locales)) {
+        if (0 === \count($locales)) {
             $container->removeDefinition('cmf_routing.phpcrodm_route_locale_listener');
         } elseif (!$matchImplicitLocale) {
             // remove all but the prefixes configuration from the service definition.

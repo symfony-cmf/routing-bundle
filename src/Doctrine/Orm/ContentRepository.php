@@ -55,15 +55,15 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
      */
     public function getContentId($content)
     {
-        if (!is_object($content)) {
+        if (!\is_object($content)) {
             return;
         }
 
         try {
-            $class = get_class($content);
+            $class = \get_class($content);
             $meta = $this->getObjectManager()->getClassMetadata($class);
             $ids = $meta->getIdentifierValues($content);
-            if (1 !== count($ids)) {
+            if (1 !== \count($ids)) {
                 throw new \Exception(sprintf('Class "%s" must use only one identifier', $class));
             }
 

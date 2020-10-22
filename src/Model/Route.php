@@ -70,8 +70,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * * add_format_pattern: When set, ".{_format}" is appended to the route pattern.
      *                       Also implicitly sets a default/require on "_format" to "html".
      * * add_locale_pattern: When set, "/{_locale}" is prepended to the route pattern.
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {
@@ -184,7 +182,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     public function getOptions()
     {
         $options = parent::getOptions();
-        if (!array_key_exists('compiler_class', $options)) {
+        if (!\array_key_exists('compiler_class', $options)) {
             $options['compiler_class'] = RouteCompiler::class;
         }
         foreach ($options as $key => &$value) {
@@ -205,7 +203,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      */
     protected function isBooleanOption($name)
     {
-        return in_array($name, ['add_format_pattern', 'add_locale_pattern']);
+        return \in_array($name, ['add_format_pattern', 'add_locale_pattern']);
     }
 
     /**
@@ -246,7 +244,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
             ));
         }
 
-        return $this->setVariablePattern(substr($pattern, strlen($this->getStaticPrefix())));
+        return $this->setVariablePattern(substr($pattern, \strlen($this->getStaticPrefix())));
     }
 
     /**

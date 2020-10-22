@@ -33,9 +33,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class CmfRoutingBundle extends Bundle
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -52,8 +49,6 @@ class CmfRoutingBundle extends Bundle
     /**
      * Creates and registers compiler passes for PHPCR-ODM mapping if both the
      * phpcr-odm and the phpcr-bundle are present.
-     *
-     * @param ContainerBuilder $container
      */
     private function buildPhpcrCompilerPass(ContainerBuilder $container)
     {
@@ -80,8 +75,6 @@ class CmfRoutingBundle extends Bundle
     /**
      * Creates and registers compiler passes for ORM mappings if both doctrine
      * ORM and a suitable compiler pass implementation are available.
-     *
-     * @param ContainerBuilder $container
      */
     private function buildOrmCompilerPass(ContainerBuilder $container)
     {

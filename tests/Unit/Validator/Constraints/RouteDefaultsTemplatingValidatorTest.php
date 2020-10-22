@@ -23,7 +23,7 @@ class RouteDefaultsTemplatingValidatorTest extends RouteDefaultsValidatorTest
 
     protected function setUp(): void
     {
-        if (!\class_exists(EngineInterface::class)) {
+        if (!class_exists(EngineInterface::class)) {
             $this->markTestSkipped();
         }
 
