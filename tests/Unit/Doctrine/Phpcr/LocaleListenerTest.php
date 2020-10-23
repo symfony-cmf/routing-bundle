@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Event\MoveEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\LocaleListener;
@@ -168,7 +168,10 @@ class LocaleListenerTest extends TestCase
     public function testSetLocales()
     {
         $this->listener->setLocales(['xx']);
-        $this->assertAttributeEquals(['xx'], 'locales', $this->listener);
+        $reflection = new \ReflectionClass(LocaleListener::class);
+        $locales = $reflection->getProperty('locales');
+        $locales->setAccessible(true);
+        $this->assertSame(['xx'], $locales->getValue($this->listener));
     }
 
     public function testHaslocale()

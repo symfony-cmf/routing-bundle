@@ -11,9 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\Persistence\ManagerRegistry;
 use PHPCR\RepositoryException;
 use PHPCR\Util\UUIDHelper;
 use Psr\Log\LoggerInterface;
