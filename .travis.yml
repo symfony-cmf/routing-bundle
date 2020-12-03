@@ -42,7 +42,7 @@ matrix:
       env: SYMFONY_REQUIRE=5.0.*
       # PHP 8.0 (Travis does not yet support using the stable 8.0.0)
     - php: nightly
-      env: SYMFONY_REQUIRE=5.2.*
+      env: SYMFONY_REQUIRE=5.2.* COMPOSER_FLAGS="--ignore-platform-req=php"
   fast_finish: true
   allow_failures:
 
