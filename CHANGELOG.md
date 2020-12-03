@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.4.1
+-----
+
+* Allow installation with PHP 8.
+
 2.4.0
 -----
 
