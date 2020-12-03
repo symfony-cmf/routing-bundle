@@ -1,10 +1,15 @@
 Changelog
 =========
 
-2.4.1
+2.4.2
 -----
 
 * Allow installation with PHP 8.
+
+2.4.1
+-----
+
+* Fix for indirect dependency doctrine/persistence dropping the BC layer in its new major version.
 
 2.4.0
 -----
