@@ -69,9 +69,11 @@ jobs:
               run: composer require --no-update symfony/symfony:${{ matrix.symfony-version }}
 
             - name: Install dependencies
+              env: ${{ matrix.env }}
               run: |
                   composer validate --strict
                   composer update ${{ matrix.composer-flags }}
 
             - name: Execute test cases
+              env: ${{ matrix.env }}
               run: make test
