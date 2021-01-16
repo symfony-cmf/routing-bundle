@@ -12,10 +12,10 @@ on:
 jobs:
     test:
         name: 'PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }}'
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-20.04
         env:
             SYMFONY_PHPUNIT_VERSION: 8
-            SYMFONY_DEPRECATIONS_HELPER: 'max[self]=0'
+            SYMFONY_DEPRECATIONS_HELPER: weak
 
         strategy:
             fail-fast: false
@@ -23,8 +23,6 @@ jobs:
                 include:
                     - php-version: '7.2'
                       composer-flags: '--prefer-lowest'
-                      env:
-                          SYMFONY_DEPRECATIONS_HELPER: 'weak'
                     - php-version: '7.2'
                     - php-version: '7.4'
                       symfony-version: '^4.4'
@@ -52,28 +50,15 @@ jobs:
                   php-version: ${{ matrix.php-version }}
                   tools: 'composer:v2'
 
-            - name: Get composer cache directory
-              id: composer-cache-dir
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache dependencies
-              uses: actions/cache@v2
-              with:
-                  path: ${{ steps.composer-cache-dir.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-composer-
-
             - name: Require Specific Symfony Version
               if: ${{ matrix.symfony-version }}
               run: composer require --no-update symfony/symfony:${{ matrix.symfony-version }}
 
-            - name: Install dependencies
-              env: ${{ matrix.env }}
-              run: |
-                  composer validate --strict
-                  composer update ${{ matrix.composer-flags }}
+            - name: Install dependencies with Composer
+              uses: ramsey/composer-install@v1
+              with:
+                  dependency-versions: ${{ matrix.dependencies }}
+                  composer-options: --prefer-dist --no-suggest
 
             - name: Execute test cases
-              env: ${{ matrix.env }}
               run: make test
