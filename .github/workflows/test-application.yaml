@@ -1,0 +1,77 @@
+name: Test application
+
+on:
+    pull_request:
+    push:
+        branches:
+            - 'master'
+            - '[0-9]+.x'
+            - '[0-9]+.[0-9]+'
+            - '[0-9]+.[0-9]+.x'
+
+jobs:
+    test:
+        name: 'PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }}'
+        runs-on: ubuntu-latest
+        env:
+            SYMFONY_PHPUNIT_VERSION: 8
+            SYMFONY_DEPRECATIONS_HELPER: 'max[self]=0'
+
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - php-version: '7.2'
+                      composer-flags: '--prefer-lowest'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: 'weak'
+                    - php-version: '7.2'
+                    - php-version: '7.4'
+                      symfony-version: '^4.4'
+                    - php-version: '7.4'
+                      symfony-version: '5.0.*'
+                    - php-version: '8.0'
+
+
+        services:
+            mysql:
+                image: mysql:5.7
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                ports:
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+
+        steps:
+            - name: Checkout project
+              uses: actions/checkout@v2
+
+            - name: Install and configure PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  tools: 'composer:v2'
+
+            - name: Get composer cache directory
+              id: composer-cache-dir
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ${{ steps.composer-cache-dir.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('composer.json', 'composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
+
+            - name: Require Specific Symfony Version
+              if: ${{ matrix.symfony-version }}
+              run: composer require --no-update symfony/symfony:${{ matrix.symfony-version }}
+
+            - name: Install dependencies
+              run: |
+                  composer validate --strict
+                  composer update ${{ matrix.composer-flags }}
+
+            - name: Execute test cases
+              run: make test
