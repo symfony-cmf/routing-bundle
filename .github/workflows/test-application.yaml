@@ -22,7 +22,7 @@ jobs:
             matrix:
                 include:
                     - php-version: '7.2'
-                      composer-flags: '--prefer-lowest'
+                      dependencies: 'lowest'
                     - php-version: '7.2'
                     - php-version: '7.4'
                       symfony-version: '^4.4'
