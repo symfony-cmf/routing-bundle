@@ -11,7 +11,7 @@ on:
 
 jobs:
     test:
-        name: 'PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }}'
+        name: 'PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }} ${{ matrix.dependencies}}'
         runs-on: ubuntu-20.04
         env:
             SYMFONY_PHPUNIT_VERSION: 8
