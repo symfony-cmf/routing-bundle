@@ -25,7 +25,7 @@ class RouteDefaultsTwigValidator extends ConstraintValidator
     private $controllerResolver;
 
     /**
-     * @var null|LoaderInterface
+     * @var LoaderInterface|null
      */
     private $twig;
 
@@ -49,7 +49,7 @@ class RouteDefaultsTwigValidator extends ConstraintValidator
             }
         }
 
-        if ($this->twig !== null && isset($defaults['_template']) && null !== $defaults['_template']) {
+        if (null !== $this->twig && isset($defaults['_template']) && null !== $defaults['_template']) {
             $template = $defaults['_template'];
 
             if (false === $this->twig->exists($template)) {
