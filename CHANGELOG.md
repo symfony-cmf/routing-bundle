@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.5.0
+-----
+
+* Make dependency on twig optional, as it is not necessary for the bundle.
+
 2.4.2
 -----
 
