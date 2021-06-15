@@ -64,6 +64,10 @@
             <call method="setRequestStack"><argument type="service" id="request_stack"/></call>
         </service>
 
+        <service id="cmf_routing.redirectable_dynamic_router" class="Symfony\Cmf\Bundle\RoutingBundle\Routing\RedirectableUrlMatcher" decorates="cmf_routing.dynamic_router">
+            <argument type="service" id=".inner"/>
+        </service>
+
         <service id="cmf_routing.nested_matcher" class="Symfony\Cmf\Component\Routing\NestedMatcher\NestedMatcher">
             <argument type="service" id="cmf_routing.route_provider" />
             <argument type="service" id="cmf_routing.final_matcher"/>
