@@ -61,6 +61,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end() // routers_by_id
                         ->booleanNode('replace_symfony_router')->defaultTrue()->end()
+                        ->booleanNode('redirectable_url_matcher')->defaultFalse()->end()
                     ->end()
                 ->end()// chain
             ->end()

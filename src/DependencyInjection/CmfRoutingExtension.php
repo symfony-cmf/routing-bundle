@@ -50,6 +50,7 @@ class CmfRoutingExtension extends Extension
         $loader->load('routing-chain.xml');
 
         $container->setParameter('cmf_routing.replace_symfony_router', $config['chain']['replace_symfony_router']);
+        $container->setParameter('cmf_routing.redirectable_url_matcher', $config['chain']['redirectable_url_matcher']);
 
         // add the routers defined in the configuration mapping
         $router = $container->getDefinition('cmf_routing.router');
