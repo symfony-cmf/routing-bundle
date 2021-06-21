@@ -61,7 +61,6 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end() // routers_by_id
                         ->booleanNode('replace_symfony_router')->defaultTrue()->end()
-                        ->booleanNode('redirectable_url_matcher')->defaultFalse()->end()
                     ->end()
                 ->end()// chain
             ->end()
@@ -152,6 +151,7 @@ class Configuration implements ConfigurationInterface
                         ->end() // locales
                         ->integerNode('limit_candidates')->defaultValue(20)->end()
                         ->booleanNode('match_implicit_locale')->defaultValue(true)->end()
+                        ->booleanNode('redirectable_url_matcher')->defaultValue(false)->end()
                         ->booleanNode('auto_locale_pattern')->defaultValue(false)->end()
                         ->scalarNode('url_generator')
                             ->defaultValue('cmf_routing.generator')

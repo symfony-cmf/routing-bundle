@@ -18,19 +18,22 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Changes the nested matcher implementation.
+ * If enabled, change the nested matcher implementation to the redirectable matcher.
  */
 class RedirectableMatcherPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
         // only replace the nested matcher if config tells us to
-        if ($container->hasParameter('cmf_routing.redirectable_url_matcher') && true === $container->getParameter('cmf_routing.redirectable_url_matcher')) {
-            $definition = new Definition(RedirectableRequestMatcher::class);
-
-            $container->setDefinition('cmf_routing.redirectable_request_matcher', $definition)
-                ->setDecoratedService('cmf_routing.nested_matcher', 'cmf_routing.nested_matcher.inner')
-                ->addArgument(new Reference('cmf_routing.nested_matcher.inner'));
+        if (!$container->hasParameter('cmf_routing.redirectable_url_matcher') || false === $container->getParameter('cmf_routing.redirectable_url_matcher')) {
+            return;
         }
+
+        $definition = new Definition(RedirectableRequestMatcher::class);
+
+        $container->setDefinition('cmf_routing.redirectable_request_matcher', $definition)
+            ->setDecoratedService('cmf_routing.nested_matcher', 'cmf_routing.nested_matcher.inner')
+            ->addArgument(new Reference('cmf_routing.nested_matcher.inner'))
+            ->addArgument(new Reference('router.request_context'));
     }
 }

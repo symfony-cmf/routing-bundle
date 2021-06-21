@@ -5,6 +5,12 @@ Changelog
 
 * Creating a correct index for ORM, without duplicating indexes for the "name" column
 
+2.6.0
+-----
+
+* Implemented a new configuration option `redirectable_url_matcher` under `dynamic`.
+If set to `true`, the router will try to detect and redirect between URLs with and without trailing slashes. See https://symfony.com/doc/4.1/routing.html#routing-trailing-slash-redirection.
+
 2.5.0
 -----
 

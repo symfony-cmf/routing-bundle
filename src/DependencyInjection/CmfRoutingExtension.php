@@ -50,7 +50,6 @@ class CmfRoutingExtension extends Extension
         $loader->load('routing-chain.xml');
 
         $container->setParameter('cmf_routing.replace_symfony_router', $config['chain']['replace_symfony_router']);
-        $container->setParameter('cmf_routing.redirectable_url_matcher', $config['chain']['redirectable_url_matcher']);
 
         // add the routers defined in the configuration mapping
         $router = $container->getDefinition('cmf_routing.router');
@@ -82,6 +81,8 @@ class CmfRoutingExtension extends Extension
     private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
     {
         $loader->load('routing-dynamic.xml');
+
+        $container->setParameter('cmf_routing.redirectable_url_matcher', $config['redirectable_url_matcher']);
 
         // strip whitespace (XML support)
         foreach (['controllers_by_type', 'controllers_by_class', 'templates_by_class', 'route_filters_by_id'] as $option) {
