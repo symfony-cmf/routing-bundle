@@ -1,5 +1,5 @@
 {
-    "name": "symfony-cmf/routing-bundle",
+    "name": "farit-slv/routing-bundle",
     "type": "symfony-bundle",
     "description": "Symfony RoutingBundle",
     "keywords": [
