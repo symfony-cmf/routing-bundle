@@ -11,7 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional;
 
-use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use PHPCR\Util\PathHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Document\Content;
@@ -20,13 +20,11 @@ use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCa
 class BaseTestCase extends ComponentBaseTestCase
 {
     /**
-     * @return DocumentManager
+     * @return DocumentManagerInterface
      */
     protected function getDm()
     {
-        $dm = $this->db('PHPCR')->getOm();
-
-        return $dm;
+        return $this->db('PHPCR')->getOm();
     }
 
     /**

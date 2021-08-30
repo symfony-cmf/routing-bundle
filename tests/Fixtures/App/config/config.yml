@@ -1,2 +1,5 @@
 framework:
-    serializer: ~
+    serializer:
+        enable_annotations: false
+    property_access: ~
+    annotations: ~

@@ -31,6 +31,6 @@
     </filter>
 
     <php>
-        <env name="KERNEL_CLASS" value="\Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel" />
+	    <env name="KERNEL_CLASS" value="\Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel" />
     </php>
 </phpunit>

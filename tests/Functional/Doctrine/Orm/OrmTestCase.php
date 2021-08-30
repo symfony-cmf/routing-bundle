@@ -16,7 +16,7 @@ use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCa
 
 class OrmTestCase extends ComponentBaseTestCase
 {
-    protected function getKernelConfiguration(): array
+    protected static function getKernelConfiguration(): array
     {
         return [
             'environment' => 'orm',
