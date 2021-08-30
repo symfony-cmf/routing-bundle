@@ -1,5 +1,9 @@
 Changelog
 =========
+2.5.1
+-----
+
+* Creating a correct index for ORM, without duplicating indexes for the "name" column
 
 2.5.0
 -----
