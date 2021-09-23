@@ -71,10 +71,10 @@ class RedirectableRequestMatcherTest extends TestCase
     {
         $this->decoratedRequestMatcher
             ->method('matchRequest')
-            ->withConsecutive([$this->callback(function(Request $request) {
-                return $request->getPathInfo() === '/foo/';
-            })], [$this->callback(function(Request $request) {
-                return $request->getPathInfo() === '/foo';
+            ->withConsecutive([$this->callback(function (Request $request) {
+                return '/foo/' === $request->getPathInfo();
+            })], [$this->callback(function (Request $request) {
+                return '/foo' === $request->getPathInfo();
             })])
             ->will($this->onConsecutiveCalls(
                 $this->throwException(new ResourceNotFoundException()),
@@ -82,7 +82,7 @@ class RedirectableRequestMatcherTest extends TestCase
             ));
 
         $parameters = $this->redirectableRequestMatcher->matchRequest($this->requestWithSlash);
-        $this->assertTrue($parameters['_route'] === 'foobar');
-        $this->assertTrue($parameters['path'] === '/foo');
+        $this->assertTrue('foobar' === $parameters['_route']);
+        $this->assertTrue('/foo' === $parameters['path']);
     }
 }
