@@ -76,6 +76,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'auto_locale_pattern' => true,
                 'match_implicit_locale' => true,
                 'url_generator' => 'cmf_routing.generator',
+                'redirectable_url_matcher' => false,
             ],
         ];
 
