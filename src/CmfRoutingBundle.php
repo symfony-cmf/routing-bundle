@@ -18,6 +18,7 @@ use Doctrine\ODM\PHPCR\Version as PHPCRVersion;
 use Doctrine\ORM\Mapping\Driver\XmlDriver as ORMXmlDriver;
 use Doctrine\ORM\Version as ORMVersion;
 use Doctrine\Persistence\Mapping\Driver\DefaultFileLocator;
+use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\RedirectableMatcherPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\TemplatingValidatorPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\ValidationPass;
@@ -41,6 +42,7 @@ class CmfRoutingBundle extends Bundle
         $container->addCompilerPass(new SetRouterPass());
         $container->addCompilerPass(new ValidationPass());
         $container->addCompilerPass(new TemplatingValidatorPass());
+        $container->addCompilerPass(new RedirectableMatcherPass());
 
         $this->buildPhpcrCompilerPass($container);
         $this->buildOrmCompilerPass($container);

@@ -40,5 +40,6 @@ $container->loadFromExtension('cmf_routing', [
         'locales' => ['en', 'fr'],
         'auto_locale_pattern' => true,
         'match_implicit_locale' => true,
+        'redirectable_url_matcher' => false,
     ],
 ]);

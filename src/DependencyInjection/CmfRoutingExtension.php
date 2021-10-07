@@ -82,6 +82,8 @@ class CmfRoutingExtension extends Extension
     {
         $loader->load('routing-dynamic.xml');
 
+        $container->setParameter('cmf_routing.redirectable_url_matcher', $config['redirectable_url_matcher']);
+
         // strip whitespace (XML support)
         foreach (['controllers_by_type', 'controllers_by_class', 'templates_by_class', 'route_filters_by_id'] as $option) {
             $config[$option] = array_map('trim', $config[$option]);

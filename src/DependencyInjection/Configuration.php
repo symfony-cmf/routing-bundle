@@ -151,6 +151,7 @@ class Configuration implements ConfigurationInterface
                         ->end() // locales
                         ->integerNode('limit_candidates')->defaultValue(20)->end()
                         ->booleanNode('match_implicit_locale')->defaultValue(true)->end()
+                        ->booleanNode('redirectable_url_matcher')->defaultValue(false)->end()
                         ->booleanNode('auto_locale_pattern')->defaultValue(false)->end()
                         ->scalarNode('url_generator')
                             ->defaultValue('cmf_routing.generator')
