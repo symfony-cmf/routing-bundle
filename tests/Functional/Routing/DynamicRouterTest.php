@@ -339,14 +339,14 @@ class DynamicRouterTest extends BaseTestCase
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute/child');
 
-        $url = $this->router->generate($route, ['test' => 'value']);
+        $url = $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['test' => 'value', RouteObjectInterface::ROUTE_OBJECT => $route]);
         $this->assertEquals('/testroute/child?test=value', $url);
     }
 
     public function testGenerateAbsolute()
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute/child');
-        $url = $this->router->generate($route, ['test' => 'value'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['test' => 'value', RouteObjectInterface::ROUTE_OBJECT => $route], UrlGeneratorInterface::ABSOLUTE_URL);
         $this->assertEquals('http://localhost/testroute/child?test=value', $url);
     }
 
@@ -354,7 +354,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
-        $url = $this->router->generate($route, ['slug' => 'gen-slug', 'test' => 'value']);
+        $url = $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['slug' => 'gen-slug', 'test' => 'value', RouteObjectInterface::ROUTE_OBJECT => $route]);
         $this->assertEquals('/testroute/gen-slug?test=value', $url);
     }
 
@@ -363,14 +363,14 @@ class DynamicRouterTest extends BaseTestCase
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
         $this->expectException(InvalidParameterException::class);
-        $this->router->generate($route, ['slug' => 'gen-slug', 'id' => 'nonumber']);
+        $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['slug' => 'gen-slug', 'id' => 'nonumber', RouteObjectInterface::ROUTE_OBJECT => $route]);
     }
 
     public function testGenerateDefaultFormat()
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
-        $url = $this->router->generate($route, ['id' => 37]);
+        $url = $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['id' => 37, RouteObjectInterface::ROUTE_OBJECT => $route]);
         $this->assertEquals('/format/37', $url);
     }
 
@@ -378,7 +378,7 @@ class DynamicRouterTest extends BaseTestCase
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
-        $url = $this->router->generate($route, ['id' => 37, '_format' => 'json']);
+        $url = $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['id' => 37, '_format' => 'json', RouteObjectInterface::ROUTE_OBJECT => $route]);
         $this->assertEquals('/format/37.json', $url);
     }
 
@@ -387,6 +387,6 @@ class DynamicRouterTest extends BaseTestCase
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
         $this->expectException(InvalidParameterException::class);
-        $this->router->generate($route, ['id' => 37, '_format' => 'xyz']);
+        $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['id' => 37, '_format' => 'xyz', RouteObjectInterface::ROUTE_OBJECT => $route]);
     }
 }
