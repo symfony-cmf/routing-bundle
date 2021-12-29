@@ -33,7 +33,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
      *
      * @return array with model first element, id second
      */
-    protected function getModelAndId($identifier)
+    protected function getModelAndId($identifier): array
     {
         return explode(':', $identifier, 2);
     }
@@ -43,7 +43,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
      *
      * @param string $id The ID contains both model name and id, separated by a colon
      */
-    public function findById($id)
+    public function findById($id): object
     {
         list($model, $modelId) = $this->getModelAndId($id);
 
@@ -53,10 +53,10 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getContentId($content)
+    public function getContentId($content): ?string
     {
         if (!\is_object($content)) {
-            return;
+            return null;
         }
 
         try {
@@ -69,7 +69,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
 
             return implode(':', [$class, reset($ids)]);
         } catch (\Exception $e) {
-            return;
+            return null;
         }
     }
 }

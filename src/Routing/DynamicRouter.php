@@ -60,14 +60,14 @@ class DynamicRouter extends BaseDynamicRouter
      * is registered as a service. In both cases, the action to call on that
      * controller is appended, separated with two colons.
      */
-    public function match($url)
+    public function match($pathinfo): array
     {
-        $defaults = parent::match($url);
+        $defaults = parent::match($pathinfo);
 
         return $this->cleanDefaults($defaults);
     }
 
-    public function matchRequest(Request $request)
+    public function matchRequest(Request $request): array
     {
         $defaults = parent::matchRequest($request);
 
@@ -82,7 +82,7 @@ class DynamicRouter extends BaseDynamicRouter
      *
      * @return array the updated defaults to return for this match
      */
-    protected function cleanDefaults($defaults, Request $request = null)
+    protected function cleanDefaults($defaults, Request $request = null): array
     {
         if (null === $request) {
             $request = $this->getRequest();
@@ -125,7 +125,7 @@ class DynamicRouter extends BaseDynamicRouter
      *
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
         if (!$currentRequest) {

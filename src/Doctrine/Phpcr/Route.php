@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteFIXME;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
@@ -31,21 +32,21 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @var object
      */
-    protected $parent;
+    protected object $parent;
 
     /**
      * PHPCR node name.
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * Child route documents.
      *
      * @var Collection
      */
-    protected $children;
+    protected Collection $children;
 
     /**
      * The part of the PHPCR path that does not belong to the url.
@@ -54,7 +55,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @var string|null
      */
-    protected $idPrefix;
+    protected ?string $idPrefix;
 
     /**
      * PHPCR id can not end on '/', so we need an additional option for a
@@ -82,7 +83,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @return $this
      */
-    public function setParentDocument($parent)
+    public function setParentDocument($parent): self
     {
         if (!\is_object($parent)) {
             throw new InvalidArgumentException('Parent must be an object '.\gettype($parent).' given.');
@@ -99,7 +100,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @return object The parent document
      */
-    public function getParentDocument()
+    public function getParentDocument(): object
     {
         return $this->parent;
     }
@@ -108,7 +109,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      * @deprecated For BC with the PHPCR-ODM 1.4 HierarchyInterface
      * @see setParentDocument
      */
-    public function setParent($parent)
+    public function setParent($parent): self
     {
         @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 3.0. Use setParentDocument() instead.', \E_USER_DEPRECATED);
 
@@ -119,7 +120,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      * @deprecated For BC with the PHPCR-ODM 1.4 HierarchyInterface
      * @see getParentDocument
      */
-    public function getParent()
+    public function getParent(): ?object
     {
         @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 3.0. Use getParentDocument() instead.', \E_USER_DEPRECATED);
 
@@ -135,14 +136,14 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @return self
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -157,7 +158,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @return self
      */
-    public function setPosition($parent, $name)
+    public function setPosition(object $parent, string $name): self
     {
         if (!\is_object($parent)) {
             throw new InvalidArgumentException('Parent must be an object '.\gettype($parent).' given.');
@@ -176,7 +177,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId(string $id): self
     {
         $this->id = $id;
 
@@ -188,12 +189,14 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * Overwritten to translate into a move operation.
      */
-    public function setStaticPrefix($prefix)
+    public function setStaticPrefix(string $prefix): self
     {
         $this->id = str_replace($this->getStaticPrefix(), $prefix, $this->id);
+
+        return $this;
     }
 
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->idPrefix;
     }
@@ -201,9 +204,9 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     /**
      * {@inheritdoc}
      */
-    public function setPrefix($idPrefix)
+    public function setPrefix(string $prefix): self
     {
-        $this->idPrefix = $idPrefix;
+        $this->idPrefix = $prefix;
 
         return $this;
     }
@@ -213,7 +216,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * Overwrite model method as we need to build this
      */
-    public function getStaticPrefix()
+    public function getStaticPrefix(): string
     {
         $path = $this->getId();
         $prefix = $this->getPrefix();
@@ -229,13 +232,13 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @throws \LogicException if there is no prefix or the prefix does not match
      */
-    public function generateStaticPrefix($id, $idPrefix)
+    public function generateStaticPrefix(string $id, string $idPrefix): string
     {
         if ('' === $idPrefix || null === $idPrefix) {
             throw new \LogicException('Can not determine the prefix. Either this is a new, unpersisted document or the listener that calls setPrefix is not set up correctly.');
         }
 
-        if (0 !== strpos($id, $idPrefix)) {
+        if (!\str_starts_with($id, $idPrefix)) {
             throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$id'");
         }
 
@@ -252,7 +255,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * Handle the trailing slash option.
      */
-    public function getPath()
+    public function getPath(): string
     {
         $pattern = parent::getPath();
         if ($this->getOption('add_trailing_slash') && '/' !== $pattern[\strlen($pattern) - 1]) {
@@ -269,7 +272,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @return RouteObjectInterface[]
      */
-    public function getRouteChildren()
+    public function getRouteChildren(): array
     {
         $children = [];
 
@@ -287,7 +290,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * @return Collection
      */
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
@@ -295,7 +298,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
     /**
      * {@inheritdoc}
      */
-    protected function isBooleanOption($name)
+    protected function isBooleanOption($name): bool
     {
         return 'add_trailing_slash' === $name || parent::isBooleanOption($name);
     }

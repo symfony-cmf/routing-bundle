@@ -35,7 +35,7 @@ class Route extends RouteModel
      *
      * @return self
      */
-    public function setName($name)
+    public function setName($name): \Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route
     {
         $this->name = $name;
 
@@ -47,7 +47,7 @@ class Route extends RouteModel
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -59,7 +59,7 @@ class Route extends RouteModel
      *
      * @return self
      */
-    public function setPosition($position)
+    public function setPosition($position): \Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route
     {
         $this->position = $position;
 
@@ -71,7 +71,7 @@ class Route extends RouteModel
      *
      * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }

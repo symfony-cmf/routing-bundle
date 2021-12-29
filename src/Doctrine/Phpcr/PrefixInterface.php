@@ -22,11 +22,11 @@ interface PrefixInterface
     /**
      * @return string the full path of this document in the repository
      */
-    public function getId();
+    public function getId(): string;
 
     /**
      * @param string $prefix The path in the repository to the routing root
      *                       document
      */
-    public function setPrefix($prefix);
+    public function setPrefix(string $prefix): self;
 }

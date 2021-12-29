@@ -45,7 +45,7 @@ class RedirectController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse the response
      */
-    public function redirectAction(RedirectRouteInterface $contentDocument)
+    public function redirectAction(RedirectRouteInterface $contentDocument): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $url = $contentDocument->getUri();
 

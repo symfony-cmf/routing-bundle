@@ -60,7 +60,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * @return array a list of PHPCR-ODM ids
      */
-    public function getCandidates(Request $request)
+    public function getCandidates(Request $request): array
     {
         $invalidCharacters = [':', '[', ']', '|', '*'];
         foreach ($invalidCharacters as $invalidCharacter) {
@@ -80,7 +80,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      * object, it is filtered out. In the extreme case this can also lead to an
      * empty list being returned.
      */
-    public function getRouteCollectionForRequest(Request $request)
+    public function getRouteCollectionForRequest(Request $request): RouteCollection
     {
         $candidates = $this->getCandidates($request);
 
@@ -114,7 +114,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      *
      * @param string $name The absolute path or uuid of the Route document
      */
-    public function getRouteByName($name)
+    public function getRouteByName($name): SymfonyRoute
     {
         if (UUIDHelper::isUUID($name)) {
             $route = $this->getObjectManager()->find($this->className, $name);
@@ -152,7 +152,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      *
      * @return array
      */
-    private function getAllRoutes()
+    private function getAllRoutes(): array
     {
         if (0 === $this->routeCollectionLimit) {
             return [];
@@ -186,7 +186,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoutesByNames($names = null)
+    public function getRoutesByNames($names = null): array
     {
         if (null === $names) {
             return $this->getAllRoutes();

@@ -28,7 +28,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findById($id)
+    public function findById($id): object
     {
         return $this->getObjectManager()->find(null, $id);
     }
@@ -36,16 +36,16 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getContentId($content)
+    public function getContentId($content): ?string
     {
         if (!\is_object($content)) {
-            return;
+            return null;
         }
 
         try {
             return $this->getObjectManager()->getUnitOfWork()->getDocumentId($content);
         } catch (\Exception $e) {
-            return;
+            return null;
         }
     }
 }

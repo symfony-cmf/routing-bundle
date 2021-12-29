@@ -28,12 +28,12 @@ abstract class DoctrineProvider
      *
      * @var string|null Name of object manager to use
      */
-    protected $managerName;
+    protected ?string $managerName;
 
     /**
      * @var ManagerRegistry
      */
-    protected $managerRegistry;
+    protected ManagerRegistry $managerRegistry;
 
     /**
      * Class name of the object class to find, null for PHPCR-ODM as it can
@@ -41,14 +41,14 @@ abstract class DoctrineProvider
      *
      * @var string|null
      */
-    protected $className;
+    protected ?string $className;
 
     /**
      * Limit to apply when calling getRoutesByNames() with null.
      *
      * @var int|null
      */
-    protected $routeCollectionLimit;
+    protected ?int $routeCollectionLimit;
 
     /**
      * @param string $className
@@ -87,7 +87,7 @@ abstract class DoctrineProvider
      *
      * @return ObjectManager
      */
-    protected function getObjectManager()
+    protected function getObjectManager(): ObjectManager
     {
         return $this->managerRegistry->getManager($this->managerName);
     }

@@ -40,7 +40,7 @@ class RedirectableRequestMatcher implements RequestMatcherInterface
      * If the matcher can not find a match,
      * it will try to add or remove a trailing slash to the path and match again.
      */
-    public function matchRequest(Request $request)
+    public function matchRequest(Request $request): array
     {
         try {
             return $this->decorated->matchRequest($request);

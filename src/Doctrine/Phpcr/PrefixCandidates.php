@@ -65,7 +65,7 @@ class PrefixCandidates extends Candidates
      *
      * A name is a candidate if it starts with one of the prefixes
      */
-    public function isCandidate($name)
+    public function isCandidate($name): bool
     {
         foreach ($this->getPrefixes() as $prefix) {
             // $name is the route document path
@@ -100,7 +100,7 @@ class PrefixCandidates extends Candidates
     /**
      * {@inheritdoc}
      */
-    public function getCandidates(Request $request)
+    public function getCandidates(Request $request): array
     {
         $candidates = [];
         $url = rawurldecode($request->getPathInfo());
@@ -151,7 +151,7 @@ class PrefixCandidates extends Candidates
      *
      * @return array The prefixes
      */
-    public function getPrefixes()
+    public function getPrefixes(): array
     {
         return $this->idPrefixes;
     }
@@ -171,7 +171,7 @@ class PrefixCandidates extends Candidates
      *
      * @return bool
      */
-    protected function isCandidateValid($candidate)
+    protected function isCandidateValid($candidate): bool
     {
         // Candidates cannot start or end with a space in Jackrabbit.
         if (' ' === substr($candidate, 0, 1) || ' ' === substr($candidate, -1)) {
@@ -199,7 +199,7 @@ class PrefixCandidates extends Candidates
      *
      * For example the CmfSimpleCmsBundle Page documents.
      */
-    protected function determineLocale($url)
+    protected function determineLocale($url): string|bool
     {
         $locale = parent::determineLocale($url);
         if ($locale && $this->doctrine) {
@@ -212,7 +212,7 @@ class PrefixCandidates extends Candidates
     /**
      * @return DocumentManager The document manager
      */
-    protected function getDocumentManager()
+    protected function getDocumentManager(): DocumentManager
     {
         return $this->doctrine->getManager($this->managerName);
     }

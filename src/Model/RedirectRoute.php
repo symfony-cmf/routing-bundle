@@ -11,6 +11,8 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
+use \Symfony\Cmf\Bundle\RoutingBundle\Model\Route as Route;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use LogicException;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 use Symfony\Component\Routing\Route as SymfonyRoute;
@@ -54,7 +56,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      *
      * @throws LogicException
      */
-    public function setContent($document)
+    public function setContent($document): Route
     {
         throw new LogicException('Do not set a content for the redirect route. It is its own content.');
     }
@@ -62,7 +64,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getContent()
+    public function getContent(): ?object
     {
         return $this;
     }
@@ -81,7 +83,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteTarget()
+    public function getRouteTarget(): RouteObjectInterface
     {
         return $this->routeTarget;
     }
@@ -99,7 +101,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteName()
+    public function getRouteName(): string
     {
         return $this->routeName;
     }
@@ -118,7 +120,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function isPermanent()
+    public function isPermanent(): bool
     {
         return $this->permanent;
     }
@@ -138,7 +140,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -156,7 +158,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getUri()
+    public function getUri(): string
     {
         return $this->uri;
     }

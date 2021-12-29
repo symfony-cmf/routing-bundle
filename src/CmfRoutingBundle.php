@@ -122,7 +122,7 @@ class CmfRoutingBundle extends Bundle
      *
      * @return CompilerPassInterface
      */
-    private function buildBaseCompilerPass($compilerClass, $driverClass, $type)
+    private function buildBaseCompilerPass($compilerClass, $driverClass, $type): CompilerPassInterface
     {
         $arguments = [[realpath(__DIR__.'/Resources/config/doctrine-base')], sprintf('.%s.xml', $type)];
         $locator = new Definition(DefaultFileLocator::class, $arguments);

@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm;
 
+use Symfony\Component\Routing\Route as SymfonyRoute;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectRepository;
@@ -35,7 +36,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * @var CandidatesInterface
      */
-    private $candidatesStrategy;
+    private CandidatesInterface $candidatesStrategy;
 
     public function __construct(ManagerRegistry $managerRegistry, CandidatesInterface $candidatesStrategy, $className)
     {
@@ -46,7 +47,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteCollectionForRequest(Request $request)
+    public function getRouteCollectionForRequest(Request $request): RouteCollection
     {
         $collection = new RouteCollection();
 
@@ -66,7 +67,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteByName($name)
+    public function getRouteByName($name): SymfonyRoute
     {
         if (!$this->candidatesStrategy->isCandidate($name)) {
             throw new RouteNotFoundException(sprintf('Route "%s" is not handled by this route provider', $name));
@@ -83,7 +84,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoutesByNames($names = null)
+    public function getRoutesByNames($names = null): array
     {
         if (null === $names) {
             if (0 === $this->routeCollectionLimit) {
@@ -113,7 +114,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     /**
      * @return ObjectRepository
      */
-    protected function getRouteRepository()
+    protected function getRouteRepository(): ObjectRepository
     {
         return $this->getObjectManager()->getRepository($this->className);
     }

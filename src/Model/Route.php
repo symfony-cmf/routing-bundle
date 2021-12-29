@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
+use Symfony\Component\Routing\CompiledRoute;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCompiler;
@@ -27,14 +28,14 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @var string
      */
-    protected $id;
+    protected string $id;
 
     /**
      * The referenced content object.
      *
      * @var object
      */
-    protected $content;
+    protected object $content;
 
     /**
      * Part of the URL that does not have parameters and thus can be used to
@@ -44,14 +45,14 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @var string
      */
-    protected $staticPrefix;
+    protected string $staticPrefix;
 
     /**
      * Variable pattern part. The static part of the pattern is the id without the prefix.
      *
      * @var string
      */
-    protected $variablePattern;
+    protected string $variablePattern;
 
     /**
      * Whether this route was changed since being last compiled.
@@ -60,7 +61,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @var bool
      */
-    protected $needRecompile = false;
+    protected bool $needRecompile = false;
 
     /**
      * Overwrite to be able to create route without pattern.
@@ -86,7 +87,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteKey()
+    public function getRouteKey(): ?string
     {
         return $this->getId();
     }
@@ -94,7 +95,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * Get the repository path of this url entry.
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -102,7 +103,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * @return string the static prefix part of this route
      */
-    public function getStaticPrefix()
+    public function getStaticPrefix(): string
     {
         return $this->staticPrefix;
     }
@@ -112,7 +113,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @return Route $this
      */
-    public function setStaticPrefix($prefix)
+    public function setStaticPrefix(string $prefix): Route
     {
         $this->staticPrefix = $prefix;
 
@@ -127,7 +128,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @return self
      */
-    public function setContent($object)
+    public function setContent(mixed $object): self
     {
         $this->content = $object;
 
@@ -137,7 +138,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getContent()
+    public function getContent(): ?object
     {
         return $this->content;
     }
@@ -147,7 +148,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * Prevent setting the default 'compiler_class' so that we do not persist it
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         return $this->addOptions($options);
     }
@@ -159,7 +160,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @see setOptions
      */
-    public function getOption($name)
+    public function getOption($name): mixed
     {
         $option = parent::getOption($name);
         if (null === $option && 'compiler_class' === $name) {
@@ -179,7 +180,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @see setOptions
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         $options = parent::getOptions();
         if (!\array_key_exists('compiler_class', $options)) {
@@ -201,7 +202,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @return bool whether $name is a boolean option
      */
-    protected function isBooleanOption($name)
+    protected function isBooleanOption(string $name): bool
     {
         return \in_array($name, ['add_format_pattern', 'add_locale_pattern']);
     }
@@ -209,7 +210,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath()
+    public function getPath(): string
     {
         $pattern = '';
         if ($this->getOption('add_locale_pattern')) {
@@ -234,9 +235,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * When using PHPCR-ODM, make sure to persist the route before calling this
      * to have the id field initialized.
      */
-    public function setPath($pattern)
+    public function setPath($pattern): self
     {
-        if (0 !== strpos($pattern, $this->getStaticPrefix())) {
+        if (!\str_starts_with($pattern, $this->getStaticPrefix())) {
             throw new \InvalidArgumentException(sprintf(
                 'You can not set pattern "%s" for this route with a static prefix of "%s". First update the static prefix or directly use setVariablePattern.',
                 $pattern,
@@ -250,7 +251,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * @return string the variable part of the url pattern
      */
-    public function getVariablePattern()
+    public function getVariablePattern(): string
     {
         return $this->variablePattern;
     }
@@ -260,7 +261,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @return Route
      */
-    public function setVariablePattern($variablePattern)
+    public function setVariablePattern($variablePattern): Route
     {
         $this->variablePattern = $variablePattern;
         $this->needRecompile = true;
@@ -273,7 +274,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * Overwritten to make sure the route is recompiled if the pattern was changed
      */
-    public function compile()
+    public function compile(): CompiledRoute
     {
         if ($this->needRecompile) {
             // calling parent::setPath just to let it set compiled=null. the parent $path field is never used

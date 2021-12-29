@@ -148,7 +148,7 @@ class LocaleListener
     /**
      * @return array
      */
-    protected function getPrefixes()
+    protected function getPrefixes(): array
     {
         return $this->candidates->getPrefixes();
     }
