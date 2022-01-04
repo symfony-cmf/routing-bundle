@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Controller;
 
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -52,7 +53,7 @@ class RedirectController
         if (empty($url)) {
             $routeTarget = $contentDocument->getRouteTarget();
             if ($routeTarget) {
-                $url = $this->router->generate($routeTarget, $contentDocument->getParameters(), UrlGeneratorInterface::ABSOLUTE_URL);
+                $url = $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, array_merge($contentDocument->getParameters(), [RouteObjectInterface::ROUTE_OBJECT => $routeTarget]), UrlGeneratorInterface::ABSOLUTE_URL);
             } else {
                 $routeName = $contentDocument->getRouteName();
                 $url = $this->router->generate($routeName, $contentDocument->getParameters(), UrlGeneratorInterface::ABSOLUTE_URL);
