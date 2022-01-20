@@ -56,7 +56,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     public function getContentId($content)
     {
         if (!\is_object($content)) {
-            return;
+            return null;
         }
 
         try {
@@ -69,7 +69,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
 
             return implode(':', [$class, reset($ids)]);
         } catch (\Exception $e) {
-            return;
+            return null;
         }
     }
 }

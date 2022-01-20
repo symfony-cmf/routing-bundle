@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Component\Routing\CompiledRoute;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCompiler;
 
@@ -147,7 +148,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * Prevent setting the default 'compiler_class' so that we do not persist it
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): static
     {
         return $this->addOptions($options);
     }
@@ -159,7 +160,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @see setOptions
      */
-    public function getOption($name)
+    public function getOption(string $name): mixed
     {
         $option = parent::getOption($name);
         if (null === $option && 'compiler_class' === $name) {
@@ -179,7 +180,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * @see setOptions
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         $options = parent::getOptions();
         if (!\array_key_exists('compiler_class', $options)) {
@@ -209,7 +210,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath()
+    public function getPath(): string
     {
         $pattern = '';
         if ($this->getOption('add_locale_pattern')) {
@@ -234,7 +235,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      * When using PHPCR-ODM, make sure to persist the route before calling this
      * to have the id field initialized.
      */
-    public function setPath($pattern)
+    public function setPath(string $pattern): static
     {
         if (0 !== strpos($pattern, $this->getStaticPrefix())) {
             throw new \InvalidArgumentException(sprintf(
@@ -273,7 +274,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
      *
      * Overwritten to make sure the route is recompiled if the pattern was changed
      */
-    public function compile()
+    public function compile(): CompiledRoute
     {
         if ($this->needRecompile) {
             // calling parent::setPath just to let it set compiled=null. the parent $path field is never used
