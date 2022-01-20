@@ -252,7 +252,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      *
      * Handle the trailing slash option.
      */
-    public function getPath()
+    public function getPath(): string
     {
         $pattern = parent::getPath();
         if ($this->getOption('add_trailing_slash') && '/' !== $pattern[\strlen($pattern) - 1]) {

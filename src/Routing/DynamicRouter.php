@@ -60,14 +60,14 @@ class DynamicRouter extends BaseDynamicRouter
      * is registered as a service. In both cases, the action to call on that
      * controller is appended, separated with two colons.
      */
-    public function match($url)
+    public function match($url): array
     {
         $defaults = parent::match($url);
 
         return $this->cleanDefaults($defaults);
     }
 
-    public function matchRequest(Request $request)
+    public function matchRequest(Request $request): array
     {
         $defaults = parent::matchRequest($request);
 
