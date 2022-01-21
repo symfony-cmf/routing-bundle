@@ -78,7 +78,7 @@ class RedirectRoute extends RedirectRouteModel
     /**
      * {@inheritdoc}
      */
-    public function getPath()
+    public function getPath(): string
     {
         $pattern = parent::getPath();
         if ($this->getOption('add_trailing_slash') && '/' !== $pattern[\strlen($pattern) - 1]) {
