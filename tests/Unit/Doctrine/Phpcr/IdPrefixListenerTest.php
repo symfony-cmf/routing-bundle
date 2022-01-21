@@ -19,43 +19,33 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\IdPrefixListener;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
-class IdPrefixListenerTest extends TestCase
+final class IdPrefixListenerTest extends TestCase
 {
-    /**
-     * @var IdPrefixListener
-     */
-    protected $listener;
+    private IdPrefixListener $listener;
+
+    private PrefixCandidates $candidates;
 
     /**
-     * @var PrefixCandidates|MockObject
+     * @var DocumentManager&MockObject
      */
-    protected $candidatesMock;
+    private DocumentManager $dmMock;
 
     /**
-     * @var DocumentManager|MockObject
+     * @var Route&MockObject
      */
-    protected $dmMock;
-
-    /**
-     * @var Route|MockObject
-     */
-    protected $routeMock;
+    private Route $routeMock;
 
     public function setUp(): void
     {
-        $this->candidatesMock = $this->createMock(PrefixCandidates::class);
-        $this->candidatesMock
-            ->expects($this->any())
-            ->method('getPrefixes')
-            ->will($this->returnValue(['/cms/routes', '/cms/simple']))
-        ;
+        $this->candidates = new PrefixCandidates(['/cms/routes', '/cms/simple']);
+
         $this->dmMock = $this->createMock(DocumentManager::class);
         $this->routeMock = $this->createMock(Route::class);
 
-        $this->listener = new IdPrefixListener($this->candidatesMock);
+        $this->listener = new IdPrefixListener($this->candidates);
     }
 
-    public function testNoRoute()
+    public function testNoRoute(): void
     {
         $args = new LifecycleEventArgs($this, $this->dmMock);
         $originalArgs = clone $args;
@@ -64,12 +54,12 @@ class IdPrefixListenerTest extends TestCase
         $this->assertEquals($originalArgs, $args);
     }
 
-    private function prepareMatch()
+    private function prepareMatch(): LifecycleEventArgs
     {
         $this->routeMock
             ->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue('/cms/routes'))
+            ->willReturn('/cms/routes')
         ;
         $this->routeMock
             ->expects($this->once())
@@ -80,27 +70,27 @@ class IdPrefixListenerTest extends TestCase
         return new LifecycleEventArgs($this->routeMock, $this->dmMock);
     }
 
-    public function testPostLoad()
+    public function testPostLoad(): void
     {
         $this->listener->postLoad($this->prepareMatch());
     }
 
-    public function testPostPersist()
+    public function testPostPersist(): void
     {
         $this->listener->postPersist($this->prepareMatch());
     }
 
-    public function testPostMove()
+    public function testPostMove(): void
     {
         $this->listener->postMove($this->prepareMatch());
     }
 
-    public function testSecond()
+    public function testSecond(): void
     {
         $this->routeMock
             ->expects($this->exactly(2))
             ->method('getId')
-            ->will($this->returnValue('/cms/simple/test'))
+            ->willReturn('/cms/simple/test')
         ;
         $this->routeMock
             ->expects($this->once())
@@ -113,12 +103,12 @@ class IdPrefixListenerTest extends TestCase
         $this->listener->postLoad($args);
     }
 
-    public function testOutside()
+    public function testOutside(): void
     {
         $this->routeMock
             ->expects($this->exactly(2))
             ->method('getId')
-            ->will($this->returnValue('/outside'))
+            ->willReturn('/outside')
         ;
         $this->routeMock
             ->expects($this->never())

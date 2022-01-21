@@ -26,27 +26,16 @@ use Symfony\Component\Routing\RouterInterface;
  * The plus side is that with the route interface we do not need to pass the
  * parameters through magic request attributes.
  */
-class RedirectController
+final class RedirectController
 {
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
+    private RouterInterface $router;
 
-    /**
-     * @param RouterInterface $router the router to use to build urls
-     */
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
 
-    /**
-     * Action to redirect based on a RedirectRouteInterface route.
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse the response
-     */
-    public function redirectAction(RedirectRouteInterface $contentDocument)
+    public function redirectAction(RedirectRouteInterface $contentDocument): RedirectResponse
     {
         $url = $contentDocument->getUri();
 

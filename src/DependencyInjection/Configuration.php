@@ -24,22 +24,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *
  * @author David Buchmann
  */
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
-    /**
-     * Returns the config tree builder.
-     *
-     * @return TreeBuilder
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('cmf_routing');
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $root = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $root = $treeBuilder->root('cmf_routing');
-        }
+        $root = $treeBuilder->getRootNode();
 
         $this->addChainSection($root);
         $this->addDynamicSection($root);
@@ -47,7 +37,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addChainSection(ArrayNodeDefinition $root)
+    private function addChainSection(ArrayNodeDefinition $root): void
     {
         $root
             ->children()
@@ -67,7 +57,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function addDynamicSection(ArrayNodeDefinition $root)
+    private function addDynamicSection(ArrayNodeDefinition $root): void
     {
         $root
             ->children()

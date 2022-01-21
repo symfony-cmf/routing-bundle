@@ -25,7 +25,7 @@ class RouteTest extends BaseTestCase
         $this->createRoute(self::ROUTE_ROOT);
     }
 
-    public function testPersist()
+    public function testPersist(): void
     {
         $route = new Route();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
@@ -64,7 +64,7 @@ class RouteTest extends BaseTestCase
         $this->assertEquals('value2', $options['another']);
     }
 
-    public function testPersistEmptyOptions()
+    public function testPersistEmptyOptions(): ?object
     {
         $route = new Route();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
@@ -89,7 +89,7 @@ class RouteTest extends BaseTestCase
         return $route;
     }
 
-    public function testConditionOption()
+    public function testConditionOption(): void
     {
         $route = new Route();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
@@ -106,13 +106,13 @@ class RouteTest extends BaseTestCase
         $this->assertEquals('foobar', $route->getCondition());
     }
 
-    public function testRootRoute()
+    public function testRootRoute(): void
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $this->assertEquals('/', $root->getPath());
     }
 
-    public function testSetPath()
+    public function testSetPath(): void
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $this->assertEquals('/', $root->getStaticPrefix());
@@ -120,7 +120,7 @@ class RouteTest extends BaseTestCase
         $this->assertEquals('{test}', $root->getVariablePattern());
     }
 
-    public function testSetPattern()
+    public function testSetPattern(): void
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setVariablePattern('{test}');
@@ -131,13 +131,13 @@ class RouteTest extends BaseTestCase
     /**
      * @depends testPersistEmptyOptions
      */
-    public function testSetPatternInvalid(Route $route)
+    public function testSetPatternInvalid(Route $route): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $route->setPath('/impossible');
     }
 
-    public function testInvalidIdPrefix()
+    public function testInvalidIdPrefix(): void
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setPrefix('/changed'); // simulate a problem with the prefix setter listener
@@ -145,14 +145,14 @@ class RouteTest extends BaseTestCase
         $this->assertEquals('/', $root->getPath());
     }
 
-    public function testPrefixNonpersisted()
+    public function testPrefixNonpersisted(): void
     {
         $route = new Route();
         $this->expectException(\LogicException::class);
         $route->getPath();
     }
 
-    public function testDefaultFormat()
+    public function testDefaultFormat(): void
     {
         $route = new Route(['add_format_pattern' => true]);
 

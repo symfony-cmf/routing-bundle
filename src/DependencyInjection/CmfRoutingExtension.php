@@ -25,12 +25,12 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * @author David Buchmann
  * @author Wouter de Jong <wouter@wouterj.nl>
  */
-class CmfRoutingExtension extends Extension
+final class CmfRoutingExtension extends Extension
 {
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -45,7 +45,7 @@ class CmfRoutingExtension extends Extension
         $loader->load('validators.xml');
     }
 
-    private function setupChainRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
+    private function setupChainRouter(array $config, ContainerBuilder $container, LoaderInterface $loader): void
     {
         $loader->load('routing-chain.xml');
 
@@ -58,7 +58,7 @@ class CmfRoutingExtension extends Extension
         }
     }
 
-    private function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader)
+    private function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader): void
     {
         $loader->load('form-type.xml');
 
@@ -73,12 +73,8 @@ class CmfRoutingExtension extends Extension
 
     /**
      * Set up the DynamicRouter - only to be called if enabled is set to true.
-     *
-     * @param array            $config    the compiled configuration for the dynamic router
-     * @param ContainerBuilder $container the container builder
-     * @param LoaderInterface  $loader    the configuration loader
      */
-    private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader)
+    private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader): void
     {
         $loader->load('routing-dynamic.xml');
 
@@ -210,7 +206,7 @@ class CmfRoutingExtension extends Extension
         $dynamic->replaceArgument(2, new Reference($config['url_generator']));
     }
 
-    private function loadPhpcrProvider(array $config, LoaderInterface $loader, ContainerBuilder $container, array $locales, $matchImplicitLocale)
+    private function loadPhpcrProvider(array $config, LoaderInterface $loader, ContainerBuilder $container, array $locales, $matchImplicitLocale): void
     {
         $loader->load('provider-phpcr.xml');
 
@@ -232,7 +228,7 @@ class CmfRoutingExtension extends Extension
         }
     }
 
-    private function loadInitializer(LoaderInterface $loader, ContainerBuilder $container)
+    private function loadInitializer(LoaderInterface $loader, ContainerBuilder $container): void
     {
         $initializedBasepaths = $container->getParameter($this->getAlias().'.dynamic.persistence.phpcr.route_basepaths');
 
@@ -244,7 +240,7 @@ class CmfRoutingExtension extends Extension
         $loader->load('initializer-phpcr.xml');
     }
 
-    private function loadOrmProvider(array $config, LoaderInterface $loader, ContainerBuilder $container, $matchImplicitLocale)
+    private function loadOrmProvider(array $config, LoaderInterface $loader, ContainerBuilder $container, $matchImplicitLocale): void
     {
         $loader->load('provider-orm.xml');
 
@@ -264,28 +260,21 @@ class CmfRoutingExtension extends Extension
     }
 
     /**
-     * @param ContainerBuilder $container          The container builder
-     * @param array            $config             The config array
-     * @param array            $settingToParameter An array with setting to parameter mappings (key = setting, value = parameter name without alias prefix)
+     * @param array<string, string> $settingToParameter An array with setting to parameter mappings (key = setting, value = parameter name without alias prefix)
      */
-    private function configureParameters(ContainerBuilder $container, array $config, array $settingToParameter)
+    private function configureParameters(ContainerBuilder $container, array $config, array $settingToParameter): void
     {
         foreach ($settingToParameter as $setting => $parameter) {
             $container->setParameter('cmf_routing.'.$parameter, $config[$setting]);
         }
     }
 
-    /**
-     * Returns the base path for the XSD files.
-     *
-     * @return string The XSD base path
-     */
-    public function getXsdValidationBasePath()
+    public function getXsdValidationBasePath(): string
     {
         return __DIR__.'/../Resources/config/schema';
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return 'http://cmf.symfony.com/schema/dic/routing';
     }

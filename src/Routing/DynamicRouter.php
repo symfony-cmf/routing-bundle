@@ -30,24 +30,21 @@ class DynamicRouter extends BaseDynamicRouter
     /**
      * key for the request attribute that contains the route document.
      */
-    const ROUTE_KEY = 'routeDocument';
+    public const ROUTE_KEY = 'routeDocument';
 
     /**
      * key for the request attribute that contains the content document if this
      * route has one associated.
      */
-    const CONTENT_KEY = 'contentDocument';
+    public const CONTENT_KEY = 'contentDocument';
 
     /**
      * key for the request attribute that contains the template this document
      * wants to use.
      */
-    const CONTENT_TEMPLATE = 'template';
+    public const CONTENT_TEMPLATE = 'template';
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * Put content and template name into the request attributes instead of the
@@ -60,7 +57,7 @@ class DynamicRouter extends BaseDynamicRouter
      * is registered as a service. In both cases, the action to call on that
      * controller is appended, separated with two colons.
      */
-    public function match($url): array
+    public function match(string $url): array
     {
         $defaults = parent::match($url);
 
@@ -77,12 +74,12 @@ class DynamicRouter extends BaseDynamicRouter
     /**
      * Clean up the match data and move some values into the request attributes.
      *
-     * @param array   $defaults The defaults from the match
-     * @param Request $request  The request object if available
+     * @param array<string, string> $defaults The defaults from the match
+     * @param Request|null          $request  The request object if available
      *
-     * @return array the updated defaults to return for this match
+     * @return array<string, string> the updated defaults to return for this match
      */
-    protected function cleanDefaults($defaults, Request $request = null)
+    protected function cleanDefaults(array $defaults, Request $request = null): array
     {
         if (null === $request) {
             $request = $this->getRequest();
@@ -113,7 +110,7 @@ class DynamicRouter extends BaseDynamicRouter
     /**
      * Set the request stack so that we can find the current request.
      */
-    public function setRequestStack(RequestStack $requestStack)
+    public function setRequestStack(RequestStack $requestStack): void
     {
         $this->requestStack = $requestStack;
     }
@@ -121,11 +118,9 @@ class DynamicRouter extends BaseDynamicRouter
     /**
      * Get the current request from the request stack.
      *
-     * @return Request
-     *
-     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @throws ResourceNotFoundException
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         $currentRequest = $this->requestStack->getCurrentRequest();
         if (!$currentRequest) {

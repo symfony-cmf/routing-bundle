@@ -20,9 +20,9 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * If enabled, change the nested matcher implementation to the redirectable matcher.
  */
-class RedirectableMatcherPass implements CompilerPassInterface
+final class RedirectableMatcherPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // only replace the nested matcher if config tells us to
         if (!$container->hasParameter('cmf_routing.redirectable_url_matcher') || false === $container->getParameter('cmf_routing.redirectable_url_matcher')) {

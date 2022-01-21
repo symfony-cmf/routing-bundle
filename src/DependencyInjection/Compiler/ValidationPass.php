@@ -17,9 +17,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * Register validation files if their storage is activated.
  */
-class ValidationPass implements CompilerPassInterface
+final class ValidationPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if ($container->hasParameter('cmf_routing.backend_type_phpcr') && $container->hasDefinition('validator.builder')) {
             $container

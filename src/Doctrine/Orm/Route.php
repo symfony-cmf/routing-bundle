@@ -21,45 +21,29 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
  */
 class Route extends RouteModel
 {
-    protected $name;
+    protected string $name = '';
 
     /**
-     * @var int sort order of this route when it is returned by the route provider
+     * Sort order of this route when it is returned by the route provider.
      */
-    protected $position = 0;
+    protected int $position = 0;
 
-    /**
-     * Sets the name.
-     *
-     * @param string $name
-     *
-     * @return self
-     */
-    public function setName($name)
+    public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Gets the name.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * Set the sort order of this route.
-     *
-     * @param int $position
-     *
-     * @return self
      */
-    public function setPosition($position)
+    public function setPosition(int $position): static
     {
         $this->position = $position;
 
@@ -68,10 +52,8 @@ class Route extends RouteModel
 
     /**
      * Get the sort order of this route.
-     *
-     * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }

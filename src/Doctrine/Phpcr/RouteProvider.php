@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use PHPCR\RepositoryException;
 use PHPCR\Util\UUIDHelper;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
@@ -34,37 +35,30 @@ use Symfony\Component\Routing\RouteCollection;
  *
  * @author david.buchmann@liip.ch
  */
-class RouteProvider extends DoctrineProvider implements RouteProviderInterface
+final class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 {
-    /**
-     * @var CandidatesInterface
-     */
-    private $candidatesStrategy;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private CandidatesInterface $candidatesStrategy;
+    private LoggerInterface $logger;
 
     public function __construct(
         ManagerRegistry $managerRegistry,
         CandidatesInterface $candidatesStrategy,
-        $className = null,
+        ?string $className = null,
         LoggerInterface $logger = null
     ) {
         parent::__construct($managerRegistry, $className);
         $this->candidatesStrategy = $candidatesStrategy;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
-     * @return array a list of PHPCR-ODM ids
+     * @return string[] a list of PHPCR-ODM ids
      */
-    public function getCandidates(Request $request)
+    public function getCandidates(Request $request): array
     {
         $invalidCharacters = [':', '[', ']', '|', '*'];
         foreach ($invalidCharacters as $invalidCharacter) {
-            if (false !== strpos($request->getPathInfo(), $invalidCharacter)) {
+            if (str_contains($request->getPathInfo(), $invalidCharacter)) {
                 return [];
             }
         }
@@ -80,7 +74,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      * object, it is filtered out. In the extreme case this can also lead to an
      * empty list being returned.
      */
-    public function getRouteCollectionForRequest(Request $request)
+    public function getRouteCollectionForRequest(Request $request): RouteCollection
     {
         $candidates = $this->getCandidates($request);
 
@@ -101,9 +95,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                 }
             }
         } catch (RepositoryException $e) {
-            if ($this->logger) {
-                $this->logger->critical($e);
-            }
+            $this->logger->critical($e);
         }
 
         return $collection;
@@ -114,7 +106,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      *
      * @param string $name The absolute path or uuid of the Route document
      */
-    public function getRouteByName($name)
+    public function getRouteByName(string $name): SymfonyRoute
     {
         if (UUIDHelper::isUUID($name)) {
             $route = $this->getObjectManager()->find($this->className, $name);
@@ -150,9 +142,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      * Get all the routes in the repository that are under one of the
      * configured prefixes. This respects the limit.
      *
-     * @return array
+     * @return SymfonyRoute[]
      */
-    private function getAllRoutes()
+    private function getAllRoutes(): iterable
     {
         if (0 === $this->routeCollectionLimit) {
             return [];
@@ -183,10 +175,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $query->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoutesByNames($names = null)
+    public function getRoutesByNames(?array $names = null): iterable
     {
         if (null === $names) {
             return $this->getAllRoutes();

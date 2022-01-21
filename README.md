@@ -8,13 +8,12 @@
 [![Monthly Downloads](https://poser.pugx.org/symfony-cmf/routing-bundle/d/monthly)](https://packagist.org/packages/symfony-cmf/routing-bundle)
 [![Daily Downloads](https://poser.pugx.org/symfony-cmf/routing-bundle/d/daily)](https://packagist.org/packages/symfony-cmf/routing-bundle)
 
-This package is part of the [Symfony Content Management Framework (CMF)](http://cmf.symfony.com/) and licensed
-under the [MIT License](LICENSE).
+This package is part of the Symfony Content Management Framework (CMF) and licensed under the [MIT License](LICENSE).
 
 The RoutingBundle enables the
 [CMF Routing component](https://github.com/symfony-cmf/Routing)
-as a Symfony bundle. It provides route documents for Doctrine PHPCR-ODM and a
-controller for redirection routes.
+as a Symfony bundle. It provides route documents for Doctrine ORM and PHPCR-ODM,
+as well as a controller for redirection routes.
 
 
 ## Requirements
@@ -25,12 +24,11 @@ controller for redirection routes.
 
 For the install guide and reference, see:
 
-* [symfony-cmf/routing-bundle Documentation](http://symfony.com/doc/master/cmf/bundles/routing/index.html)
+* [symfony-cmf/routing-bundle Documentation](https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/index.html)
 
 See also:
 
-* [All Symfony CMF documentation](http://symfony.com/doc/master/cmf/index.html) - complete Symfony CMF reference
-* [Symfony CMF Website](http://cmf.symfony.com/) - introduction, live demo, support and community links
+* [All Symfony CMF documentation](https://symfony.com/bundles/CMFRoutingBundle/current/index.html) - complete Symfony CMF reference
 
 ## Support
 
@@ -39,12 +37,7 @@ For general support and questions, please use [StackOverflow](http://stackoverfl
 ## Contributing
 
 Pull requests are welcome. Please see our
-[CONTRIBUTING](https://github.com/symfony-cmf/blob/master/CONTRIBUTING.md)
-guide.
-
-Unit and/or functional tests exist for this package. See the
-[Testing documentation](http://symfony.com/doc/master/cmf/components/testing.html)
-for a guide to running the tests.
+[CONTRIBUTING guide](https://github.com/symfony-cmf/routing-bundle/blob/master/CONTRIBUTING.md).
 
 Thanks to
 [everyone who has contributed](contributors) already.

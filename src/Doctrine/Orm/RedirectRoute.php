@@ -27,10 +27,7 @@ class RedirectRoute extends RedirectRouteModel
      */
     protected $id;
 
-    /**
-     * @var string
-     */
-    protected $serialisedParameters;
+    protected string $serialisedParameters;
 
     /**
      * Overwrite to be able to create route without pattern.
@@ -44,33 +41,31 @@ class RedirectRoute extends RedirectRouteModel
         parent::__construct($options);
     }
 
-    public function setId($id)
+    public function setId(int $id): static
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
     /**
      * Set the parameters for building this route. Used with both route name
      * and target route document.
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
-        $this->serialisedParameters = json_encode($parameters);
+        $this->serialisedParameters = json_encode($parameters, \JSON_THROW_ON_ERROR);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
-        $params = json_decode($this->serialisedParameters);
+        if (!isset($this->serialisedParameters)) {
+            return [];
+        }
+        $params = json_decode($this->serialisedParameters, true, 512, \JSON_THROW_ON_ERROR);
 
         return \is_array($params) ? $params : [];
     }
@@ -91,7 +86,7 @@ class RedirectRoute extends RedirectRouteModel
     /**
      * {@inheritdoc}
      */
-    protected function isBooleanOption($name)
+    protected function isBooleanOption(string $name): bool
     {
         return 'add_trailing_slash' === $name || parent::isBooleanOption($name);
     }

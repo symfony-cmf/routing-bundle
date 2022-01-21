@@ -15,8 +15,8 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
 use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver as PHPCRXmlDriver;
 use Doctrine\ODM\PHPCR\Version as PHPCRVersion;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\XmlDriver as ORMXmlDriver;
-use Doctrine\ORM\Version as ORMVersion;
 use Doctrine\Persistence\Mapping\Driver\DefaultFileLocator;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\RedirectableMatcherPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
@@ -29,12 +29,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * Bundle class.
- */
-class CmfRoutingBundle extends Bundle
+final class CmfRoutingBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
         $container->addCompilerPass(new RegisterRoutersPass());
@@ -52,7 +49,7 @@ class CmfRoutingBundle extends Bundle
      * Creates and registers compiler passes for PHPCR-ODM mapping if both the
      * phpcr-odm and the phpcr-bundle are present.
      */
-    private function buildPhpcrCompilerPass(ContainerBuilder $container)
+    private function buildPhpcrCompilerPass(ContainerBuilder $container): void
     {
         if (!class_exists(PHPCRVersion::class)) {
             return;
@@ -75,12 +72,11 @@ class CmfRoutingBundle extends Bundle
     }
 
     /**
-     * Creates and registers compiler passes for ORM mappings if both doctrine
-     * ORM and a suitable compiler pass implementation are available.
+     * Creates and registers compiler passes for ORM mappings if doctrine ORM is available.
      */
-    private function buildOrmCompilerPass(ContainerBuilder $container)
+    private function buildOrmCompilerPass(ContainerBuilder $container): void
     {
-        if (!class_exists(ORMVersion::class)) {
+        if (!interface_exists(EntityManagerInterface::class)) {
             return;
         }
 
@@ -115,14 +111,8 @@ class CmfRoutingBundle extends Bundle
      * Builds the compiler pass for the symfony core routing component. The
      * compiler pass factory method uses the SymfonyFileLocator which does
      * magic with the namespace and thus does not work here.
-     *
-     * @param string $compilerClass the compiler class to instantiate
-     * @param string $driverClass   the xml driver class for this backend
-     * @param string $type          the backend type name
-     *
-     * @return CompilerPassInterface
      */
-    private function buildBaseCompilerPass($compilerClass, $driverClass, $type)
+    private function buildBaseCompilerPass(string $compilerClass, string $driverClass, string $type): CompilerPassInterface
     {
         $arguments = [[realpath(__DIR__.'/Resources/config/doctrine-base')], sprintf('.%s.xml', $type)];
         $locator = new Definition(DefaultFileLocator::class, $arguments);

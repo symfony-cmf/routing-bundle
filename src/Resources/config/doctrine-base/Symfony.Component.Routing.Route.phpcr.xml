@@ -13,6 +13,7 @@
         <field name="defaults" type="string" assoc=""/>
         <field name="requirements" type="string" assoc=""/>
         <field name="options" type="string" assoc=""/>
+        <field name="condition" type="string"/>
     </mapped-superclass>
 
 </doctrine-mapping>

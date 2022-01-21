@@ -21,44 +21,43 @@ use Doctrine\Persistence\ManagerRegistry;
 use PHPCR\Util\UUIDHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixCandidates;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
+use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends TestCase
 {
     /**
-     * @var ManagerRegistry|MockObject
+     * @var ManagerRegistry&MockObject
      */
-    private $managerRegistryMock;
+    private ManagerRegistry $managerRegistryMock;
 
     /**
-     * @var PrefixCandidates|MockObject
+     * @var CandidatesInterface&MockObject
      */
-    protected $candidatesMock;
+    protected CandidatesInterface $candidatesMock;
 
     /**
-     * @var DocumentManager|MockObject
+     * @var DocumentManager&MockObject
      */
-    protected $dmMock;
+    protected DocumentManager $dmMock;
 
     /**
-     * @var DocumentManager|MockObject
+     * @var DocumentManager&MockObject
      */
-    protected $dm2Mock;
+    protected DocumentManager $dm2Mock;
 
     /**
-     * @var Route|MockObject
+     * @var Route&MockObject
      */
-    protected $routeMock;
+    protected Route $routeMock;
 
     /**
-     * @var Route|MockObject
+     * @var Route&MockObject
      */
-    protected $route2Mock;
+    protected Route $route2Mock;
 
     public function setUp(): void
     {
@@ -69,15 +68,14 @@ class RouteProviderTest extends TestCase
         $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
 
         $this->managerRegistryMock
-            ->expects($this->any())
             ->method('getManager')
             ->will($this->returnValue($this->dmMock))
         ;
 
-        $this->candidatesMock = $this->createMock(PrefixCandidates::class);
+        $this->candidatesMock = $this->createMock(CandidatesInterface::class);
     }
 
-    public function testGetRouteCollectionForRequest()
+    public function testGetRouteCollectionForRequest(): void
     {
         $request = Request::create('/my/path');
         $candidates = ['/prefix/my/path', '/prefix/my'];
@@ -86,7 +84,7 @@ class RouteProviderTest extends TestCase
             ->expects($this->once())
             ->method('getCandidates')
             ->with($request)
-            ->will($this->returnValue($candidates))
+            ->willReturn($candidates)
         ;
 
         $objects = [
@@ -98,16 +96,15 @@ class RouteProviderTest extends TestCase
             ->expects($this->once())
             ->method('findMany')
             ->with(null, $candidates)
-            ->will($this->returnValue($objects))
+            ->willReturn($objects)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $collection = $routeProvider->getRouteCollectionForRequest($request);
-        $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(1, $collection);
     }
 
-    public function testGetRouteCollectionForRequestEmpty()
+    public function testGetRouteCollectionForRequestEmpty(): void
     {
         $request = Request::create('/my/path');
 
@@ -115,35 +112,32 @@ class RouteProviderTest extends TestCase
            ->expects($this->once())
            ->method('getCandidates')
            ->with($request)
-           ->will($this->returnValue([]))
+           ->willReturn([])
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
         $collection = $routeProvider->getRouteCollectionForRequest($request);
-        $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(0, $collection);
     }
 
-    public function testGetRouteByName()
+    public function testGetRouteByName(): void
     {
         $this->routeMock
-            ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue('/cms/routes/test-route'))
+            ->willReturn('/cms/routes/test-route')
         ;
 
         $this->dmMock
-            ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this->routeMock))
+            ->willReturn($this->routeMock)
         ;
 
         $this->candidatesMock
             ->expects($this->once())
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -151,43 +145,38 @@ class RouteProviderTest extends TestCase
 
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
 
-        $this->assertInstanceOf(Route::class, $foundRoute);
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
     }
 
-    public function testGetRouteByNameUuid()
+    public function testGetRouteByNameUuid(): void
     {
         $uuid = UUIDHelper::generateUUID();
         $this->routeMock
-            ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue('/cms/routes/test-route'))
+            ->willReturn('/cms/routes/test-route')
         ;
 
         $uow = $this->createMock(UnitOfWork::class);
         $this->dmMock
-            ->expects($this->any())
             ->method('find')
             ->with(null, $uuid)
-            ->will($this->returnValue($this->routeMock))
+            ->willReturn($this->routeMock)
         ;
         $this->dmMock
-            ->expects($this->any())
             ->method('getUnitOfWork')
-            ->will($this->returnValue($uow))
+            ->willReturn($uow)
         ;
         $uow
-            ->expects($this->any())
             ->method('getDocumentId')
             ->with($this->routeMock)
-            ->will($this->returnValue('/cms/routes/test-route'))
+            ->willReturn('/cms/routes/test-route')
         ;
 
         $this->candidatesMock
             ->expects($this->once())
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -195,7 +184,6 @@ class RouteProviderTest extends TestCase
 
         $foundRoute = $routeProvider->getRouteByName($uuid);
 
-        $this->assertInstanceOf(Route::class, $foundRoute);
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
     }
 
@@ -204,10 +192,9 @@ class RouteProviderTest extends TestCase
         $uuid = UUIDHelper::generateUUID();
 
         $this->dmMock
-            ->expects($this->any())
             ->method('find')
             ->with(null, $uuid)
-            ->will($this->returnValue(null))
+            ->willReturn(null)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -217,38 +204,35 @@ class RouteProviderTest extends TestCase
         $routeProvider->getRouteByName($uuid);
     }
 
-    public function testGetRouteByNameUuidNotCandidate()
+    public function testGetRouteByNameUuidNotCandidate(): void
     {
         $uuid = UUIDHelper::generateUUID();
         $this->routeMock
             ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue('/cms/routes/test-route'))
+            ->willReturn('/cms/routes/test-route')
         ;
 
         $uow = $this->createMock(UnitOfWork::class);
         $this->dmMock
-            ->expects($this->any())
             ->method('find')
             ->with(null, $uuid)
-            ->will($this->returnValue($this->routeMock))
+            ->willReturn($this->routeMock)
         ;
         $this->dmMock
-            ->expects($this->any())
             ->method('getUnitOfWork')
-            ->will($this->returnValue($uow))
+            ->willReturn($uow)
         ;
         $uow
-            ->expects($this->any())
             ->method('getDocumentId')
-            ->will($this->returnValue('/cms/routes/test-route'))
+            ->willReturn('/cms/routes/test-route')
         ;
 
         $this->candidatesMock
             ->expects($this->once())
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -258,7 +242,7 @@ class RouteProviderTest extends TestCase
         $routeProvider->getRouteByName($uuid);
     }
 
-    public function testGetRouteByNameNotCandidate()
+    public function testGetRouteByNameNotCandidate(): void
     {
         $this->dmMock
             ->expects($this->never())
@@ -269,7 +253,7 @@ class RouteProviderTest extends TestCase
             ->expects($this->once())
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -279,20 +263,19 @@ class RouteProviderTest extends TestCase
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
-    public function testGetRouteByNameNotFound()
+    public function testGetRouteByNameNotFound(): void
     {
         $this->dmMock
-            ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue(null))
+            ->willReturn(null)
         ;
 
         $this->candidatesMock
             ->expects($this->once())
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -302,19 +285,18 @@ class RouteProviderTest extends TestCase
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
-    public function testGetRouteByNameNoRoute()
+    public function testGetRouteByNameNoRoute(): void
     {
         $this->dmMock
-            ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this))
+            ->willReturn($this)
         ;
         $this->candidatesMock
             ->expects($this->once())
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -324,7 +306,7 @@ class RouteProviderTest extends TestCase
         $routeProvider->getRouteByName('/cms/routes/test-route');
     }
 
-    public function testGetRoutesByNames()
+    public function testGetRoutesByNames(): void
     {
         $paths = [
             '/cms/routes/test-route',
@@ -341,32 +323,32 @@ class RouteProviderTest extends TestCase
             ->expects($this->once())
             ->method('findMany')
             ->with(null, $paths)
-            ->will($this->returnValue($routes))
+            ->willReturn($routes)
         ;
 
         $this->candidatesMock
             ->expects($this->at(0))
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
         $this->candidatesMock
             ->expects($this->at(1))
             ->method('isCandidate')
             ->with('/cms/simple/other-route')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
         $this->candidatesMock
             ->expects($this->at(2))
             ->method('isCandidate')
             ->with('/cms/routes/not-a-route')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
         $this->candidatesMock
             ->expects($this->at(3))
             ->method('isCandidate')
             ->with('/outside/prefix')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         $paths[] = '/outside/prefix';
@@ -378,7 +360,7 @@ class RouteProviderTest extends TestCase
         $this->assertCount(2, $routes);
     }
 
-    public function testGetRoutesByNamesNotCandidates()
+    public function testGetRoutesByNamesNotCandidates(): void
     {
         $paths = [
             '/cms/routes/test-route',
@@ -395,19 +377,19 @@ class RouteProviderTest extends TestCase
             ->expects($this->at(0))
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
         $this->candidatesMock
             ->expects($this->at(1))
             ->method('isCandidate')
             ->with('/cms/simple/other-route')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
         $this->candidatesMock
             ->expects($this->at(2))
             ->method('isCandidate')
             ->with('/cms/routes/not-a-route')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -417,7 +399,7 @@ class RouteProviderTest extends TestCase
         $this->assertCount(0, $routes);
     }
 
-    public function testGetRoutesByNamesUuid()
+    public function testGetRoutesByNamesUuid(): void
     {
         $uuid1 = UUIDHelper::generateUUID();
         $uuid2 = UUIDHelper::generateUUID();
@@ -437,40 +419,39 @@ class RouteProviderTest extends TestCase
             ->expects($this->once())
             ->method('findMany')
             ->with(null, $paths)
-            ->will($this->returnValue($routes))
+            ->willReturn($routes)
         ;
 
         $uow = $this->createMock(UnitOfWork::class);
 
         $this->dmMock
-            ->expects($this->any())
             ->method('getUnitOfWork')
-            ->will($this->returnValue($uow))
+            ->willReturn($uow)
         ;
         $uow
             ->expects($this->at(0))
             ->method('getDocumentId')
             ->with($route1)
-            ->will($this->returnValue('/cms/routes/test-route'))
+            ->willReturn('/cms/routes/test-route')
         ;
         $uow
             ->expects($this->at(1))
             ->method('getDocumentId')
             ->with($route2)
-            ->will($this->returnValue('/cms/routes/other-route'))
+            ->willReturn('/cms/routes/other-route')
         ;
 
         $this->candidatesMock
             ->expects($this->at(0))
             ->method('isCandidate')
             ->with('/cms/routes/test-route')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
         $this->candidatesMock
             ->expects($this->at(1))
             ->method('isCandidate')
             ->with('/cms/routes/other-route')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -480,7 +461,7 @@ class RouteProviderTest extends TestCase
         $this->assertCount(1, $routes);
     }
 
-    private function doRouteDump($limit)
+    private function doRouteDump($limit): void
     {
         $from = $this->createMock(SourceFactory::class);
         $from->expects($this->once())
@@ -489,7 +470,11 @@ class RouteProviderTest extends TestCase
         ;
 
         $query = $this->createMock(Query::class);
-        $query->expects($this->once())->method('getResult');
+        $query
+            ->expects($this->once())
+            ->method('getResult')
+            ->willReturn([])
+        ;
         if ($limit) {
             $query
                 ->expects($this->once())
@@ -507,17 +492,18 @@ class RouteProviderTest extends TestCase
         $queryBuilder->expects($this->once())
             ->method('from')
             ->with('d')
-            ->will($this->returnValue($from))
+            ->willReturn($from)
         ;
-        $queryBuilder->expects($this->once())
+        $queryBuilder
+            ->expects($this->once())
             ->method('getQuery')
-            ->will($this->returnValue($query))
+            ->willReturn($query)
         ;
 
         $this->dmMock
             ->expects($this->once())
             ->method('createQueryBuilder')
-            ->will($this->returnValue($queryBuilder))
+            ->willReturn($queryBuilder)
         ;
 
         $this->candidatesMock
@@ -533,17 +519,17 @@ class RouteProviderTest extends TestCase
         $routeProvider->getRoutesByNames();
     }
 
-    public function testDumpRoutesNoLimit()
+    public function testDumpRoutesNoLimit(): void
     {
         $this->doRouteDump(null);
     }
 
-    public function testDumpRoutesLimit()
+    public function testDumpRoutesLimit(): void
     {
         $this->doRouteDump(1);
     }
 
-    public function testDumpRoutesDisabled()
+    public function testDumpRoutesDisabled(): void
     {
         $this->dmMock
             ->expects($this->never())
@@ -564,30 +550,26 @@ class RouteProviderTest extends TestCase
      * Use getRouteByName() with two different document managers.
      * The two document managers will return different route objects when searching for the same path.
      */
-    public function testChangingDocumentManager()
+    public function testChangingDocumentManager(): void
     {
         $this->routeMock
-            ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue('/cms/routes/test-route'));
+            ->willReturn('/cms/routes/test-route');
 
         $this->route2Mock
-            ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue('/cms/routes/new-route'));
+            ->willReturn('/cms/routes/new-route');
 
         $this->dmMock
-            ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this->routeMock))
+            ->willReturn($this->routeMock)
         ;
 
         $this->dm2Mock
-            ->expects($this->any())
             ->method('find')
             ->with(null, '/cms/routes/test-route')
-            ->will($this->returnValue($this->route2Mock))
+            ->willReturn($this->route2Mock)
         ;
 
         $objectManagers = [
@@ -596,33 +578,27 @@ class RouteProviderTest extends TestCase
         ];
         $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $this->managerRegistryMock
-            ->expects($this->any())
             ->method('getManager')
-            ->will(
-                $this->returnCallback(
-                    function ($name) use ($objectManagers) {
-                        return $objectManagers[$name];
-                    }
-                )
+            ->willReturnCallback(
+                function ($name) use ($objectManagers) {
+                    return $objectManagers[$name];
+                }
             )
         ;
 
         $this->candidatesMock
-            ->expects($this->any())
             ->method('isCandidate')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
 
         $routeProvider->setManagerName('default');
 
         $foundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
-        $this->assertInstanceOf(Route::class, $foundRoute);
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
 
         $routeProvider->setManagerName('new_manager');
         $newFoundRoute = $routeProvider->getRouteByName('/cms/routes/test-route');
-        $this->assertInstanceOf(Route::class, $newFoundRoute);
         $this->assertEquals('/cms/routes/new-route', $newFoundRoute->getPath());
     }
 }

@@ -25,35 +25,23 @@ abstract class DoctrineProvider
 {
     /**
      * If this is null, the manager registry will return the default manager.
-     *
-     * @var string|null Name of object manager to use
      */
-    protected $managerName;
+    protected ?string $managerName = null;
 
-    /**
-     * @var ManagerRegistry
-     */
-    protected $managerRegistry;
+    protected ManagerRegistry $managerRegistry;
 
     /**
      * Class name of the object class to find, null for PHPCR-ODM as it can
      * determine the class on its own.
-     *
-     * @var string|null
      */
-    protected $className;
+    protected ?string $className;
 
     /**
      * Limit to apply when calling getRoutesByNames() with null.
-     *
-     * @var int|null
      */
-    protected $routeCollectionLimit;
+    protected ?int $routeCollectionLimit;
 
-    /**
-     * @param string $className
-     */
-    public function __construct(ManagerRegistry $managerRegistry, $className = null)
+    public function __construct(ManagerRegistry $managerRegistry, ?string $className = null)
     {
         $this->managerRegistry = $managerRegistry;
         $this->className = $className;
@@ -62,10 +50,8 @@ abstract class DoctrineProvider
     /**
      * Set the object manager name to use for this loader. If not set, the
      * default manager as decided by the manager registry will be used.
-     *
-     * @param string|null $managerName
      */
-    public function setManagerName($managerName)
+    public function setManagerName(?string $managerName): void
     {
         $this->managerName = $managerName;
     }
@@ -74,20 +60,16 @@ abstract class DoctrineProvider
      * Set the limit to apply when calling getAllRoutes().
      *
      * Setting the limit to null means no limit is applied.
-     *
-     * @param int|null $routeCollectionLimit
      */
-    public function setRouteCollectionLimit($routeCollectionLimit = null)
+    public function setRouteCollectionLimit(?int $routeCollectionLimit = null): void
     {
         $this->routeCollectionLimit = $routeCollectionLimit;
     }
 
     /**
      * Get the object manager named $managerName from the registry.
-     *
-     * @return ObjectManager
      */
-    protected function getObjectManager()
+    protected function getObjectManager(): ObjectManager
     {
         return $this->managerRegistry->getManager($this->managerName);
     }
