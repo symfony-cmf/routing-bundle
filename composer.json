@@ -26,7 +26,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "^4.1.0",
         "matthiasnoback/symfony-config-test": "^4.1.0",
         "doctrine/orm": "^2.5",
-        "symfony-cmf/testing": "^4.1",
+        "symfony-cmf/testing": "dev-master as 4.2.0",
         "doctrine/data-fixtures": "^1.0.0",
         "symfony/form": "^6.0",
         "symfony/translation": "^6.0",
