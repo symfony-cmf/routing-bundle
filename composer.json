@@ -15,28 +15,28 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "symfony-cmf/routing": "^2.3.2",
-        "symfony/framework-bundle": "^4.4 || ^5.0"
+        "php": "^8.0",
+        "symfony-cmf/routing": "dev-master as 3.0.0",
+        "symfony/framework-bundle": "^6.0"
     },
     "require-dev": {
         "jackalope/jackalope-doctrine-dbal": "^1.3",
         "doctrine/phpcr-odm": "^1.4|^2.0",
-        "symfony/phpunit-bridge": "^5.0",
+        "symfony/phpunit-bridge": "^6.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1.0",
         "matthiasnoback/symfony-config-test": "^4.1.0",
-        "doctrine/orm": "^2.5",
-        "symfony-cmf/testing": "^4.0",
+        "doctrine/orm": "^2.9",
+        "symfony-cmf/testing": "dev-master as 4.2.0",
         "doctrine/data-fixtures": "^1.0.0",
-        "symfony/form": "^4.4 || ^5.0",
-        "symfony/translation": "^4.4 || ^5.0",
-        "symfony/validator": "^4.4 || ^5.0",
-        "symfony/security-bundle": "^4.4 || ^5.0",
+        "symfony/form": "^6.0",
+        "symfony/translation": "^6.0",
+        "symfony/validator": "^6.0",
+        "symfony/security-bundle": "^6.0",
         "doctrine/doctrine-bundle": "^2.0",
-        "symfony/twig-bundle": "^4.4 || ^5.0",
+        "symfony/twig-bundle": "^6.0",
         "symfony/monolog-bundle": "^3.5",
         "doctrine/phpcr-bundle": "^2.3",
-        "symfony/serializer": "^4.4 || ^5.0",
+        "symfony/serializer": "^6.0",
         "twig/twig": "^2.4.4 || ^3.0"
     },
     "suggest": {
@@ -46,7 +46,7 @@
     },
     "conflict": {
         "doctrine/phpcr-odm": "<1.4",
-        "doctrine/common": "<2.10.0",
+        "doctrine/common": "<3.1.1",
         "doctrine/persistence": "<1.3.0",
         "phpunit/phpunit": "<6"
     },
@@ -62,7 +62,12 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.x-dev"
+            "dev-master": "3.x-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
         }
     }
 }
