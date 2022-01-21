@@ -15,8 +15,8 @@
         }
     ],
     "require": {
-        "php": ">=8.0.2",
-        "symfony-cmf/routing": "^2.3.2",
+        "php": "^8.0",
+        "symfony-cmf/routing": "dev-master as 3.0.0",
         "symfony/framework-bundle": "^6.0"
     },
     "require-dev": {
