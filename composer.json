@@ -25,7 +25,7 @@
         "symfony/phpunit-bridge": "^6.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1.0",
         "matthiasnoback/symfony-config-test": "^4.1.0",
-        "doctrine/orm": "^2.5",
+        "doctrine/orm": "^2.9",
         "symfony-cmf/testing": "dev-master as 4.2.0",
         "doctrine/data-fixtures": "^1.0.0",
         "symfony/form": "^6.0",
@@ -46,7 +46,7 @@
     },
     "conflict": {
         "doctrine/phpcr-odm": "<1.4",
-        "doctrine/common": "<2.10.0",
+        "doctrine/common": "<3.1.1",
         "doctrine/persistence": "<1.3.0",
         "phpunit/phpunit": "<6"
     },
@@ -63,6 +63,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "3.x-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
         }
     }
 }
