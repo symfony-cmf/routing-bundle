@@ -48,5 +48,8 @@ jobs:
                   dependency-versions: ${{ matrix.dependencies }}
                   composer-options: --prefer-dist
 
+            - name: Prepare phpunit
+              run: vendor/bin/simple-phpunit install
+
             - name: Execute test cases
               run: make test

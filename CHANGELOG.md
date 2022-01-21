@@ -1,5 +1,12 @@
 Changelog
 =========
+
+3.0.0 (unreleased)
+------------------
+
+* Support Symfony 6
+* Drop support for Symfony older than 6 and PHP older than 8
+
 2.6.0
 -----
 
