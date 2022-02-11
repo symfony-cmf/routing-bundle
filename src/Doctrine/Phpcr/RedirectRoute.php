@@ -83,7 +83,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      */
     public function setParent($parent)
     {
-        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 3.0. Use setParentDocument() instead.', \E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 4.0. Use setParentDocument() instead.', \E_USER_DEPRECATED);
 
         return $this->setParentDocument($parent);
     }
@@ -94,7 +94,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      */
     public function getParent()
     {
-        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 3.0. Use getParentDocument() instead.', \E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 4.0. Use getParentDocument() instead.', \E_USER_DEPRECATED);
 
         return $this->getParentDocument();
     }

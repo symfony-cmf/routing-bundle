@@ -20,7 +20,6 @@ use Doctrine\ORM\Mapping\Driver\XmlDriver as ORMXmlDriver;
 use Doctrine\Persistence\Mapping\Driver\DefaultFileLocator;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\RedirectableMatcherPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\SetRouterPass;
-use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\TemplatingValidatorPass;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\ValidationPass;
 use Symfony\Cmf\Component\Routing\DependencyInjection\Compiler\RegisterRouteEnhancersPass;
 use Symfony\Cmf\Component\Routing\DependencyInjection\Compiler\RegisterRoutersPass;
@@ -38,7 +37,6 @@ final class CmfRoutingBundle extends Bundle
         $container->addCompilerPass(new RegisterRouteEnhancersPass());
         $container->addCompilerPass(new SetRouterPass());
         $container->addCompilerPass(new ValidationPass());
-        $container->addCompilerPass(new TemplatingValidatorPass());
         $container->addCompilerPass(new RedirectableMatcherPass());
 
         $this->buildPhpcrCompilerPass($container);

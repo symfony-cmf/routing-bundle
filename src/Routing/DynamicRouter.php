@@ -98,9 +98,6 @@ class DynamicRouter extends BaseDynamicRouter
         if (\array_key_exists(RouteObjectInterface::TEMPLATE_NAME, $defaults)) {
             $request->attributes->set(self::CONTENT_TEMPLATE, $defaults[RouteObjectInterface::TEMPLATE_NAME]);
 
-            // contentTemplate is deprecated as of version 2.0, to be removed in 3.0
-            $request->attributes->set('contentTemplate', $defaults[RouteObjectInterface::TEMPLATE_NAME]);
-
             unset($defaults[RouteObjectInterface::TEMPLATE_NAME]);
         }
 

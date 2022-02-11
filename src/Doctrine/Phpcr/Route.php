@@ -95,7 +95,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function setParent($parent)
     {
-        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 3.0. Use setParentDocument() instead.', \E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 4.0. Use setParentDocument() instead.', \E_USER_DEPRECATED);
 
         return $this->setParentDocument($parent);
     }
@@ -106,7 +106,7 @@ class Route extends RouteModel implements PrefixInterface, HierarchyInterface
      */
     public function getParent()
     {
-        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 3.0. Use getParentDocument() instead.', \E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 4.0. Use getParentDocument() instead.', \E_USER_DEPRECATED);
 
         return $this->getParentDocument();
     }
