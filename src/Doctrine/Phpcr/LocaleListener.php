@@ -25,29 +25,25 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as ModelRoute;
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
-class LocaleListener
+final class LocaleListener
 {
     /**
      * Used to ask for the possible prefixes to determine the possible locale
      * segment of the id.
-     *
-     * @var RouteProvider
      */
-    protected $candidates;
+    private PrefixCandidates $candidates;
 
     /**
      * List of possible locales to detect on URL after idPrefix.
      *
-     * @var array
+     * @var string[]
      */
-    protected $locales;
+    private array $locales;
 
     /**
      * Whether to enforce the route option add_locale_pattern.
-     *
-     * @var bool
      */
-    protected $addLocalePattern;
+    private bool $addLocalePattern;
 
     /**
      * Whether to update the _locales requirement based on available
@@ -56,28 +52,25 @@ class LocaleListener
      * This is only done for routes that are translated documents at the same
      * time, and only if their path does not start with one of the available
      * locales. An example are the CmfSimpleCmsBundle Page documents.
-     *
-     * @var bool
      */
-    protected $updateAvailableTranslations;
+    private bool $updateAvailableTranslations;
 
     /**
      * This listener is built to work with the prefix candidates strategy.
      *
-     * @param PrefixCandidates $candidates                  To get prefixes from
-     * @param array            $locales                     Locales that should be detected
-     * @param bool             $addLocalePattern            Whether to enforce the add_locale_pattern
-     *                                                      option if the route does not have one of
-     *                                                      the allowed locales in its id
-     * @param bool             $updateAvailableTranslations Whether to update the route document with
-     *                                                      its available translations if it does not
-     *                                                      have one of the allowed locales in its id
+     * @param string[] $locales                     Locales that should be detected
+     * @param bool     $addLocalePattern            Whether to enforce the add_locale_pattern
+     *                                              option if the route does not have one of
+     *                                              the allowed locales in its id
+     * @param bool     $updateAvailableTranslations Whether to update the route document with
+     *                                              its available translations if it does not
+     *                                              have one of the allowed locales in its id
      */
     public function __construct(
         PrefixCandidates $candidates,
         array $locales,
-        $addLocalePattern = false,
-        $updateAvailableTranslations = false
+        bool $addLocalePattern = false,
+        bool $updateAvailableTranslations = false
     ) {
         $this->candidates = $candidates;
         $this->locales = $locales;
@@ -88,7 +81,7 @@ class LocaleListener
     /**
      * Specify the list of allowed locales.
      */
-    public function setLocales(array $locales)
+    public function setLocales(array $locales): void
     {
         $this->locales = $locales;
     }
@@ -96,15 +89,13 @@ class LocaleListener
     /**
      * Whether to make the route prepend the locale pattern if it does not
      * have one of the allowed locals in its id.
-     *
-     * @param bool $addLocalePattern
      */
-    public function setAddLocalePattern($addLocalePattern)
+    public function setAddLocalePattern(bool $addLocalePattern): void
     {
         $this->addLocalePattern = $addLocalePattern;
     }
 
-    public function setUpdateAvailableTranslations($update)
+    public function setUpdateAvailableTranslations(bool $update): void
     {
         $this->updateAvailableTranslations = $update;
     }
@@ -112,7 +103,7 @@ class LocaleListener
     /**
      * Update locale after loading a route.
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
         $doc = $args->getObject();
         if (!$doc instanceof ModelRoute) {
@@ -124,7 +115,7 @@ class LocaleListener
     /**
      * Update locale after persisting a route.
      */
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args): void
     {
         $doc = $args->getObject();
         if (!$doc instanceof ModelRoute) {
@@ -136,7 +127,7 @@ class LocaleListener
     /**
      * Update a locale after the route has been moved.
      */
-    public function postMove(MoveEventArgs $args)
+    public function postMove(MoveEventArgs $args): void
     {
         $doc = $args->getObject();
         if (!$doc instanceof ModelRoute) {
@@ -145,10 +136,7 @@ class LocaleListener
         $this->updateLocale($doc, $args->getTargetPath(), $args->getObjectManager(), true);
     }
 
-    /**
-     * @return array
-     */
-    protected function getPrefixes()
+    private function getPrefixes(): array
     {
         return $this->candidates->getPrefixes();
     }
@@ -157,16 +145,12 @@ class LocaleListener
      * Update the locale of a route if $id starts with the prefix and has a
      * valid locale right after.
      *
-     * @param ModelRoute      $doc   The route object
-     * @param string          $id    The id (in move case, this is not the current
-     *                               id of $route)
-     * @param DocumentManager $dm    The document manager to get locales from if
-     *                               the setAvailableTranslations option is
-     *                               enabled
-     * @param bool            $force Whether to update the locale even if the
-     *                               route already has a locale
+     * @param string          $id    The id (in move case, this is not the current id of $route)
+     * @param DocumentManager $dm    The document manager to get locales from, if the
+     *                               setAvailableTranslations option is enabled
+     * @param bool            $force Whether to update the locale even if the route already has a locale
      */
-    protected function updateLocale(ModelRoute $doc, $id, DocumentManager $dm, $force = false)
+    private function updateLocale(ModelRoute $doc, string $id, DocumentManager $dm, bool $force = false): void
     {
         $matches = [];
 
@@ -176,7 +160,7 @@ class LocaleListener
             return;
         }
 
-        if (\in_array($locale = $matches[2], $this->locales)) {
+        if (\in_array($locale = $matches[2], $this->locales, true)) {
             if ($force || !$doc->getDefault('_locale')) {
                 $doc->setDefault('_locale', $locale);
             }

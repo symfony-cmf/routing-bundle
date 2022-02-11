@@ -22,38 +22,30 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 class LocaleListenerTest extends TestCase
 {
-    /** @var LocaleListener */
-    protected $listener;
+    private LocaleListener $listener;
+
+    private PrefixCandidates $candidates;
 
     /**
-     * @var PrefixCandidates|MockObject
+     * @var DocumentManager&MockObject
      */
-    protected $candidatesMock;
+    private DocumentManager $dmMock;
 
     /**
-     * @var DocumentManager|MockObject
+     * @var Route&MockObject
      */
-    protected $dmMock;
-
-    /**
-     * @var Route|MockObject
-     */
-    protected $routeMock;
+    private Route $routeMock;
 
     public function setUp(): void
     {
-        $this->candidatesMock = $this->createMock(PrefixCandidates::class);
+        $this->candidates = new PrefixCandidates(['/cms/routes', '/cms/simple']);
 
-        $this->candidatesMock->expects($this->any())
-            ->method('getPrefixes')
-            ->will($this->returnValue(['/cms/routes', '/cms/simple']))
-        ;
-        $this->listener = new LocaleListener($this->candidatesMock, ['en', 'de']);
+        $this->listener = new LocaleListener($this->candidates, ['en', 'de']);
         $this->routeMock = $this->createMock(Route::class);
         $this->dmMock = $this->createMock(DocumentManager::class);
     }
 
-    public function testNoRoute()
+    public function testNoRoute(): void
     {
         $args = new LifecycleEventArgs($this, $this->dmMock);
         $originalArgs = clone $args;
@@ -62,11 +54,11 @@ class LocaleListenerTest extends TestCase
         $this->assertEquals($originalArgs, $args);
     }
 
-    public function testNoPrefixMatch()
+    public function testNoPrefixMatch(): void
     {
         $this->routeMock->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue('/cms/outside/de/my/route'))
+            ->willReturn('/cms/outside/de/my/route')
         ;
 
         $this->routeMock->expects($this->never())
@@ -85,7 +77,7 @@ class LocaleListenerTest extends TestCase
     {
         $this->routeMock->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue('/cms/routes/de/my/route'))
+            ->willReturn('/cms/routes/de/my/route')
         ;
 
         $this->routeMock->expects($this->once())
@@ -100,21 +92,21 @@ class LocaleListenerTest extends TestCase
         return new LifecycleEventArgs($this->routeMock, $this->dmMock);
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->listener->postLoad($this->prepareMatch());
     }
 
-    public function testPersist()
+    public function testPersist(): void
     {
         $this->listener->postPersist($this->prepareMatch());
     }
 
-    public function testSecond()
+    public function testSecond(): void
     {
         $this->routeMock->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue('/cms/simple/de'))
+            ->willReturn('/cms/simple/de')
         ;
 
         $this->routeMock->expects($this->once())
@@ -130,7 +122,7 @@ class LocaleListenerTest extends TestCase
         $this->listener->postLoad($args);
     }
 
-    public function testMoveNoRoute()
+    public function testMoveNoRoute(): void
     {
         $moveArgs = new MoveEventArgs(
             $this,
@@ -144,7 +136,7 @@ class LocaleListenerTest extends TestCase
         $this->assertEquals($originalArgs, $moveArgs);
     }
 
-    public function testMoved()
+    public function testMoved(): void
     {
         $moveArgs = new MoveEventArgs(
             $this->routeMock,
@@ -165,7 +157,7 @@ class LocaleListenerTest extends TestCase
         $this->listener->postMove($moveArgs);
     }
 
-    public function testSetLocales()
+    public function testSetLocales(): void
     {
         $this->listener->setLocales(['xx']);
         $reflection = new \ReflectionClass(LocaleListener::class);
@@ -174,25 +166,25 @@ class LocaleListenerTest extends TestCase
         $this->assertSame(['xx'], $locales->getValue($this->listener));
     }
 
-    public function testHaslocale()
+    public function testHasLocale(): void
     {
         $args = new LifecycleEventArgs($this->routeMock, $this->dmMock);
 
         $this->routeMock->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue('/cms/routes/de/my/route'))
+            ->willReturn('/cms/routes/de/my/route')
         ;
 
         $this->routeMock->expects($this->once())
             ->method('getDefault')
             ->with('_locale')
-            ->will($this->returnValue('some'))
+            ->willReturn('some')
         ;
 
         $this->routeMock->expects($this->once())
             ->method('getRequirement')
             ->with('_locale')
-            ->will($this->returnValue('some'))
+            ->willReturn('some')
         ;
 
         $this->routeMock->expects($this->never())
@@ -208,13 +200,13 @@ class LocaleListenerTest extends TestCase
     /**
      * URL without locale, addLocalePattern not set.
      */
-    public function testNolocaleUrl()
+    public function testNoLocaleUrl(): void
     {
         $args = new LifecycleEventArgs($this->routeMock, $this->dmMock);
 
         $this->routeMock->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue('/cms/routes/my/route'))
+            ->willReturn('/cms/routes/my/route')
         ;
 
         $this->routeMock->expects($this->never())
@@ -230,11 +222,11 @@ class LocaleListenerTest extends TestCase
     /**
      * URL without locale, addLocalePattern set.
      */
-    public function testLocalePattern()
+    public function testLocalePattern(): void
     {
         $this->routeMock->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue('/cms/simple/something'))
+            ->willReturn('/cms/simple/something')
         ;
 
         $this->routeMock->expects($this->once())
@@ -250,22 +242,22 @@ class LocaleListenerTest extends TestCase
     /**
      * URL without locale, set available translations.
      */
-    public function testAvailableTranslations()
+    public function testAvailableTranslations(): void
     {
         $this->routeMock->expects($this->once())
             ->method('getId')
-            ->will($this->returnValue('/cms/simple/something'))
+            ->willReturn('/cms/simple/something')
         ;
 
         $this->dmMock->expects($this->once())
             ->method('isDocumentTranslatable')
             ->with($this->routeMock)
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
         $this->dmMock->expects($this->once())
             ->method('getLocalesFor')
             ->with($this->routeMock, true)
-            ->will($this->returnValue(['en', 'de', 'fr']))
+            ->willReturn(['en', 'de', 'fr'])
         ;
         $this->routeMock->expects($this->once())
             ->method('setRequirement')

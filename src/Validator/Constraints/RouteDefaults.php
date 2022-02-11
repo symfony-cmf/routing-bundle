@@ -15,9 +15,9 @@ use Symfony\Component\Validator\Constraint;
 
 class RouteDefaults extends Constraint
 {
-    public $message = 'Template "%name%" does not exist.';
+    public string $message = 'Template "%name%" does not exist.';
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'cmf_routing.validator.route_defaults';
     }

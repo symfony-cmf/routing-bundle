@@ -23,37 +23,31 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
-class PrefixCandidates extends Candidates
+final class PrefixCandidates extends Candidates
 {
     /**
      * Places in the PHPCR tree where routes are located.
      *
-     * @var array
+     * @var string[]
      */
-    protected $idPrefixes = [];
+    private array $idPrefixes = [];
+
+    private ?string $managerName = null;
+
+    private ?ManagerRegistry $doctrine;
 
     /**
-     * @var string
+     * @param string[]             $prefixes The prefixes to use. If one of them is
+     *                                       an empty string, the whole repository
+     *                                       is used for routing
+     * @param string[]             $locales  Allowed locales
+     * @param ManagerRegistry|null $doctrine Used when the URL matches one of the
+     *                                       $locales. This must be the same
+     *                                       document manager as the RouteProvider
+     *                                       is using
+     * @param int                  $limit    Limit to candidates generated per prefix
      */
-    protected $managerName;
-
-    /**
-     * @var ManagerRegistry
-     */
-    protected $doctrine;
-
-    /**
-     * @param array           $prefixes The prefixes to use. If one of them is
-     *                                  an empty string, the whole repository
-     *                                  is used for routing
-     * @param array           $locales  Allowed locales
-     * @param ManagerRegistry $doctrine Used when the URL matches one of the
-     *                                  $locales. This must be the same
-     *                                  document manager as the RouteProvider
-     *                                  is using
-     * @param int             $limit    Limit to candidates generated per prefix
-     */
-    public function __construct(array $prefixes, array $locales = [], ManagerRegistry $doctrine = null, $limit = 20)
+    public function __construct(array $prefixes, array $locales = [], ManagerRegistry $doctrine = null, int $limit = 20)
     {
         parent::__construct($locales, $limit);
         $this->setPrefixes($prefixes);
@@ -65,11 +59,11 @@ class PrefixCandidates extends Candidates
      *
      * A name is a candidate if it starts with one of the prefixes
      */
-    public function isCandidate($name)
+    public function isCandidate($name): bool
     {
         foreach ($this->getPrefixes() as $prefix) {
             // $name is the route document path
-            if (($name === $prefix || 0 === strpos($name, $prefix.'/'))
+            if (($name === $prefix || str_starts_with($name, $prefix.'/'))
                 && PathHelper::assertValidAbsolutePath($name, false, false)
             ) {
                 return true;
@@ -84,10 +78,10 @@ class PrefixCandidates extends Candidates
      *
      * @param QueryBuilder $queryBuilder
      */
-    public function restrictQuery($queryBuilder)
+    public function restrictQuery($queryBuilder): void
     {
         $prefixes = $this->getPrefixes();
-        if (\in_array('', $prefixes) || !\count($prefixes)) {
+        if (\in_array('', $prefixes, true) || !\count($prefixes)) {
             return;
         }
 
@@ -100,7 +94,7 @@ class PrefixCandidates extends Candidates
     /**
      * {@inheritdoc}
      */
-    public function getCandidates(Request $request)
+    public function getCandidates(Request $request): array
     {
         $candidates = [];
         $url = rawurldecode($request->getPathInfo());
@@ -129,19 +123,17 @@ class PrefixCandidates extends Candidates
     /**
      * Set the prefixes handled by this strategy.
      *
-     * @param array $prefixes List of prefixes, possibly including ''
+     * @param string[] $prefixes List of prefixes, possibly including ''
      */
-    public function setPrefixes(array $prefixes)
+    public function setPrefixes(array $prefixes): void
     {
         $this->idPrefixes = $prefixes;
     }
 
     /**
      * Append a prefix to the allowed prefixes.
-     *
-     * @param string $prefix A prefix
      */
-    public function addPrefix($prefix)
+    public function addPrefix(string $prefix): void
     {
         $this->idPrefixes[] = $prefix;
     }
@@ -149,37 +141,30 @@ class PrefixCandidates extends Candidates
     /**
      * Get all currently configured prefixes where to look for routes.
      *
-     * @return array The prefixes
+     * @return string[] The prefixes
      */
-    public function getPrefixes()
+    public function getPrefixes(): array
     {
         return $this->idPrefixes;
     }
 
     /**
-     * Set the doctrine document manager name.
-     *
-     * @param string $manager
+     * Set the doctrine document manager name. Set to `null` to use the default manager.
      */
-    public function setManagerName($manager)
+    public function setManagerName(?string $manager): void
     {
         $this->managerName = $manager;
     }
 
-    /**
-     * @param string $candidate The candidate path to check
-     *
-     * @return bool
-     */
-    protected function isCandidateValid($candidate)
+    private function isCandidateValid(string $candidate): bool
     {
         // Candidates cannot start or end with a space in Jackrabbit.
-        if (' ' === substr($candidate, 0, 1) || ' ' === substr($candidate, -1)) {
+        if (str_starts_with($candidate, ' ') || str_ends_with($candidate, ' ')) {
             return false;
         }
 
         // Jackrabbit does not allow spaces before or after the path separator.
-        if (false !== strpos($candidate, ' /') || false !== strpos($candidate, '/ ')) {
+        if (str_contains($candidate, ' /') || str_contains($candidate, '/ ')) {
             return false;
         }
 
@@ -199,7 +184,7 @@ class PrefixCandidates extends Candidates
      *
      * For example the CmfSimpleCmsBundle Page documents.
      */
-    protected function determineLocale($url)
+    protected function determineLocale($url): bool|string
     {
         $locale = parent::determineLocale($url);
         if ($locale && $this->doctrine) {
@@ -209,10 +194,7 @@ class PrefixCandidates extends Candidates
         return $locale;
     }
 
-    /**
-     * @return DocumentManager The document manager
-     */
-    protected function getDocumentManager()
+    private function getDocumentManager(): DocumentManager
     {
         return $this->doctrine->getManager($this->managerName);
     }

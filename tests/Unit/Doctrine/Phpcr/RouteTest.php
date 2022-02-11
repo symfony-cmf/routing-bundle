@@ -11,15 +11,15 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 class RouteTest extends TestCase
 {
-    /** @var Route */
-    private $route;
+    private Route $route;
 
-    private $childRoute1;
+    private Route $childRoute1;
 
     public function setUp(): void
     {
@@ -29,22 +29,22 @@ class RouteTest extends TestCase
         $this->childRoute1->setName('child route1');
     }
 
-    public function testGetRouteChildren()
+    public function testGetRouteChildren(): void
     {
         $refl = new \ReflectionClass($this->route);
         $prop = $refl->getProperty('children');
         $prop->setAccessible(true);
-        $prop->setValue($this->route, [
+        $prop->setValue($this->route, new ArrayCollection([
             new \stdClass(),
             $this->childRoute1,
-        ]);
+        ]));
 
         $res = $this->route->getRouteChildren();
         $this->assertCount(1, $res);
         $this->assertEquals('child route1', $res[0]->getName());
     }
 
-    public function testGetRouteChildrenNull()
+    public function testGetRouteChildrenNull(): void
     {
         $res = $this->route->getRouteChildren();
         $this->assertEquals([], $res);

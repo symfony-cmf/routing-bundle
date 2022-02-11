@@ -29,11 +29,9 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     /**
      * Determine target class and id for this content.
      *
-     * @param mixed $identifier as produced by getContentId
-     *
-     * @return array with model first element, id second
+     * @return string[] with model first element, id second
      */
-    protected function getModelAndId($identifier)
+    protected function getModelAndId(string $identifier): array
     {
         return explode(':', $identifier, 2);
     }
@@ -43,17 +41,14 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
      *
      * @param string $id The ID contains both model name and id, separated by a colon
      */
-    public function findById($id)
+    public function findById(mixed $id): ?object
     {
-        list($model, $modelId) = $this->getModelAndId($id);
+        [$model, $modelId] = $this->getModelAndId($id);
 
         return $this->getObjectManager()->getRepository($model)->find($modelId);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getContentId($content)
+    public function getContentId(mixed $content): ?string
     {
         if (!\is_object($content)) {
             return null;

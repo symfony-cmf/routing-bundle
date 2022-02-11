@@ -22,12 +22,8 @@ use Twig\Loader\LoaderInterface;
  */
 class RouteDefaultsTwigValidator extends ConstraintValidator
 {
-    private $controllerResolver;
-
-    /**
-     * @var LoaderInterface|null
-     */
-    private $twig;
+    private ControllerResolverInterface $controllerResolver;
+    private ?LoaderInterface $twig;
 
     public function __construct(ControllerResolverInterface $controllerResolver, ?LoaderInterface $twig)
     {
@@ -37,7 +33,7 @@ class RouteDefaultsTwigValidator extends ConstraintValidator
 
     public function validate($defaults, Constraint $constraint)
     {
-        if (isset($defaults['_controller']) && null !== $defaults['_controller']) {
+        if (\array_key_exists('_controller', $defaults) && null !== $defaults['_controller']) {
             $controller = $defaults['_controller'];
 
             $request = new Request([], [], ['_controller' => $controller]);
@@ -49,7 +45,7 @@ class RouteDefaultsTwigValidator extends ConstraintValidator
             }
         }
 
-        if (null !== $this->twig && isset($defaults['_template']) && null !== $defaults['_template']) {
+        if (null !== $this->twig && \array_key_exists('_template', $defaults) && null !== $defaults['_template']) {
             $template = $defaults['_template'];
 
             if (false === $this->twig->exists($template)) {

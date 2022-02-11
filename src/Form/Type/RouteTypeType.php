@@ -17,14 +17,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RouteTypeType extends AbstractType
 {
-    protected $routeTypes = [];
-
-    protected $translator;
+    protected array $routeTypes = [];
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $choices = [];
         foreach ($this->routeTypes as $routeType) {
@@ -39,10 +37,8 @@ class RouteTypeType extends AbstractType
 
     /**
      * Register a route type.
-     *
-     * @param string $type
      */
-    public function addRouteType($type)
+    public function addRouteType(string $type): void
     {
         $this->routeTypes[$type] = $type;
     }
@@ -50,7 +46,7 @@ class RouteTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -58,7 +54,7 @@ class RouteTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'cmf_routing_route_type';
     }

@@ -17,9 +17,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * Changes the Router implementation.
  */
-class SetRouterPass implements CompilerPassInterface
+final class SetRouterPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // only replace the default router by overwriting the 'router' alias if config tells us to
         if ($container->hasParameter('cmf_routing.replace_symfony_router') && true === $container->getParameter('cmf_routing.replace_symfony_router')) {

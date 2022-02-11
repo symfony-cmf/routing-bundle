@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\HierarchyInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute as RedirectRouteModel;
@@ -24,35 +25,21 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
  */
 class RedirectRoute extends RedirectRouteModel implements PrefixInterface, HierarchyInterface
 {
-    /**
-     * parent document.
-     *
-     * @var object
-     */
-    protected $parent;
+    protected object $parent;
 
     /**
      * PHPCR node name.
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
-    /**
-     * Child route documents.
-     *
-     * @var Collection
-     */
-    protected $children;
+    protected Collection $children;
 
     /**
      * The part of the PHPCR path that does not belong to the url.
      *
      * This field is not persisted in storage.
-     *
-     * @var string
      */
-    protected $idPrefix;
+    protected string $idPrefix;
 
     /**
      * Overwrite to be able to create route without pattern.
@@ -65,7 +52,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     {
         parent::__construct($options);
 
-        $this->children = [];
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -74,10 +61,8 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      * Note that this will change the URL this route matches.
      *
      * @param object $parent the new parent document
-     *
-     * @return $this
      */
-    public function setParentDocument($parent)
+    public function setParentDocument($parent): static
     {
         $this->parent = $parent;
 
@@ -87,7 +72,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     /**
      * {@inheritdoc}
      */
-    public function getParentDocument()
+    public function getParentDocument(): ?object
     {
         return $this->parent;
     }
@@ -118,19 +103,15 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      * Rename a route by setting its new name.
      *
      * Note that this will change the URL this route matches.
-     *
-     * @param string $name the new name
-     *
-     * @return self
      */
-    public function setName($name)
+    public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -139,13 +120,8 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      * Convenience method to set parent and name at the same time.
      *
      * The url will be the url of the parent plus the supplied name.
-     *
-     * @param object $parent The parent document
-     * @param string $name   The local name of this route
-     *
-     * @return self
      */
-    public function setPosition($parent, $name)
+    public function setPosition(object $parent, string $name): static
     {
         $this->parent = $parent;
         $this->name = $name;
@@ -155,12 +131,8 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
 
     /**
      * PHPCR documents can be moved by setting the id to a new path.
-     *
-     * @param string $id
-     *
-     * @return $this
      */
-    public function setId($id)
+    public function setId(string $id): static
     {
         $this->id = $id;
 
@@ -172,12 +144,18 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      *
      * Overwritten to translate into a move operation.
      */
-    public function setStaticPrefix($prefix)
+    public function setStaticPrefix(string $prefix): static
     {
-        $this->id = str_replace($this->getStaticPrefix(), $prefix, $this->id);
+        if (null === $this->id) {
+            throw new \InvalidArgumentException('Can not set static prefix on route that has no id yet');
+        }
+
+        $this->id = str_replace($this->getStaticPrefix(), $prefix, $this->getId());
+
+        return $this;
     }
 
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->idPrefix;
     }
@@ -185,9 +163,9 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     /**
      * {@inheritdoc}
      */
-    public function setPrefix($idPrefix)
+    public function setPrefix(string $prefix): static
     {
-        $this->idPrefix = $idPrefix;
+        $this->idPrefix = $prefix;
 
         return $this;
     }
@@ -197,7 +175,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      *
      * Overwrite model method as we need to build this
      */
-    public function getStaticPrefix()
+    public function getStaticPrefix(): string
     {
         return $this->generateStaticPrefix($this->getId(), $this->idPrefix);
     }
@@ -210,13 +188,13 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      *
      * @throws \LogicException if there is no prefix or the prefix does not match
      */
-    public function generateStaticPrefix($id, $idPrefix)
+    public function generateStaticPrefix(string $id, string $idPrefix): string
     {
         if ('' === $idPrefix) {
             throw new \LogicException('Can not determine the prefix. Either this is a new, unpersisted document or the listener that calls setPrefix is not set up correctly.');
         }
 
-        if (0 !== strpos($id, $idPrefix)) {
+        if (!str_starts_with($id, $idPrefix)) {
             throw new \LogicException("The id prefix '$idPrefix' does not match the route document path '$id'");
         }
 
@@ -247,9 +225,9 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
      * Filters out children that do not implement
      * the RouteObjectInterface.
      *
-     * @return array - array of RouteObjectInterface's
+     * @return RouteObjectInterface[]
      */
-    public function getRouteChildren()
+    public function getRouteChildren(): array
     {
         $children = [];
 
@@ -265,7 +243,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
     /**
      * {@inheritdoc}
      */
-    protected function isBooleanOption($name)
+    protected function isBooleanOption(string $name): bool
     {
         return 'add_trailing_slash' === $name || parent::isBooleanOption($name);
     }

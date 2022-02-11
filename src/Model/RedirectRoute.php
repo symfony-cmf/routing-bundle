@@ -23,38 +23,33 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * Absolute uri to redirect to.
      */
-    protected $uri;
+    protected ?string $uri = null;
 
     /**
      * The name of a target route (for use with standard symfony routes).
      */
-    protected $routeName;
+    protected ?string $routeName = null;
 
     /**
      * Target route document to redirect to different dynamic route.
      */
-    protected $routeTarget;
+    protected ?SymfonyRoute $routeTarget = null;
 
     /**
      * Whether this is a permanent redirect. Defaults to false.
      */
-    protected $permanent = false;
+    protected bool $permanent = false;
 
-    /**
-     * @var array
-     */
-    protected $parameters = [];
+    protected array $parameters = [];
 
     /**
      * Never call this, it makes no sense. The redirect route will return $this
      * as route content for the redirection controller to have the redirect route
      * object as content.
      *
-     * @param $document
-     *
      * @throws LogicException
      */
-    public function setContent($document)
+    public function setContent($document): static
     {
         throw new LogicException('Do not set a content for the redirect route. It is its own content.');
     }
@@ -62,7 +57,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getContent()
+    public function getContent(): static
     {
         return $this;
     }
@@ -70,10 +65,8 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * Set the route this redirection route points to. This must be a PHPCR-ODM
      * mapped object.
-     *
-     * @param SymfonyRoute $document the redirection target route
      */
-    public function setRouteTarget(SymfonyRoute $document)
+    public function setRouteTarget(?SymfonyRoute $document): void
     {
         $this->routeTarget = $document;
     }
@@ -81,17 +74,15 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteTarget()
+    public function getRouteTarget(): ?SymfonyRoute
     {
         return $this->routeTarget;
     }
 
     /**
      * Set a symfony route name for this redirection.
-     *
-     * @param string $routeName
      */
-    public function setRouteName($routeName)
+    public function setRouteName(?string $routeName): void
     {
         $this->routeName = $routeName;
     }
@@ -99,7 +90,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteName()
+    public function getRouteName(): ?string
     {
         return $this->routeName;
     }
@@ -107,10 +98,8 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * Set whether this redirection should be permanent or not. Default is
      * false.
-     *
-     * @param bool $permanent if true this is a permanent redirection
      */
-    public function setPermanent($permanent)
+    public function setPermanent(bool $permanent): void
     {
         $this->permanent = $permanent;
     }
@@ -118,7 +107,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function isPermanent()
+    public function isPermanent(): bool
     {
         return $this->permanent;
     }
@@ -127,10 +116,9 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      * Set the parameters for building this route. Used with both route name
      * and target route document.
      *
-     * @param array $parameters a hashmap of key to value mapping for route
-     *                          parameters
+     * @param array<string, string> $parameters a hashmap of key to value mapping for route parameters
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
@@ -138,17 +126,15 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
     /**
      * Set the absolute redirection target URI.
-     *
-     * @param string $uri the absolute URI
      */
-    public function setUri($uri)
+    public function setUri(?string $uri): void
     {
         $this->uri = $uri;
     }
@@ -156,7 +142,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
     /**
      * {@inheritdoc}
      */
-    public function getUri()
+    public function getUri(): ?string
     {
         return $this->uri;
     }

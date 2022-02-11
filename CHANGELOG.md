@@ -6,6 +6,8 @@ Changelog
 
 * Support Symfony 6
 * Drop support for Symfony older than 6 and PHP older than 8
+* Removed deprecated classes, see UPGRADE-3.0.md
+* Removed RouteConditionMetadataListener and added condition mapping to ORM and PHPCR route mapping.
 
 2.6.0
 -----

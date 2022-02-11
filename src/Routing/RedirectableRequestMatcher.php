@@ -60,6 +60,7 @@ class RedirectableRequestMatcher implements RequestMatcherInterface
             try {
                 $parameters = $this->decorated->matchRequest($this->rebuildRequest($request, $pathinfo));
             } catch (ExceptionInterface $e2) {
+                // ignore $e2 and throw original exception
                 throw $e;
             }
 

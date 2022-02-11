@@ -87,10 +87,5 @@
             <argument type="service" id="router" />
         </service>
 
-        <service id="cmf_routing.persistence.doctrine.route_condition_metadata_listener" class="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\RouteConditionMetadataListener">
-            <tag name="doctrine.event_subscriber"/>
-            <tag name="doctrine_phpcr.event_subscriber"/>
-        </service>
-
     </services>
 </container>
