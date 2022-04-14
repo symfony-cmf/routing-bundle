@@ -9,7 +9,7 @@
         <field name="defaults" type="array"/>
         <field name="requirements" type="array"/>
         <field name="options" type="array"/>
-        <field name="condition" type="string"/>
+        <field name="condition" column="`condition`" type="string"/>
     </mapped-superclass>
 
 </doctrine-mapping>
