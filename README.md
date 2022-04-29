@@ -15,7 +15,6 @@ The RoutingBundle enables the
 as a Symfony bundle. It provides route documents for Doctrine ORM and PHPCR-ODM,
 as well as a controller for redirection routes.
 
-
 ## Requirements
 
 * See `require` section of [composer.json](composer.json)
