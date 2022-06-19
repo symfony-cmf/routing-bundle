@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.0.1
+-----
+
+* [ORM] Quote `condition` in ORM mapping as it has become a reserved keyword in recent MySQL versions
+* [ORM] Fix getRouteKey to return the route name rather than the numeric MySQL row id
+
 3.0.0
 -----
 
