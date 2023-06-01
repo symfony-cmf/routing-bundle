@@ -88,7 +88,7 @@ final class LocaleListener
 
     /**
      * Whether to make the route prepend the locale pattern if it does not
-     * have one of the allowed locals in its id.
+     * have one of the allowed locales in its id.
      */
     public function setAddLocalePattern(bool $addLocalePattern): void
     {

@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
+use Doctrine\Common\Persistence\PersistentObject;
 use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver as PHPCRXmlDriver;
 use Doctrine\ODM\PHPCR\Version as PHPCRVersion;
 use Doctrine\ORM\EntityManagerInterface;
@@ -56,6 +57,11 @@ final class CmfRoutingBundle extends Bundle
         $container->addCompilerPass(
             $this->buildBaseCompilerPass(DoctrinePhpcrMappingsPass::class, PHPCRXmlDriver::class, 'phpcr')
         );
+        $aliasMap = [];
+        // short alias is no longer supported in doctrine/persistence 3, but keep aliasing for BC with old installations
+        if (class_exists(PersistentObject::class)) {
+            $aliasMap = ['CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr'];
+        }
         $container->addCompilerPass(
             DoctrinePhpcrMappingsPass::createXmlMappingDriver(
                 [
@@ -64,7 +70,7 @@ final class CmfRoutingBundle extends Bundle
                 ],
                 ['cmf_routing.dynamic.persistence.phpcr.manager_name'],
                 'cmf_routing.backend_type_phpcr',
-                ['CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr']
+                $aliasMap
             )
         );
     }
@@ -81,6 +87,11 @@ final class CmfRoutingBundle extends Bundle
         $container->addCompilerPass(
             $this->buildBaseCompilerPass(DoctrineOrmMappingsPass::class, ORMXmlDriver::class, 'orm')
         );
+        $aliasMap = [];
+        // short alias is no longer supported in doctrine/persistence 3, but keep aliasing for BC with old installations
+        if (class_exists(PersistentObject::class)) {
+            $aliasMap = ['CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm'];
+        }
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createXmlMappingDriver(
                 [
@@ -89,7 +100,7 @@ final class CmfRoutingBundle extends Bundle
                 ],
                 ['cmf_routing.dynamic.persistence.orm.manager_name'],
                 'cmf_routing.backend_type_orm_default',
-                ['CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm']
+                $aliasMap
             )
         );
 
