@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.0.2
+-----
+
+* Do not register CmfRoutingBundle alias for ORM / PHPCR-ODM when we have doctrine/persistence 3.x as the short alias is no longer supported.
+
 3.0.1
 -----
 
