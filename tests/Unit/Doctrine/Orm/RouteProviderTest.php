@@ -201,15 +201,7 @@ class RouteProviderTest extends TestCase
         ];
 
         $this->objectRepositoryMock
-            ->expects($this->at(0))
             ->method('findOneBy')
-            ->with(['name' => $paths[0]])
-            ->willReturn($this->routeMock)
-        ;
-        $this->objectRepositoryMock
-            ->expects($this->at(1))
-            ->method('findOneBy')
-            ->with(['name' => $paths[1]])
             ->willReturn($this->routeMock)
         ;
 
@@ -217,22 +209,9 @@ class RouteProviderTest extends TestCase
 
         $candidatesMock = $this->createMock(CandidatesInterface::class);
         $candidatesMock
-            ->expects($this->at(0))
             ->method('isCandidate')
-            ->with($paths[0])
-            ->willReturn(true)
-        ;
-        $candidatesMock
-            ->expects($this->at(1))
-            ->method('isCandidate')
-            ->with($paths[1])
-            ->willReturn(true)
-        ;
-        $candidatesMock
-            ->expects($this->at(2))
-            ->method('isCandidate')
-            ->with($paths[2])
-            ->willReturn(false)
+            ->withConsecutive([$paths[0]], [$paths[1]], [$paths[2]])
+            ->willReturnOnConsecutiveCalls(true, true, false)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $candidatesMock, 'Route');

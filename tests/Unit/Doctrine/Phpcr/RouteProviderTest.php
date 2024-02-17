@@ -13,8 +13,8 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\Query\Builder\From;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
-use Doctrine\ODM\PHPCR\Query\Builder\SourceFactory;
 use Doctrine\ODM\PHPCR\Query\Query;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use Doctrine\Persistence\ManagerRegistry;
@@ -87,10 +87,10 @@ class RouteProviderTest extends TestCase
             ->willReturn($candidates)
         ;
 
-        $objects = [
+        $objects = new ArrayCollection([
             new Route('/my'),
             $this,
-        ];
+        ]);
 
         $this->dmMock
             ->expects($this->once())
@@ -327,28 +327,9 @@ class RouteProviderTest extends TestCase
         ;
 
         $this->candidatesMock
-            ->expects($this->at(0))
             ->method('isCandidate')
-            ->with('/cms/routes/test-route')
-            ->willReturn(true)
-        ;
-        $this->candidatesMock
-            ->expects($this->at(1))
-            ->method('isCandidate')
-            ->with('/cms/simple/other-route')
-            ->willReturn(true)
-        ;
-        $this->candidatesMock
-            ->expects($this->at(2))
-            ->method('isCandidate')
-            ->with('/cms/routes/not-a-route')
-            ->willReturn(true)
-        ;
-        $this->candidatesMock
-            ->expects($this->at(3))
-            ->method('isCandidate')
-            ->with('/outside/prefix')
-            ->willReturn(false)
+            ->withConsecutive(['/cms/routes/test-route'], ['/cms/simple/other-route'], ['/cms/routes/not-a-route'], ['/outside/prefix'])
+            ->willReturnOnConsecutiveCalls(true, true, true, false)
         ;
 
         $paths[] = '/outside/prefix';
@@ -374,21 +355,8 @@ class RouteProviderTest extends TestCase
         ;
 
         $this->candidatesMock
-            ->expects($this->at(0))
             ->method('isCandidate')
-            ->with('/cms/routes/test-route')
-            ->willReturn(false)
-        ;
-        $this->candidatesMock
-            ->expects($this->at(1))
-            ->method('isCandidate')
-            ->with('/cms/simple/other-route')
-            ->willReturn(false)
-        ;
-        $this->candidatesMock
-            ->expects($this->at(2))
-            ->method('isCandidate')
-            ->with('/cms/routes/not-a-route')
+            ->withConsecutive(['/cms/routes/test-route'], ['/cms/simple/other-route'], ['/cms/routes/not-a-route'])
             ->willReturn(false)
         ;
 
@@ -429,29 +397,15 @@ class RouteProviderTest extends TestCase
             ->willReturn($uow)
         ;
         $uow
-            ->expects($this->at(0))
             ->method('getDocumentId')
-            ->with($route1)
-            ->willReturn('/cms/routes/test-route')
-        ;
-        $uow
-            ->expects($this->at(1))
-            ->method('getDocumentId')
-            ->with($route2)
-            ->willReturn('/cms/routes/other-route')
+            ->withConsecutive([$route1], [$route2])
+            ->willReturnOnConsecutiveCalls('/cms/routes/test-route', '/cms/routes/other-route')
         ;
 
         $this->candidatesMock
-            ->expects($this->at(0))
             ->method('isCandidate')
-            ->with('/cms/routes/test-route')
-            ->willReturn(true)
-        ;
-        $this->candidatesMock
-            ->expects($this->at(1))
-            ->method('isCandidate')
-            ->with('/cms/routes/other-route')
-            ->willReturn(false)
+            ->withConsecutive(['/cms/routes/test-route'], ['/cms/routes/other-route'])
+            ->willReturnOnConsecutiveCalls(true, false)
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -463,7 +417,7 @@ class RouteProviderTest extends TestCase
 
     private function doRouteDump($limit): void
     {
-        $from = $this->createMock(SourceFactory::class);
+        $from = $this->createMock(From::class);
         $from->expects($this->once())
             ->method('document')
             ->with(Route::class, 'd')

@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Validator\Constraints;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Validator\Constraints\RouteDefaultsTemplatingValidator;
 use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 
 class RouteDefaultsTemplatingValidatorTest extends RouteDefaultsValidatorTest
 {
@@ -30,7 +31,7 @@ class RouteDefaultsTemplatingValidatorTest extends RouteDefaultsValidatorTest
         parent::setUp();
     }
 
-    protected function createValidator()
+    protected function createValidator(): ConstraintValidatorInterface
     {
         return new RouteDefaultsTemplatingValidator($this->controllerResolver, $this->engine);
     }

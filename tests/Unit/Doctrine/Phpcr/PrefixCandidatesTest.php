@@ -12,8 +12,9 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
-use Doctrine\ODM\PHPCR\Query\Builder\ConstraintFactory;
+use Doctrine\ODM\PHPCR\Query\Builder\ConstraintOrx;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
+use Doctrine\ODM\PHPCR\Query\Builder\WhereAnd;
 use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooserInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PrefixCandidatesTest extends TestCase
 {
-    public function testAddPrefix()
+    public function testAddPrefix(): void
     {
         $candidates = new PrefixCandidates(['/routes']);
         $this->assertEquals(['/routes'], $candidates->getPrefixes());
@@ -32,7 +33,7 @@ class PrefixCandidatesTest extends TestCase
         $this->assertEquals(['/other'], $candidates->getPrefixes());
     }
 
-    public function testGetCandidates()
+    public function testGetCandidates(): void
     {
         $request = Request::create('/my/path.html');
 
@@ -54,7 +55,7 @@ class PrefixCandidatesTest extends TestCase
         );
     }
 
-    public function testGetCandidatesPercentEncoded()
+    public function testGetCandidatesPercentEncoded(): void
     {
         $request = Request::create('/my/path%20percent%20encoded.html');
 
@@ -76,7 +77,7 @@ class PrefixCandidatesTest extends TestCase
         );
     }
 
-    public function testGetCandidatesLocales()
+    public function testGetCandidatesLocales(): void
     {
         $request = Request::create('/de/path.html');
 
@@ -102,16 +103,15 @@ class PrefixCandidatesTest extends TestCase
         );
     }
 
-    public function testGetCandidatesLocalesDm()
+    public function testGetCandidatesLocalesDm(): void
     {
         $request = Request::create('/de/path.html');
 
         $dmMock = $this->createMock(DocumentManager::class);
         $managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $managerRegistryMock
-            ->expects($this->any())
             ->method('getManager')
-            ->will($this->returnValue($dmMock))
+            ->willReturn($dmMock)
         ;
         $localeMock = $this->createMock(LocaleChooserInterface::class);
         $localeMock
@@ -122,14 +122,14 @@ class PrefixCandidatesTest extends TestCase
         $dmMock
             ->expects($this->once())
             ->method('getLocaleChooserStrategy')
-            ->will($this->returnValue($localeMock))
+            ->willReturn($localeMock)
         ;
 
         $candidates = new PrefixCandidates(['/simple'], ['de', 'fr'], $managerRegistryMock);
         $candidates->getCandidates($request);
     }
 
-    public function testGetCandidatesLocalesDmNoLocale()
+    public function testGetCandidatesLocalesDmNoLocale(): void
     {
         $request = Request::create('/it/path.html');
         $managerRegistryMock = $this->createMock(ManagerRegistry::class);
@@ -142,7 +142,7 @@ class PrefixCandidatesTest extends TestCase
         $candidates->getCandidates($request);
     }
 
-    public function testIsCandidate()
+    public function testIsCandidate(): void
     {
         $candidates = new PrefixCandidates(['/routes']);
         $this->assertTrue($candidates->isCandidate('/routes'));
@@ -152,33 +152,33 @@ class PrefixCandidatesTest extends TestCase
         $this->assertFalse($candidates->isCandidate('/routesnotsame'));
     }
 
-    public function testRestrictQuery()
+    public function testRestrictQuery(): void
     {
-        $orX = $this->createMock(ConstraintFactory::class);
+        $orX = $this->createMock(ConstraintOrx::class);
         $orX->expects($this->once())
             ->method('descendant')
             ->with('/routes', 'd')
         ;
-        $andWhere = $this->createMock(ConstraintFactory::class);
+        $andWhere = $this->createMock(WhereAnd::class);
         $andWhere->expects($this->once())
             ->method('orX')
-            ->will($this->returnValue($orX))
+            ->willReturn($orX)
         ;
         $qb = $this->createMock(QueryBuilder::class);
         $qb->expects($this->once())
             ->method('andWhere')
-            ->will($this->returnValue($andWhere))
+            ->willReturn($andWhere)
         ;
         $qb->expects($this->once())
             ->method('getPrimaryAlias')
-            ->will($this->returnValue('d'))
+            ->willReturn('d')
         ;
 
         $candidates = new PrefixCandidates(['/routes']);
         $candidates->restrictQuery($qb);
     }
 
-    public function testRestrictQueryGlobal()
+    public function testRestrictQueryGlobal(): void
     {
         $qb = $this->createMock(QueryBuilder::class);
         $qb->expects($this->never())

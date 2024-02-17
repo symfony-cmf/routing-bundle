@@ -43,18 +43,18 @@ abstract class RouteDefaultsValidatorTest extends ConstraintValidatorTestCase
      */
     abstract protected function mockEngine();
 
-    public function testCorrectControllerPath()
+    public function testCorrectControllerPath(): void
     {
         $this->validator->validate(['_controller' => 'FrameworkBundle:Redirect:redirect'], new RouteDefaults());
 
         $this->assertNoViolation();
     }
 
-    public function testControllerPathViolation()
+    public function testControllerPathViolation(): void
     {
-        $this->controllerResolver->expects($this->any())
+        $this->controllerResolver
             ->method('getController')
-            ->will($this->throwException(new \LogicException('Invalid controller')))
+            ->willThrowException(new \LogicException('Invalid controller'))
         ;
 
         $this->validator->validate(['_controller' => 'NotExistingBundle:Foo:bar'], new RouteDefaults());
@@ -62,11 +62,11 @@ abstract class RouteDefaultsValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation('Invalid controller')->assertRaised();
     }
 
-    public function testCorrectTemplate()
+    public function testCorrectTemplate(): void
     {
-        $this->engine->expects($this->any())
+        $this->engine
             ->method('exists')
-            ->will($this->returnValue(true))
+            ->willReturn(true)
         ;
 
         $this->validator->validate(['_template' => 'TwigBundle::layout.html.twig'], $this->constraint);
@@ -74,13 +74,12 @@ abstract class RouteDefaultsValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function testTemplateViolation()
+    public function testTemplateViolation(): void
     {
         $this
             ->engine
-            ->expects($this->any())
             ->method('exists')
-            ->will($this->returnValue(false))
+            ->willReturn(false)
         ;
 
         $this->validator->validate(
