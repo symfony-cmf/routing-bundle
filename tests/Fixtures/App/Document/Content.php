@@ -11,31 +11,21 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Document;
 
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
+use Doctrine\ODM\PHPCR\Mapping\Attributes as PHPCRODM;
 
-/**
- * @PHPCRODM\Document(referenceable=true)
- */
+#[PHPCRODM\Document(referenceable: true)]
 class Content
 {
-    /**
-     * @PHPCRODM\Id
-     */
+    #[PHPCRODM\Id()]
     private $id;
 
-    /**
-     * @PHPCRODM\ParentDocument
-     */
+    #[PHPCRODM\ParentDocument]
     private $parent;
 
-    /**
-     * @PHPCRODM\NodeName
-     */
+    #[PHPCRODM\NodeName]
     private $name;
 
-    /**
-     * @PHPCRODM\Field(type="string")
-     */
+    #[PHPCRODM\Field(type: 'string')]
     private $title;
 
     public function setId($id)
