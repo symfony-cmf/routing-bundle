@@ -4,11 +4,11 @@
 
     <mapped-superclass name="Symfony\Component\Routing\Route">
         <field name="host" type="string"/>
-        <field name="schemes" type="array"/>
-        <field name="methods" type="array"/>
-        <field name="defaults" type="array"/>
-        <field name="requirements" type="array"/>
-        <field name="options" type="array"/>
+        <field name="schemes" type="json"/>
+        <field name="methods" type="json"/>
+        <field name="defaults" type="json"/>
+        <field name="requirements" type="json"/>
+        <field name="options" type="json"/>
         <field name="condition" column="`condition`" type="string"/>
     </mapped-superclass>
 
