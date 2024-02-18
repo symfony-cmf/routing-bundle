@@ -1,6 +1,13 @@
 Changelog
 =========
 
+3.1.0
+-----
+
+* Symfony 7 support
+* Doctrine ORM 3 support
+  If you use the ORM route entity, you need to migrate your database configuration as the array fields needed to be changed to the `json` type (because `array` has been removed)
+
 3.0.2
 -----
 
