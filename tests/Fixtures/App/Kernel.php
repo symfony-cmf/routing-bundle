@@ -17,7 +17,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends TestKernel
 {
-    public function configure()
+    public function configure(): void
     {
         $this->requireBundleSet('default');
 
@@ -39,7 +39,7 @@ class Kernel extends TestKernel
         }
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__.'/config/config_'.$this->environment.'.php');
     }
