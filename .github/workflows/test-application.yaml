@@ -21,16 +21,16 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: '8.0'
-                      dependencies: 'lowest'
-                    - php-version: '8.0'
-                      symfony-version: '6.0.*'
                     - php-version: '8.1'
-                      symfony-version: '6.0.*'
+                      dependencies: 'lowest'
+                    - php-version: '8.1'
+                    - php-version: '8.2'
+                    - php-version: '8.3'
+                      symfony-version: '7.0.*'
 
         steps:
             - name: Checkout project
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Install and configure PHP
               uses: shivammathur/setup-php@v2
@@ -45,7 +45,7 @@ jobs:
                 composer global require --no-progress --no-scripts --no-plugins symfony/flex
 
             - name: Install dependencies with Composer
-              uses: ramsey/composer-install@v1
+              uses: ramsey/composer-install@v2
               with:
                   dependency-versions: ${{ matrix.dependencies }}
                   composer-options: --prefer-dist
