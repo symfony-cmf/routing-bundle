@@ -45,7 +45,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      *
      * @throws \LogicException
      */
-    public function setContent(object $document): static
+    public function setContent($document): static
     {
         throw new \LogicException('Do not set a content for the redirect route. It is its own content.');
     }
