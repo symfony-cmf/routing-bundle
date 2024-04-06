@@ -37,8 +37,6 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param string $id The ID contains both model name and id, separated by a colon
      */
     public function findById(mixed $id): ?object

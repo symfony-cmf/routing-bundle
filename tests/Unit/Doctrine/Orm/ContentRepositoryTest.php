@@ -14,20 +14,18 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Orm;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\ContentRepository;
 
 class ContentRepositoryTest extends TestCase
 {
-    private $document;
+    private \stdClass $document;
+    private ManagerRegistry&MockObject $managerRegistry;
+    private ObjectManager&MockObject $objectManager;
+    private ObjectRepository&MockObject $objectRepository;
 
-    private $managerRegistry;
-
-    private $objectManager;
-
-    private $objectRepository;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->document = new \stdClass();
         $this->objectManager = $this->createMock(ObjectManager::class);
@@ -35,26 +33,23 @@ class ContentRepositoryTest extends TestCase
         $this->objectRepository = $this->createMock(ObjectRepository::class);
     }
 
-    public function testFindById()
+    public function testFindById(): void
     {
         $this->objectManager
-            ->expects($this->any())
             ->method('getRepository')
             ->with($this->equalTo('stdClass'))
-            ->will($this->returnValue($this->objectRepository))
+            ->willReturn($this->objectRepository)
         ;
 
         $this->objectRepository
-            ->expects($this->any())
             ->method('find')
             ->with(123)
-            ->will($this->returnValue($this->document))
+            ->willReturn($this->document)
         ;
 
         $this->managerRegistry
-            ->expects($this->any())
             ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
+            ->willReturn($this->objectManager)
         ;
 
         $contentRepository = new ContentRepository($this->managerRegistry);
@@ -68,26 +63,23 @@ class ContentRepositoryTest extends TestCase
     /**
      * @dataProvider getFindCorrectModelAndIdData
      */
-    public function testFindCorrectModelAndId($input, $model, $id)
+    public function testFindCorrectModelAndId($input, $model, $id): void
     {
         $this->objectManager
-            ->expects($this->any())
             ->method('getRepository')
             ->with($this->equalTo($model))
-            ->will($this->returnValue($this->objectRepository))
+            ->willReturn($this->objectRepository)
         ;
 
         $this->objectRepository
-            ->expects($this->any())
             ->method('find')
             ->with($id)
-            ->will($this->returnValue($this))
+            ->willReturn($this)
         ;
 
         $this->managerRegistry
-            ->expects($this->any())
             ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
+            ->willReturn($this->objectManager)
         ;
 
         $contentRepository = new ContentRepository($this->managerRegistry);
@@ -97,7 +89,7 @@ class ContentRepositoryTest extends TestCase
         $this->assertSame($this, $foundDocument);
     }
 
-    public function getFindCorrectModelAndIdData()
+    public function getFindCorrectModelAndIdData(): array
     {
         return [
             ['Acme\ContentBundle\Entity\Content:12', 'Acme\ContentBundle\Entity\Content', 12],

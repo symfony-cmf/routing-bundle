@@ -47,7 +47,7 @@ final class PrefixCandidates extends Candidates
      *                                       is using
      * @param int                  $limit    Limit to candidates generated per prefix
      */
-    public function __construct(array $prefixes, array $locales = [], ManagerRegistry $doctrine = null, int $limit = 20)
+    public function __construct(array $prefixes, array $locales = [], ?ManagerRegistry $doctrine = null, int $limit = 20)
     {
         parent::__construct($locales, $limit);
         $this->setPrefixes($prefixes);
@@ -74,8 +74,6 @@ final class PrefixCandidates extends Candidates
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param QueryBuilder $queryBuilder
      */
     public function restrictQuery($queryBuilder): void
@@ -91,9 +89,6 @@ final class PrefixCandidates extends Candidates
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCandidates(Request $request): array
     {
         $candidates = [];

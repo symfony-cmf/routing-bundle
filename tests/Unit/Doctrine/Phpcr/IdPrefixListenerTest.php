@@ -22,20 +22,11 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 final class IdPrefixListenerTest extends TestCase
 {
     private IdPrefixListener $listener;
-
     private PrefixCandidates $candidates;
+    private DocumentManager&MockObject $dmMock;
+    private Route&MockObject $routeMock;
 
-    /**
-     * @var DocumentManager&MockObject
-     */
-    private DocumentManager $dmMock;
-
-    /**
-     * @var Route&MockObject
-     */
-    private Route $routeMock;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->candidates = new PrefixCandidates(['/cms/routes', '/cms/simple']);
 

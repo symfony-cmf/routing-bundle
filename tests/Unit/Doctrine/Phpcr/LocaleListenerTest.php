@@ -23,20 +23,11 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 class LocaleListenerTest extends TestCase
 {
     private LocaleListener $listener;
-
     private PrefixCandidates $candidates;
+    private DocumentManager&MockObject $dmMock;
+    private Route&MockObject $routeMock;
 
-    /**
-     * @var DocumentManager&MockObject
-     */
-    private DocumentManager $dmMock;
-
-    /**
-     * @var Route&MockObject
-     */
-    private Route $routeMock;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->candidates = new PrefixCandidates(['/cms/routes', '/cms/simple']);
 
@@ -73,7 +64,7 @@ class LocaleListenerTest extends TestCase
         $this->listener->postLoad($args);
     }
 
-    private function prepareMatch()
+    private function prepareMatch(): LifecycleEventArgs
     {
         $this->routeMock->expects($this->once())
             ->method('getId')
@@ -162,7 +153,6 @@ class LocaleListenerTest extends TestCase
         $this->listener->setLocales(['xx']);
         $reflection = new \ReflectionClass(LocaleListener::class);
         $locales = $reflection->getProperty('locales');
-        $locales->setAccessible(true);
         $this->assertSame(['xx'], $locales->getValue($this->listener));
     }
 

@@ -24,52 +24,24 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
 
 class DynamicRouterTest extends TestCase
 {
-    /**
-     * @var DynamicRouter
-     */
-    private $router;
+    private DynamicRouter $router;
+    private UrlMatcherInterface&MockObject $matcher;
+    private UrlGeneratorInterface&MockObject $generator;
+    private RequestContext&MockObject $context;
+    private Request $request;
+    private RequestStack $requestStack;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
-    /**
-     * @var UrlMatcherInterface|MockObject
-     */
-    private $matcher;
-
-    /**
-     * @var UrlGeneratorInterface|MockObject
-     */
-    private $generator;
-
-    /**
-     * @var RequestContext|MockObject
-     */
-    private $context;
-
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var EventDispatcherInterface|MockObject
-     */
-    private $eventDispatcher;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->matcher = $this->createMock(UrlMatcherInterface::class);
         $this->matcher->expects($this->once())
             ->method('match')
             ->with('/foo')
-            ->will($this->returnValue(['foo' => 'bar', RouteObjectInterface::CONTENT_OBJECT => 'bla', RouteObjectInterface::TEMPLATE_NAME => 'template']))
+            ->willReturn(['foo' => 'bar', RouteObjectInterface::CONTENT_OBJECT => 'bla', RouteObjectInterface::TEMPLATE_NAME => 'template'])
         ;
 
         $this->generator = $this->createMock(UrlGeneratorInterface::class);
@@ -83,7 +55,7 @@ class DynamicRouterTest extends TestCase
         $this->router->setRequestStack($this->requestStack);
     }
 
-    private function assertRequestAttributes($request)
+    private function assertRequestAttributes($request): void
     {
         $this->assertTrue($request->attributes->has(DynamicRouter::CONTENT_KEY));
         $this->assertEquals('bla', $request->attributes->get(DynamicRouter::CONTENT_KEY));
@@ -94,17 +66,11 @@ class DynamicRouterTest extends TestCase
     /**
      * @group legacy
      */
-    public function testMatch()
+    public function testMatch(): void
     {
-        $dispatchParams = [Events::PRE_DYNAMIC_MATCH, $this->equalTo(new RouterMatchEvent())];
-        if ($this->eventDispatcher instanceof ContractsEventDispatcherInterface) {
-            // New Symfony 4.3 EventDispatcher signature
-            $dispatchParams = [$this->equalTo(new RouterMatchEvent()), Events::PRE_DYNAMIC_MATCH];
-        }
-
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
-            ->with(...$dispatchParams)
+            ->with($this->equalTo(new RouterMatchEvent()), Events::PRE_DYNAMIC_MATCH)
         ;
 
         $parameters = $this->router->match('/foo');
@@ -113,17 +79,11 @@ class DynamicRouterTest extends TestCase
         $this->assertRequestAttributes($this->request);
     }
 
-    public function testMatchRequest()
+    public function testMatchRequest(): void
     {
-        $dispatchParams = [Events::PRE_DYNAMIC_MATCH_REQUEST, $this->equalTo(new RouterMatchEvent($this->request))];
-        if ($this->eventDispatcher instanceof ContractsEventDispatcherInterface) {
-            // New Symfony 4.3 EventDispatcher signature
-            $dispatchParams = [$this->equalTo(new RouterMatchEvent($this->request)), Events::PRE_DYNAMIC_MATCH_REQUEST];
-        }
-
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
-            ->with(...$dispatchParams)
+            ->with($this->equalTo(new RouterMatchEvent($this->request)), Events::PRE_DYNAMIC_MATCH_REQUEST)
         ;
 
         $parameters = $this->router->matchRequest($this->request);
@@ -135,19 +95,13 @@ class DynamicRouterTest extends TestCase
     /**
      * @group legacy
      */
-    public function testMatchNoRequest()
+    public function testMatchNoRequest(): void
     {
         $this->router->setRequestStack(new RequestStack());
 
-        $dispatchParams = [Events::PRE_DYNAMIC_MATCH, $this->equalTo(new RouterMatchEvent())];
-        if ($this->eventDispatcher instanceof ContractsEventDispatcherInterface) {
-            // New Symfony 4.3 EventDispatcher signature
-            $dispatchParams = [$this->equalTo(new RouterMatchEvent()), Events::PRE_DYNAMIC_MATCH];
-        }
-
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
-            ->with(...$dispatchParams)
+            ->with($this->equalTo(new RouterMatchEvent()), Events::PRE_DYNAMIC_MATCH)
         ;
 
         $this->expectException(ResourceNotFoundException::class);
@@ -155,7 +109,7 @@ class DynamicRouterTest extends TestCase
         $this->router->match('/foo');
     }
 
-    public function testEventOptional()
+    public function testEventOptional(): void
     {
         $router = new DynamicRouter($this->context, $this->matcher, $this->generator);
 

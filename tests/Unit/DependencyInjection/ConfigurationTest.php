@@ -29,7 +29,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
         return new Configuration();
     }
 
-    public function testSupportsAllConfigFormats()
+    public function testSupportsAllConfigFormats(): void
     {
         $expectedConfiguration = [
             'chain' => [
@@ -80,7 +80,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
             ],
         ];
 
-        $formats = array_map(function ($path) {
+        $formats = array_map(static function ($path) {
             return __DIR__.'/../../Fixtures/fixtures/'.$path;
         }, [
             'config/config.yml',

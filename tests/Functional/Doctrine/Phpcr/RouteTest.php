@@ -16,9 +16,9 @@ use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RouteTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/routing';
+    private const ROUTE_ROOT = '/test/routing';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();

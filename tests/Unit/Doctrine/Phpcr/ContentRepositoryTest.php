@@ -15,22 +15,19 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\ContentRepository;
 
 class ContentRepositoryTest extends TestCase
 {
-    private $document;
+    private \stdClass $document;
+    private \stdClass $document2;
+    private DocumentManagerInterface&MockObject $objectManager;
+    private DocumentManagerInterface&MockObject $objectManager2;
+    private ManagerRegistry&MockObject $managerRegistry;
 
-    private $document2;
-
-    private $objectManager;
-
-    private $objectManager2;
-
-    private $managerRegistry;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->document = new \stdClass();
         $this->document2 = new \stdClass();

@@ -41,9 +41,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         $this->candidatesStrategy = $candidatesStrategy;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRouteCollectionForRequest(Request $request): RouteCollection
     {
         $collection = new RouteCollection();
@@ -52,8 +49,8 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         if (0 === \count($candidates)) {
             return $collection;
         }
-        $routes = $this->getRouteRepository()->findByStaticPrefix($candidates, ['position' => 'ASC']);
-        /** @var $route Route */
+        $routes = $this->getRouteRepository()->findByStaticPrefix($candidates, ['position' => 'ASC']); /* @phpstan-ignore-line */
+        /** @var Route $route */
         foreach ($routes as $route) {
             $collection->add($route->getName(), $route);
         }
@@ -61,9 +58,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $collection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRouteByName($name): SymfonyRoute
     {
         if (!$this->candidatesStrategy->isCandidate($name)) {
@@ -78,9 +72,6 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         return $route;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRoutesByNames($names = null): array
     {
         if (null === $names) {
@@ -90,7 +81,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 
             try {
                 return $this->getRouteRepository()->findBy([], null, $this->routeCollectionLimit ?: null);
-            } catch (TableNotFoundException $e) {
+            } catch (TableNotFoundException) {
                 return [];
             }
         }
@@ -100,7 +91,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
             // TODO: if we do findByName with multivalue, we need to filter with isCandidate afterwards
             try {
                 $routes[] = $this->getRouteByName($name);
-            } catch (RouteNotFoundException $e) {
+            } catch (RouteNotFoundException) {
                 // not found
             }
         }

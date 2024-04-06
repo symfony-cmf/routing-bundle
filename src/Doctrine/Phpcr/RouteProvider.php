@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPCR\RepositoryException;
 use PHPCR\Util\UUIDHelper;
@@ -44,7 +45,7 @@ final class RouteProvider extends DoctrineProvider implements RouteProviderInter
         ManagerRegistry $managerRegistry,
         CandidatesInterface $candidatesStrategy,
         ?string $className = null,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null
     ) {
         parent::__construct($managerRegistry, $className);
         $this->candidatesStrategy = $candidatesStrategy;
@@ -85,7 +86,6 @@ final class RouteProvider extends DoctrineProvider implements RouteProviderInter
         }
 
         try {
-            /** @var $dm DocumentManager */
             $dm = $this->getObjectManager();
             $routes = $dm->findMany($this->className, $candidates);
             // filter for valid route objects
@@ -102,8 +102,6 @@ final class RouteProvider extends DoctrineProvider implements RouteProviderInter
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param string $name The absolute path or uuid of the Route document
      */
     public function getRouteByName(string $name): SymfonyRoute
@@ -151,7 +149,6 @@ final class RouteProvider extends DoctrineProvider implements RouteProviderInter
         }
 
         try {
-            /** @var $dm DocumentManager */
             $dm = $this->getObjectManager();
         } catch (RepositoryException $e) {
             // special case: there is not even a database existing. this means there are no routes.
@@ -192,7 +189,6 @@ final class RouteProvider extends DoctrineProvider implements RouteProviderInter
             return [];
         }
 
-        /** @var $dm DocumentManager */
         $dm = $this->getObjectManager();
         $documents = $dm->findMany($this->className, $candidates);
         foreach ($documents as $key => $document) {
@@ -209,5 +205,18 @@ final class RouteProvider extends DoctrineProvider implements RouteProviderInter
         }
 
         return $documents;
+    }
+
+    /**
+     * Make sure the manager is a PHPCR-ODM manager.
+     */
+    protected function getObjectManager(): DocumentManagerInterface
+    {
+        $dm = parent::getObjectManager();
+        if (!$dm instanceof DocumentManagerInterface) {
+            throw new \LogicException(sprintf('Expected %s, got %s', DocumentManagerInterface::class, get_class($dm)));
+        }
+
+        return $dm;
     }
 }

@@ -29,37 +29,14 @@ use Symfony\Component\Routing\Route;
 
 class RouteProviderTest extends TestCase
 {
-    /**
-     * @var ManagerRegistry&MockObject
-     */
-    private ManagerRegistry $managerRegistryMock;
+    private ManagerRegistry&MockObject $managerRegistryMock;
+    private CandidatesInterface&MockObject $candidatesMock;
+    private DocumentManager&MockObject $dmMock;
+    private DocumentManager&MockObject $dm2Mock;
+    private Route&MockObject $routeMock;
+    private Route&MockObject $route2Mock;
 
-    /**
-     * @var CandidatesInterface&MockObject
-     */
-    protected CandidatesInterface $candidatesMock;
-
-    /**
-     * @var DocumentManager&MockObject
-     */
-    protected DocumentManager $dmMock;
-
-    /**
-     * @var DocumentManager&MockObject
-     */
-    protected DocumentManager $dm2Mock;
-
-    /**
-     * @var Route&MockObject
-     */
-    protected Route $routeMock;
-
-    /**
-     * @var Route&MockObject
-     */
-    protected Route $route2Mock;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->routeMock = $this->createMock(Route::class);
         $this->route2Mock = $this->createMock(Route::class);
@@ -69,7 +46,7 @@ class RouteProviderTest extends TestCase
 
         $this->managerRegistryMock
             ->method('getManager')
-            ->will($this->returnValue($this->dmMock))
+            ->willReturn($this->dmMock)
         ;
 
         $this->candidatesMock = $this->createMock(CandidatesInterface::class);
@@ -187,7 +164,7 @@ class RouteProviderTest extends TestCase
         $this->assertEquals('/cms/routes/test-route', $foundRoute->getPath());
     }
 
-    public function testGetRouteByNameUuidNotFound()
+    public function testGetRouteByNameUuidNotFound(): void
     {
         $uuid = UUIDHelper::generateUUID();
 
@@ -208,7 +185,6 @@ class RouteProviderTest extends TestCase
     {
         $uuid = UUIDHelper::generateUUID();
         $this->routeMock
-            ->expects($this->any())
             ->method('getPath')
             ->willReturn('/cms/routes/test-route')
         ;

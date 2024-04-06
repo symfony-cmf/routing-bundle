@@ -12,21 +12,22 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\RouteProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 class RouteProviderTest extends OrmTestCase
 {
-    private $repository;
+    private RouteProvider $repository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->clearDb(Route::class);
 
-        $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
+        $this->repository = self::getContainer()->get('cmf_routing.route_provider');
     }
 
-    public function testGetRouteCollectionForRequest()
+    public function testGetRouteCollectionForRequest(): void
     {
         $this->createRoute('route1', '/test');
         $this->createRoute('route2', '/test/child');

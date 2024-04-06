@@ -58,9 +58,6 @@ class Route extends RouteModel
         return $this->position;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRouteKey(): string
     {
         return $this->getName();

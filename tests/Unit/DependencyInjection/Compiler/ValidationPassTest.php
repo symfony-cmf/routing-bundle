@@ -29,7 +29,7 @@ class ValidationPassTest extends AbstractCompilerPassTestCase
      *
      * @dataProvider provideDocumentsValidationContext
      */
-    public function testRegisterDocumentsValidation($hasPhpcr, $hasValidator, $shouldBeRegistered)
+    public function testRegisterDocumentsValidation(bool $hasPhpcr, bool $hasValidator, bool $shouldBeRegistered): void
     {
         if ($hasPhpcr) {
             $this->setParameter('cmf_routing.backend_type_phpcr', null);
@@ -71,7 +71,7 @@ class ValidationPassTest extends AbstractCompilerPassTestCase
      *  - _$hasValidator: Is the validator available ?
      *  - _$shouldBeRegistered_: Should the documents validation be registered ?
      */
-    public function provideDocumentsValidationContext()
+    public function provideDocumentsValidationContext(): array
     {
         return [
             [true, true, true],

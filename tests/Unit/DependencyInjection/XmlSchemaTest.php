@@ -15,20 +15,19 @@ use Symfony\Cmf\Component\Testing\Unit\XmlSchemaTestCase;
 
 class XmlSchemaTest extends XmlSchemaTestCase
 {
-    protected $fixturesPath;
+    private string $fixturesPath;
+    private string $schemaPath;
 
-    protected $schemaPath;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->fixturesPath = __DIR__.'/../../Fixtures/fixtures/config/';
         $this->schemaPath = __DIR__.'/../../../src/Resources/config/schema/routing-1.0.xsd';
     }
 
-    public function testSchema()
+    public function testSchema(): void
     {
         $fixturesPath = $this->fixturesPath;
-        $xmlFiles = array_map(function ($file) use ($fixturesPath) {
+        $xmlFiles = array_map(static function ($file) use ($fixturesPath) {
             return $fixturesPath.$file;
         }, [
             'config.xml',
@@ -41,7 +40,7 @@ class XmlSchemaTest extends XmlSchemaTestCase
         $this->assertSchemaAcceptsXml($xmlFiles, $this->schemaPath);
     }
 
-    public function testSchemaInvalidesTwoPersistenceLayers()
+    public function testSchemaInvalidatesTwoPersistenceLayers(): void
     {
         $this->assertSchemaRefusesXml($this->fixturesPath.'config_invalid1.xml', $this->schemaPath);
     }

@@ -19,9 +19,6 @@ class RouteTypeType extends AbstractType
 {
     protected array $routeTypes = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $choices = [];
@@ -43,17 +40,11 @@ class RouteTypeType extends AbstractType
         $this->routeTypes[$type] = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'cmf_routing_route_type';

@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 
@@ -25,17 +26,11 @@ use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
  */
 class ContentRepository extends DoctrineProvider implements ContentRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findById($id): ?object
     {
         return $this->getObjectManager()->find(null, $id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContentId($content): ?string
     {
         if (!\is_object($content)) {
@@ -47,5 +42,18 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    /**
+     * Make sure the manager is a PHPCR-ODM manager.
+     */
+    protected function getObjectManager(): DocumentManagerInterface
+    {
+        $dm = parent::getObjectManager();
+        if (!$dm instanceof DocumentManagerInterface) {
+            throw new \LogicException(sprintf('Expected %s, got %s', DocumentManagerInterface::class, get_class($dm)));
+        }
+
+        return $dm;
     }
 }

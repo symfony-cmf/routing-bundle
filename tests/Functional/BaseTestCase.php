@@ -19,20 +19,12 @@ use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCa
 
 class BaseTestCase extends ComponentBaseTestCase
 {
-    /**
-     * @return DocumentManagerInterface
-     */
-    protected function getDm()
+    protected function getDm(): DocumentManagerInterface
     {
         return $this->db('PHPCR')->getOm();
     }
 
-    /**
-     * @param string $path
-     *
-     * @return Route
-     */
-    protected function createRoute($path)
+    protected function createRoute(string $path): Route
     {
         $parentPath = PathHelper::getParentPath($path);
         $parent = $this->getDm()->find(null, $parentPath);
@@ -45,12 +37,7 @@ class BaseTestCase extends ComponentBaseTestCase
         return $route;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return Content
-     */
-    protected function createContent($path = '/test/content')
+    protected function createContent(string $path = '/test/content'): Content
     {
         $content = new Content();
         $content->setId($path);

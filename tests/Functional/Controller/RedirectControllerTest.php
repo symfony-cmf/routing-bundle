@@ -22,7 +22,7 @@ final class RedirectControllerTest extends BaseTestCase
 
     private RedirectController $controller;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();

@@ -18,10 +18,9 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 class RouteTest extends TestCase
 {
     private Route $route;
-
     private Route $childRoute1;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->route = new Route();
 
@@ -33,7 +32,6 @@ class RouteTest extends TestCase
     {
         $refl = new \ReflectionClass($this->route);
         $prop = $refl->getProperty('children');
-        $prop->setAccessible(true);
         $prop->setValue($this->route, new ArrayCollection([
             new \stdClass(),
             $this->childRoute1,
@@ -41,7 +39,7 @@ class RouteTest extends TestCase
 
         $res = $this->route->getRouteChildren();
         $this->assertCount(1, $res);
-        $this->assertEquals('child route1', $res[0]->getName());
+        $this->assertSame($this->childRoute1, $res[0]);
     }
 
     public function testGetRouteChildrenNull(): void
