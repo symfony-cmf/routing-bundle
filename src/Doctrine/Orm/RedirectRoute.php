@@ -17,16 +17,11 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute as RedirectRouteModel;
  * {@inheritdoc}
  *
  * Provides a redirect route stored in the Doctrine ORM and used as content for generic route to provide redirects
+ *
+ * @property int $id
  */
 class RedirectRoute extends RedirectRouteModel
 {
-    /**
-     * Unique id of this route.
-     *
-     * @var int
-     */
-    protected $id;
-
     protected string $serialisedParameters;
 
     /**

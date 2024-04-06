@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit
     colors="true"
     bootstrap="vendor/symfony-cmf/testing/bootstrap/bootstrap.php"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 >
-
     <testsuites>
         <testsuite name="unit tests">
             <directory>./tests/Unit</directory>
         </testsuite>
-
         <testsuite name="functional tests with phpcr">
             <directory>./tests/Functional</directory>
             <exclude>./tests/Functional/Doctrine/Orm</exclude>
         </testsuite>
-
         <testsuite name="functional tests with orm">
             <directory>./tests/Functional/Doctrine/Orm</directory>
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
+    <coverage includeUncoveredFiles="true">
+        <include>
             <directory>src/</directory>
-            <exclude>
-                <directory>Resources/</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+        </include>
+        <exclude>
+            <directory>src/Resources/</directory>
+        </exclude>
+    </coverage>
 
     <php>
-	    <env name="KERNEL_CLASS" value="\Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel" />
+        <env name="KERNEL_CLASS" value="\Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel"/>
     </php>
 </phpunit>

@@ -113,7 +113,7 @@ class RouteProviderTest extends BaseTestCase
      */
     public function testGetRouteCollectionForRequestNonPhpcrUrl()
     {
-        $routes = $this->repository->getRouteCollectionForRequest(Request::create('http:///'));
+        $routes = $this->repository->getRouteCollectionForRequest(Request::create('http://localhost/'));
         $this->assertInstanceOf(RouteCollection::class, $routes);
         $this->assertCount(1, $routes);
 

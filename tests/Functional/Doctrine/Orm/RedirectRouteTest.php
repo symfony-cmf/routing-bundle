@@ -14,13 +14,10 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 use Symfony\Cmf\Bundle\RoutingBundle\Controller\RedirectController;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RedirectRouteTest extends OrmTestCase
 {
-    private $repository;
-
-    private $controller;
+    private RedirectController $controller;
 
     public function setUp(): void
     {
@@ -28,11 +25,10 @@ class RedirectRouteTest extends OrmTestCase
         $this->clearDb(Route::class);
         $this->clearDb(RedirectRoute::class);
 
-        $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
         $this->controller = new RedirectController($this->getContainer()->get('router'));
     }
 
-    public function testRedirectDoctrine()
+    public function testRedirectDoctrine(): void
     {
         $route = $this->createRoute('route1', '/test');
 
@@ -52,7 +48,6 @@ class RedirectRouteTest extends OrmTestCase
 
         $response = $this->controller->redirectAction($redirectRoute->getContent());
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(301, $response->getStatusCode());
         $this->assertSame('http://localhost/test', $response->getTargetUrl());
     }

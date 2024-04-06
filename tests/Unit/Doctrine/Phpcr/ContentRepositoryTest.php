@@ -12,9 +12,9 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\ContentRepository;
 
@@ -34,24 +34,22 @@ class ContentRepositoryTest extends TestCase
     {
         $this->document = new \stdClass();
         $this->document2 = new \stdClass();
-        $this->objectManager = $this->createMock(ObjectManager::class);
-        $this->objectManager2 = $this->createMock(ObjectManager::class);
+        $this->objectManager = $this->createMock(DocumentManagerInterface::class);
+        $this->objectManager2 = $this->createMock(DocumentManagerInterface::class);
         $this->managerRegistry = $this->createMock(ManagerRegistry::class);
     }
 
-    public function testFindById()
+    public function testFindById(): void
     {
         $this->objectManager
-            ->expects($this->any())
             ->method('find')
             ->with(null, 'id-123')
-            ->will($this->returnValue($this->document))
+            ->willReturn($this->document)
         ;
 
         $this->managerRegistry
-            ->expects($this->any())
             ->method('getManager')
-            ->will($this->returnValue($this->objectManager))
+            ->willReturn($this->objectManager)
         ;
 
         $contentRepository = new ContentRepository($this->managerRegistry);
@@ -60,25 +58,25 @@ class ContentRepositoryTest extends TestCase
         $this->assertSame($this->document, $contentRepository->findById('id-123'));
     }
 
-    public function testGetContentId()
+    public function testGetContentId(): void
     {
         $uow = $this->createMock(UnitOfWork::class);
         $uow->expects($this->once())
             ->method('getDocumentId')
             ->with($this->document)
-            ->will($this->returnValue('id-123'))
+            ->willReturn('id-123')
         ;
 
         $dm = $this->createMock(DocumentManager::class);
         $dm
             ->expects($this->once())
             ->method('getUnitOfWork')
-            ->will($this->returnValue($uow))
+            ->willReturn($uow)
         ;
         $this->managerRegistry
             ->expects($this->once())
             ->method('getManager')
-            ->will($this->returnValue($dm))
+            ->willReturn($dm)
         ;
 
         $contentRepository = new ContentRepository($this->managerRegistry);
@@ -87,18 +85,18 @@ class ContentRepositoryTest extends TestCase
         $this->assertEquals('id-123', $contentRepository->getContentId($this->document));
     }
 
-    public function testGetContentIdNoObject()
+    public function testGetContentIdNoObject(): void
     {
         $contentRepository = new ContentRepository($this->managerRegistry);
         $this->assertNull($contentRepository->getContentId('hello'));
     }
 
-    public function testGetContentIdException()
+    public function testGetContentIdException(): void
     {
         $this->managerRegistry
             ->expects($this->once())
             ->method('getManager')
-            ->will($this->throwException(new \Exception()))
+            ->willThrowException(new \Exception())
         ;
 
         $contentRepository = new ContentRepository($this->managerRegistry);
@@ -111,20 +109,18 @@ class ContentRepositoryTest extends TestCase
      * Use findById() with two different document managers.
      * The two document managers will return different documents when searching for the same id.
      */
-    public function testChangingDocumentManager()
+    public function testChangingDocumentManager(): void
     {
         $this->objectManager
-            ->expects($this->any())
             ->method('find')
             ->with(null, 'id-123')
-            ->will($this->returnValue($this->document))
+            ->willReturn($this->document)
         ;
 
         $this->objectManager2
-            ->expects($this->any())
             ->method('find')
             ->with(null, 'id-123')
-            ->will($this->returnValue($this->document2))
+            ->willReturn($this->document2)
         ;
 
         $objectManagers = [
@@ -132,14 +128,11 @@ class ContentRepositoryTest extends TestCase
             'new_manager' => $this->objectManager2,
         ];
         $this->managerRegistry
-            ->expects($this->any())
             ->method('getManager')
-            ->will(
-                $this->returnCallback(
-                    function ($name) use ($objectManagers) {
-                        return $objectManagers[$name];
-                    }
-                )
+            ->willReturnCallback(
+                function ($name) use ($objectManagers) {
+                    return $objectManagers[$name];
+                }
             );
 
         $contentRepository = new ContentRepository($this->managerRegistry);
