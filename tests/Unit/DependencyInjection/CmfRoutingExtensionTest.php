@@ -26,7 +26,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    public function testLoadDefault()
+    public function testLoadDefault(): void
     {
         $this->load([
             'dynamic' => [
@@ -56,7 +56,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function testLoadConfigured()
+    public function testLoadConfigured(): void
     {
         $this->load([
             'dynamic' => [
@@ -93,7 +93,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function testWhitespaceInPriorities()
+    public function testWhitespaceInPriorities(): void
     {
         $this->load([
             'dynamic' => [
@@ -133,7 +133,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
     /**
      * @dataProvider getBasePathsTests
      */
-    public function testLoadBasePaths($phpcrConfig, $routeBasepathsParameter)
+    public function testLoadBasePaths(array $phpcrConfig, array $routeBasepathsParameter): void
     {
         $this->container->setParameter(
             'kernel.bundles',
@@ -163,7 +163,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function getBasePathsTests()
+    public function getBasePathsTests(): array
     {
         return [
             [
@@ -191,7 +191,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
     /**
      * @dataProvider getBasePathsMergingTests
      */
-    public function testRouteBasepathsMerging($phpcrConfig1, $phpcrConfig2, $routeBasepathsParameter)
+    public function testRouteBasepathsMerging(array $phpcrConfig1, array $phpcrConfig2, array $routeBasepathsParameter): void
     {
         $this->container->setParameter(
             'kernel.bundles',
@@ -232,7 +232,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function getBasePathsMergingTests()
+    public function getBasePathsMergingTests(): array
     {
         return [
             [
@@ -258,7 +258,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    public function testInitializerEnabled()
+    public function testInitializerEnabled(): void
     {
         $this->container->setParameter(
             'kernel.bundles',
@@ -282,7 +282,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService('cmf_routing.initializer', GenericInitializer::class);
     }
 
-    public function testInitializerDisabled()
+    public function testInitializerDisabled(): void
     {
         $this->container->setParameter(
             'kernel.bundles',
@@ -306,7 +306,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         $this->assertFalse($this->container->has('cmf_routing.initializer'));
     }
 
-    public function testSettingCustomRouteClassForOrm()
+    public function testSettingCustomRouteClassForOrm(): void
     {
         $this->load([
             'dynamic' => [

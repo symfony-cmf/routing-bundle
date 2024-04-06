@@ -11,13 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
-use LogicException;
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 
-/**
- * {@inheritdoc}
- */
 class RedirectRoute extends Route implements RedirectRouteInterface
 {
     /**
@@ -47,16 +43,13 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      * as route content for the redirection controller to have the redirect route
      * object as content.
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
-    public function setContent($document): static
+    public function setContent(object $document): static
     {
-        throw new LogicException('Do not set a content for the redirect route. It is its own content.');
+        throw new \LogicException('Do not set a content for the redirect route. It is its own content.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContent(): static
     {
         return $this;
@@ -71,9 +64,6 @@ class RedirectRoute extends Route implements RedirectRouteInterface
         $this->routeTarget = $document;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRouteTarget(): ?SymfonyRoute
     {
         return $this->routeTarget;
@@ -87,9 +77,6 @@ class RedirectRoute extends Route implements RedirectRouteInterface
         $this->routeName = $routeName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRouteName(): ?string
     {
         return $this->routeName;
@@ -104,9 +91,6 @@ class RedirectRoute extends Route implements RedirectRouteInterface
         $this->permanent = $permanent;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isPermanent(): bool
     {
         return $this->permanent;
@@ -123,9 +107,6 @@ class RedirectRoute extends Route implements RedirectRouteInterface
         $this->parameters = $parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters(): array
     {
         return $this->parameters;
@@ -139,9 +120,6 @@ class RedirectRoute extends Route implements RedirectRouteInterface
         $this->uri = $uri;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUri(): ?string
     {
         return $this->uri;

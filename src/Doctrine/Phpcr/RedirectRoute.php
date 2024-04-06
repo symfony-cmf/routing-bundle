@@ -69,34 +69,9 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParentDocument(): ?object
     {
         return $this->parent;
-    }
-
-    /**
-     * @deprecated For BC with the PHPCR-ODM 1.4 HierarchyInterface
-     * @see setParentDocument
-     */
-    public function setParent($parent)
-    {
-        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 4.0. Use setParentDocument() instead.', \E_USER_DEPRECATED);
-
-        return $this->setParentDocument($parent);
-    }
-
-    /**
-     * @deprecated For BC with the PHPCR-ODM 1.4 HierarchyInterface
-     * @see getParentDocument
-     */
-    public function getParent()
-    {
-        @trigger_error('The '.__METHOD__.'() method is deprecated and will be removed in version 4.0. Use getParentDocument() instead.', \E_USER_DEPRECATED);
-
-        return $this->getParentDocument();
     }
 
     /**
@@ -160,9 +135,6 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
         return $this->idPrefix;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPrefix(string $prefix): static
     {
         $this->idPrefix = $prefix;
@@ -206,9 +178,6 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
         return $url;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPath(): string
     {
         $pattern = parent::getPath();
@@ -240,9 +209,6 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface, Hiera
         return $children;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function isBooleanOption(string $name): bool
     {
         return 'add_trailing_slash' === $name || parent::isBooleanOption($name);

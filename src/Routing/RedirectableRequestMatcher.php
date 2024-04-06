@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Routing;
 
+use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -68,10 +69,10 @@ class RedirectableRequestMatcher implements RequestMatcherInterface
         }
     }
 
-    private function redirect(string $path, string $route, string $scheme = null): array
+    private function redirect(string $path, string $route, ?string $scheme = null): array
     {
         return [
-            '_controller' => 'Symfony\\Bundle\\FrameworkBundle\\Controller\\RedirectController::urlRedirectAction',
+            '_controller' => RedirectController::class.'::urlRedirectAction',
             'path' => $path,
             'permanent' => true,
             'scheme' => $scheme,
@@ -82,7 +83,7 @@ class RedirectableRequestMatcher implements RequestMatcherInterface
     }
 
     /**
-     * Return a duplicated version of $request with the new $newpath as request_uri.
+     * Return a duplicated version of $request with the new $newPath as request_uri.
      */
     private function rebuildRequest(Request $request, string $newPath): Request
     {

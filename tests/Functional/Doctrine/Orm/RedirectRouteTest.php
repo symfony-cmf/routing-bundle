@@ -19,13 +19,13 @@ class RedirectRouteTest extends OrmTestCase
 {
     private RedirectController $controller;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->clearDb(Route::class);
         $this->clearDb(RedirectRoute::class);
 
-        $this->controller = new RedirectController($this->getContainer()->get('router'));
+        $this->controller = new RedirectController(self::getContainer()->get('router'));
     }
 
     public function testRedirectDoctrine(): void

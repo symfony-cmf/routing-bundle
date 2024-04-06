@@ -11,6 +11,9 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Orm;
 
+use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase as ComponentBaseTestCase;
 
@@ -23,7 +26,7 @@ class OrmTestCase extends ComponentBaseTestCase
         ];
     }
 
-    protected function clearDb($model)
+    protected function clearDb($model): void
     {
         if (\is_array($model)) {
             foreach ($model as $singleModel) {
@@ -40,12 +43,12 @@ class OrmTestCase extends ComponentBaseTestCase
         $this->getDm()->flush();
     }
 
-    protected function getDm()
+    protected function getDm(): DocumentManager|ObjectManager|DocumentManagerInterface
     {
         return $this->db('ORM')->getOm();
     }
 
-    protected function createRoute($name, $path)
+    protected function createRoute($name, $path): Route
     {
         // split path in static and variable part
         preg_match('{^(.*?)(/[^/]*\{.*)?$}', $path, $paths);

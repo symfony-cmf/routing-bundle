@@ -21,32 +21,13 @@ use Symfony\Component\Routing\RequestContext;
 
 class RedirectableRequestMatcherTest extends TestCase
 {
-    /**
-     * @var RedirectableRequestMatcher
-     */
-    private $redirectableRequestMatcher;
+    private RedirectableRequestMatcher $redirectableRequestMatcher;
+    private RequestMatcherInterface&MockObject $decoratedRequestMatcher;
+    private Request $requestWithoutSlash;
+    private Request $requestWithSlash;
+    private RequestContext&MockObject $context;
 
-    /**
-     * @var RequestMatcherInterface|MockObject
-     */
-    private $decoratedRequestMatcher;
-
-    /**
-     * @var Request
-     */
-    private $requestWithoutSlash;
-
-    /**
-     * @var Request
-     */
-    private $requestWithSlash;
-
-    /**
-     * @var RequestContext|MockObject
-     */
-    private $context;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->requestWithoutSlash = Request::create('/foo');
         $this->requestWithSlash = Request::create('/foo/');
@@ -55,19 +36,19 @@ class RedirectableRequestMatcherTest extends TestCase
         $this->redirectableRequestMatcher = new RedirectableRequestMatcher($this->decoratedRequestMatcher, $this->context);
     }
 
-    public function testMatchRequest()
+    public function testMatchRequest(): void
     {
         $this->decoratedRequestMatcher
             ->expects($this->once())
             ->method('matchRequest')
             ->with($this->requestWithoutSlash)
-            ->will($this->returnValue(['foo' => 'bar']));
+            ->willReturn(['foo' => 'bar']);
 
         $parameters = $this->redirectableRequestMatcher->matchRequest($this->requestWithoutSlash);
         $this->assertEquals(['foo' => 'bar'], $parameters);
     }
 
-    public function testMatchRequestWithSlash()
+    public function testMatchRequestWithSlash(): void
     {
         $this->decoratedRequestMatcher
             ->method('matchRequest')
@@ -82,7 +63,7 @@ class RedirectableRequestMatcherTest extends TestCase
             ));
 
         $parameters = $this->redirectableRequestMatcher->matchRequest($this->requestWithSlash);
-        $this->assertTrue('foobar' === $parameters['_route']);
-        $this->assertTrue('/foo' === $parameters['path']);
+        $this->assertSame('foobar', $parameters['_route']);
+        $this->assertSame('/foo', $parameters['path']);
     }
 }

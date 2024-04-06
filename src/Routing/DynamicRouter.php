@@ -79,7 +79,7 @@ class DynamicRouter extends BaseDynamicRouter
      *
      * @return array<string, string> the updated defaults to return for this match
      */
-    protected function cleanDefaults(array $defaults, Request $request = null): array
+    protected function cleanDefaults(array $defaults, ?Request $request = null): array
     {
         if (null === $request) {
             $request = $this->getRequest();

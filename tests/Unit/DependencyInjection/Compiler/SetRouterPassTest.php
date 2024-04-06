@@ -22,7 +22,7 @@ class SetRouterPassTest extends AbstractCompilerPassTestCase
         $container->addCompilerPass(new SetRouterPass());
     }
 
-    public function testMapperPassReplacesRouterAlias()
+    public function testMapperPassReplacesRouterAlias(): void
     {
         $this->container->setParameter('cmf_routing.replace_symfony_router', true);
 
@@ -31,7 +31,7 @@ class SetRouterPassTest extends AbstractCompilerPassTestCase
         $this->assertContainerBuilderHasAlias('router', 'cmf_routing.router');
     }
 
-    public function testMapperPassDoesNotReplaceRouterAlias()
+    public function testMapperPassDoesNotReplaceRouterAlias(): void
     {
         $this->container->setParameter('cmf_routing.replace_symfony_router', false);
 

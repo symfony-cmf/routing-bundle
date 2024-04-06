@@ -22,7 +22,7 @@ class Content
     #[PHPCRODM\ParentDocument]
     private $parent;
 
-    #[PHPCRODM\NodeName]
+    #[PHPCRODM\Nodename]
     private $name;
 
     #[PHPCRODM\Field(type: 'string')]

@@ -14,21 +14,20 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
-use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 
 class RedirectRouteTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/redirectroute';
+    private const ROUTE_ROOT = '/test/redirectroute';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();
         $this->createRoute(self::ROUTE_ROOT);
     }
 
-    public function testRedirectDoctrine()
+    public function testRedirectDoctrine(): void
     {
         $content = $this->createContent();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
@@ -51,15 +50,14 @@ class RedirectRouteTest extends BaseTestCase
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
         $redirect = $this->getDm()->find(null, self::ROUTE_ROOT.'/redirect');
 
-        $this->assertInstanceOf(RedirectRouteInterface::class, $redirect);
+        $this->assertInstanceOf(RedirectRoute::class, $redirect);
         $this->assertSame($redirect, $redirect->getContent());
-        $params = $redirect->getParameters();
         $this->assertSame($route, $redirect->getRouteTarget());
         $defaults = $redirect->getDefaults();
         $this->assertEquals(['test' => 'toast'], $defaults);
     }
 
-    public function testSetContent()
+    public function testSetContent(): void
     {
         $content = $this->createMock(RouteReferrersReadInterface::class);
         $redirect = new RedirectRoute();

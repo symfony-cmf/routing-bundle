@@ -25,8 +25,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 {
     /**
      * Unique id of this route.
-     *
-     * @var string|int|null
      */
     protected $id;
 
@@ -37,7 +35,7 @@ class Route extends SymfonyRoute implements RouteObjectInterface
 
     /**
      * Part of the URL that does not have parameters and thus can be used to
-     * naivly guess candidate routes.
+     * naively guess candidate routes.
      *
      * Note that this field is not used by PHPCR-ODM
      */
@@ -76,12 +74,9 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRouteKey(): string
     {
-        return (string) $this->getId();
+        return $this->getId();
     }
 
     /**
@@ -117,9 +112,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContent(): ?object
     {
         return $this->content;
@@ -185,9 +177,6 @@ class Route extends SymfonyRoute implements RouteObjectInterface
         return \in_array($name, ['add_format_pattern', 'add_locale_pattern']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPath(): string
     {
         $pattern = '';

@@ -24,37 +24,14 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class RouteProviderTest extends TestCase
 {
-    /**
-     * @var Route&MockObject
-     */
-    private Route $routeMock;
+    private Route&MockObject $routeMock;
+    private Route&MockObject $route2Mock;
+    private ManagerRegistry&MockObject $managerRegistryMock;
+    private ObjectManager&MockObject $objectManagerMock;
+    private EntityRepository&MockObject $objectRepositoryMock;
+    private CandidatesInterface&MockObject $candidatesMock;
 
-    /**
-     * @var Route&MockObject
-     */
-    private Route $route2Mock;
-
-    /**
-     * @var ManagerRegistry&MockObject
-     */
-    private ManagerRegistry $managerRegistryMock;
-
-    /**
-     * @var ObjectManager&MockObject
-     */
-    private ObjectManager $objectManagerMock;
-
-    /**
-     * @var EntityRepository&MockObject
-     */
-    private EntityRepository $objectRepositoryMock;
-
-    /**
-     * @var CandidatesInterface&MockObject
-     */
-    private CandidatesInterface $candidatesMock;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->routeMock = $this->createMock(Route::class);
         $this->route2Mock = $this->createMock(Route::class);
@@ -62,7 +39,8 @@ class RouteProviderTest extends TestCase
         $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $this->objectRepositoryMock = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findByStaticPrefix', 'findOneBy', 'findBy'])
+            ->onlyMethods(['findOneBy', 'findBy'])
+            ->addMethods(['findByStaticPrefix'])
             ->getMock();
         $this->candidatesMock = $this->createMock(CandidatesInterface::class);
         $this->candidatesMock

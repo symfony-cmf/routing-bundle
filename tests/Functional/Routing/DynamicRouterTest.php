@@ -32,23 +32,18 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class DynamicRouterTest extends BaseTestCase
 {
-    /**
-     * @var ChainRouter
-     */
-    protected $router;
+    private ChainRouter $router;
 
-    protected $routeNamePrefix;
+    private const ROUTE_ROOT = '/test/routing';
 
-    const ROUTE_ROOT = '/test/routing';
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->db('PHPCR')->createTestNode();
         $this->createRoute(self::ROUTE_ROOT);
 
-        $this->router = $this->getContainer()->get('router');
+        $this->router = self::getContainer()->get('router');
 
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
@@ -91,7 +86,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->getDm()->flush();
     }
 
-    public function testMatch()
+    public function testMatch(): void
     {
         $expected = [
             RouteObjectInterface::CONTROLLER_NAME,
@@ -107,7 +102,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals('/test/routing/testroute/child', $matches[RouteObjectInterface::ROUTE_NAME]);
     }
 
-    public function testMatchParameters()
+    public function testMatchParameters(): void
     {
         $expected = [
             RouteObjectInterface::CONTROLLER_NAME => 'testController',
@@ -125,13 +120,13 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals($expected, $matches);
     }
 
-    public function testNoMatch()
+    public function testNoMatch(): void
     {
         $this->expectException(ResourceNotFoundException::class);
         $this->router->matchRequest(Request::create('/testroute/child/123a'));
     }
 
-    public function testNotAllowed()
+    public function testNotAllowed(): void
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
@@ -147,7 +142,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->router->matchRequest(Request::create('/notallowed', 'POST'));
     }
 
-    public function testMatchDefaultFormat()
+    public function testMatchDefaultFormat(): void
     {
         $expected = [
             '_controller' => 'testController',
@@ -163,7 +158,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals($expected, $matches);
     }
 
-    public function testMatchFormat()
+    public function testMatchFormat(): void
     {
         $expected = [
             '_controller' => 'testController',
@@ -203,13 +198,13 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals($expected, $matches);
     }
 
-    public function testNoMatchingFormat()
+    public function testNoMatchingFormat(): void
     {
         $this->expectException(ResourceNotFoundException::class);
         $this->router->matchRequest(Request::create('/format/48.xml'));
     }
 
-    public function testMatchLocale()
+    public function testMatchLocale(): void
     {
         $route = new Route();
         $route->setPosition($this->getDm()->find(null, self::ROUTE_ROOT), 'de');
@@ -254,7 +249,7 @@ class DynamicRouterTest extends BaseTestCase
         );
     }
 
-    public function testEnhanceControllerByAlias()
+    public function testEnhanceControllerByAlias(): void
     {
         // put a redirect route
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
@@ -278,7 +273,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals($expected, $matches);
     }
 
-    public function testEnhanceControllerByClass()
+    public function testEnhanceControllerByClass(): void
     {
         // put a redirect route
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
@@ -301,7 +296,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals($expected, $matches);
     }
 
-    public function testEnhanceTemplateByClass()
+    public function testEnhanceTemplateByClass(): void
     {
         if ($content = $this->getDm()->find(null, '/test/content/templatebyclass')) {
             $this->getDm()->remove($content);
@@ -335,7 +330,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals('TestBundle:Content:index.html.twig', $request->attributes->get(DynamicRouter::CONTENT_TEMPLATE));
     }
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute/child');
 
@@ -343,14 +338,14 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals('/testroute/child?test=value', $url);
     }
 
-    public function testGenerateAbsolute()
+    public function testGenerateAbsolute(): void
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute/child');
         $url = $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['test' => 'value', RouteObjectInterface::ROUTE_OBJECT => $route], UrlGeneratorInterface::ABSOLUTE_URL);
         $this->assertEquals('http://localhost/testroute/child?test=value', $url);
     }
 
-    public function testGenerateParameters()
+    public function testGenerateParameters(): void
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
@@ -358,7 +353,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals('/testroute/gen-slug?test=value', $url);
     }
 
-    public function testGenerateParametersInvalid()
+    public function testGenerateParametersInvalid(): void
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
@@ -366,7 +361,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->router->generate(RouteObjectInterface::OBJECT_BASED_ROUTE_NAME, ['slug' => 'gen-slug', 'id' => 'nonumber', RouteObjectInterface::ROUTE_OBJECT => $route]);
     }
 
-    public function testGenerateDefaultFormat()
+    public function testGenerateDefaultFormat(): void
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
@@ -374,7 +369,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals('/format/37', $url);
     }
 
-    public function testGenerateFormat()
+    public function testGenerateFormat(): void
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
@@ -382,7 +377,7 @@ class DynamicRouterTest extends BaseTestCase
         $this->assertEquals('/format/37.json', $url);
     }
 
-    public function testGenerateNoMatchingFormat()
+    public function testGenerateNoMatchingFormat(): void
     {
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 

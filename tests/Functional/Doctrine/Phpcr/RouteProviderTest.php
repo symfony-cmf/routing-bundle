@@ -21,20 +21,19 @@ use Symfony\Component\Routing\RouteCollection;
 
 class RouteProviderTest extends BaseTestCase
 {
-    const ROUTE_ROOT = '/test/routing';
+    private const ROUTE_ROOT = '/test/routing';
 
-    /** @var RouteProvider */
-    private $repository;
+    private RouteProvider $repository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->db('PHPCR')->createTestNode();
         $this->createRoute(self::ROUTE_ROOT);
-        $this->repository = $this->getContainer()->get('cmf_routing.route_provider');
+        $this->repository = self::getContainer()->get('cmf_routing.route_provider');
     }
 
-    private function buildRoutes()
+    private function buildRoutes(): void
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
@@ -58,7 +57,7 @@ class RouteProviderTest extends BaseTestCase
         $this->getDm()->clear();
     }
 
-    public function testGetRouteCollectionForRequest()
+    public function testGetRouteCollectionForRequest(): void
     {
         $this->buildRoutes();
 
@@ -83,7 +82,7 @@ class RouteProviderTest extends BaseTestCase
         $this->assertNull($iterator->current()->getDefault('_format'));
     }
 
-    public function testGetRouteCollectionForRequestFormat()
+    public function testGetRouteCollectionForRequestFormat(): void
     {
         $this->buildRoutes();
 
@@ -111,7 +110,7 @@ class RouteProviderTest extends BaseTestCase
     /**
      * The root route will always be found.
      */
-    public function testGetRouteCollectionForRequestNonPhpcrUrl()
+    public function testGetRouteCollectionForRequestNonPhpcrUrl(): void
     {
         $routes = $this->repository->getRouteCollectionForRequest(Request::create('http://localhost/'));
         $this->assertInstanceOf(RouteCollection::class, $routes);
@@ -126,14 +125,14 @@ class RouteProviderTest extends BaseTestCase
     /**
      * The root route will always be found.
      */
-    public function testGetRouteCollectionForRequestColonInUrl()
+    public function testGetRouteCollectionForRequestColonInUrl(): void
     {
         $collection = $this->repository->getRouteCollectionForRequest(Request::create('http://foo.com/jcr:content'));
         $this->assertInstanceOf(RouteCollection::class, $collection);
         $this->assertCount(0, $collection);
     }
 
-    public function testGetRoutesByNames()
+    public function testGetRoutesByNames(): void
     {
         $this->buildRoutes();
 

@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App;
 
+use Symfony\Cmf\Bundle\ResourceBundle\CmfResourceBundle;
 use Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle;
 use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -31,10 +32,10 @@ class Kernel extends TestKernel
 
         $this->registerConfiguredBundles();
 
-        if (class_exists(CmfResourceRestBundle::class)) {
+        if (class_exists(CmfResourceBundle::class) && class_exists(CmfResourceRestBundle::class)) {
             $this->addBundles([
-                new \Symfony\Cmf\Bundle\ResourceBundle\CmfResourceBundle(),
-                new \Symfony\Cmf\Bundle\ResourceRestBundle\CmfResourceRestBundle(),
+                new CmfResourceBundle(),
+                new CmfResourceRestBundle(),
             ]);
         }
     }

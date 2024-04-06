@@ -52,9 +52,6 @@ class RedirectRoute extends RedirectRouteModel
         $this->serialisedParameters = json_encode($parameters, \JSON_THROW_ON_ERROR);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters(): array
     {
         if (!isset($this->serialisedParameters)) {
@@ -65,9 +62,6 @@ class RedirectRoute extends RedirectRouteModel
         return \is_array($params) ? $params : [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPath(): string
     {
         $pattern = parent::getPath();
@@ -78,9 +72,6 @@ class RedirectRoute extends RedirectRouteModel
         return $pattern;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function isBooleanOption(string $name): bool
     {
         return 'add_trailing_slash' === $name || parent::isBooleanOption($name);

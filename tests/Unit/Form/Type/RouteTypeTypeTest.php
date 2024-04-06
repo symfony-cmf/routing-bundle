@@ -17,17 +17,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RouteTypeTypeTest extends TestCase
 {
-    /**
-     * @var RouteTypeType
-     */
-    private $type;
+    private RouteTypeType $type;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->type = new RouteTypeType();
     }
 
-    public function testSetDefaultOptions()
+    public function testSetDefaultOptions(): void
     {
         $type = new RouteTypeType();
         $optionsResolver = new OptionsResolver();
@@ -39,7 +36,7 @@ class RouteTypeTypeTest extends TestCase
         $this->assertIsArray($options['choices']);
     }
 
-    public function testDefaultsSet()
+    public function testDefaultsSet(): void
     {
         $this->type->addRouteType('foobar');
         $this->type->addRouteType('barfoo');

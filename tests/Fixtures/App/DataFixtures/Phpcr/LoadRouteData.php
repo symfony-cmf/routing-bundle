@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\DataFixtures\Phpcr
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use PHPCR\Util\NodeHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
@@ -22,6 +23,9 @@ class LoadRouteData implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        if (!$manager instanceof DocumentManagerInterface) {
+            throw new \InvalidArgumentException(sprintf('Expected %s, got %s', DocumentManagerInterface::class, get_class($manager)));
+        }
         NodeHelper::createPath($manager->getPhpcrSession(), '/test');
 
         $root = $manager->find(null, '/test');
