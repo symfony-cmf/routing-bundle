@@ -63,6 +63,7 @@ final class CmfRoutingBundle extends Bundle
             $aliasMap = ['CmfRoutingBundle' => 'Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr'];
         }
         $container->addCompilerPass(
+            /* @phpstan-ignore arguments.count (support for doctrine/persistence 2) */
             DoctrinePhpcrMappingsPass::createXmlMappingDriver(
                 [
                     realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\RoutingBundle\Model',

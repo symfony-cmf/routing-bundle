@@ -70,7 +70,7 @@ final class LocaleListener
         PrefixCandidates $candidates,
         array $locales,
         bool $addLocalePattern = false,
-        bool $updateAvailableTranslations = false
+        bool $updateAvailableTranslations = false,
     ) {
         $this->candidates = $candidates;
         $this->locales = $locales;
