@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.1
+-----
+
+* Fix export-ignore configuration file to not export tests in installations.
+
 3.1.0
 -----
 
