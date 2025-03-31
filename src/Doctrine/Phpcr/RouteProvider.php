@@ -45,7 +45,7 @@ final class RouteProvider extends DoctrineProvider implements RouteProviderInter
         ManagerRegistry $managerRegistry,
         CandidatesInterface $candidatesStrategy,
         ?string $className = null,
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         parent::__construct($managerRegistry, $className);
         $this->candidatesStrategy = $candidatesStrategy;
