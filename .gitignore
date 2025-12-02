@@ -4,3 +4,4 @@ vendor
 tests/Fixtures/App/var/
 .phpunit.result.cache
 .php-cs-fixer.cache
+phpstan.neon

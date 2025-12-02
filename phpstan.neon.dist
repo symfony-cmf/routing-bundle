@@ -10,6 +10,7 @@ parameters:
         - src/
         - tests/
     excludePaths:
-        - tests/Fixtures/App/var/
+# locally you want to exclude the var directory
+#        - tests/Fixtures/App/var/
         - tests/Fixtures/App/config/
         - tests/Fixtures/fixtures/config/
