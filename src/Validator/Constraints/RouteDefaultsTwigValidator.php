@@ -31,7 +31,7 @@ class RouteDefaultsTwigValidator extends ConstraintValidator
         $this->twig = $twig;
     }
 
-    public function validate($defaults, Constraint $constraint)
+    public function validate(mixed $defaults, Constraint $constraint): void
     {
         if (!$constraint instanceof RouteDefaults) {
             throw new \InvalidArgumentException(sprintf('Expected %s, got %s', RouteDefaults::class, get_class($constraint)));
