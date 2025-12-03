@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.1.2
+-----
+
+* Fix deprecations with Symfony 7.4.
+
 3.1.1
 -----
 
