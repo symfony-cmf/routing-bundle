@@ -21,7 +21,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 class LoadRouteData implements FixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         if (!$manager instanceof DocumentManagerInterface) {
             throw new \InvalidArgumentException(sprintf('Expected %s, got %s', DocumentManagerInterface::class, get_class($manager)));

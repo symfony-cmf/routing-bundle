@@ -16,7 +16,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -30,7 +30,7 @@ final class CmfRoutingExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         if ($this->isConfigEnabled($container, $config['dynamic'])) {
             $this->setupDynamicRouter($config['dynamic'], $container, $loader);
@@ -39,12 +39,12 @@ final class CmfRoutingExtension extends Extension
         $this->setupChainRouter($config, $container, $loader);
         $this->setupFormTypes($config, $container, $loader);
 
-        $loader->load('validators.xml');
+        $loader->load('validators.php');
     }
 
     private function setupChainRouter(array $config, ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $loader->load('routing-chain.xml');
+        $loader->load('routing-chain.php');
 
         $container->setParameter('cmf_routing.replace_symfony_router', $config['chain']['replace_symfony_router']);
 
@@ -57,7 +57,7 @@ final class CmfRoutingExtension extends Extension
 
     private function setupFormTypes(array $config, ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $loader->load('form-type.xml');
+        $loader->load('form-type.php');
 
         if (\array_key_exists('dynamic', $config)) {
             $routeTypeTypeDefinition = $container->getDefinition('cmf_routing.route_type_form_type');
@@ -73,7 +73,7 @@ final class CmfRoutingExtension extends Extension
      */
     private function setupDynamicRouter(array $config, ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $loader->load('routing-dynamic.xml');
+        $loader->load('routing-dynamic.php');
 
         $container->setParameter('cmf_routing.redirectable_url_matcher', $config['redirectable_url_matcher']);
 
@@ -205,7 +205,7 @@ final class CmfRoutingExtension extends Extension
 
     private function loadPhpcrProvider(array $config, LoaderInterface $loader, ContainerBuilder $container, array $locales, $matchImplicitLocale): void
     {
-        $loader->load('provider-phpcr.xml');
+        $loader->load('provider-phpcr.php');
 
         $container->setParameter('cmf_routing.backend_type_phpcr', true);
         $container->setParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array_values(array_unique($config['route_basepaths'])));
@@ -234,12 +234,12 @@ final class CmfRoutingExtension extends Extension
             $initializedBasepaths
         );
 
-        $loader->load('initializer-phpcr.xml');
+        $loader->load('initializer-phpcr.php');
     }
 
     private function loadOrmProvider(array $config, LoaderInterface $loader, ContainerBuilder $container, $matchImplicitLocale): void
     {
-        $loader->load('provider-orm.xml');
+        $loader->load('provider-orm.php');
 
         $container->setParameter('cmf_routing.backend_type_orm', true);
         $container->setParameter('cmf_routing.dynamic.persistence.orm.manager_name', $config['manager_name']);

@@ -27,9 +27,43 @@ list:
 	@echo 'functional_tests_phpcr:  will run functional tests with PHPCR'
 	@echo 'functional_tests_orm:    will run functional tests with ORM'
 
-include ${TESTING_SCRIPTS_DIR}/make/unit_tests.mk
-include ${TESTING_SCRIPTS_DIR}/make/functional_tests_phpcr.mk
-include ${TESTING_SCRIPTS_DIR}/make/functional_tests_orm.mk
+unit_tests:
+	@echo
+	@echo '+++ run unit tests +++'
+ifeq ($(HAS_XDEBUG), 0)
+	@vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testsuite "unit tests"
+else
+	@vendor/bin/phpunit --testsuite "unit tests"
+endif
+
+functional_tests_orm:
+	@if [ "${CONSOLE}" = "" ]; then echo "Console executable missing"; exit 1; fi
+	@echo
+	@echo '+++ create ORM database +++'
+	@${CONSOLE} doctrine:schema:drop --env=orm --force
+	@${CONSOLE} doctrine:database:create --env=orm || echo "Failed to create database. If this is sqlite, this is normal. Otherwise there will be an error with schema creation"
+	@${CONSOLE} doctrine:schema:create --env=orm
+	@echo '+++ run ORM functional tests +++'
+ifeq ($(HAS_XDEBUG), 0)
+	@vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testsuite "functional tests with orm"
+else
+	@vendor/bin/phpunit --testsuite "functional tests with orm"
+endif
+	@${CONSOLE} doctrine:database:drop --force
+
+functional_tests_phpcr:
+	@if [ "${CONSOLE}" = "" ]; then echo "Console executable missing"; exit 1; fi
+	@echo
+	@echo '+++ create PHPCR +++'
+	@${CONSOLE} doctrine:phpcr:init:dbal --drop --force
+	@${CONSOLE} doctrine:phpcr:repository:init
+	@echo '+++ run PHPCR functional tests +++'
+ifeq ($(HAS_XDEBUG), 0)
+	@vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testsuite "functional tests with phpcr"
+else
+	@vendor/bin/phpunit --testsuite "functional tests with phpcr"
+endif
+	@${CONSOLE} doctrine:database:drop --force
 
 .PHONY: test
 test: unit_tests functional_tests_phpcr functional_tests_orm

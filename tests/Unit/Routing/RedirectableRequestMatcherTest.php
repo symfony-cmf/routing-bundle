@@ -51,16 +51,19 @@ class RedirectableRequestMatcherTest extends TestCase
     public function testMatchRequestWithSlash(): void
     {
         $this->decoratedRequestMatcher
+            ->expects($this->exactly(2))
             ->method('matchRequest')
-            ->withConsecutive([$this->callback(function (Request $request) {
-                return '/foo/' === $request->getPathInfo();
-            })], [$this->callback(function (Request $request) {
-                return '/foo' === $request->getPathInfo();
-            })])
-            ->will($this->onConsecutiveCalls(
-                $this->throwException(new ResourceNotFoundException()),
-                $this->returnValue(['_route' => 'foobar'])
-            ));
+            ->willReturnCallback(function (Request $request): array {
+                static $expectedCalls = ['/foo/', '/foo'];
+
+                $this->assertSame(array_shift($expectedCalls), $request->getPathInfo());
+
+                if ('/foo/' === $request->getPathInfo()) {
+                    throw new ResourceNotFoundException();
+                }
+
+                return ['_route' => 'foobar'];
+            });
 
         $parameters = $this->redirectableRequestMatcher->matchRequest($this->requestWithSlash);
         $this->assertSame('foobar', $parameters['_route']);

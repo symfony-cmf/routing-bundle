@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\CmfRoutingExtension;
 use Symfony\Cmf\Component\Routing\ChainRouter;
 use Symfony\Component\DependencyInjection\Reference;
@@ -130,9 +131,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    /**
-     * @dataProvider getBasePathsTests
-     */
+    #[DataProvider('getBasePathsTests')]
     public function testLoadBasePaths(array $phpcrConfig, array $routeBasepathsParameter): void
     {
         $this->container->setParameter(
@@ -163,7 +162,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function getBasePathsTests(): array
+    public static function getBasePathsTests(): array
     {
         return [
             [
@@ -188,9 +187,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    /**
-     * @dataProvider getBasePathsMergingTests
-     */
+    #[DataProvider('getBasePathsMergingTests')]
     public function testRouteBasepathsMerging(array $phpcrConfig1, array $phpcrConfig2, array $routeBasepathsParameter): void
     {
         $this->container->setParameter(
@@ -232,28 +229,25 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function getBasePathsMergingTests(): array
+    public static function getBasePathsMergingTests(): array
     {
         return [
             [
                 ['route_basepaths' => ['/cms/test']],
                 ['route_basepaths' => ['/cms/test2']],
                 ['/cms/test', '/cms/test2'],
-                '/cms/test',
             ],
 
             [
                 ['route_basepaths' => ['/cms/test']],
                 ['route_basepaths' => ['/cms/test2', '/cms/test3']],
                 ['/cms/test', '/cms/test2', '/cms/test3'],
-                '/cms/test',
             ],
 
             [
                 [],
                 ['route_basepaths' => ['/cms/test']],
                 ['/cms/test'],
-                '/cms/test',
             ],
         ];
     }

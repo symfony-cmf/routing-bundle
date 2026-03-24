@@ -39,8 +39,7 @@ class RouteProviderTest extends TestCase
         $this->managerRegistryMock = $this->createMock(ManagerRegistry::class);
         $this->objectRepositoryMock = $this->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['findOneBy', 'findBy'])
-            ->addMethods(['findByStaticPrefix'])
+            ->onlyMethods(['findOneBy', 'findBy', '__call'])
             ->getMock();
         $this->candidatesMock = $this->createMock(CandidatesInterface::class);
         $this->candidatesMock
@@ -88,8 +87,8 @@ class RouteProviderTest extends TestCase
 
         $this->objectRepositoryMock
             ->expects($this->once())
-            ->method('findByStaticPrefix')
-            ->with($candidates, ['position' => 'ASC'])
+            ->method('__call')
+            ->with('findByStaticPrefix', [$candidates, ['position' => 'ASC']])
             ->willReturn($objects)
         ;
 
@@ -111,7 +110,7 @@ class RouteProviderTest extends TestCase
 
         $this->objectRepositoryMock
             ->expects($this->never())
-            ->method('findByStaticPrefix')
+            ->method('__call')
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock, 'Route');
@@ -187,9 +186,24 @@ class RouteProviderTest extends TestCase
 
         $candidatesMock = $this->createMock(CandidatesInterface::class);
         $candidatesMock
+            ->expects($this->exactly(3))
             ->method('isCandidate')
-            ->withConsecutive([$paths[0]], [$paths[1]], [$paths[2]])
-            ->willReturnOnConsecutiveCalls(true, true, false)
+            ->willReturnCallback(function (string $path) use ($paths): bool {
+                static $expectedCalls = [];
+
+                if ([] === $expectedCalls) {
+                    $expectedCalls = [
+                        [$paths[0], true],
+                        [$paths[1], true],
+                        [$paths[2], false],
+                    ];
+                }
+
+                [$expectedPath, $returnValue] = array_shift($expectedCalls);
+                $this->assertSame($expectedPath, $path);
+
+                return $returnValue;
+            })
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $candidatesMock, 'Route');

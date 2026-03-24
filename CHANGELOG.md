@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.2.0
+-----
+
+* Support Symfony 8.
+  * Rewrote service configurations from XML to PHP.
+
 3.1.2
 -----
 

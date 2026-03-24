@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Doctrine\Orm;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\ContentRepository;
@@ -60,9 +61,7 @@ class ContentRepositoryTest extends TestCase
         $this->assertSame($this->document, $foundDocument);
     }
 
-    /**
-     * @dataProvider getFindCorrectModelAndIdData
-     */
+    #[DataProvider('getFindCorrectModelAndIdData')]
     public function testFindCorrectModelAndId($input, $model, $id): void
     {
         $this->objectManager
@@ -89,7 +88,7 @@ class ContentRepositoryTest extends TestCase
         $this->assertSame($this, $foundDocument);
     }
 
-    public function getFindCorrectModelAndIdData(): array
+    public static function getFindCorrectModelAndIdData(): array
     {
         return [
             ['Acme\ContentBundle\Entity\Content:12', 'Acme\ContentBundle\Entity\Content', 12],
