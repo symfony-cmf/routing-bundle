@@ -64,16 +64,11 @@ class RouteProviderTest extends TestCase
             ->willReturn($candidates)
         ;
 
-        $objects = new ArrayCollection([
-            new Route('/my'),
-            $this,
-        ]);
-
         $this->dmMock
             ->expects($this->once())
             ->method('findMany')
             ->with(null, $candidates)
-            ->willReturn($objects)
+            ->willReturn([new Route('/my')])
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -290,10 +285,11 @@ class RouteProviderTest extends TestCase
             '/cms/routes/not-a-route',
         ];
 
-        $routes = new ArrayCollection();
-        $routes->set('/cms/routes/test-route', new Route('/test-route'));
-        $routes->set('/cms/simple/other-route', new Route('/other-route'));
-        $routes->set('/cms/routes/not-a-route', $this);
+        $routes = [
+            '/cms/routes/test-route' => new Route('/test-route'),
+            '/cms/simple/other-route' => new Route('/other-route'),
+            '/cms/routes/not-a-route' => $this,
+        ];
 
         $this->dmMock
             ->expects($this->once())
@@ -303,9 +299,21 @@ class RouteProviderTest extends TestCase
         ;
 
         $this->candidatesMock
+            ->expects($this->exactly(4))
             ->method('isCandidate')
-            ->withConsecutive(['/cms/routes/test-route'], ['/cms/simple/other-route'], ['/cms/routes/not-a-route'], ['/outside/prefix'])
-            ->willReturnOnConsecutiveCalls(true, true, true, false)
+            ->willReturnCallback(function (string $path): bool {
+                static $expectedCalls = [
+                    ['/cms/routes/test-route', true],
+                    ['/cms/simple/other-route', true],
+                    ['/cms/routes/not-a-route', true],
+                    ['/outside/prefix', false],
+                ];
+
+                [$expectedPath, $returnValue] = array_shift($expectedCalls);
+                $this->assertSame($expectedPath, $path);
+
+                return $returnValue;
+            })
         ;
 
         $paths[] = '/outside/prefix';
@@ -331,9 +339,19 @@ class RouteProviderTest extends TestCase
         ;
 
         $this->candidatesMock
+            ->expects($this->exactly(3))
             ->method('isCandidate')
-            ->withConsecutive(['/cms/routes/test-route'], ['/cms/simple/other-route'], ['/cms/routes/not-a-route'])
-            ->willReturn(false)
+            ->willReturnCallback(function (string $path): bool {
+                static $expectedCalls = [
+                    '/cms/routes/test-route',
+                    '/cms/simple/other-route',
+                    '/cms/routes/not-a-route',
+                ];
+
+                $this->assertSame(array_shift($expectedCalls), $path);
+
+                return false;
+            })
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -355,9 +373,10 @@ class RouteProviderTest extends TestCase
         $route1 = new Route('/test-route');
         $route2 = new Route('/other-route');
 
-        $routes = new ArrayCollection();
-        $routes->set($uuid1, $route1);
-        $routes->set($uuid2, $route2);
+        $routes = [
+            $uuid1 => $route1,
+            $uuid2 => $route2,
+        ];
 
         $this->dmMock
             ->expects($this->once())
@@ -373,15 +392,39 @@ class RouteProviderTest extends TestCase
             ->willReturn($uow)
         ;
         $uow
+            ->expects($this->exactly(2))
             ->method('getDocumentId')
-            ->withConsecutive([$route1], [$route2])
-            ->willReturnOnConsecutiveCalls('/cms/routes/test-route', '/cms/routes/other-route')
+            ->willReturnCallback(function ($route) use ($route1, $route2): string {
+                static $expectedCalls = [];
+
+                if ([] === $expectedCalls) {
+                    $expectedCalls = [
+                        [$route1, '/cms/routes/test-route'],
+                        [$route2, '/cms/routes/other-route'],
+                    ];
+                }
+
+                [$expectedRoute, $returnValue] = array_shift($expectedCalls);
+                $this->assertSame($expectedRoute, $route);
+
+                return $returnValue;
+            })
         ;
 
         $this->candidatesMock
+            ->expects($this->exactly(2))
             ->method('isCandidate')
-            ->withConsecutive(['/cms/routes/test-route'], ['/cms/routes/other-route'])
-            ->willReturnOnConsecutiveCalls(true, false)
+            ->willReturnCallback(function (string $path): bool {
+                static $expectedCalls = [
+                    ['/cms/routes/test-route', true],
+                    ['/cms/routes/other-route', false],
+                ];
+
+                [$expectedPath, $returnValue] = array_shift($expectedCalls);
+                $this->assertSame($expectedPath, $path);
+
+                return $returnValue;
+            })
         ;
 
         $routeProvider = new RouteProvider($this->managerRegistryMock, $this->candidatesMock);
@@ -403,7 +446,7 @@ class RouteProviderTest extends TestCase
         $query
             ->expects($this->once())
             ->method('getResult')
-            ->willReturn([])
+            ->willReturn(new ArrayCollection([]))
         ;
         if ($limit) {
             $query

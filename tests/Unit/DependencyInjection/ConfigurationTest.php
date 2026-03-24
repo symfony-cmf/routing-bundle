@@ -84,7 +84,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
             return __DIR__.'/../../Fixtures/fixtures/'.$path;
         }, [
             'config/config.yml',
-            'config/config.xml',
             'config/config.php',
         ]);
 

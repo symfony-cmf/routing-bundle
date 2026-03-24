@@ -90,9 +90,11 @@ class RouteDefaultsTwigValidatorTest extends ConstraintValidatorTestCase
             ->willReturn(false)
         ;
 
+        $constraint = new RouteDefaults();
+        $constraint->message = 'my message';
         $this->validator->validate(
             ['_template' => 'NotExistingBundle:Foo:bar.html.twig'],
-            new RouteDefaults(['message' => 'my message'])
+            $constraint
         );
 
         (new ConstraintViolationAssertion($this->context, 'my message', new NotNull()))

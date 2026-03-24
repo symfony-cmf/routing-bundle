@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
+use PHPUnit\Framework\Attributes as PHPUnit;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
@@ -131,6 +132,7 @@ class RouteTest extends BaseTestCase
     /**
      * @depends testPersistEmptyOptions
      */
+    #[PHPUnit\Depends('testPersistEmptyOptions')]
     public function testSetPatternInvalid(Route $route): void
     {
         $this->expectException(\InvalidArgumentException::class);

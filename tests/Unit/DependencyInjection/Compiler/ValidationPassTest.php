@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Compiler\ValidationPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -26,9 +27,8 @@ class ValidationPassTest extends AbstractCompilerPassTestCase
      * It should register the PHPCR documents for validation only when:
      *  - the PHP backend is enabled AND
      *  - the validator service is available.
-     *
-     * @dataProvider provideDocumentsValidationContext
      */
+    #[DataProvider('provideDocumentsValidationContext')]
     public function testRegisterDocumentsValidation(bool $hasPhpcr, bool $hasValidator, bool $shouldBeRegistered): void
     {
         if ($hasPhpcr) {
@@ -71,7 +71,7 @@ class ValidationPassTest extends AbstractCompilerPassTestCase
      *  - _$hasValidator: Is the validator available ?
      *  - _$shouldBeRegistered_: Should the documents validation be registered ?
      */
-    public function provideDocumentsValidationContext(): array
+    public static function provideDocumentsValidationContext(): array
     {
         return [
             [true, true, true],

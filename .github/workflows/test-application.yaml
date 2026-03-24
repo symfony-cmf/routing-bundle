@@ -32,7 +32,7 @@ jobs:
 
         steps:
             - name: Checkout project
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Install and configure PHP
               uses: shivammathur/setup-php@v2
@@ -46,9 +46,6 @@ jobs:
               with:
                   dependency-versions: ${{ matrix.dependencies }}
                   composer-options: --prefer-dist
-
-            - name: Prepare phpunit
-              run: vendor/bin/simple-phpunit install
 
             - name: Execute test cases
               run: make test
